@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hand Delivered Marketing (HDM) — Door hanger advertising for heating & cooling companies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #efe7d6;
+    --paper-light: #faf6ec;
+    --ink: #1f2e4a;
+    --ink-soft: #4a5b7c;
+    --stamp: #b23a2e;
+    --stamp-dark: #8f2e24;
+    --gold: #c99a3b;
+    /* Selection / primary-action accent — buttons, active choices, active
+       tabs and steps, focus states. --stamp (red) stays reserved for
+       warnings and errors only (unavailable messages, form errors).
+       A postal-ink blue, since blue postmarks are just as period-accurate
+       as red ones, and it reads as one family with --ink rather than a
+       third unrelated hue. */
+    --select: #2f6690;
+    --select-dark: #234d6d;
+    --select-tint: #e8f0f5;
+    --charcoal: #2b2620;
+    --line: rgba(31,46,74,0.16);
+    --line-strong: rgba(31,46,74,0.3);
+    --radius-s: 6px;
+    --radius-m: 14px;
+    --shadow: 0 10px 30px rgba(31,46,74,0.10);
+    --shadow-sm: 0 4px 14px rgba(31,46,74,0.08);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth; overflow-x:hidden;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--charcoal);
+    font-family:'Space Grotesk', sans-serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,h4{
+    font-family:'Fraunces', serif;
+    color:var(--ink);
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  .mono{font-family:'JetBrains Mono', monospace;}
+  a{color:inherit;}
+  img,svg{display:block;max-width:100%;}
+  .wrap{
+    width:100%;
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 28px;
+  }
+  section{padding:96px 0;}
+  @media (max-width:700px){ section{padding:64px 0;} .wrap{padding:0 20px;} }
+  /* Extra breathing room around How it works / Showcase / Reviews / FAQ */
+  #how, #showcase, #reviews, #faq{ padding-top:150px; padding-bottom:150px; }
+  @media (max-width:700px){ #how, #showcase, #reviews, #faq{ padding-top:96px; padding-bottom:96px; } }
+
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--select);
+    font-weight:600;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:14px;
+  }
+  .eyebrow::before{
+    content:'';
+    width:16px;height:1px;background:var(--select);
+  }
+
+  /* ---------- NAV ---------- */
+  header.site{
+    position:sticky; top:0; z-index:50;
+    background:rgba(239,231,214,0.88);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 28px; max-width:1120px; margin:0 auto;
+  }
+  .logo{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Fraunces', serif; font-weight:600; font-size:20px; color:var(--ink);
+    text-decoration:none;
+  }
+  .logo .dot{width:9px;height:9px;border-radius:50%;background:var(--select);display:inline-block;}
+  .nav-links{
+    display:flex; gap:32px; list-style:none; margin:0; padding:0;
+    font-size:14.5px; font-weight:500;
+  }
+  .nav-links a{text-decoration:none; color:var(--ink-soft); transition:color .15s;}
+  .nav-links a:hover{color:var(--select);}
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding:12px 22px; border-radius:999px; border:1px solid transparent;
+    font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:14.5px;
+    cursor:pointer; text-decoration:none; transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+  }
+  .btn-primary{background:var(--select); color:#fff8f2;}
+  .btn-primary:hover{background:var(--select-dark); transform:translateY(-1px); box-shadow:var(--shadow-sm);}
+  .btn-ghost{background:transparent; border-color:var(--line-strong); color:var(--ink);}
+  .btn-ghost:hover{border-color:var(--ink); transform:translateY(-1px);}
+  .nav-cta{display:flex; align-items:center; gap:18px;}
+  @media (max-width:760px){ .nav-links{display:none;} }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    display:grid; grid-template-columns:1.05fr 0.95fr; gap:56px; align-items:center;
+    padding-top:64px;
+  }
+  @media (max-width:900px){ .hero{grid-template-columns:1fr; padding-top:36px;} }
+  .hero h1{
+    font-size:clamp(34px,5vw,56px); line-height:1.05; font-weight:600;
+  }
+  .hero p.lead{
+    font-size:18px; color:var(--ink-soft); max-width:46ch; margin:20px 0 30px;
+  }
+  .hero .cta-row{display:flex; gap:14px; flex-wrap:wrap;}
+
+  /* hero visual: hanger on a door with radius rings */
+  .hero-visual{
+    position:relative; display:flex; align-items:center; justify-content:center;
+    min-height:540px;
+  }
+  .rings{position:absolute; inset:0; display:flex; align-items:center; justify-content:center;}
+  .ring{
+    position:absolute; border:1.5px dashed var(--line-strong); border-radius:50%;
+    animation:pulse 4.5s ease-in-out infinite;
+  }
+  .ring.r1{width:220px;height:220px; animation-delay:0s;}
+  .ring.r2{width:340px;height:340px; animation-delay:.5s; border-color:rgba(178,58,46,0.25);}
+  .ring.r3{width:460px;height:460px; animation-delay:1s;}
+  @media (max-width:520px){
+    .ring.r1{width:160px;height:160px;}
+    .ring.r2{width:230px;height:230px;}
+    .ring.r3{width:300px;height:300px;}
+  }
+  @keyframes pulse{
+    0%,100%{opacity:.35; transform:scale(1);}
+    50%{opacity:.75; transform:scale(1.02);}
+  }
+  .hero-hanger-wrap{
+    position:absolute; top:50%; left:50%; z-index:2;
+    transform:translate(calc(-50% + 63px), calc(-50% + 51px));
+  }
+  .hero-hanger{ transform-origin:50% 11%; animation:sway 6s ease-in-out infinite; filter:drop-shadow(0 12px 14px rgba(31,46,74,0.2)); }
+  .hero-door{
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); z-index:1;
+    filter:drop-shadow(0 14px 20px rgba(31,46,74,0.14));
+  }
+  @media (max-width:520px){
+    .hero-hanger-wrap{ transform:translate(calc(-50% + 52px), calc(-50% + 42px)) scale(0.82); }
+    .hero-door{ transform:translate(-50%,-50%) scale(0.82); }
+  }
+  @keyframes sway{
+    0%,100%{transform:rotate(-2.2deg);}
+    50%{transform:rotate(2.2deg);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .ring, .hero-hanger{ animation:none; }
+  }
+
+  /* ---------- SECTION HEAD ---------- */
+  .section-head{max-width:640px; margin-bottom:48px;}
+  .section-head h2{font-size:clamp(26px,3.4vw,38px); font-weight:600;}
+  .section-head p{color:var(--ink-soft); font-size:16.5px; margin-top:12px;}
+
+  /* ---------- HOW IT WORKS ---------- */
+  .steps{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:20px;
+  }
+  @media (max-width:760px){ .steps{grid-template-columns:1fr;} }
+  .step{
+    background:var(--paper-light); border:1px solid var(--line); border-radius:var(--radius-m);
+    padding:26px 22px; position:relative;
+  }
+  .step .idx{
+    font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--select); font-weight:600;
+    letter-spacing:.05em; margin-bottom:14px; display:block;
+  }
+  .step h3{font-size:18px; font-weight:600; margin-bottom:8px;}
+  .step p{font-size:14.5px; color:var(--ink-soft); margin:0;}
+
+  /* ---------- BUILDER ---------- */
+  .builder{
+    display:grid; grid-template-columns:1fr 420px; gap:44px; align-items:flex-start;
+    margin-top:48px;
+  }
+  @media (max-width:980px){ .builder{grid-template-columns:1fr;} }
+  .panel{
+    background:var(--paper-light); border:1px solid var(--line); border-radius:var(--radius-m);
+    padding:30px;
+  }
+  @media (max-width:560px){ .panel{padding:22px;} }
+  .panel h3.group-title{
+    font-size:15px; text-transform:uppercase; letter-spacing:.08em; font-family:'JetBrains Mono',monospace;
+    color:var(--ink-soft); font-weight:600; margin:0 0 16px;
+  }
+  .step-label{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:700; letter-spacing:.06em;
+    text-transform:uppercase; color:var(--select);
+    padding-bottom:8px; margin-bottom:18px; border-bottom:1px dashed var(--line-strong);
+    width:100%;
+  }
+
+  fieldset{border:none; padding:0; margin:0 0 34px;}
+  .ad-preview-block{ margin:0 0 34px; }
+  fieldset:last-of-type{margin-bottom:0;}
+  .field-row{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;}
+  .field-row.field-row-3{grid-template-columns:1.6fr 1fr 1fr;}
+  @media (max-width:560px){ .field-row{grid-template-columns:1fr;} .field-row.field-row-3{grid-template-columns:1fr;} }
+  label{
+    display:block; font-size:13px; font-weight:600; color:var(--ink); margin-bottom:6px;
+  }
+  .optional-tag{ font-weight:500; color:var(--ink-soft); text-transform:none; letter-spacing:0; }
+  input[type=text], input[type=email], input[type=tel], input[type=number], input[type=url], select, textarea{
+    width:100%; padding:12px 14px; border-radius:var(--radius-s); border:1px solid var(--line-strong);
+    background:#fff; font-family:'Space Grotesk',sans-serif; font-size:15px; color:var(--charcoal);
+  }
+  select{ appearance:none; -webkit-appearance:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234a5b7c' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat:no-repeat; background-position:right 12px center; background-size:16px; padding-right:36px;
+  }
+  textarea{ resize:vertical; min-height:70px; font-family:'Space Grotesk',sans-serif; }
+  input:focus, select:focus, textarea:focus{outline:2px solid var(--select); outline-offset:1px; border-color:var(--select);}
+  input:disabled, select:disabled, textarea:disabled, .choice:disabled{
+    opacity:.5; cursor:not-allowed; background:var(--paper);
+  }
+  .field{margin-bottom:16px;}
+
+  .form-error{
+    display:none; background:#fdf3f1; border:1px solid var(--stamp); border-radius:var(--radius-s);
+    padding:12px 14px; font-size:13.5px; color:var(--stamp-dark); margin-top:14px;
+  }
+  .form-error.show{display:block;}
+
+  .reference-id{
+    background:#fff; border:1px dashed var(--line-strong); border-radius:var(--radius-s);
+    padding:14px 16px; text-align:center; margin:0 0 22px;
+  }
+  .reference-id .rid-label{
+    font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--ink-soft); margin-bottom:6px;
+  }
+  .reference-id .rid-value{
+    font-family:'JetBrains Mono',monospace; font-size:18px; font-weight:600; color:var(--ink);
+  }
+
+  .choice-row{display:flex; gap:10px; flex-wrap:wrap;}
+  #size-group + .field{ margin-top:16px; }
+  .choice{
+    flex:1 1 auto; min-width:100px;
+    border:1px solid var(--line-strong); background:#fff; border-radius:var(--radius-s);
+    padding:12px 14px; cursor:pointer; text-align:left; font-family:'Space Grotesk',sans-serif;
+    transition:border-color .15s, background .15s, transform .1s;
+  }
+  .choice .c-title{font-weight:600; font-size:14.5px; color:var(--ink);}
+  .choice .c-sub{font-size:12px; color:var(--ink-soft); margin-top:3px; font-family:'JetBrains Mono',monospace;}
+  .choice:hover{border-color:var(--ink);}
+  .choice.active{
+    border-color:var(--select); background:var(--select-tint); box-shadow:inset 0 0 0 1px var(--select);
+  }
+  .radius-help{font-size:13px; color:var(--ink-soft); margin-top:10px; min-height:18px;}
+  .radius-help.warning{ color:var(--stamp); font-weight:600; }
+
+  .qty-control{display:flex; align-items:center; gap:12px;}
+  .qty-btn{
+    width:40px; height:40px; border-radius:50%; border:1px solid var(--line-strong); background:#fff;
+    font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--ink);
+  }
+  .qty-btn:hover{border-color:var(--select); color:var(--select);}
+  .qty-control input{text-align:center; font-family:'JetBrains Mono',monospace; font-weight:600; font-size:16px;}
+  .qty-hint{font-size:12.5px; color:var(--ink-soft); margin-top:8px;}
+  .field-hint{font-size:12.5px; color:var(--ink-soft); margin-top:8px; margin-bottom:0;}
+  input[readonly]{ background:var(--paper); cursor:default; }
+  .unavailable-msg{
+    display:none; font-size:12.5px; color:var(--stamp); font-weight:600; margin-top:8px;
+  }
+  .unavailable-msg.show{ display:block; }
+  .choice.unavailable-flash{ animation:unavailableFlash .6s ease; }
+  @keyframes unavailableFlash{
+    0%,100%{ border-color:var(--line-strong); }
+    30%{ border-color:var(--stamp); background:#fdf3f1; }
+  }
+  .extra-group{ margin-bottom:22px; }
+  .extra-group:last-child{ margin-bottom:0; }
+  .extra-label{ font-size:13px; font-weight:600; color:var(--ink); margin-bottom:8px; }
+  .extra-help{ font-size:13px; color:var(--ink-soft); margin-top:8px; margin-bottom:0; }
+
+  /* preview panel */
+  .preview-panel{position:sticky; top:100px;}
+  .tabs{display:flex; gap:8px; margin-bottom:18px;}
+  .tab-btn{
+    flex:1; padding:10px; border-radius:999px; border:1px solid var(--line-strong); background:transparent;
+    font-family:'JetBrains Mono',monospace; font-size:12.5px; font-weight:600; letter-spacing:.04em;
+    color:var(--ink-soft); cursor:pointer; text-transform:uppercase;
+  }
+  .tab-btn.active{background:var(--ink); color:var(--paper-light); border-color:var(--ink);}
+  .tab-btn:disabled{opacity:.4; cursor:not-allowed;}
+  .hanger-stage{
+    display:flex; justify-content:center; padding:6px 0 18px;
+  }
+  .hanger-stage svg{ width:260px; max-width:100%; height:auto; }
+  .hanger-stage.dual{gap:14px;}
+  .hanger-stage.dual svg{ width:calc(50% - 7px); max-width:230px; }
+  .slot-rect{
+    transform-box: fill-box; transform-origin:50% 50%;
+  }
+  .slot-rect.active{ fill:var(--select); animation:stampIn .4s cubic-bezier(.34,1.56,.64,1); }
+  .slot-rect.inactive{ fill:#ffffff; }
+  .slot-rect.clickable{ cursor:pointer; }
+  .slot-rect.clickable:focus-visible{ outline:2px solid var(--select); outline-offset:2px; }
+  @keyframes stampIn{
+    0%{ transform:scale(0.82); opacity:0.4; }
+    60%{ transform:scale(1.04); opacity:1; }
+    100%{ transform:scale(1); opacity:1; }
+  }
+  .slot-label{
+    font-family:'JetBrains Mono',monospace; font-size:11px; fill:var(--ink-soft); pointer-events:none;
+  }
+  .slot-label.active-label{ fill:var(--select-tint); animation:labelFade .35s ease; }
+  @keyframes labelFade{
+    0%{ opacity:0; }
+    100%{ opacity:1; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .slot-rect.active, .slot-label.active-label{ animation:none; }
+  }
+
+  .summary{
+    border-top:1px solid var(--line); padding-top:18px; margin-top:6px;
+  }
+  .summary-row{display:flex; justify-content:space-between; font-size:14px; margin-bottom:9px; color:var(--ink-soft);}
+  .summary-row strong{color:var(--ink); font-weight:600;}
+  .summary-total{
+    display:flex; justify-content:space-between; align-items:baseline; margin-top:14px; padding-top:14px;
+    border-top:1px dashed var(--line-strong);
+  }
+  .summary-total .label{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-soft); font-family:'JetBrains Mono',monospace;}
+  .summary-total .value{font-family:'Fraunces',serif; font-size:30px; font-weight:600; color:var(--select);}
+
+  .submit-row{margin-top:22px;}
+  .submit-row .btn{width:100%; padding:14px;}
+  .form-note{font-size:12.5px; color:var(--ink-soft); margin-top:10px; text-align:center;}
+
+  .confirm{
+    display:none; text-align:center; padding:40px 10px;
+  }
+  .confirm.show{display:block;}
+  .confirm .check{
+    width:56px;height:56px;border-radius:50%; background:var(--select); color:#fff; display:flex; align-items:center; justify-content:center;
+    margin:0 auto 18px; font-size:26px;
+  }
+  .confirm h3{font-size:24px; margin-bottom:10px;}
+  .confirm p{color:var(--ink-soft); font-size:15px; max-width:44ch; margin:0 auto 22px;}
+  .confirm-summary{
+    text-align:left; background:#fff; border:1px solid var(--line); border-radius:var(--radius-s);
+    padding:18px 20px; max-width:420px; margin:0 auto 22px; font-size:14px;
+  }
+  .confirm-summary div{display:flex; justify-content:space-between; padding:5px 0; color:var(--ink-soft);}
+  .confirm-summary div strong{color:var(--ink);}
+
+  /* ---------- SLIDER ---------- */
+  .slider-wrap{ display:flex; justify-content:center; }
+  .slider-wrap-narrow .slider{ width:100%; max-width:336px; }
+  .slider-wrap-wide .slider{ width:100%; max-width:480px; }
+  .slider{
+    position:relative; overflow:hidden; border-radius:var(--radius-m);
+    border:1px solid var(--line); background:var(--paper-light); box-shadow:var(--shadow-sm);
+  }
+  .slider-track{
+    display:flex; transition:transform .4s cubic-bezier(.4,0,.2,1); touch-action:pan-y; cursor:grab;
+  }
+  .slider-track:active{ cursor:grabbing; }
+  .slide{ flex:0 0 100%; width:100%; min-width:0; }
+  .slider[data-aspect="9-13"] .slide{ aspect-ratio:9/13; }
+  .slider[data-aspect="4-3"] .slide{ aspect-ratio:4/3; }
+  .slide img{ width:100%; height:100%; object-fit:cover; display:block; pointer-events:none; user-select:none; }
+  .slider-arrow{
+    position:absolute; top:50%; transform:translateY(-50%); z-index:2;
+    width:34px; height:34px; border-radius:50%; border:none; background:rgba(31,46,74,0.55);
+    color:#fff; font-size:20px; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center;
+  }
+  .slider-arrow:hover{ background:rgba(31,46,74,0.8); }
+  .slider-arrow.prev{ left:10px; }
+  .slider-arrow.next{ right:10px; }
+  .slider-dots{
+    position:absolute; bottom:12px; left:0; right:0; z-index:2;
+    display:flex; justify-content:center; gap:6px;
+  }
+  .slider-dot{
+    width:7px; height:7px; border-radius:50%; border:none; background:rgba(255,255,255,0.55); cursor:pointer; padding:0;
+  }
+  .slider-dot.active{ background:#fff; box-shadow:0 0 0 1.5px rgba(31,46,74,0.4); }
+
+  /* ---------- FAQ ---------- */
+  .faq{max-width:760px;}
+  details{
+    border-bottom:1px solid var(--line); padding:20px 0;
+  }
+  details summary{
+    list-style:none; cursor:pointer; display:flex; justify-content:space-between; align-items:center;
+    font-family:'Fraunces',serif; font-size:18px; font-weight:500; color:var(--ink);
+  }
+  details summary::-webkit-details-marker{display:none;}
+  details summary .plus{
+    font-family:'JetBrains Mono',monospace; font-size:20px; color:var(--select); transition:transform .2s ease;
+    flex-shrink:0; margin-left:16px;
+  }
+  details[open] summary .plus{transform:rotate(45deg);}
+  details p{color:var(--ink-soft); font-size:15px; margin:14px 0 0; max-width:60ch;}
+  .ai-chat-embed{
+    margin-top:14px; border:1px dashed var(--line-strong); border-radius:var(--radius-s);
+    overflow:hidden; background:#fff; max-width:60ch;
+  }
+  .ai-chat-embed iframe{ width:100%; height:420px; border:none; display:block; }
+  .ai-chat-note{ font-size:12.5px !important; color:var(--ink-soft); margin-top:8px !important; }
+  .ai-chat-note code{ font-family:'JetBrains Mono',monospace; background:var(--paper); padding:1px 5px; border-radius:4px; }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    border-top:1px solid var(--line); padding:44px 0; background:var(--paper-light);
+  }
+  .footer-row{
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;
+  }
+  .footer-row p{font-size:13.5px; color:var(--ink-soft); margin:0;}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <nav>
+    <a href="#top" class="logo"><span class="dot"></span>Hand Delivered Marketing</a>
+    <ul class="nav-links">
+      <li><a href="#why">Why HDM</a></li>
+      <li><a href="#how">How it works</a></li>
+      <li><a href="#build">Register &amp; select</a></li>
+      <li><a href="#reviews">Reviews</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="#build" class="btn btn-primary">Get started</a>
+    </div>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero wrap">
+    <div>
+      <div class="eyebrow">Door-to-door advertising for HVAC pros</div>
+      <h1>Be on their door before the furnace fails.</h1>
+      <p class="lead">Hand Delivered Marketing (HDM) designs, prints, and hand-delivers door hangers within 5, 15, or 30 miles of your HVAC business — so homeowners already know who to call when the heat goes out or the AC quits.</p>
+      <div class="cta-row">
+        <a href="#build" class="btn btn-primary">Build your door hanger</a>
+        <a href="#how" class="btn btn-ghost">See how it works</a>
+      </div>
+    </div>
+
+    <div class="hero-visual" aria-hidden="true">
+      <div class="rings">
+        <div class="ring r3"></div>
+        <div class="ring r2"></div>
+        <div class="ring r1"></div>
+      </div>
+      <svg class="hero-door" width="260" height="560" viewBox="0 0 260 560" xmlns="http://www.w3.org/2000/svg">
+        <!-- ground shadow -->
+        <ellipse cx="130" cy="500" rx="112" ry="9" fill="#1f2e4a" opacity="0.10"/>
+
+        <!-- frame / casing -->
+        <rect x="8" y="8" width="244" height="486" rx="8" fill="#4a3728" stroke="#2e2015" stroke-width="2"/>
+
+        <!-- door slab -->
+        <rect x="22" y="22" width="216" height="458" rx="5" fill="#2b3a56" stroke="#17233a" stroke-width="2"/>
+
+        <!-- top lite (window) -->
+        <rect x="46" y="46" width="168" height="86" rx="4" fill="#dce7ea" stroke="#17233a" stroke-width="1.5" opacity="0.94"/>
+        <line x1="130" y1="46" x2="130" y2="132" stroke="#17233a" stroke-width="1.4"/>
+        <line x1="46" y1="89" x2="214" y2="89" stroke="#17233a" stroke-width="1.4"/>
+
+        <!-- lower raised panel, double-stroked for a beveled look -->
+        <rect x="46" y="150" width="168" height="300" rx="6" fill="#33456a" stroke="#17233a" stroke-width="2"/>
+        <rect x="55" y="159" width="150" height="282" rx="4" fill="none" stroke="#17233a" stroke-width="1.3" opacity="0.5"/>
+        <line x1="48" y1="152" x2="212" y2="152" stroke="#4a5f86" stroke-width="1.2" opacity="0.55"/>
+
+        <!-- kickplate -->
+        <rect x="34" y="452" width="192" height="16" rx="2" fill="#c99a3b" opacity="0.85" stroke="#7a5c22" stroke-width="1"/>
+
+        <!-- hinges -->
+        <rect x="21" y="90" width="7" height="30" rx="1.5" fill="#c99a3b" stroke="#7a5c22" stroke-width="1"/>
+        <rect x="21" y="250" width="7" height="30" rx="1.5" fill="#c99a3b" stroke="#7a5c22" stroke-width="1"/>
+        <rect x="21" y="410" width="7" height="30" rx="1.5" fill="#c99a3b" stroke="#7a5c22" stroke-width="1"/>
+
+        <!-- knob assembly: escutcheon, deadbolt, knob -->
+        <rect x="186" y="204" width="16" height="58" rx="8" fill="#c99a3b" stroke="#7a5c22" stroke-width="1.2"/>
+        <circle cx="194" cy="176" r="6" fill="#e8c374" stroke="#7a5c22" stroke-width="1"/>
+        <circle cx="193" cy="230" r="10" fill="#e8c374" stroke="#7a5c22" stroke-width="1.4"/>
+
+        <!-- floor -->
+        <line x1="0" y1="502" x2="260" y2="502" stroke="#1f2e4a" stroke-width="1" opacity="0.15"/>
+
+        <!-- doormat, resting on the floor -->
+        <rect x="30" y="512" width="200" height="36" rx="6" fill="#efe7d6" stroke="#1a2740" stroke-width="1.4"/>
+        <line x1="42" y1="522" x2="218" y2="522" stroke="#1a2740" stroke-width="0.8" opacity="0.15"/>
+        <line x1="42" y1="530" x2="218" y2="530" stroke="#1a2740" stroke-width="0.8" opacity="0.15"/>
+        <line x1="42" y1="538" x2="218" y2="538" stroke="#1a2740" stroke-width="0.8" opacity="0.15"/>
+        <text x="130" y="534" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9.5" letter-spacing="1.2" fill="#1f2e4a" font-weight="600">YOUR CUSTOMER'S DOOR</text>
+      </svg>
+      <div class="hero-hanger-wrap">
+        <svg class="hero-hanger" width="110" height="260" viewBox="0 0 110 260" xmlns="http://www.w3.org/2000/svg">
+          <rect x="49" y="3" width="12" height="20" rx="2" fill="#efe7d6" stroke="#1f2e4a" stroke-width="1.2"/>
+          <rect x="4" y="29" width="103" height="228" rx="9" fill="#faf6ec" stroke="#1f2e4a" stroke-width="1.4"/>
+          <circle cx="55" cy="29" r="9" fill="#efe7d6" stroke="#1f2e4a" stroke-width="1.4"/>
+          <rect x="10" y="57" width="90" height="48" rx="4" style="fill:var(--select)" opacity="0.92"/>
+          <text x="55" y="86" text-anchor="middle" font-family="Fraunces, serif" font-size="10" fill="#ffffff" font-weight="600" letter-spacing="0.4">YOUR AD</text>
+          <rect x="10" y="116" width="90" height="46" rx="4" fill="#ffffff" stroke="#1f2e4a" stroke-width="0.8" opacity="0.55"/>
+          <rect x="10" y="172" width="90" height="46" rx="4" fill="#ffffff" stroke="#1f2e4a" stroke-width="0.8" opacity="0.35"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY HDM -->
+  <section id="why" class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Why door hangers work for HVAC</div>
+      <h2>Be remembered before the breakdown happens.</h2>
+      <p>HVAC calls are urgent and local — the exact combination a door hanger campaign is built for.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <span class="idx">01</span>
+        <h3>Emergencies favor whoever they remember</h3>
+        <p>When a furnace dies at 11pm, homeowners call the name they've already seen — not the one they have to search for.</p>
+      </div>
+      <div class="step">
+        <span class="idx">02</span>
+        <h3>Target homes by age, not just address</h3>
+        <p>Neighborhoods built in the same era tend to need HVAC replacement around the same time. A radius around a recent install reaches homes with similar-aged systems.</p>
+      </div>
+      <div class="step">
+        <span class="idx">03</span>
+        <h3>Seasonal tune-up offers drive off-season revenue</h3>
+        <p>Pre-season maintenance offers printed on a hanger fill your slow months before breakdown season hits.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how" class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">How it works</div>
+      <h2>From your door to theirs.</h2>
+      <p>Register your business and order, select your details, then track your hangers all the way to the door.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <span class="idx">STEP 1</span>
+        <h3>Register</h3>
+        <p>Register your company and tell us about your business.</p>
+      </div>
+      <div class="step">
+        <span class="idx">STEP 2</span>
+        <h3>Select</h3>
+        <p>Select radius, quantity, ad size of your ad.</p>
+      </div>
+      <div class="step">
+        <span class="idx">STEP 3</span>
+        <h3>Track</h3>
+        <p>Track as we deliver door hangers to your future customers.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BUILDER / FORM -->
+  <section id="build" class="wrap">
+    <div class="builder">
+      <!-- FORM -->
+      <form class="panel" id="campaign-form" novalidate>
+        <div class="step-label">Step 1 — Register</div>
+        <fieldset>
+          <h3 class="group-title">Your business</h3>
+          <div class="field-row">
+            <div class="field">
+              <label for="fullname">Full name</label>
+              <input type="text" id="fullname" name="fullname" required placeholder="Jordan Alvarez">
+            </div>
+            <div class="field">
+              <label for="title">Title at company</label>
+              <input type="text" id="title" name="title" required placeholder="Owner">
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" required placeholder="jordan@yourbusiness.com">
+            </div>
+            <div class="field">
+              <label for="phone">Telephone</label>
+              <input type="tel" id="phone" name="phone" required placeholder="(555) 012-3456">
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="bizname">Business name</label>
+              <input type="text" id="bizname" name="bizname" required placeholder="Local Coffee Co.">
+            </div>
+            <div class="field">
+              <label for="bizwebsite">Business website <span class="optional-tag">(optional)</span></label>
+              <input type="text" id="bizwebsite" name="bizwebsite" placeholder="www.yourbusiness.com">
+            </div>
+          </div>
+          <div class="field">
+            <label for="bizstreet">Business street address</label>
+            <input type="text" id="bizstreet" name="bizstreet" required placeholder="123 Main St">
+          </div>
+          <div class="field-row field-row-3">
+            <div class="field">
+              <label for="bizcity">City</label>
+              <input type="text" id="bizcity" name="bizcity" required placeholder="Springfield">
+            </div>
+            <div class="field">
+              <label for="bizstate">State</label>
+              <select id="bizstate" name="bizstate" required>
+                <option value="" disabled selected>State</option>
+                <option value="AL">AL</option><option value="AK">AK</option><option value="AZ">AZ</option>
+                <option value="AR">AR</option><option value="CA">CA</option><option value="CO">CO</option>
+                <option value="CT">CT</option><option value="DE">DE</option><option value="DC">DC</option>
+                <option value="FL">FL</option><option value="GA">GA</option><option value="HI">HI</option>
+                <option value="ID">ID</option><option value="IL">IL</option><option value="IN">IN</option>
+                <option value="IA">IA</option><option value="KS">KS</option><option value="KY">KY</option>
+                <option value="LA">LA</option><option value="ME">ME</option><option value="MD">MD</option>
+                <option value="MA">MA</option><option value="MI">MI</option><option value="MN">MN</option>
+                <option value="MS">MS</option><option value="MO">MO</option><option value="MT">MT</option>
+                <option value="NE">NE</option><option value="NV">NV</option><option value="NH">NH</option>
+                <option value="NJ">NJ</option><option value="NM">NM</option><option value="NY">NY</option>
+                <option value="NC">NC</option><option value="ND">ND</option><option value="OH">OH</option>
+                <option value="OK">OK</option><option value="OR">OR</option><option value="PA">PA</option>
+                <option value="RI">RI</option><option value="SC">SC</option><option value="SD">SD</option>
+                <option value="TN">TN</option><option value="TX">TX</option><option value="UT">UT</option>
+                <option value="VT">VT</option><option value="VA">VA</option><option value="WA">WA</option>
+                <option value="WV">WV</option><option value="WI">WI</option><option value="WY">WY</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="bizzip">ZIP</label>
+              <input type="text" id="bizzip" name="bizzip" required placeholder="97204" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" title="5-digit ZIP code">
+            </div>
+          </div>
+          <div class="field">
+            <label for="designnotes">Design notes <span class="optional-tag">(optional)</span></label>
+            <textarea id="designnotes" name="designnotes" rows="3" placeholder="Anything our design team should know — seasonal tune-up offer, financing/warranty info, emergency service number..."></textarea>
+          </div>
+        </fieldset>
+
+        <div class="step-label">Step 2 — Select</div>
+        <fieldset>
+          <h3 class="group-title">Radius</h3>
+          <div class="choice-row" id="radius-group">
+            <button type="button" class="choice" data-radius="5">
+              <div class="c-title">5 miles</div>
+              <div class="c-sub">HYPER-LOCAL</div>
+            </button>
+            <button type="button" class="choice" data-radius="15">
+              <div class="c-title">15 miles</div>
+              <div class="c-sub">CITY-WIDE</div>
+            </button>
+            <button type="button" class="choice active" data-radius="30">
+              <div class="c-title">30 miles</div>
+              <div class="c-sub">REGIONAL</div>
+            </button>
+          </div>
+          <p class="radius-help" id="radius-help"></p>
+        </fieldset>
+
+        <fieldset>
+          <h3 class="group-title">Ad size</h3>
+          <div class="choice-row" id="size-group">
+            <button type="button" class="choice active" data-size="third" data-price="550">
+              <div class="c-title">1/3 page</div>
+              <div class="c-sub">$550 · from</div>
+            </button>
+            <button type="button" class="choice" data-size="half" data-price="1100">
+              <div class="c-title">Half page</div>
+              <div class="c-sub">$1,100 · from</div>
+            </button>
+            <button type="button" class="choice" data-size="full" data-price="1650">
+              <div class="c-title">Full page</div>
+              <div class="c-sub">$1,650 · from</div>
+            </button>
+            <button type="button" class="choice" data-size="both" data-price="3300">
+              <div class="c-title">Both sides</div>
+              <div class="c-sub">$3,300 · from</div>
+            </button>
+          </div>
+          <div class="field">
+            <label for="qrurl">QR forwarding URL</label>
+            <input type="url" id="qrurl" name="qrurl" required placeholder="https://yourhvacco.com/free-tune-up">
+            <p class="field-hint">Where scans should be sent.</p>
+          </div>
+        </fieldset>
+
+        <div class="ad-preview-block">
+          <h3 class="group-title">Ad preview</h3>
+          <div class="tabs">
+            <button type="button" class="tab-btn active" id="tab-front" data-side="front">Front</button>
+            <button type="button" class="tab-btn" id="tab-back" data-side="back">Back</button>
+          </div>
+          <div class="hanger-stage" id="hanger-stage"></div>
+        </div>
+
+        <fieldset>
+          <h3 class="group-title">Quantity</h3>
+          <div class="qty-control">
+            <button type="button" class="qty-btn" id="qty-down" aria-label="Decrease quantity">−</button>
+            <input type="number" id="qty" name="qty" value="2000" min="2000" max="2000" step="250" style="max-width:140px;" readonly>
+            <button type="button" class="qty-btn" id="qty-up" aria-label="Increase quantity">+</button>
+          </div>
+          <p class="qty-hint">Every campaign starts at 2,000 door hangers.</p>
+          <p class="unavailable-msg" id="qty-unavailable">Unavailable in your city — quantities above 2,000 aren't offered yet.</p>
+        </fieldset>
+
+        <fieldset>
+          <h3 class="group-title">Optional extras</h3>
+
+          <div class="extra-group">
+            <div class="extra-label">Ad design</div>
+            <div class="choice-row" id="design-group">
+              <button type="button" class="choice active" data-design="basic" data-price="0">
+                <div class="c-title">Basic design</div>
+                <div class="c-sub">INCLUDED</div>
+              </button>
+              <button type="button" class="choice" data-design="premium" data-price="90">
+                <div class="c-title">Premium design</div>
+                <div class="c-sub">$90</div>
+              </button>
+            </div>
+            <p class="extra-help" id="design-help">Highly optimized design that gets your ad seen.</p>
+          </div>
+
+          <div class="extra-group">
+            <div class="extra-label">QR tracking</div>
+            <div class="choice-row" id="tracking-group">
+              <button type="button" class="choice active" data-tracking="basic" data-price="0">
+                <div class="c-title">Basic tracking</div>
+                <div class="c-sub">INCLUDED</div>
+              </button>
+              <button type="button" class="choice" data-tracking="dashboard" data-price="79">
+                <div class="c-title">Web dashboard</div>
+                <div class="c-sub">$79</div>
+              </button>
+            </div>
+            <p class="extra-help" id="tracking-help">We'll update you when you request information on the performance and progress of your door to door campaign.</p>
+          </div>
+
+          <div class="extra-group">
+            <div class="extra-label">Website</div>
+            <div class="choice-row">
+              <button type="button" class="choice" id="website-toggle" data-price="149.99">
+                <div class="c-title">Clean website design package</div>
+                <div class="c-sub">$149.99</div>
+              </button>
+            </div>
+            <p class="extra-help">Custom built one-page website for your business, built to match your door hanger ad and current offer/service/product.</p>
+          </div>
+        </fieldset>
+      </form>
+
+      <!-- PREVIEW -->
+      <div class="panel preview-panel" id="preview-panel">
+        <h3 class="group-title">Order summary</h3>
+
+        <div class="summary">
+          <div class="summary-row"><span>Radius</span><strong id="sum-radius">30 miles</strong></div>
+          <div class="summary-row"><span>Ad size</span><strong id="sum-size">1/3 page</strong></div>
+          <div class="summary-row"><span>Quantity</span><strong id="sum-qty">2,000 hangers</strong></div>
+          <div id="extras-rows"></div>
+          <div class="summary-total">
+            <span class="label">Order total</span>
+            <span class="value mono" id="sum-total">$550</span>
+          </div>
+        </div>
+        <div class="submit-row">
+          <button type="submit" form="campaign-form" class="btn btn-primary" id="submit-btn">Place my order</button>
+          <p class="form-note">This places your order — you're not paying here. We'll email or text you a secure payment link once your design is approved.</p>
+          <div class="form-error" id="form-error">Something went wrong placing your order. Please try again — if it keeps happening, contact us directly.</div>
+        </div>
+
+        <div class="confirm" id="confirm-panel">
+          <div class="check">✓</div>
+          <h3 id="confirm-name">Your order is in.</h3>
+          <div class="reference-id" id="reference-id">
+            <div class="rid-label">Your reference ID</div>
+            <div class="rid-value mono" id="rid-value">—</div>
+          </div>
+          <p>No payment was taken. Our design team will email you within 1 business day with your 3 free design variations — once you approve one, we'll send a secure payment link by email or text to get your hangers printed.</p>
+          <div class="confirm-summary" id="confirm-summary"></div>
+          <div class="step-label" style="justify-content:center; text-align:center;">Step 3 — Track</div>
+          <p style="font-size:14px; color:var(--ink-soft); margin-top:0;">Once printing begins, you'll get a free dashboard link to track as we deliver your door hangers to your future customers.</p>
+          <button type="button" class="btn btn-ghost" id="reset-form">Start another order</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHOWCASE -->
+  <section id="showcase" class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">See it printed</div>
+      <h2>Door hangers we've printed.</h2>
+      <p>A few examples from real campaigns.</p>
+    </div>
+    <div class="slider-wrap slider-wrap-narrow">
+      <div class="slider" data-aspect="9-13" id="hanger-slider">
+        <div class="slider-track">
+          <div class="slide"><img src="images/hanger-1.png" alt="Printed door hanger sample 1" loading="lazy"></div>
+          <div class="slide"><img src="images/hanger-2.png" alt="Printed door hanger sample 2" loading="lazy"></div>
+          <div class="slide"><img src="images/hanger-3.png" alt="Printed door hanger sample 3" loading="lazy"></div>
+        </div>
+        <button type="button" class="slider-arrow prev" aria-label="Previous image">‹</button>
+        <button type="button" class="slider-arrow next" aria-label="Next image">›</button>
+        <div class="slider-dots"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section id="reviews" class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Reviews</div>
+      <h2>Our glowing reviews</h2>
+      <p>A few snapshots of feedback from local business owners.</p>
+    </div>
+    <div class="slider-wrap slider-wrap-wide">
+      <div class="slider" data-aspect="4-3" id="review-slider">
+        <div class="slider-track">
+          <div class="slide"><img src="images/review-1.png" alt="Customer review screenshot 1" loading="lazy"></div>
+          <div class="slide"><img src="images/review-2.png" alt="Customer review screenshot 2" loading="lazy"></div>
+          <div class="slide"><img src="images/review-3.png" alt="Customer review screenshot 3" loading="lazy"></div>
+        </div>
+        <button type="button" class="slider-arrow prev" aria-label="Previous review">‹</button>
+        <button type="button" class="slider-arrow next" aria-label="Next review">›</button>
+        <div class="slider-dots"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">FAQ</div>
+      <h2>Good to know.</h2>
+    </div>
+    <div class="faq">
+      <details open>
+        <summary>Do I pay on this website?<span class="plus">+</span></summary>
+        <p>No. Submitting the form places your order — it doesn't charge you anything. Once your free design is ready and approved, we'll send a secure payment link by email or text message, and printing begins after that payment is received.</p>
+      </details>
+      <details>
+        <summary>How long does it take for the door hangers to be delivered?<span class="plus">+</span></summary>
+        <p>After full payment, it usually takes 3–4 weeks for all door hangers to be delivered across your chosen radius.</p>
+      </details>
+      <details>
+        <summary>Is the design of the door hanger included?<span class="plus">+</span></summary>
+        <p>Yes. Our design team provides up to 3 free design variations for your ad slot, sized to fit exactly what you purchased.</p>
+      </details>
+      <details>
+        <summary>Is the tracking service free?<span class="plus">+</span></summary>
+        <p>Yes. Every campaign includes a free dashboard where you can track the performance of the QR code printed on your door hangers.</p>
+      </details>
+      <details>
+        <summary>Got more questions?<span class="plus">+</span></summary>
+        <p>Chat with our AI agent to get all of your questions answered.</p>
+        <!--
+          PLACEHOLDER — replace the iframe's src below with the real embed
+          URL from your AI chat provider once it's set up. src="about:blank"
+          is intentional for now so this doesn't point at a fake/broken URL.
+        -->
+        <div class="ai-chat-embed">
+          <iframe src="about:blank" title="AI chat assistant" loading="lazy"></iframe>
+        </div>
+        <p class="ai-chat-note">Placeholder embed — swap the iframe's <code>src</code> for your AI chat widget's URL.</p>
+      </details>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-row">
+    <a href="#top" class="logo"><span class="dot"></span>Hand Delivered Marketing</a>
+    <p>Local heating & cooling leads, delivered to the door.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // ---- Doorstep order pipeline integration ----
+  // Worker endpoint is fixed/given by the integration brief — do not change.
+  const WORKER_URL = 'https://broken-grass-80ae.usedbuy.workers.dev/api/lead';
+  // ⚠️ PLACEHOLDER — must be replaced with this site's real deployed origin
+  // (e.g. "your-site-name.github.io" or "your-site-name.github.io/spring-promo")
+  // before going live. Leads submitted with this value cannot be traced to
+  // this site in the CRM. See the chat reply for what to do about this.
+  // ⚠️ PLACEHOLDER — replace with this page's real deployed origin (e.g.
+  // 'yourname.github.io/HDM-hvac') before going live, so leads from this page
+  // can be traced back to it in the CRM. Set to the page slug for now so
+  // multiple HDM pages remain distinguishable even before that's done.
+  const SOURCE_DOMAIN = 'HDM-hvac';
+
+  // price = 550 * unitsForSize * (qty / 2000); unitsForSize: third=1, half=2, full=3, both=6
+  const priceTable = { third: 550, half: 1100, full: 1650, both: 3300 };
+  const sizeLabels = { third: '1/3 page', half: 'Half page', full: 'Full page', both: 'Both sides' };
+  const radiusHelp = {
+    5: 'Hyper-local — just the streets around your door.',
+    15: 'City-wide — covers most of your town or metro core.',
+    30: 'Regional — stretches into neighboring communities.'
+  };
+
+  const state = { radius: 30, size: 'third', side: 'front', slot: 1, qty: 2000, extras: { design: 'basic', tracking: 'basic', website: false } };
+
+  const stage = document.getElementById('hanger-stage');
+  const radiusGroup = document.getElementById('radius-group');
+  const sizeGroup = document.getElementById('size-group');
+  const tabFront = document.getElementById('tab-front');
+  const tabBack = document.getElementById('tab-back');
+  const qtyInput = document.getElementById('qty');
+  const radiusHelpEl = document.getElementById('radius-help');
+
+  function priceFor(size, qty){
+    // matches the Worker's own formula exactly, rounded to 2 decimals
+    return Math.round(priceTable[size] * (qty / 2000) * 100) / 100;
+  }
+
+  // Optional extras are not part of the Worker's payload contract (no
+  // pricing fields for them exist in the API). They're shown here for the
+  // buyer's own total, and their selection is folded into designNotes as
+  // free text when the order is submitted.
+  function extrasItems(){
+    const items = [];
+    if (state.extras.design === 'premium') items.push({ name: 'Premium design package', price: 90 });
+    if (state.extras.tracking === 'dashboard') items.push({ name: 'QR code web dashboard', price: 79 });
+    if (state.extras.website) items.push({ name: 'Clean website design package', price: 149.99 });
+    return items;
+  }
+
+  function extrasTotal(){
+    const t = extrasItems().reduce(function(sum, item){ return sum + item.price; }, 0);
+    return Math.round(t * 100) / 100;
+  }
+
+  function extrasDescription(){
+    return extrasItems().map(function(item){ return item.name + ' (' + money(item.price) + ')'; });
+  }
+
+  function money(n){
+    return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function slotGeom(){
+    // usable ad area within one hanger side
+    const top = 96, height = 372, gap = 6;
+    const third = (height - gap*2) / 3;
+    return { top, height, third, gap };
+  }
+
+  function hangerSVG(side, sizeMode){
+    const g = slotGeom();
+    const w = 220, x = 20;
+    const isBoth = sizeMode === 'both';
+    const activeSide = isBoth ? true : (side === state.side);
+
+    let inner = '';
+    inner += `<rect x="${x+96}" y="4" width="28" height="34" rx="3" fill="#efe7d6" stroke="#1f2e4a" stroke-width="1.3"/>`;
+    inner += `<rect x="${x}" y="40" width="${w}" height="440" rx="16" fill="#ffffff" stroke="#1f2e4a" stroke-width="1.5"/>`;
+    inner += `<circle cx="${x+110}" cy="40" r="15" fill="#efe7d6" stroke="#1f2e4a" stroke-width="1.3"/>`;
+    inner += `<text x="${x+110}" y="70" text-anchor="middle" class="slot-label" style="font-size:10px; letter-spacing:1px;">${side === 'front' ? 'FRONT' : 'BACK'}</text>`;
+
+    if (sizeMode === 'third') {
+      for (let i = 0; i < 3; i++) {
+        const y = g.top + i * (g.third + g.gap);
+        const slotNum = side === 'front' ? i + 1 : i + 4;
+        const isActive = activeSide && side === state.side && (i + 1) === state.slot;
+        const cls = 'slot-rect clickable ' + (isActive ? 'active' : 'inactive');
+        const slotSideName = side === 'front' ? 'front' : 'back';
+        inner += `<rect data-side="${side}" data-slot="${i+1}" class="${cls}" x="${x+10}" y="${y}" width="${w-20}" height="${g.third}" rx="6" stroke="#c99a3b" stroke-width="1" tabindex="0" role="button" aria-pressed="${isActive}" aria-label="Slot ${slotNum}, one third page, ${slotSideName} of hanger${isActive ? ', selected' : ''}"/>`;
+        inner += `<text x="${x+w/2}" y="${y + g.third/2 - 4}" text-anchor="middle" class="slot-label ${isActive ? 'active-label' : ''}" style="font-size:12px; font-weight:600; pointer-events:none;">Slot ${slotNum}</text>`;
+        inner += `<text x="${x+w/2}" y="${y + g.third/2 + 12}" text-anchor="middle" class="slot-label ${isActive ? 'active-label' : ''}" style="pointer-events:none;">1/3 PAGE</text>`;
+      }
+    } else if (sizeMode === 'half') {
+      const halfH = (g.height - g.gap*2) / 2;
+      const isActive = activeSide && side === state.side;
+      const cls = 'slot-rect ' + (isActive ? 'active' : 'inactive');
+      inner += `<rect class="${cls}" x="${x+10}" y="${g.top}" width="${w-20}" height="${halfH}" rx="6" stroke="#c99a3b" stroke-width="1"/>`;
+      inner += `<text x="${x+w/2}" y="${g.top + halfH/2 - 4}" text-anchor="middle" class="slot-label ${isActive?'active-label':''}" style="font-size:13px; font-weight:600;">HALF PAGE</text>`;
+      inner += `<text x="${x+w/2}" y="${g.top + halfH/2 + 14}" text-anchor="middle" class="slot-label ${isActive?'active-label':''}">YOUR AD</text>`;
+      const remTop = g.top + halfH + g.gap;
+      const remH = g.height - halfH - g.gap;
+      inner += `<rect x="${x+10}" y="${remTop}" width="${w-20}" height="${remH}" rx="6" fill="#faf6ec" stroke="#e3dac7" stroke-width="1" opacity="0.8"/>`;
+    } else {
+      // full or both
+      const isActive = isBoth || side === state.side;
+      const cls = 'slot-rect ' + (isActive ? 'active' : 'inactive');
+      inner += `<rect class="${cls}" x="${x+10}" y="${g.top}" width="${w-20}" height="${g.height}" rx="6" stroke="#c99a3b" stroke-width="1"/>`;
+      inner += `<text x="${x+w/2}" y="${g.top + g.height/2 - 6}" text-anchor="middle" class="slot-label ${isActive?'active-label':''}" style="font-size:14px; font-weight:600;">${sizeMode === 'both' ? 'BOTH SIDES' : 'FULL PAGE'}</text>`;
+      inner += `<text x="${x+w/2}" y="${g.top + g.height/2 + 16}" text-anchor="middle" class="slot-label ${isActive?'active-label':''}">YOUR AD, EXCLUSIVE</text>`;
+    }
+
+    return `<svg width="260" height="500" viewBox="0 0 260 500" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
+  }
+
+  function render(){
+    // tabs
+    if (state.size === 'both') {
+      tabFront.disabled = true; tabBack.disabled = true;
+      stage.className = 'hanger-stage dual';
+      stage.innerHTML = hangerSVG('front', 'both') + hangerSVG('back', 'both');
+    } else {
+      tabFront.disabled = false; tabBack.disabled = false;
+      tabFront.classList.toggle('active', state.side === 'front');
+      tabBack.classList.toggle('active', state.side === 'back');
+      stage.className = 'hanger-stage';
+      stage.innerHTML = hangerSVG(state.side, state.size);
+    }
+
+    // wire slot clicks + keyboard activation (third mode only)
+    stage.querySelectorAll('.slot-rect.clickable').forEach(function(el){
+      function select(){
+        state.side = el.getAttribute('data-side');
+        state.slot = parseInt(el.getAttribute('data-slot'), 10);
+        render();
+      }
+      el.addEventListener('click', select);
+      el.addEventListener('keydown', function(ev){
+        if (ev.key === 'Enter' || ev.key === ' ' || ev.key === 'Spacebar') {
+          ev.preventDefault();
+          select();
+        }
+      });
+    });
+
+    // summary
+    const qty = Math.max(2000, parseInt(qtyInput.value || '2000', 10));
+    const hangerTotal = priceFor(state.size, qty);
+    const items = extrasItems();
+    const extras = extrasTotal();
+    const total = Math.round((hangerTotal + extras) * 100) / 100;
+
+    document.getElementById('sum-radius').textContent = state.radius + ' miles';
+    document.getElementById('sum-size').textContent = sizeLabels[state.size];
+    document.getElementById('sum-qty').textContent = qty.toLocaleString('en-US') + ' hangers';
+    document.getElementById('extras-rows').innerHTML = items.map(function(item){
+      return '<div class="summary-row"><span>' + item.name + '</span><strong>' + money(item.price) + '</strong></div>';
+    }).join('');
+    document.getElementById('sum-total').textContent = money(total);
+    radiusHelpEl.classList.remove('warning');
+    radiusHelpEl.textContent = radiusHelp[state.radius];
+  }
+
+  // radius buttons — only 30 miles is currently available in this city
+  const AVAILABLE_RADII = [30];
+  radiusGroup.querySelectorAll('.choice').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      const r = parseInt(btn.getAttribute('data-radius'), 10);
+      if (AVAILABLE_RADII.indexOf(r) === -1) {
+        radiusHelpEl.textContent = 'Unavailable in your city';
+        radiusHelpEl.classList.add('warning');
+        btn.classList.remove('unavailable-flash');
+        void btn.offsetWidth; // restart the flash animation if clicked repeatedly
+        btn.classList.add('unavailable-flash');
+        return;
+      }
+      radiusHelpEl.classList.remove('warning');
+      radiusGroup.querySelectorAll('.choice').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.radius = r;
+      render();
+    });
+  });
+
+  // size buttons
+  sizeGroup.querySelectorAll('.choice').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      sizeGroup.querySelectorAll('.choice').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.size = btn.getAttribute('data-size');
+      render();
+    });
+  });
+
+  // optional extras — ad design (basic / premium)
+  const designGroup = document.getElementById('design-group');
+  const designHelpEl = document.getElementById('design-help');
+  const designCopy = {
+    basic: 'Highly optimized design that gets your ad seen.',
+    premium: 'Want to design a fully unique company branded ad?'
+  };
+  designGroup.querySelectorAll('.choice').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      designGroup.querySelectorAll('.choice').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.extras.design = btn.getAttribute('data-design');
+      designHelpEl.textContent = designCopy[state.extras.design];
+      render();
+    });
+  });
+
+  // optional extras — QR tracking (basic / web dashboard)
+  const trackingGroup = document.getElementById('tracking-group');
+  const trackingHelpEl = document.getElementById('tracking-help');
+  const trackingCopy = {
+    basic: "We'll update you when you request information on the performance and progress of your door to door campaign.",
+    dashboard: 'See when, how many times, and who scans your ad through an online dashboard.'
+  };
+  trackingGroup.querySelectorAll('.choice').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      trackingGroup.querySelectorAll('.choice').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.extras.tracking = btn.getAttribute('data-tracking');
+      trackingHelpEl.textContent = trackingCopy[state.extras.tracking];
+      render();
+    });
+  });
+
+  // optional extras — website design package (standalone toggle)
+  document.getElementById('website-toggle').addEventListener('click', function(){
+    state.extras.website = !state.extras.website;
+    this.classList.toggle('active', state.extras.website);
+    render();
+  });
+
+  // tabs
+  tabFront.addEventListener('click', function(){ if(!tabFront.disabled){ state.side='front'; render(); } });
+  tabBack.addEventListener('click', function(){ if(!tabBack.disabled){ state.side='back'; render(); } });
+
+  // qty — capped at 2,000; increasing isn't available in this city
+  const qtyUnavailableEl = document.getElementById('qty-unavailable');
+  document.getElementById('qty-up').addEventListener('click', function(){
+    qtyUnavailableEl.classList.add('show');
+  });
+  document.getElementById('qty-down').addEventListener('click', function(){
+    qtyInput.value = Math.max(2000, parseInt(qtyInput.value || '2000', 10) - 250);
+    render();
+  });
+  qtyInput.addEventListener('input', function(){
+    if (qtyInput.value !== '' && parseInt(qtyInput.value,10) < 2000) return;
+    render();
+  });
+  qtyInput.addEventListener('change', function(){
+    const v = Math.max(2000, parseInt(qtyInput.value || '2000', 10));
+    if (v > 2000) {
+      qtyInput.value = 2000;
+      qtyUnavailableEl.classList.add('show');
+    } else {
+      qtyInput.value = v;
+    }
+    render();
+  });
+
+  // form submit
+  const form = document.getElementById('campaign-form');
+  const previewPanel = document.getElementById('preview-panel');
+  const confirmPanel = document.getElementById('confirm-panel');
+  const submitBtn = document.getElementById('submit-btn');
+  const formErrorEl = document.getElementById('form-error');
+
+  function showFormError(){
+    formErrorEl.classList.add('show');
+  }
+  function hideFormError(){
+    formErrorEl.classList.remove('show');
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+
+    hideFormError();
+
+    const qty = Math.max(2000, parseInt(qtyInput.value || '2000', 10));
+    const hangerTotal = priceFor(state.size, qty);
+    const extras = extrasTotal();
+    const grandTotal = Math.round((hangerTotal + extras) * 100) / 100;
+    const name = document.getElementById('fullname').value.trim();
+    const biz = document.getElementById('bizname').value.trim();
+    const website = document.getElementById('bizwebsite').value.trim();
+    const qrUrl = document.getElementById('qrurl').value.trim();
+    let notes = document.getElementById('designnotes').value.trim();
+
+    if (qrUrl) {
+      const qrLine = 'QR forwarding URL: ' + qrUrl;
+      notes = notes ? (qrLine + '\n\n' + notes) : qrLine;
+    }
+
+    const extrasList = extrasDescription();
+    if (extrasList.length) {
+      const extrasLine = 'Selected extras: ' + extrasList.join('; ') + '.';
+      notes = notes ? (notes + '\n\n' + extrasLine) : extrasLine;
+    }
+
+    const payload = {
+      fullName: name,
+      email: document.getElementById('email').value.trim(),
+      phone: document.getElementById('phone').value.trim(),
+      jobTitle: document.getElementById('title').value.trim(),
+      businessName: biz,
+      businessStreet: document.getElementById('bizstreet').value.trim(),
+      businessCity: document.getElementById('bizcity').value.trim(),
+      businessState: document.getElementById('bizstate').value,
+      businessZip: document.getElementById('bizzip').value.trim(),
+      source: SOURCE_DOMAIN,
+      radius: state.radius,
+      size: state.size,
+      qty: qty
+    };
+    if (website) payload.businessWebsite = website;
+    if (notes) payload.designNotes = notes;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Placing your order…';
+
+    fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+      .then(function(res){
+        return res.json().then(function(body){ return { ok: res.ok, body: body }; });
+      })
+      .then(function(result){
+        if (!result.ok || !result.body || result.body.ok !== true) {
+          throw new Error('order_failed');
+        }
+        const refId = result.body.referenceId || '—';
+
+        document.getElementById('confirm-name').textContent = 'You\'re all set, ' + name.split(' ')[0] + '.';
+        document.getElementById('rid-value').textContent = refId;
+        const extrasRowsHtml = extrasItems().map(function(item){
+          return `<div><span>${item.name}</span><strong>${money(item.price)}</strong></div>`;
+        }).join('');
+        document.getElementById('confirm-summary').innerHTML = `
+          <div><span>Business</span><strong>${biz}</strong></div>
+          <div><span>Radius</span><strong>${state.radius} miles</strong></div>
+          <div><span>Ad size</span><strong>${sizeLabels[state.size]}</strong></div>
+          <div><span>Quantity</span><strong>${qty.toLocaleString('en-US')} hangers</strong></div>
+          <div><span>QR forwards to</span><strong>${qrUrl}</strong></div>
+          ${extrasRowsHtml}
+          <div><span>Order total</span><strong>${money(grandTotal)}</strong></div>
+        `;
+
+        Array.from(previewPanel.children).forEach(function(child){
+          if (child.id !== 'confirm-panel') child.style.display = 'none';
+        });
+        confirmPanel.classList.add('show');
+        // Keep the form locked — on success the submit button and all
+        // fields stay disabled deliberately, so a re-enable in a shared
+        // .finally() below would silently undo this and re-open the door
+        // to a duplicate submission (e.g. via the Enter key). Only the
+        // error branch below restores the button.
+        Array.from(form.elements).forEach(function(el){ el.disabled = true; });
+      })
+      .catch(function(){
+        // Covers both a non-2xx / ok:false response and a network-level failure
+        // (e.g. CORS not yet allow-listed, or an unreachable URL). We don't
+        // surface the raw error to the buyer, per the integration contract.
+        showFormError();
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Place my order';
+      });
+  });
+
+  document.getElementById('reset-form').addEventListener('click', function(){
+    form.reset();
+    Array.from(form.elements).forEach(function(el){ el.disabled = false; });
+    state.radius = 30; state.size = 'third'; state.side = 'front'; state.slot = 1;
+    state.extras = { design: 'basic', tracking: 'basic', website: false };
+    qtyInput.value = 2000;
+    radiusGroup.querySelectorAll('.choice').forEach((b) => b.classList.toggle('active', b.getAttribute('data-radius') === '30'));
+    sizeGroup.querySelectorAll('.choice').forEach((b,i) => b.classList.toggle('active', i===0));
+    designGroup.querySelectorAll('.choice').forEach((b,i) => b.classList.toggle('active', i===0));
+    designHelpEl.textContent = designCopy.basic;
+    trackingGroup.querySelectorAll('.choice').forEach((b,i) => b.classList.toggle('active', i===0));
+    trackingHelpEl.textContent = trackingCopy.basic;
+    document.getElementById('website-toggle').classList.remove('active');
+    radiusHelpEl.classList.remove('warning');
+    qtyUnavailableEl.classList.remove('show');
+    Array.from(previewPanel.children).forEach(function(child){
+      if (child.id !== 'confirm-panel') child.style.display = '';
+    });
+    confirmPanel.classList.remove('show');
+    hideFormError();
+    render();
+  });
+
+  render();
+})();
+
+// ---- image sliders (showcase + reviews): autoplay, pause on hover, drag/arrow/dot navigation ----
+(function(){
+  function initSlider(root, intervalMs){
+    const track = root.querySelector('.slider-track');
+    const slides = Array.from(track.children);
+    if (slides.length < 2) return;
+    const dotsWrap = root.querySelector('.slider-dots');
+    const prevBtn = root.querySelector('.slider-arrow.prev');
+    const nextBtn = root.querySelector('.slider-arrow.next');
+    let index = 0;
+    let timer = null;
+    let isDragging = false;
+    let dragStartX = 0;
+    let dragDeltaX = 0;
+
+    slides.forEach(function(_, i){
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'slider-dot' + (i === 0 ? ' active' : '');
+      dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+      dot.addEventListener('click', function(){ goTo(i); restart(); });
+      dotsWrap.appendChild(dot);
+    });
+    const dots = Array.from(dotsWrap.children);
+
+    function update(withTransition){
+      track.style.transition = withTransition === false ? 'none' : '';
+      track.style.transform = 'translateX(' + (-index * 100) + '%)';
+      dots.forEach(function(d, i){ d.classList.toggle('active', i === index); });
+    }
+    function goTo(i){
+      index = (i + slides.length) % slides.length;
+      update();
+    }
+    function next(){ goTo(index + 1); }
+    function prev(){ goTo(index - 1); }
+
+    function start(){
+      stop();
+      timer = setInterval(next, intervalMs);
+    }
+    function stop(){
+      if (timer) clearInterval(timer);
+      timer = null;
+    }
+    function restart(){ start(); }
+
+    nextBtn.addEventListener('click', function(){ next(); restart(); });
+    prevBtn.addEventListener('click', function(){ prev(); restart(); });
+
+    // pause while the pointer is over the slider, resume on leave
+    root.addEventListener('mouseenter', stop);
+    root.addEventListener('mouseleave', start);
+
+    // manual sliding via drag / touch
+    track.addEventListener('pointerdown', function(e){
+      isDragging = true;
+      dragStartX = e.clientX;
+      dragDeltaX = 0;
+      track.style.transition = 'none';
+      try { track.setPointerCapture(e.pointerId); } catch (err) {}
+      stop();
+    });
+    track.addEventListener('pointermove', function(e){
+      if (!isDragging) return;
+      dragDeltaX = e.clientX - dragStartX;
+      const percent = (dragDeltaX / track.clientWidth) * 100;
+      track.style.transform = 'translateX(' + (-index * 100 + percent) + '%)';
+    });
+    function endDrag(){
+      if (!isDragging) return;
+      isDragging = false;
+      track.style.transition = '';
+      const threshold = track.clientWidth * 0.15;
+      if (dragDeltaX > threshold) prev();
+      else if (dragDeltaX < -threshold) next();
+      else update();
+      start();
+    }
+    track.addEventListener('pointerup', endDrag);
+    track.addEventListener('pointerleave', endDrag);
+    track.addEventListener('pointercancel', endDrag);
+
+    update(false);
+    start();
+  }
+
+  const hangerSlider = document.getElementById('hanger-slider');
+  const reviewSlider = document.getElementById('review-slider');
+  if (hangerSlider) initSlider(hangerSlider, 4000);
+  if (reviewSlider) initSlider(reviewSlider, 4500);
+})();
+</script>
+</body>
+</html>
