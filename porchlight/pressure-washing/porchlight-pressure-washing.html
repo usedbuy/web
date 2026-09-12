@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Porchlight for Pressure Washing Companies — We Design, Print &amp; Deliver Door Hangers That Book Jobs</title>
+<meta name="description" content="Porchlight designs, prints, and hand-delivers door hangers that show off your pressure washing results to the block next door. Pick your radius, your ad size, and your quantity — starting at $550.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%231B86A6'/%3E%3Ccircle cx='50' cy='30' r='12' fill='%23EDE9DD'/%3E%3Crect x='30' y='50' width='40' height='34' rx='4' fill='%23EDE9DD'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FFFFFF;
+    --paper-dim:#F3F3F1;
+    --card:#FFFFFF;
+    --ink:#14161A;
+    --ink-soft:#63697A;
+    --green:#1B86A6;
+    --green-dark:#12566B;
+    --green-tint:#D9EEF3;
+    --yellow:#E8A33D;
+    --line: rgba(20,22,26,0.11);
+    --radius-lg: 28px;
+    --shadow: 0 24px 48px rgba(20,22,26,0.10);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  img,svg{display:block;max-width:100%;}
+  a{color:inherit;}
+  h1,h2,h3{font-family:'Space Grotesk', sans-serif; font-weight:700; letter-spacing:-0.015em; line-height:1.08; margin:0;}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--green-dark);
+    background:var(--green-tint);
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:7px 14px;
+    border-radius:999px;
+    font-weight:600;
+  }
+  p{color:var(--ink-soft); line-height:1.65; margin:0;}
+  .wrap{max-width:1160px; margin:0 auto; padding:0 24px;}
+  section{padding:112px 0;}
+  @media (max-width:720px){ section{padding:72px 0;} }
+
+  button, .btn{
+    font-family:'Inter', sans-serif; font-weight:700; cursor:pointer; border:none;
+    border-radius:14px; display:inline-flex; align-items:center; gap:8px; justify-content:center;
+  }
+  .btn-primary{ background:var(--green); color:#fff; padding:16px 28px; font-size:15.5px; transition:transform .15s ease, background .2s ease, box-shadow .2s ease; box-shadow:0 10px 24px -8px var(--green); }
+  .btn-primary:hover{ background:var(--green-dark); transform:translateY(-2px); box-shadow:0 16px 30px -10px var(--green); }
+  button:focus-visible, a:focus-visible, input:focus-visible, .pill:focus-visible, summary:focus-visible{
+    outline:3px solid var(--yellow); outline-offset:2px;
+  }
+
+  /* ---------- PERSISTENT PRICE BAR ---------- */
+  body{ padding-top:50px; }
+  .price-bar{
+    position:fixed; top:0; left:0; right:0; z-index:1000;
+    background:#fff; color:var(--ink); border-bottom:1px solid var(--line);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 20px; height:50px;
+    font-family:'IBM Plex Mono', monospace;
+  }
+  .price-bar-live{ display:flex; align-items:baseline; gap:10px; }
+  .price-bar-live .dot{ width:7px; height:7px; border-radius:50%; background:var(--green); flex:none; }
+  .price-bar-live .lbl{ font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-soft); }
+  .price-bar-live .val{ font-size:18px; font-weight:700; color:var(--ink); font-family:'Space Grotesk',sans-serif; }
+  .price-bar-live .val small{ font-size:11px; color:var(--ink-soft); font-weight:500; font-family:'IBM Plex Mono',monospace; }
+  .price-bar a.btn{ background:var(--green); color:#fff; padding:9px 18px; font-size:12.5px; font-family:'Inter',sans-serif; border-radius:10px; }
+  .price-bar a.btn:hover{ background:var(--green-dark); }
+  @media (max-width:520px){
+    .price-bar-live .lbl{ font-size:9.5px; }
+    .price-bar{ padding:0 14px; }
+  }
+
+  /* ---------- HEADER ---------- */
+  header{ position:sticky; top:50px; z-index:50; background:rgba(255,255,255,0.9); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); }
+  .nav{ display:flex; align-items:center; justify-content:space-between; padding:18px 24px; max-width:1160px; margin:0 auto; }
+  .brand{ display:flex; align-items:center; gap:10px; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:20px; letter-spacing:-0.01em; text-decoration:none; }
+  .brand-mark{ width:30px; height:30px; }
+  .nav-links{ display:flex; align-items:center; gap:32px; font-weight:600; font-size:14.5px; }
+  .nav-links a{ text-decoration:none; padding:6px 0; border-bottom:2px solid transparent; transition:border-color .15s ease; }
+  .nav-links a:hover{ border-color:var(--green); }
+  .burger{ display:none; background:none; border:none; padding:6px; }
+  .burger span{ display:block; width:22px; height:2px; background:var(--ink); margin:5px 0; }
+  @media (max-width:840px){
+    .nav-links{ position:fixed; inset:66px 0 auto 0; background:#fff; flex-direction:column; align-items:flex-start;
+      gap:0; padding:8px 24px 20px; border-bottom:1px solid var(--line); transform:translateY(-130%); transition:transform .25s ease; }
+    .nav-links.open{ transform:translateY(0); }
+    .nav-links a{ width:100%; padding:14px 0; border-bottom:1px solid var(--line); }
+    .burger{ display:block; }
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{ padding-top:64px; overflow:hidden; }
+  .hero-grid{ display:grid; grid-template-columns:1.1fr 0.9fr; gap:56px; align-items:center; }
+  @media (max-width:900px){ .hero-grid{ grid-template-columns:1fr; gap:40px; } }
+  .hero h1{ font-size:clamp(36px,5.4vw,58px); letter-spacing:-0.02em; }
+  .hero h1 em{ font-style:normal; color:var(--green); }
+  .hero p.lead{ font-size:17.5px; margin-top:22px; max-width:48ch; }
+  .hero-note{ display:flex; align-items:center; gap:10px; margin-top:28px; font-size:13px; color:var(--ink-soft); }
+  .hero-note svg{ width:16px; height:16px; flex:none; }
+
+  .hero-art{ position:relative; display:flex; justify-content:center; }
+  .door-scene{ width:100%; max-width:340px; }
+
+  @keyframes dropIn{
+    0%{ transform:translateY(-46px) rotate(9deg); opacity:0; }
+    55%{ transform:translateY(4px) rotate(-4deg); opacity:1; }
+    75%{ transform:translateY(-2px) rotate(2deg); }
+    100%{ transform:translateY(0) rotate(-3deg); }
+  }
+  @keyframes swing{ 0%,100%{ transform:translateY(0) rotate(-3deg); } 50%{ transform:translateY(0) rotate(3deg); } }
+  .hanger-hook{
+    transform-origin:188px 214px;
+    animation: dropIn 0.9s cubic-bezier(.34,1.56,.64,1) both,
+               swing 3.6s ease-in-out 0.9s infinite;
+  }
+
+  @keyframes glowPulse{ 0%,100%{ opacity:0.55; } 50%{ opacity:1; } }
+  .porch-glow{ animation:glowPulse 3.2s ease-in-out infinite; transform-origin:140px 40px; }
+
+  @keyframes scanPulse{
+    0%{ opacity:0; transform:scale(0.55); }
+    18%{ opacity:0.55; }
+    45%{ opacity:0; transform:scale(1.7); }
+    100%{ opacity:0; transform:scale(1.7); }
+  }
+  .scan-ring{ animation:scanPulse 4.2s ease-out infinite; transform-origin:188px 285px; opacity:0; }
+  .scan-ring.delay{ animation-delay:1.4s; }
+
+  @media (prefers-reduced-motion: reduce){
+    .hanger-hook{ animation:none; transform:rotate(-3deg); }
+    .porch-glow{ animation:none; opacity:0.8; }
+    .scan-ring{ animation:none; opacity:0; }
+  }
+
+  /* ---------- BUILDER ---------- */
+  .builder-section{ background:var(--paper-dim); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .builder-head{ max-width:640px; margin-bottom:12px; }
+  .builder-head h2{ font-size:clamp(28px,4vw,42px); margin-top:16px; }
+  .builder-head p{ margin-top:14px; font-size:16px; max-width:52ch; }
+  .builder-layout{ display:grid; grid-template-columns:1fr 420px; gap:56px; align-items:start; margin-top:48px; }
+  @media (max-width:980px){ .builder-layout{ grid-template-columns:1fr; } }
+
+  .builder-fields{ position:relative; padding-left:52px; }
+  .builder-fields::before{ content:""; position:absolute; left:17px; top:8px; bottom:24px; width:2px; background:var(--line); }
+  @media (max-width:480px){ .builder-fields{ padding-left:42px; } .builder-fields::before{ left:13px; } }
+
+  .field-group{ position:relative; margin-bottom:40px; }
+  .field-group:last-child{ margin-bottom:0; }
+  .step-num{
+    position:absolute; left:-52px; top:-2px; width:34px; height:34px; border-radius:11px;
+    background:#fff; border:2px solid var(--green); color:var(--green-dark);
+    font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:14px;
+    display:flex; align-items:center; justify-content:center; z-index:1;
+  }
+  @media (max-width:480px){ .step-num{ left:-42px; width:26px; height:26px; font-size:12px; border-radius:8px; } }
+  .field-group.static .step-num{ background:var(--green); color:#fff; }
+
+  .field-group h3{ font-size:19px; font-family:'Space Grotesk',sans-serif; font-weight:700; margin-bottom:4px; }
+  .field-group .sub{ font-size:13.5px; margin-bottom:16px; }
+
+  .grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:520px){ .grid-2{ grid-template-columns:1fr; } }
+  .grid-3{ display:grid; grid-template-columns:2fr 1fr 1fr; gap:14px; }
+  @media (max-width:520px){ .grid-3{ grid-template-columns:1fr; } }
+  label{ display:block; font-size:13px; font-weight:600; margin-bottom:6px; }
+  input[type="text"], input[type="email"], input[type="tel"], input[type="number"], input[type="url"]{
+    width:100%; padding:14px 15px; border-radius:12px; border:1.5px solid var(--line);
+    background:#fff; font-family:'Inter',sans-serif; font-size:15px; color:var(--ink);
+  }
+  input::placeholder{ color:#9a9fac; }
+  .field{ margin-bottom:14px; }
+
+  .pill-row{ display:flex; gap:10px; flex-wrap:wrap; }
+  .pill{ background:#fff; border:1.5px solid var(--line); border-radius:14px; padding:14px 16px; cursor:pointer; text-align:left; flex:1 1 150px; transition:border-color .15s ease, background .15s ease, transform .15s ease; }
+  .pill:hover{ transform:translateY(-1px); }
+  .pill strong{ display:block; font-size:16px; font-family:'Space Grotesk',sans-serif; font-weight:700; }
+  .pill span{ font-size:12.5px; color:var(--ink-soft); }
+  .pill.active{ border-color:var(--green); background:var(--green-tint); }
+  .pill.active strong{ color:var(--green-dark); }
+
+  .size-cards{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media (max-width:520px){ .size-cards{ grid-template-columns:1fr; } }
+  .size-card{ background:#fff; border:1.5px solid var(--line); border-radius:16px; padding:16px; cursor:pointer; transition:border-color .15s ease, box-shadow .15s ease, transform .15s ease; }
+  .size-card:hover{ border-color:var(--green); transform:translateY(-1px); }
+  .size-card.active{ border-color:var(--green); box-shadow:0 0 0 3px var(--green-tint); }
+  .size-card .swatch{ width:100%; height:34px; border-radius:8px; background:var(--paper-dim); margin-bottom:12px; display:flex; overflow:hidden; border:1px solid var(--line); }
+  .size-card .swatch i{ display:block; background:transparent; }
+  .size-card.active .swatch i.filled{ background:var(--green); }
+  .size-card .name{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:15.5px; }
+  .size-card .desc{ font-size:12.5px; color:var(--ink-soft); margin-top:2px; }
+  .size-card .price{ font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:13.5px; color:var(--green-dark); margin-top:10px; }
+
+  .slot-picker{ display:flex; gap:8px; margin-top:14px; }
+  .slot-dot{ flex:1; padding:9px; border-radius:10px; border:1.5px solid var(--line); background:#fff; font-size:12.5px; font-weight:700; cursor:pointer; text-align:center; }
+  .slot-dot.active{ background:var(--yellow); border-color:var(--yellow); color:var(--ink); }
+
+  .qty-chips{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px; }
+  .chip{ background:#fff; border:1.5px solid var(--line); border-radius:999px; padding:10px 18px; font-weight:700; font-size:14px; cursor:pointer; transition:transform .15s ease; }
+  .chip:hover{ transform:translateY(-1px); }
+  .chip.active{ background:var(--ink); border-color:var(--ink); color:#fff; }
+  .qty-custom{ display:flex; align-items:center; gap:10px; max-width:280px; }
+  .qty-custom input{ max-width:120px; }
+  .qty-custom span{ font-size:12.5px; color:var(--ink-soft); }
+
+  .static-note{
+    background:var(--green-tint); border:1.5px solid var(--green); border-radius:14px; padding:16px 18px;
+  }
+  .static-note p{ font-size:14px; }
+  .static-note a{ font-weight:700; color:var(--green-dark); text-decoration:underline; }
+
+  /* ---------- HANGER VISUAL ---------- */
+  .visual-panel{ position:sticky; top:104px; background:#fff; border-radius:var(--radius-lg); padding:28px 24px 24px; border:1px solid var(--line); box-shadow:var(--shadow); }
+  @media (max-width:980px){ .visual-panel{ position:static; } }
+  .visual-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+  .visual-top .lbl{ font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-soft); }
+  .flip-btn{ background:var(--paper-dim); border:1.5px solid var(--line); border-radius:999px; padding:8px 14px; font-size:12.5px; font-weight:700; display:flex; align-items:center; gap:6px; }
+
+  .stage{ perspective:1400px; display:flex; justify-content:center; margin:0 auto; max-width:270px; }
+  .card3d{ position:relative; width:100%; padding-bottom:183%; transform-style:preserve-3d; transition:transform .7s cubic-bezier(.2,.7,.3,1); }
+  .card3d.flipped{ transform:rotateY(180deg); }
+  .face{ position:absolute; inset:0; backface-visibility:hidden; }
+  .face.back{ transform:rotateY(180deg); }
+  .face svg{ width:100%; height:100%; filter:drop-shadow(0 16px 26px rgba(20,22,26,0.18)); }
+
+  .slot-rect{ fill:var(--card); stroke:var(--line); stroke-width:1.5; }
+  .overlay-rect{ fill:var(--green); fill-opacity:0.9; transition:y .4s ease, height .4s ease, opacity .3s ease; }
+  .overlay-label{ font-family:'IBM Plex Mono',monospace; font-size:11px; fill:#fff; font-weight:600; text-anchor:middle; }
+  .slot-index{ font-family:'IBM Plex Mono',monospace; font-size:9px; fill:#9aa1ac; }
+  .empty-note{ font-family:'IBM Plex Mono',monospace; font-size:9px; fill:#9aa1ac; text-anchor:middle; }
+
+  .price-summary{ margin-top:22px; padding-top:18px; border-top:1.5px dashed var(--line); }
+  .price-row{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px; }
+  .price-row .k{ font-size:13px; color:var(--ink-soft); }
+  .price-row .v{ font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600; }
+  .price-total{ display:flex; justify-content:space-between; align-items:baseline; margin-top:12px; }
+  .price-total .k{ font-size:14px; font-weight:700; }
+  .price-total .v{ font-family:'Space Grotesk',sans-serif; font-size:30px; font-weight:700; color:var(--green-dark); }
+
+  .submit-row{ margin-top:26px; }
+  .submit-row .btn-primary{ width:100%; padding:17px; }
+  .fine{ font-size:12px; color:var(--ink-soft); margin-top:10px; text-align:center; }
+
+  .success-card{ background:var(--green-tint); border:1.5px solid var(--green); border-radius:18px; padding:26px; margin-top:20px; }
+  .success-card h4{ font-family:'Space Grotesk',sans-serif; font-size:20px; font-weight:700; color:var(--green-dark); margin-bottom:10px; }
+  .success-card dl{ display:grid; grid-template-columns:auto 1fr; gap:6px 14px; font-size:13.5px; margin:14px 0 0; }
+  .success-card dt{ color:var(--ink-soft); }
+  .success-card dd{ margin:0; font-weight:700; }
+  .error-card{ background:#FBE9E9; border:1.5px solid #C1272D; border-radius:18px; padding:26px; margin-top:20px; }
+  .error-card h4{ font-family:'Space Grotesk',sans-serif; font-size:20px; font-weight:700; color:#8f1f24; margin-bottom:10px; }
+  .error-card a{ font-weight:700; color:#8f1f24; }
+  .hidden{ display:none !important; }
+  .btn-primary[disabled]{ opacity:0.65; cursor:progress; }
+
+  /* ---------- FAQ ---------- */
+  .faq-head{ max-width:640px; margin-bottom:36px; }
+  .faq-head h2{ font-size:clamp(28px,4vw,42px); margin-top:16px; }
+  .faq-list{ max-width:760px; border-top:1px solid var(--line); }
+  details{ border-bottom:1px solid var(--line); padding:22px 4px; transition:background .15s ease; }
+  details:hover{ background:var(--paper-dim); }
+  summary{ list-style:none; cursor:pointer; display:flex; justify-content:space-between; align-items:center; font-weight:700; font-size:16.5px; gap:16px; font-family:'Space Grotesk',sans-serif; }
+  summary::-webkit-details-marker{ display:none; }
+  summary .plus{ flex:none; width:28px; height:28px; border-radius:9px; border:1.5px solid var(--ink); display:flex; align-items:center; justify-content:center; font-size:16px; transition:transform .2s ease, background .2s ease, border-color .2s ease; font-family:'Inter',sans-serif; }
+  details[open] summary .plus{ transform:rotate(45deg); background:var(--green); border-color:var(--green); color:#fff; }
+  details p{ margin-top:14px; font-size:14.5px; max-width:60ch; font-family:'Inter',sans-serif; }
+
+  /* ---------- FOOTER ---------- */
+  footer{ background:var(--ink); color:#fff; padding:48px 0; }
+  .foot-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:18px; }
+  .foot-brand{ display:flex; align-items:center; gap:10px; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:18px; }
+  .foot-brand svg{ width:24px; height:24px; }
+  .foot-contact{ display:flex; gap:24px; font-size:13.5px; flex-wrap:wrap; }
+  .foot-contact a{ text-decoration:none; opacity:0.9; }
+  .foot-contact a:hover{ opacity:1; text-decoration:underline; }
+  .foot-bottom{ margin-top:24px; padding-top:20px; border-top:1px solid rgba(255,255,255,0.14); font-size:12px; color:#9096A3; }
+
+  /* ---------- WHY US ---------- */
+  .why-us{ background:var(--paper); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .why-head{ max-width:640px; }
+  .why-head h2{ font-size:clamp(28px,4vw,42px); margin-top:16px; }
+  .why-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:44px; }
+  @media (max-width:900px){ .why-grid{ grid-template-columns:1fr; } }
+  .why-card{ background:var(--paper-dim); border:1px solid var(--line); border-radius:var(--radius-lg); padding:30px 26px; transition:transform .2s ease, box-shadow .2s ease; }
+  .why-card:hover{ transform:translateY(-3px); box-shadow:var(--shadow); }
+  .why-card .ic{ width:42px; height:42px; border-radius:13px; background:var(--green); display:flex; align-items:center; justify-content:center; margin-bottom:18px; }
+  .why-card h3{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:17px; margin-bottom:8px; }
+  .why-card p{ font-size:14px; }
+
+  /* ---------- TOAST ---------- */
+  .toast{ position:fixed; left:50%; bottom:28px; transform:translate(-50%,14px); background:var(--ink); color:#fff;
+    padding:14px 22px; border-radius:14px; font-size:13.5px; font-weight:600; line-height:1.4; box-shadow:0 18px 40px rgba(0,0,0,.3);
+    opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease; z-index:999; max-width:min(90vw,420px); text-align:center; }
+  .toast.show{ opacity:1; transform:translate(-50%,0); }
+  .addon-card{ background:#fff; border:1.5px solid var(--line); border-radius:14px; padding:16px 18px; cursor:pointer;
+    display:flex; align-items:center; gap:14px; transition:border-color .15s ease, transform .15s ease; margin-bottom:10px; }
+  .addon-card:hover{ transform:translateY(-1px); }
+  .addon-card:has(input:checked){ border-color:var(--green); background:var(--green-tint); }
+  .addon-card input{ width:19px; height:19px; flex:none; accent-color:var(--green); }
+  .addon-card .addon-copy{ flex:1; }
+  .addon-card .addon-copy strong{ display:block; font-size:14.5px; font-family:'Space Grotesk',sans-serif; }
+  .addon-card .addon-copy span{ color:var(--ink-soft); font-size:13px; }
+  .addon-card .addon-price{ white-space:nowrap; font-weight:700; font-family:'IBM Plex Mono',monospace; }
+  .addon-included{ background:var(--paper-dim); border:1.5px dashed var(--line); border-radius:14px; padding:16px 18px;
+    display:flex; align-items:center; gap:14px; margin-bottom:10px; }
+  .addon-included .addon-copy{ flex:1; }
+  .addon-included .addon-copy strong{ display:block; font-size:14.5px; font-family:'Space Grotesk',sans-serif; }
+  .addon-included .addon-copy span{ color:var(--ink-soft); font-size:13px; }
+  .addon-included .addon-badge{ white-space:nowrap; font-weight:700; font-size:11.5px; letter-spacing:.04em; text-transform:uppercase;
+    color:var(--green-dark); background:var(--green-tint); border:1px solid var(--green); border-radius:20px; padding:5px 12px; }
+
+  /* ---------- FAQ CHAT ---------- */
+  .faq-chat-frame{ margin-top:14px; background:var(--paper-dim); border:1px solid var(--line); border-radius:var(--radius-lg); overflow:hidden; }
+  .faq-chat-frame iframe{ display:block; width:100%; height:520px; border:0; }
+  @media (max-width:600px){ .faq-chat-frame iframe{ height:440px; } }
+
+  /* ---------- CAROUSELS ---------- */
+  .carousel-section{ padding:112px 0; }
+  .carousel-section .sec-head{ max-width:640px; margin:0 auto 44px; text-align:center; }
+  .carousel-section .sec-head h2{ font-size:clamp(28px,4vw,42px); margin-top:16px; }
+  .carousel-section .sec-head p{ color:var(--ink-soft); font-size:15px; margin-top:12px; }
+  .carousel{ position:relative; margin:0 auto; overflow:hidden; border-radius:var(--radius-lg); box-shadow:var(--shadow); background:var(--card); border:1px solid var(--line); }
+  .carousel-9x16{ max-width:340px; aspect-ratio:9/16; }
+  .carousel-4x3{ max-width:720px; aspect-ratio:4/3; }
+  .carousel-track{ display:flex; height:100%; width:100%; transition:transform .5s cubic-bezier(.65,0,.35,1); }
+  .carousel-slide{ flex:0 0 100%; height:100%; }
+  .carousel-slide img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .carousel-btn{ position:absolute; top:50%; transform:translateY(-50%); width:38px; height:38px; border-radius:12px;
+    border:none; background:rgba(20,22,26,0.55); color:#fff; font-size:20px; line-height:1; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; transition:background .15s ease; z-index:2; }
+  .carousel-btn:hover{ background:rgba(20,22,26,0.82); }
+  .carousel-btn.prev{ left:12px; }
+  .carousel-btn.next{ right:12px; }
+  .carousel-dots{ position:absolute; left:0; right:0; bottom:14px; display:flex; justify-content:center; gap:8px; z-index:2; }
+  .carousel-dots .dot{ width:8px; height:8px; border-radius:50%; border:none; background:rgba(255,255,255,0.55); cursor:pointer; padding:0; transition:background .15s ease, transform .15s ease; }
+  .carousel-dots .dot.active{ background:#fff; transform:scale(1.25); }
+</style>
+</head>
+<body>
+  <div class="toast" id="toast"></div>
+
+<div class="price-bar" id="priceBar">
+  <div class="price-bar-live">
+    <span class="dot"></span>
+    <span class="lbl">Estimated total · pay later</span>
+    <span class="val" id="topTotal">$550 <small>/ 2,000 hangers</small></span>
+  </div>
+  <a class="btn" href="#builder">Place order</a>
+</div>
+
+<header>
+  <nav class="nav">
+    <a class="brand" href="#home">
+      <svg class="brand-mark" viewBox="0 0 100 100"><rect width="100" height="100" rx="18" fill="#1B86A6"/><circle cx="50" cy="30" r="12" fill="#EDE9DD"/><rect x="30" y="50" width="40" height="34" rx="4" fill="#EDE9DD"/></svg>
+      Porchlight
+    </a>
+    <button class="burger" id="burger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <div class="nav-links" id="navLinks">
+      <a href="#builder">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <a class="btn btn-primary" href="#builder">Place order</a>
+  </nav>
+</header>
+
+<main>
+  <!-- ================= HERO ================= -->
+  <section class="hero" id="home">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow">Door hanger advertising, built for pressure washing companies</span>
+        <h1>We put your results<br>on <em>their front door.</em></h1>
+        <p class="lead">Porchlight designs, prints, and hand-delivers door hangers that put your pressure washing company in front of the homes around a job you just finished — so you spend your time on the wand, not on marketing.</p>
+        <div class="hero-note">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 2 3 6v6c0 5 3.8 9 9 10 5.2-1 9-5 9-10V6l-9-4Z" stroke="#63697A" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          No design skills, no printer, no delivery crew required. Tell us the block, and we handle the rest.
+        </div>
+      </div>
+      <div class="hero-art">
+        <svg class="door-scene" viewBox="0 0 360 460" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="glowGrad" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#E8A33D" stop-opacity="0.55"/>
+              <stop offset="100%" stop-color="#E8A33D" stop-opacity="0"/>
+            </radialGradient>
+            <mask id="heroHangerMask">
+              <rect x="0" y="0" width="96" height="194" rx="14" fill="#fff"/>
+              <circle cx="48" cy="26" r="14" fill="#000"/>
+              <rect x="34" y="0" width="28" height="26" fill="#000"/>
+            </mask>
+          </defs>
+
+          <!-- wall + door -->
+          <rect x="20" y="20" width="240" height="420" rx="10" fill="#DDD6C2"/>
+          <rect x="20" y="20" width="240" height="420" rx="10" fill="none" stroke="#1F2A22" stroke-opacity="0.15" stroke-width="2"/>
+          <rect x="46" y="46" width="80" height="120" rx="4" fill="#EDE9DD" stroke="#1F2A22" stroke-opacity="0.12"/>
+          <rect x="154" y="46" width="80" height="120" rx="4" fill="#EDE9DD" stroke="#1F2A22" stroke-opacity="0.12"/>
+
+          <!-- porch light: the brand's namesake, glowing gently above the door -->
+          <ellipse class="porch-glow" cx="140" cy="40" rx="100" ry="60" fill="url(#glowGrad)"/>
+          <rect x="132" y="8" width="16" height="6" rx="1" fill="#1F2A22" fill-opacity="0.55"/>
+          <path d="M126 14 h28 l-6 20 a11 11 0 0 1 -16 0 z" fill="#1F2A22" fill-opacity="0.65"/>
+
+          <!-- doorknob -->
+          <circle cx="228" cy="240" r="7" fill="#E8A33D"/>
+
+          <!-- door hanger: drops onto the knob, settles, then sways -->
+          <g class="hanger-hook">
+            <circle cx="188" cy="214" r="15" fill="none" stroke="#1F2A22" stroke-opacity="0.28" stroke-width="3"/>
+            <g transform="translate(140,188)">
+              <g mask="url(#heroHangerMask)">
+                <rect x="0" y="0" width="96" height="194" fill="#1B86A6"/>
+              </g>
+              <text x="48" y="58" text-anchor="middle" font-family="IBM Plex Mono" font-size="7.5" letter-spacing="1" fill="#EDE9DD" opacity="0.85">PORCHLIGHT</text>
+              <rect x="14" y="70" width="68" height="42" rx="4" fill="#E8A33D"/>
+              <text x="48" y="95" text-anchor="middle" font-family="IBM Plex Mono" font-size="7" letter-spacing="0.5" fill="#1F2A22" font-weight="600">YOUR AD HERE</text>
+              <rect x="30" y="132" width="36" height="36" rx="4" fill="#EDE9DD" opacity="0.92"/>
+              <rect x="36" y="138" width="7" height="7" fill="#1B86A6"/>
+              <rect x="53" y="138" width="7" height="7" fill="#1B86A6"/>
+              <rect x="36" y="155" width="7" height="7" fill="#1B86A6"/>
+              <rect x="47" y="147" width="6" height="6" fill="#1B86A6"/>
+              <rect x="56" y="155" width="6" height="6" fill="#1B86A6"/>
+            </g>
+            <circle class="scan-ring" cx="188" cy="285" r="10" fill="none" stroke="#E8A33D" stroke-width="2"/>
+            <circle class="scan-ring delay" cx="188" cy="285" r="10" fill="none" stroke="#E8A33D" stroke-width="2"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= WHY US ================= -->
+  <section class="why-us" id="why-us">
+    <div class="wrap">
+      <div class="why-head">
+        <span class="eyebrow">Why pressure washing companies hire Porchlight</span>
+        <h2>We book the next job. You clean it.</h2>
+      </div>
+      <div class="why-grid">
+        <div class="why-card">
+          <div class="ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M5 13l4 4L19 7" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h3>Built for a business people can see the proof of</h3>
+          <p>We design your hanger around before-and-after results, so neighbors connect the clean driveway they're looking at with the number on their door.</p>
+        </div>
+        <div class="why-card">
+          <div class="ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M5 13l4 4L19 7" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h3>Nothing for you to design or print</h3>
+          <p>Our design team builds your ad, we print every hanger, and our crews hand-deliver them to the doorsteps you choose. You just approve a proof.</p>
+        </div>
+        <div class="why-card">
+          <div class="ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M5 13l4 4L19 7" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h3>Tracked scans, nothing paid up front</h3>
+          <p>A free dashboard shows every scan on your hanger's QR code, and you don't pay a cent until you've approved your design.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ================= RESULTS CAROUSEL ================= -->
+  <section class="carousel-section" id="results">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">See the hangers in the wild</span>
+        <h2>Door hangers that deliver results</h2>
+        <p>A look at real campaigns — from design proof to a hand-delivered hanger on the doorstep.</p>
+      </div>
+      <div class="carousel carousel-9x16" data-autoplay="3500">
+        <div class="carousel-track">
+          <div class="carousel-slide"><img src="images/doorhanger/1.png" alt="Door hanger result photo 1" loading="lazy"></div>
+          <div class="carousel-slide"><img src="images/doorhanger/2.png" alt="Door hanger result photo 2" loading="lazy"></div>
+          <div class="carousel-slide"><img src="images/doorhanger/3.png" alt="Door hanger result photo 3" loading="lazy"></div>
+          <div class="carousel-slide"><img src="images/doorhanger/4.png" alt="Door hanger result photo 4" loading="lazy"></div>
+          <div class="carousel-slide"><img src="images/doorhanger/5.png" alt="Door hanger result photo 5" loading="lazy"></div>
+        </div>
+        <button type="button" class="carousel-btn prev" aria-label="Previous slide">&#8249;</button>
+        <button type="button" class="carousel-btn next" aria-label="Next slide">&#8250;</button>
+        <div class="carousel-dots">
+          <button type="button" class="dot active" aria-label="Go to slide 1"></button>
+          <button type="button" class="dot" aria-label="Go to slide 2"></button>
+          <button type="button" class="dot" aria-label="Go to slide 3"></button>
+          <button type="button" class="dot" aria-label="Go to slide 4"></button>
+          <button type="button" class="dot" aria-label="Go to slide 5"></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TESTIMONIALS CAROUSEL ================= -->
+  <section class="carousel-section" id="testimonials">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Word on the block</span>
+        <h2>Customer love what we do</h2>
+        <p>A few of the businesses we've helped get in front of more doorsteps.</p>
+      </div>
+      <div class="carousel carousel-4x3" data-autoplay="4000">
+        <div class="carousel-track">
+          <div class="carousel-slide"><img src="images/reviews/1.png" alt="Customer testimonial 1" loading="lazy"></div>
+          <div class="carousel-slide"><img src="images/reviews/2.png" alt="Customer testimonial 2" loading="lazy"></div>
+          <div class="carousel-slide"><img src="images/reviews/3.png" alt="Customer testimonial 3" loading="lazy"></div>
+          <div class="carousel-slide"><img src="images/reviews/4.png" alt="Customer testimonial 4" loading="lazy"></div>
+          <div class="carousel-slide"><img src="images/reviews/5.png" alt="Customer testimonial 5" loading="lazy"></div>
+        </div>
+        <button type="button" class="carousel-btn prev" aria-label="Previous slide">&#8249;</button>
+        <button type="button" class="carousel-btn next" aria-label="Next slide">&#8250;</button>
+        <div class="carousel-dots">
+          <button type="button" class="dot active" aria-label="Go to slide 1"></button>
+          <button type="button" class="dot" aria-label="Go to slide 2"></button>
+          <button type="button" class="dot" aria-label="Go to slide 3"></button>
+          <button type="button" class="dot" aria-label="Go to slide 4"></button>
+          <button type="button" class="dot" aria-label="Go to slide 5"></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= BUILDER ================= -->
+  <section class="builder-section" id="builder">
+    <div class="wrap">
+      <div class="builder-head">
+        <span class="eyebrow">Start your campaign</span>
+        <h2>Tell us about your pressure washing business. We'll build the rest.</h2>
+        <p>Every choice below updates your door hanger and the price on the right, live. Submitting starts your order — no payment happens on this site; we'll follow up once your design is ready to approve.</p>
+      </div>
+
+      <form class="builder-layout" id="builderForm">
+        <div class="builder-fields">
+
+          <div class="field-group">
+            <span class="step-num">1</span>
+            <h3>Your business</h3>
+            <p class="sub">Who we'll send proofs and updates to.</p>
+            <div class="grid-2">
+              <div class="field"><label for="fullName">Full name</label><input required type="text" id="fullName" placeholder="Dale Kessler"></div>
+              <div class="field"><label for="title">Title at company</label><input required type="text" id="title" placeholder="Owner"></div>
+            </div>
+            <div class="field"><label for="bizName">Business name</label><input required type="text" id="bizName" placeholder="Kessler Pressure Washing"></div>
+            <div class="field"><label for="bizWebsite">Business website <span style="font-weight:400;color:var(--ink-soft);">(optional)</span></label><input type="text" id="bizWebsite" placeholder="www.kesslerexteriors.com"></div>
+            <div class="field"><label for="bizStreet">Street address</label><input required type="text" id="bizStreet" placeholder="123 Main St"></div>
+            <div class="grid-3">
+              <div class="field"><label for="bizCity">City</label><input required type="text" id="bizCity" placeholder="Springfield"></div>
+              <div class="field"><label for="bizState">State</label><input required type="text" id="bizState" maxlength="2" pattern="[A-Za-z]{2}" placeholder="OH" style="text-transform:uppercase;"></div>
+              <div class="field"><label for="bizZip">ZIP</label><input required type="text" id="bizZip" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="45501"></div>
+            </div>
+            <div class="field"><label for="designNotes">Notes for the design team <span style="font-weight:400;color:var(--ink-soft);">(optional)</span></label><input type="text" id="designNotes" placeholder="Before/after photos, logo, a first-clean discount"></div>
+            <div class="field"><label for="qrUrl">QR forwarding URL (where scans should be sent)</label><input type="url" id="qrUrl" value="https://yourbusiness.com/special-offer"></div>
+          </div>
+
+          <div class="field-group">
+            <span class="step-num">2</span>
+            <h3>Your reach</h3>
+            <p class="sub">How far from your door should we distribute?</p>
+            <div class="pill-row" role="radiogroup" aria-label="Advertising radius">
+              <button type="button" class="pill" data-radius="5"><strong>5 miles</strong><span>Walk-in neighborhood shops</span></button>
+              <button type="button" class="pill" data-radius="15"><strong>15 miles</strong><span>City-wide service area</span></button>
+              <button type="button" class="pill active" data-radius="30"><strong>30 miles</strong><span>Full regional coverage</span></button>
+            </div>
+          </div>
+
+          <div class="field-group" id="pricing">
+            <span class="step-num">3</span>
+            <h3>Your ad size</h3>
+            <p class="sub">Each hanger has 3 equal slots per side — 6 in total.</p>
+            <div class="size-cards" role="radiogroup" aria-label="Ad size">
+              <div class="size-card active" data-size="third" data-units="1">
+                <div class="swatch"><i class="filled" style="width:33.3%"></i><i style="width:33.3%"></i><i style="width:33.4%"></i></div>
+                <div class="name">Third page</div>
+                <div class="desc">One of 3 slots on a side</div>
+                <div class="price">$550 at 2,000 pcs</div>
+              </div>
+              <div class="size-card" data-size="half" data-units="2">
+                <div class="swatch"><i class="filled" style="width:66.6%"></i><i style="width:33.4%"></i></div>
+                <div class="name">Half page</div>
+                <div class="desc">Two slots' worth of space</div>
+                <div class="price">$1,100 at 2,000 pcs</div>
+              </div>
+              <div class="size-card" data-size="full" data-units="3">
+                <div class="swatch"><i class="filled" style="width:100%"></i></div>
+                <div class="name">Full page</div>
+                <div class="desc">The entire front, or back</div>
+                <div class="price">$1,650 at 2,000 pcs</div>
+              </div>
+              <div class="size-card" data-size="both" data-units="6">
+                <div class="swatch"><i class="filled" style="width:100%; background:linear-gradient(90deg,#1B86A6,#1B86A6 48%,#12566B 48%,#12566B);"></i></div>
+                <div class="name">Both sides</div>
+                <div class="desc">Full front and full back</div>
+                <div class="price">$3,300 at 2,000 pcs</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <span class="step-num">4</span>
+            <h3>Your quantity</h3>
+            <p class="sub">Campaigns start at 2,000 door hangers.</p>
+            <div class="qty-chips">
+              <button type="button" class="chip active" data-qty="2000">2,000</button>
+              <button type="button" class="chip" data-qty="5000">5,000</button>
+              <button type="button" class="chip" data-qty="10000">10,000</button>
+              <button type="button" class="chip" data-qty="20000">20,000</button>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <span class="step-num">5</span>
+            <h3>Add-ons</h3>
+            <p class="sub">Optional extras for your campaign — everything else here is already included.</p>
+
+            <label class="addon-card">
+              <input type="checkbox" id="addonPremiumDesign">
+              <span class="addon-copy">
+                <strong>Premium design package</strong>
+                <span>Want to design a fully unique, company-branded ad?</span>
+              </span>
+              <span class="addon-price">$90</span>
+            </label>
+
+            <div class="addon-included">
+              <span class="addon-copy">
+                <strong>Basic ad design package</strong>
+                <span>Highly optimized design that gets your ad seen.</span>
+              </span>
+              <span class="addon-badge">Included</span>
+            </div>
+
+            <label class="addon-card">
+              <input type="checkbox" id="addonQrDashboard">
+              <span class="addon-copy">
+                <strong>QR code web dashboard</strong>
+                <span>See when, how many times, and who scans your ad through an online dashboard.</span>
+              </span>
+              <span class="addon-price">$79</span>
+            </label>
+
+            <div class="addon-included">
+              <span class="addon-copy">
+                <strong>Basic QR code tracking</strong>
+                <span>We'll update you when you request information on the performance and progress of your door-to-door campaign.</span>
+              </span>
+              <span class="addon-badge">Included</span>
+            </div>
+
+            <label class="addon-card">
+              <input type="checkbox" id="addonWebsite">
+              <span class="addon-copy">
+                <strong>Clean website design package</strong>
+                <span>Custom-built one-page website for your business, built to match your door hanger ad and current offer, service, or product.</span>
+              </span>
+              <span class="addon-price">$149.99</span>
+            </label>
+          </div>
+
+          <div class="field-group static">
+            <span class="step-num">6</span>
+            <h3>We print, deliver &amp; track</h3>
+            <div class="static-note">
+              <p>Once you submit, our design team sends you proofs, then we print and hand-deliver your hangers around the block you tell us — the whole reason pressure washing companies hire Porchlight instead of managing flyers themselves.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Sticky visual + price panel -->
+        <aside class="visual-panel">
+          <div class="visual-top">
+            <span class="lbl" id="faceLabel">Front side</span>
+            <button type="button" class="flip-btn" id="flipBtn"><span id="flipIcon">⟲</span> View back</button>
+          </div>
+
+          <div class="stage">
+            <div class="card3d" id="card3d">
+              <div class="face front">
+                <svg viewBox="0 0 240 440" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <mask id="hangerMask">
+                      <rect x="0" y="0" width="240" height="440" rx="20" fill="#fff"/>
+                      <circle cx="120" cy="55" r="24" fill="#000"/>
+                      <rect x="106" y="0" width="28" height="55" fill="#000"/>
+                    </mask>
+                  </defs>
+                  <rect x="0" y="0" width="240" height="440" rx="20" fill="var(--card)" stroke="var(--line)" stroke-width="1.5" mask="url(#hangerMask)"/>
+                  <rect class="slot-rect" x="16" y="110" width="208" height="100" rx="6"/>
+                  <text class="slot-index" x="26" y="128">SLOT 1 · TOP</text>
+                  <rect class="slot-rect" x="16" y="215" width="208" height="100" rx="6"/>
+                  <text class="slot-index" x="26" y="233">SLOT 2 · MIDDLE</text>
+                  <rect class="slot-rect" x="16" y="320" width="208" height="100" rx="6"/>
+                  <text class="slot-index" x="26" y="338">SLOT 3 · BOTTOM</text>
+                  <rect id="overlayFront" class="overlay-rect" x="16" y="110" width="208" height="100" rx="6"/>
+                  <text id="overlayLabelFront" class="overlay-label" x="120" y="164">1/3 PAGE AD</text>
+                  <circle cx="120" cy="55" r="24" fill="none" stroke="var(--line)" stroke-width="2"/>
+                  <text x="120" y="97" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#8f9a90">PORCHLIGHT</text>
+                </svg>
+              </div>
+              <div class="face back">
+                <svg viewBox="0 0 240 440" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="0" y="0" width="240" height="440" rx="20" fill="var(--card)" stroke="var(--line)" stroke-width="1.5" mask="url(#hangerMask)"/>
+                  <rect class="slot-rect" x="16" y="110" width="208" height="100" rx="6"/>
+                  <rect class="slot-rect" x="16" y="215" width="208" height="100" rx="6"/>
+                  <rect class="slot-rect" x="16" y="320" width="208" height="100" rx="6"/>
+                  <rect id="overlayBack" class="overlay-rect" x="16" y="110" width="208" height="0" rx="6" opacity="0"/>
+                  <text id="overlayLabelBack" class="overlay-label" x="120" y="164" opacity="0">FULL PAGE AD</text>
+                  <text id="emptyNote" class="empty-note" x="120" y="270">Add "Both sides" to place an ad here</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="price-summary">
+            <div class="price-row"><span class="k">Ad size</span><span class="v" id="sumSize">Third page</span></div>
+            <div class="price-row"><span class="k">Radius</span><span class="v" id="sumRadius">5 miles</span></div>
+            <div class="price-row"><span class="k">Quantity</span><span class="v" id="sumQty">2,000 hangers</span></div>
+            <div class="price-row"><span class="k">Per hanger</span><span class="v" id="sumPerHanger">$0.275</span></div>
+            <div class="price-row" id="addonRow" style="display:none;"><span class="k">Add-ons</span><span class="v" id="sumAddon">$0.00</span></div>
+            <div class="price-total"><span class="k">Total</span><span class="v" id="sumTotal">$550</span></div>
+          </div>
+
+          <div class="submit-row">
+            <button type="submit" class="btn-primary">Place order</button>
+            <p class="fine">This places your order — no payment here. We'll send a payment link once your design is approved.</p>
+          </div>
+        </aside>
+      </form>
+
+      <div class="success-card hidden" id="successCard">
+        <h4>Your order is in 🎉</h4>
+        <p>Thanks — no payment was taken here. Our design team will send your proofs within 2 business days, and we'll send a payment link once you approve them. Keep this reference number for support:</p>
+        <p style="margin-top:10px;"><strong id="referenceId" style="font-family:'IBM Plex Mono',monospace; font-size:16px; color:var(--green-dark);"></strong></p>
+        <dl id="successDetails"></dl>
+      </div>
+
+      <div class="error-card hidden" id="errorCard">
+        <h4>Something went wrong</h4>
+        <p>We couldn't submit your order just now. Please try again in a moment — if it keeps happening, use the chat below and we'll help you out.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= FAQ ================= -->
+  <section class="faq-section" id="faq">
+    <div class="wrap">
+      <div class="faq-head">
+        <span class="eyebrow">Details &amp; logistics</span>
+        <h2>Everything else you need to know.</h2>
+      </div>
+      <div class="faq-list">
+        <details open>
+          <summary>Do I pay when I place my order?<span class="plus">+</span></summary>
+          <p>No. Placing an order here doesn't charge anything — it just gets your campaign started. Once you approve your design proof, we'll send a payment request, and your door hangers go to print after that's settled.</p>
+        </details>
+        <details>
+          <summary>How long does it take for the door hangers to be delivered?<span class="plus">+</span></summary>
+          <p>Once payment is confirmed after you approve your design, it usually takes 3–4 weeks for all door hangers to be printed and hand-delivered across your chosen radius.</p>
+        </details>
+        <details>
+          <summary>Is the design of the door hanger included?<span class="plus">+</span></summary>
+          <p>Yes. Our design team builds up to 3 free variations for your ad slot, so you can pick the one that fits your brand before anything prints.</p>
+        </details>
+        <details>
+          <summary>Is the tracking service free?<span class="plus">+</span></summary>
+          <p>Yes. Every campaign includes a free dashboard where you can watch scans on the QR code printed on your door hangers, in real time.</p>
+        </details>
+        <details>
+          <summary>Can I change my radius or ad size after signing up?<span class="plus">+</span></summary>
+          <p>You can adjust either one any time before your design is finalized. Once printing begins, changes apply to your next campaign instead.</p>
+        </details>
+        <details>
+          <summary>Do you offer runs larger than 20,000 hangers?<span class="plus">+</span></summary>
+          <p>Pricing scales the same way at any size — there's no markup as you grow. For runs beyond 20,000, contact us and we'll put together a custom quote.</p>
+        </details>
+        <details class="faq-chat-item">
+          <summary>Got more questions?<span class="plus">+</span></summary>
+          <p>Chat with your AI powered agent.</p>
+          <div class="faq-chat-frame">
+            <!--
+              Placeholder chat embed — replace the src below with your AI agent's
+              embeddable chat URL (e.g. Intercom, Drift, a custom LLM widget, etc.)
+              before launch.
+            -->
+            <iframe
+              src="https://example.com/replace-with-your-ai-agent-embed-url"
+              title="AI chat assistant"
+              loading="lazy"
+              allow="microphone"
+            ></iframe>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-row">
+      <div class="foot-brand">
+        <svg viewBox="0 0 100 100"><rect width="100" height="100" rx="18" fill="#EDE9DD"/><circle cx="50" cy="30" r="12" fill="#1B86A6"/><rect x="30" y="50" width="40" height="34" rx="4" fill="#1B86A6"/></svg>
+        Porchlight
+      </div>
+    </div>
+    <div class="foot-bottom">© 2026 Porchlight. Door hanger advertising, designed, printed, and delivered for pressure washing companies.</div>
+  </div>
+</footer>
+
+<script>
+  // ---- Mobile nav ----
+  const burger = document.getElementById('burger');
+  const navLinks = document.getElementById('navLinks');
+  burger.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    burger.setAttribute('aria-expanded', open);
+  });
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+  // ---- State ----
+  const state = { radius: 30, size: 'third', slot: 'top', qty: 2000, flipped: false, addonPremiumDesign: false, addonQrDashboard: false, addonWebsite: false };
+
+  const slotGeom = { top: {y:110,h:100}, mid: {y:215,h:100}, bottom: {y:320,h:100} };
+  const sizeGeom = {
+    third: () => slotGeom[state.slot],
+    half:  () => ({y:110, h:155}),
+    full:  () => ({y:110, h:310}),
+    both:  () => ({y:110, h:310})
+  };
+  const sizeLabel = { third: '1/3 PAGE AD', half: 'HALF PAGE AD', full: 'FULL PAGE AD', both: 'FULL PAGE AD' };
+  const sizeName  = { third: 'Third page', half: 'Half page', full: 'Full page', both: 'Both sides' };
+  const sizeUnits = { third: 1, half: 2, full: 3, both: 6 };
+
+  // ---- Elements ----
+  const overlayFront = document.getElementById('overlayFront');
+  const overlayLabelFront = document.getElementById('overlayLabelFront');
+  const overlayBack = document.getElementById('overlayBack');
+  const overlayLabelBack = document.getElementById('overlayLabelBack');
+  const emptyNote = document.getElementById('emptyNote');
+  const card3d = document.getElementById('card3d');
+  const flipBtn = document.getElementById('flipBtn');
+  const faceLabel = document.getElementById('faceLabel');
+
+  function updateVisual() {
+    const g = sizeGeom[state.size]();
+    overlayFront.setAttribute('y', g.y);
+    overlayFront.setAttribute('height', g.h);
+    overlayFront.setAttribute('opacity', 1);
+    overlayLabelFront.setAttribute('y', g.y + g.h/2 + 4);
+    overlayLabelFront.setAttribute('opacity', 1);
+    overlayLabelFront.textContent = sizeLabel[state.size];
+
+    if (state.size === 'both') {
+      overlayBack.setAttribute('y', g.y);
+      overlayBack.setAttribute('height', g.h);
+      overlayBack.setAttribute('opacity', 1);
+      overlayLabelBack.setAttribute('y', g.y + g.h/2 + 4);
+      overlayLabelBack.setAttribute('opacity', 1);
+      overlayLabelBack.textContent = sizeLabel[state.size];
+      emptyNote.setAttribute('opacity', 0);
+    } else {
+      overlayBack.setAttribute('height', 0);
+      overlayBack.setAttribute('opacity', 0);
+      overlayLabelBack.setAttribute('opacity', 0);
+      emptyNote.setAttribute('opacity', 1);
+    }
+
+  }
+
+  const ADDON_PREMIUM_DESIGN_PRICE = 90;
+  const ADDON_QR_DASHBOARD_PRICE = 79;
+  const ADDON_WEBSITE_PRICE = 149.99;
+
+  function addonTotalPrice() {
+    let t = 0;
+    if (state.addonPremiumDesign) t += ADDON_PREMIUM_DESIGN_PRICE;
+    if (state.addonQrDashboard) t += ADDON_QR_DASHBOARD_PRICE;
+    if (state.addonWebsite) t += ADDON_WEBSITE_PRICE;
+    return t;
+  }
+
+  function updatePricing() {
+    const units = sizeUnits[state.size];
+    // Matches the Worker's formula exactly: price = 550 * unitsForSize * (qty / 2000)
+    const hangerTotal = 550 * units * (state.qty / 2000);
+    const addonTotal = addonTotalPrice();
+    const total = Number((hangerTotal + addonTotal).toFixed(2));
+    const perHanger = hangerTotal / state.qty;
+
+    document.getElementById('sumSize').textContent = sizeName[state.size];
+    document.getElementById('sumRadius').textContent = state.radius + ' miles';
+    document.getElementById('sumQty').textContent = state.qty.toLocaleString() + ' hangers';
+    document.getElementById('sumPerHanger').textContent = '$' + perHanger.toFixed(3);
+    const addonRow = document.getElementById('addonRow');
+    if (addonTotal > 0) {
+      addonRow.style.display = 'flex';
+      document.getElementById('sumAddon').textContent = '$' + addonTotal.toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2});
+    } else {
+      addonRow.style.display = 'none';
+    }
+    document.getElementById('sumTotal').textContent = '$' + total.toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2});
+    document.getElementById('topTotal').innerHTML = '$' + total.toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2}) + ' <small>/ ' + state.qty.toLocaleString() + ' hangers</small>';
+  }
+
+  function render() { updateVisual(); updatePricing(); }
+
+  // ---- Toast ----
+  const toastEl = document.getElementById('toast');
+  let toastTimer = null;
+  function showToast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toastEl.classList.remove('show'), 3800);
+  }
+
+  // ---- Radius pills ----
+  document.querySelectorAll('.pill[data-radius]').forEach(p => {
+    p.addEventListener('click', () => {
+      const radius = Number(p.dataset.radius);
+      if (radius === 5 || radius === 15) {
+        showToast('This option is currently not available in your city.');
+        return;
+      }
+      document.querySelectorAll('.pill[data-radius]').forEach(x => x.classList.remove('active'));
+      p.classList.add('active');
+      state.radius = radius;
+      render();
+    });
+  });
+
+  // ---- Size cards ----
+  document.querySelectorAll('.size-card').forEach(c => {
+    c.addEventListener('click', () => {
+      document.querySelectorAll('.size-card').forEach(x => x.classList.remove('active'));
+      c.classList.add('active');
+      state.size = c.dataset.size;
+      render();
+    });
+  });
+
+  // ---- Quantity chips ----
+  document.querySelectorAll('.chip').forEach(ch => {
+    ch.addEventListener('click', () => {
+      const qty = Number(ch.dataset.qty);
+      if (qty > 2000) {
+        showToast('This option is currently not available in your city.');
+        return;
+      }
+      document.querySelectorAll('.chip').forEach(x => x.classList.remove('active'));
+      ch.classList.add('active');
+      state.qty = qty;
+      render();
+    });
+  });
+
+  // ---- Add-ons ----
+  const addonPremiumDesign = document.getElementById('addonPremiumDesign');
+  addonPremiumDesign.addEventListener('change', () => {
+    state.addonPremiumDesign = addonPremiumDesign.checked;
+    render();
+  });
+  const addonQrDashboard = document.getElementById('addonQrDashboard');
+  addonQrDashboard.addEventListener('change', () => {
+    state.addonQrDashboard = addonQrDashboard.checked;
+    render();
+  });
+  const addonWebsite = document.getElementById('addonWebsite');
+  addonWebsite.addEventListener('change', () => {
+    state.addonWebsite = addonWebsite.checked;
+    render();
+  });
+
+  // ---- Flip ----
+  flipBtn.addEventListener('click', () => {
+    state.flipped = !state.flipped;
+    card3d.classList.toggle('flipped', state.flipped);
+    faceLabel.textContent = state.flipped ? 'Back side' : 'Front side';
+    flipBtn.innerHTML = state.flipped ? '<span>⟲</span> View front' : '<span>⟲</span> View back';
+  });
+
+  // ---- Order submission ----
+  // Real endpoint from the integration brief — not a placeholder.
+  const WORKER_URL = 'https://broken-grass-80ae.usedbuy.workers.dev/api/lead';
+
+  // ⚠️ UNRESOLVED: the brief requires this site's own domain here (e.g.
+  // "your-site-name.github.io"), used by the CRM to trace which site a lead
+  // came from. It must NOT be generic or reused from another site.
+  // This build does not know where it will be hosted, so this is left as an
+  // explicit, clearly-flagged placeholder — replace before deploying.
+  const SOURCE = 'REPLACE-WITH-THIS-SITES-ACTUAL-DOMAIN';
+
+  const submitBtn = document.querySelector('#builderForm button[type="submit"]');
+  const successCard = document.getElementById('successCard');
+  const errorCard = document.getElementById('errorCard');
+
+  document.getElementById('builderForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    successCard.classList.add('hidden');
+    errorCard.classList.add('hidden');
+
+    const units = sizeUnits[state.size];
+    const addonTotal = addonTotalPrice();
+    const price = Number((550 * units * (state.qty / 2000) + addonTotal).toFixed(2));
+
+    const payload = {
+      fullName: document.getElementById('fullName').value,
+      jobTitle: document.getElementById('title').value,
+      businessName: document.getElementById('bizName').value,
+      businessWebsite: document.getElementById('bizWebsite').value || undefined,
+      businessStreet: document.getElementById('bizStreet').value,
+      businessCity: document.getElementById('bizCity').value,
+      businessState: document.getElementById('bizState').value.toUpperCase(),
+      businessZip: document.getElementById('bizZip').value,
+      designNotes: document.getElementById('designNotes').value || undefined,
+      qrForwardingUrl: document.getElementById('qrUrl').value || undefined,
+      addonPremiumDesign: state.addonPremiumDesign,
+      addonQrDashboard: state.addonQrDashboard,
+      addonWebsiteDesign: state.addonWebsite,
+      source: SOURCE,
+      radius: state.radius,
+      size: state.size,
+      qty: state.qty
+    };
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Placing order…';
+
+    try {
+      const res = await fetch(WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) throw new Error('Request failed with status ' + res.status);
+      const data = await res.json();
+      if (!data.ok) throw new Error('Worker returned ok:false');
+
+      document.getElementById('referenceId').textContent = 'Reference: ' + data.referenceId;
+      const details = {
+        'Business': payload.businessName,
+        'Contact': payload.fullName + ' — ' + (payload.jobTitle || '—'),
+        'Address': payload.businessStreet + ', ' + payload.businessCity + ', ' + payload.businessState + ' ' + payload.businessZip,
+        'Radius': state.radius + ' miles',
+        'Ad size': sizeName[state.size],
+        'Quantity': state.qty.toLocaleString() + ' door hangers',
+        ...(function(){
+          const chosen = [];
+          if (state.addonPremiumDesign) chosen.push('Premium design package — $90');
+          if (state.addonQrDashboard) chosen.push('QR code web dashboard — $79');
+          if (state.addonWebsite) chosen.push('Clean website design package — $149.99');
+          return chosen.length ? { 'Add-ons': chosen.join(', ') } : {};
+        })(),
+        'Total': '$' + data.price.toLocaleString()
+      };
+      document.getElementById('successDetails').innerHTML =
+        Object.entries(details).map(([k,v]) => '<dt>' + k + '</dt><dd>' + v + '</dd>').join('');
+
+      successCard.classList.remove('hidden');
+      successCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } catch (err) {
+      console.error('Order submission failed:', err);
+      errorCard.classList.remove('hidden');
+      errorCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Place order';
+    }
+  });
+
+  render();
+</script>
+
+<script>
+  // ---------- Carousels (auto-slide, pause on hover, click-through controls) ----------
+  document.querySelectorAll('.carousel').forEach(function (root) {
+    var track = root.querySelector('.carousel-track');
+    var slides = Array.prototype.slice.call(track.children);
+    var dots = Array.prototype.slice.call(root.querySelectorAll('.dot'));
+    var prevBtn = root.querySelector('.carousel-btn.prev');
+    var nextBtn = root.querySelector('.carousel-btn.next');
+    var intervalMs = Number(root.dataset.autoplay) || 3500;
+    var index = 0;
+    var timer = null;
+
+    function go(i) {
+      index = (i + slides.length) % slides.length;
+      track.style.transform = 'translateX(-' + (index * 100) + '%)';
+      dots.forEach(function (d, di) { d.classList.toggle('active', di === index); });
+    }
+    function next() { go(index + 1); }
+    function prev() { go(index - 1); }
+    function start() { stop(); timer = setInterval(next, intervalMs); }
+    function stop() { if (timer) clearInterval(timer); timer = null; }
+
+    nextBtn.addEventListener('click', function () { next(); start(); });
+    prevBtn.addEventListener('click', function () { prev(); start(); });
+    dots.forEach(function (d, di) { d.addEventListener('click', function () { go(di); start(); }); });
+
+    root.addEventListener('mouseenter', stop);
+    root.addEventListener('mouseleave', start);
+
+    go(0);
+    start();
+  });
+</script>
+</body>
+</html>
