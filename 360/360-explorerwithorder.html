@@ -641,10 +641,10 @@
 // Your own geotagged 360° (equirectangular) JPGs. Add as many as you like.
 // lat/lng = where the photo was taken. url = a direct link to the jpg.
 // The demo entry below is a real public equirectangular sample, geotagged
-// to downtown Portland, OR so you can test the flow immediately — replace
-// or extend this list with your own photos and coordinates.
-// Starts with a demo entry so the page works before you load a folder.
-// "Load Photos Folder" replaces this list entirely with whatever it finds.
+// to downtown Portland, OR — it's only shown as a fallback if images/manifest.json
+// can't be loaded (see loadImagesFromManifest() below), so the page never opens
+// completely blank. "Load Photos Folder" and the images/ auto-load both replace
+// this list entirely with whatever they find.
 const customPanoramas = [
   {
     name: "Demo panorama — Pioneer Courthouse Square area",
@@ -653,6 +653,13 @@ const customPanoramas = [
     url: "https://threejs.org/examples/textures/2294472375_24a3b8ef46_o.jpg"
   }
 ];
+
+// Folder (relative to this HTML file) that's scanned automatically on page
+// load. Static hosts like GitHub Pages can't list a folder's contents on
+// their own, so the files inside it are declared in IMAGE_MANIFEST — see
+// images/README.md for how to add your own photos.
+const IMAGE_FOLDER = "images/";
+const IMAGE_MANIFEST = IMAGE_FOLDER + "manifest.json";
 
 // How close (in km) an address has to be to a custom panorama to use it
 // instead of falling back to Street View.
@@ -919,6 +926,69 @@ async function extractLocation(file){
   return null;
 }
 
+/* ---------------- Auto-load photos from /images on page open ----------------
+   GitHub Pages (and static hosting generally) can't list a folder's contents
+   at runtime, so this reads images/manifest.json — a plain JSON array of
+   filenames that live in the images/ folder next to this HTML file — and
+   builds the panorama list from that instead of a live directory scan.
+   See images/README.md for how to add your own photos. */
+async function loadImagesFromManifest(){
+  let filenames;
+  try {
+    const res = await fetch(IMAGE_MANIFEST, { cache: 'no-store' });
+    if (!res.ok) throw new Error('manifest-not-found');
+    filenames = await res.json();
+    if (!Array.isArray(filenames) || filenames.length === 0) throw new Error('manifest-empty');
+  } catch (err){
+    // Falls back to the single hardcoded demo panorama already in
+    // customPanoramas — most common cause is opening this file directly
+    // via file:// instead of serving it over http(s) (fetch() of local
+    // files is blocked by the browser in that case), or an empty/missing
+    // images/manifest.json.
+    setStatus('Couldn\'t load images/manifest.json — showing a demo panorama instead. Add photos to /images and list their filenames in images/manifest.json (see images/README.md).', true);
+    return false;
+  }
+
+  const found = filenames
+    .filter(filename => typeof filename === 'string' && filename.trim())
+    .map(filename => ({
+      name: filename.split('/').pop().replace(/\.[^/.]+$/, ''), // basename, extension dropped, for a cleaner display name
+      lat: null,
+      lng: null,
+      url: IMAGE_FOLDER + encodeURIComponent(filename).replace(/%2F/g, '/')
+    }));
+
+  if (found.length === 0) return false;
+
+  customPanoramas.length = 0;
+  customPanoramas.push(...found);
+
+  // GPS lookups happen in the background, one photo at a time, *after*
+  // the list is already populated. GPS isn't needed to display a photo —
+  // only for the address-search matching flow — so the first panorama
+  // (and the rest of the library) don't sit waiting on metadata fetches
+  // for every file before anything appears on screen.
+  enrichPanoramaGps(found).catch(err => console.warn('GPS enrichment failed:', err));
+
+  return true;
+}
+
+let activeLibraryEntry = null;
+
+async function enrichPanoramaGps(entries){
+  for (const entry of entries){
+    const loc = await extractLocation(entry.url); // already catches its own errors, resolves null on failure
+    if (loc){
+      entry.lat = loc.lat;
+      entry.lng = loc.lng;
+      renderLibrary();
+      if (entry === activeLibraryEntry){
+        updateInstrument({ label: entry.name, lat: entry.lat, lng: entry.lng, distanceKm: null, source: 'custom' });
+      }
+    }
+  }
+}
+
 async function loadPhotoFolder(){
   if (!window.showDirectoryPicker){
     setStatus('Your browser can\'t open local folders like this — use Chrome or Edge (this needs the File System Access API).', true);
@@ -1079,6 +1149,7 @@ async function loadFromLibrary(entry){
     showThreeViewer();
     els.empty.classList.add('hidden');
     els.instrument.classList.add('visible');
+    activeLibraryEntry = entry;
     updateInstrument({ label: entry.name, lat: entry.lat, lng: entry.lng, distanceKm: null, source: 'custom' });
     setStatus('', false);
   } catch (err){
@@ -1156,7 +1227,19 @@ function updateInstrument({ label, lat, lng, distanceKm, source }){
 els.btn.addEventListener('click', handleSearch);
 els.input.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleSearch(); });
 
-renderLibrary();
+async function initializeApp(){
+  try {
+    await loadImagesFromManifest(); // no-op fallback: keeps the built-in demo entry if this fails
+  } catch (err){
+    console.warn('Image folder auto-load failed:', err);
+  }
+  renderLibrary();
+  if (customPanoramas.length > 0){
+    await loadFromLibrary(customPanoramas[0]); // opens straight into the 360 view on page load
+  }
+}
+
+initializeApp();
 </script>
 
 <script>
