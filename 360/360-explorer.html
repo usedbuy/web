@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bearing — 360° Address Explorer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#0b0e13;
+    --panel:#151b24cc;
+    --panel-solid:#151b24;
+    --panel-border:#2a3441;
+    --bone:#e9e6dc;
+    --bone-dim:#9ba3ae;
+    --brass:#c9a227;
+    --brass-dim:#8c7620;
+    --teal:#3fa796;
+    --teal-dim:#2b7268;
+    --danger:#c4574a;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;height:100%;background:var(--void);color:var(--bone);font-family:'Inter',sans-serif;overflow:hidden;}
+
+  #void-bg{
+    position:fixed;inset:0;
+    background:radial-gradient(ellipse at 50% 40%, #131a24 0%, #0b0e13 70%);
+    z-index:0;
+  }
+
+  #scene{position:fixed;inset:0;z-index:1;cursor:grab;touch-action:none;}
+  #scene:active{cursor:grabbing;}
+  #scene.hidden{display:none;}
+
+  #streetview{position:fixed;inset:0;z-index:1;display:none;}
+  #streetview.visible{display:block;}
+
+  /* ---------- Empty state ---------- */
+  #empty-state{
+    position:fixed;inset:0;z-index:2;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:24px;pointer-events:none;
+    transition:opacity .5s ease;
+  }
+  #empty-state.hidden{opacity:0;pointer-events:none;}
+  #empty-state h1{
+    font-family:'Fraunces',serif;font-style:italic;font-weight:500;
+    font-size:clamp(28px,5vw,44px);margin:0 0 10px;color:var(--bone);
+    letter-spacing:-.01em;
+  }
+  #empty-state .rule{width:56px;height:2px;background:var(--brass);margin:18px 0;}
+  #empty-state p{max-width:420px;color:var(--bone-dim);font-size:14.5px;line-height:1.6;margin:0;}
+
+  /* ---------- Search bar ---------- */
+  #search-panel{
+    position:fixed;top:20px;left:50%;transform:translateX(-50%);
+    z-index:3;
+    background:var(--panel);backdrop-filter:blur(14px);
+    border:1px solid var(--panel-border);
+    border-radius:999px;
+    padding:6px 6px 6px 20px;
+    display:flex;align-items:center;gap:10px;
+    box-shadow:0 12px 32px rgba(0,0,0,.4);
+    width:min(560px,90vw);
+  }
+  #search-panel .eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;
+    color:var(--brass-dim);text-transform:uppercase;white-space:nowrap;display:none;
+  }
+  #address-input{
+    flex:1;background:transparent;border:none;outline:none;
+    color:var(--bone);font-family:'Inter',sans-serif;font-size:14.5px;
+    padding:10px 0;min-width:0;
+  }
+  #address-input::placeholder{color:var(--bone-dim);}
+  #search-btn{
+    background:var(--brass);color:#151206;border:none;border-radius:999px;
+    font-family:'Inter',sans-serif;font-weight:600;font-size:13.5px;
+    padding:10px 18px;cursor:pointer;white-space:nowrap;
+    transition:background .15s ease, transform .1s ease;
+  }
+  #search-btn:hover{background:#ddb531;}
+  #search-btn:active{transform:scale(.97);}
+  #search-btn:disabled{background:var(--brass-dim);cursor:progress;}
+  #folder-btn{
+    background:transparent;border:1px solid var(--panel-border);color:var(--bone-dim);
+    border-radius:999px;width:36px;height:36px;flex:none;cursor:pointer;font-size:15px;
+    display:flex;align-items:center;justify-content:center;transition:border-color .15s ease;
+  }
+  #folder-btn:hover{border-color:var(--teal);color:var(--bone);}
+  #address-input:focus-visible, #search-btn:focus-visible, #folder-btn:focus-visible{
+    outline:2px solid var(--teal);outline-offset:2px;
+  }
+
+  #status-line{
+    position:fixed;top:74px;left:50%;transform:translateX(-50%);
+    z-index:3;font-family:'JetBrains Mono',monospace;font-size:12px;
+    padding:6px 14px;border-radius:6px;
+    color:var(--bone-dim);
+    background:var(--panel);backdrop-filter:blur(10px);
+    border:1px solid var(--panel-border);
+    opacity:0;pointer-events:none;transition:opacity .25s ease;
+    max-width:min(520px,88vw);text-align:center;
+  }
+  #status-line.visible{opacity:1;}
+  #status-line.error{color:var(--danger);border-color:#4a2a26;}
+
+  /* ---------- Library panel (top-right) ---------- */
+  #library-panel{
+    position:fixed;top:20px;right:20px;z-index:3;
+    display:flex;flex-direction:column;align-items:flex-end;gap:8px;
+  }
+  #library-toggle{
+    background:var(--panel);backdrop-filter:blur(14px);
+    border:1px solid var(--panel-border);border-radius:999px;
+    color:var(--bone);font-family:'JetBrains Mono',monospace;font-size:11.5px;
+    padding:9px 16px;cursor:pointer;display:flex;align-items:center;gap:8px;
+    box-shadow:0 8px 24px rgba(0,0,0,.4);
+  }
+  #library-count-badge{
+    background:var(--teal-dim);color:#c9f3ec;border-radius:999px;
+    padding:1px 8px;font-size:10px;
+  }
+  #library-toggle:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
+  #library-list{
+    background:var(--panel);backdrop-filter:blur(14px);
+    border:1px solid var(--panel-border);border-radius:12px;
+    box-shadow:0 8px 24px rgba(0,0,0,.4);
+    width:min(300px,80vw);max-height:min(360px,50vh);overflow-y:auto;
+    display:flex;flex-direction:column;
+  }
+  .library-row{
+    display:flex;align-items:center;justify-content:space-between;gap:6px;
+    border-bottom:1px solid var(--panel-border);padding:2px;
+  }
+  .library-row:last-child{border-bottom:none;}
+  .library-view-btn{
+    display:flex;flex-direction:column;align-items:flex-start;gap:2px;
+    background:transparent;border:none;border-radius:8px;
+    color:var(--bone);text-align:left;padding:8px 10px;cursor:pointer;
+    flex:1;min-width:0;font-family:'Inter',sans-serif;
+  }
+  .library-view-btn:hover{background:#1e2733;}
+  .library-view-btn:focus-visible{outline:2px solid var(--teal);outline-offset:-2px;}
+  .library-name{
+    font-size:13px;color:var(--bone);white-space:nowrap;overflow:hidden;
+    text-overflow:ellipsis;max-width:200px;
+  }
+  .library-coords{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--bone-dim);}
+  .library-coords.missing{color:var(--danger);}
+  .library-fix-btn{
+    background:transparent;border:1px solid var(--brass-dim);color:var(--brass);
+    border-radius:999px;padding:5px 10px;font-size:10px;white-space:nowrap;cursor:pointer;
+    font-family:'JetBrains Mono',monospace;flex:none;margin-right:6px;
+  }
+  .library-fix-btn:hover{border-color:var(--brass);}
+  .library-fix-btn:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
+  .library-maps-link{
+    background:transparent;border:1px solid var(--teal-dim);color:var(--teal);
+    border-radius:999px;padding:5px 10px;font-size:10px;white-space:nowrap;
+    font-family:'JetBrains Mono',monospace;flex:none;margin-right:6px;
+    text-decoration:none;
+  }
+  .library-maps-link:hover{border-color:var(--teal);}
+  .library-maps-link:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
+
+  #ro-maps-row{margin-top:2px;}
+  .maps-link{
+    color:var(--teal);text-decoration:none;font-size:11px;
+    border-bottom:1px solid var(--teal-dim);padding-bottom:1px;
+  }
+  .maps-link:hover{border-bottom-color:var(--teal);}
+  .maps-link:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
+
+  @media (max-width:640px){
+    #library-panel{top:auto;bottom:20px;right:14px;}
+    #library-list{max-height:40vh;}
+  }
+
+  /* ---------- Instrument panel (bottom-left) ---------- */
+  #instrument{
+    position:fixed;left:20px;bottom:20px;z-index:3;
+    display:flex;align-items:flex-end;gap:14px;
+    opacity:0;transform:translateY(8px);
+    transition:opacity .4s ease, transform .4s ease;
+  }
+  #instrument.visible{opacity:1;transform:translateY(0);}
+
+  #dial-wrap{
+    width:88px;height:88px;flex:none;
+    background:var(--panel);backdrop-filter:blur(14px);
+    border:1px solid var(--panel-border);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 8px 24px rgba(0,0,0,.4);
+  }
+  #dial-rotor{transition:transform .05s linear;transform-origin:60px 60px;}
+
+  #readout{
+    background:var(--panel);backdrop-filter:blur(14px);
+    border:1px solid var(--panel-border);border-radius:12px;
+    padding:12px 16px;font-family:'JetBrains Mono',monospace;font-size:11.5px;
+    color:var(--bone-dim);line-height:1.9;min-width:200px;
+    box-shadow:0 8px 24px rgba(0,0,0,.4);
+  }
+  #readout .label{color:var(--brass-dim);letter-spacing:.06em;font-size:9.5px;text-transform:uppercase;margin-right:8px;}
+  #readout .val{color:var(--bone);}
+  #readout .source-badge{
+    display:inline-block;margin-top:2px;padding:2px 8px;border-radius:999px;
+    font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;
+  }
+  #readout .source-badge.custom{background:var(--teal-dim);color:#c9f3ec;}
+  #readout .source-badge.streetview{background:#2a3a5a;color:#c9d8f3;}
+
+  @media (max-width:640px){
+    #instrument{left:14px;bottom:14px;flex-direction:column-reverse;align-items:flex-start;}
+    #dial-wrap{width:64px;height:64px;}
+    #readout{min-width:0;font-size:10.5px;padding:10px 12px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<div id="void-bg"></div>
+<canvas id="scene"></canvas>
+<div id="streetview"></div>
+
+<div id="empty-state">
+  <h1>Point it somewhere.</h1>
+  <div class="rule"></div>
+  <p>Type an address above. We'll find the closest 360° panorama on file, or pull the nearest Street View if nothing's tagged nearby.</p>
+</div>
+
+<div id="search-panel">
+  <button id="folder-btn" title="Load photos folder from your computer" aria-label="Load photos folder">📁</button>
+  <input id="address-input" type="text" placeholder="Enter an address…" autocomplete="off" aria-label="Address" />
+  <button id="search-btn">Locate</button>
+</div>
+<div id="status-line"></div>
+
+<div id="library-panel">
+  <button id="library-toggle" aria-expanded="false">
+    <span>Library</span>
+    <span id="library-count-badge">0</span>
+  </button>
+  <div id="library-list" hidden></div>
+</div>
+
+<div id="instrument">
+  <div id="dial-wrap">
+    <svg viewBox="0 0 120 120" width="100%" height="100%">
+      <circle cx="60" cy="60" r="55" fill="none" stroke="#2a3441" stroke-width="1"/>
+      <circle cx="60" cy="60" r="46" fill="none" stroke="#2a3441" stroke-width="1"/>
+      <g id="dial-rotor">
+        <text x="60" y="20" text-anchor="middle" fill="#c9a227" font-family="JetBrains Mono" font-size="12" font-weight="500">N</text>
+        <text x="60" y="106" text-anchor="middle" fill="#9ba3ae" font-family="JetBrains Mono" font-size="9">S</text>
+        <text x="14" y="64" text-anchor="middle" fill="#9ba3ae" font-family="JetBrains Mono" font-size="9">W</text>
+        <text x="106" y="64" text-anchor="middle" fill="#9ba3ae" font-family="JetBrains Mono" font-size="9">E</text>
+      </g>
+      <polygon points="60,10 55,22 65,22" fill="#3fa796"/>
+    </svg>
+  </div>
+  <div id="readout">
+    <div><span class="label">Loaded</span><span class="val" id="ro-address">—</span></div>
+    <div><span class="label">Coords</span><span class="val" id="ro-coords">—</span></div>
+    <div><span class="label">Distance</span><span class="val" id="ro-distance">—</span></div>
+    <div><span class="label">Source</span><span class="source-badge" id="ro-source">—</span></div>
+    <div id="ro-maps-row" hidden><a id="ro-maps-link" href="#" target="_blank" rel="noopener noreferrer" class="maps-link">Open in Google Maps ↗</a></div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/three@0.128.0/build/three.min.js"></script>
+<script src="https://unpkg.com/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/exifr/dist/full.umd.js"></script>
+<script>
+/* =========================================================================
+   CUSTOMIZE ME
+   ========================================================================= */
+
+// Your own geotagged 360° (equirectangular) JPGs. Add as many as you like.
+// lat/lng = where the photo was taken. url = a direct link to the jpg.
+// The demo entry below is a real public equirectangular sample, geotagged
+// to downtown Portland, OR so you can test the flow immediately — replace
+// or extend this list with your own photos and coordinates.
+// Starts with a demo entry so the page works before you load a folder.
+// "Load Photos Folder" replaces this list entirely with whatever it finds.
+const customPanoramas = [
+  {
+    name: "Demo panorama — Pioneer Courthouse Square area",
+    lat: 45.5189,
+    lng: -122.6779,
+    url: "https://threejs.org/examples/textures/2294472375_24a3b8ef46_o.jpg"
+  }
+];
+
+// How close (in km) an address has to be to a custom panorama to use it
+// instead of falling back to Street View.
+const CUSTOM_MATCH_RADIUS_KM = 2;
+
+// Optional: add a Google Maps API key (with Street View Static + Maps
+// JavaScript API enabled) to power the fallback when no custom panorama
+// is close enough. Leave blank to disable the fallback.
+const GOOGLE_MAPS_API_KEY = "";
+
+/* =========================================================================
+   App logic — shouldn't need to touch below this line
+   ========================================================================= */
+
+const els = {
+  input: document.getElementById('address-input'),
+  btn: document.getElementById('search-btn'),
+  folderBtn: document.getElementById('folder-btn'),
+  status: document.getElementById('status-line'),
+  empty: document.getElementById('empty-state'),
+  instrument: document.getElementById('instrument'),
+  dialRotor: document.getElementById('dial-rotor'),
+  roAddress: document.getElementById('ro-address'),
+  roCoords: document.getElementById('ro-coords'),
+  roDistance: document.getElementById('ro-distance'),
+  roSource: document.getElementById('ro-source'),
+  roMapsRow: document.getElementById('ro-maps-row'),
+  roMapsLink: document.getElementById('ro-maps-link'),
+  libraryToggle: document.getElementById('library-toggle'),
+  libraryList: document.getElementById('library-list'),
+  libraryCountBadge: document.getElementById('library-count-badge'),
+  sceneCanvas: document.getElementById('scene'),
+  streetviewDiv: document.getElementById('streetview'),
+};
+
+function setStatus(msg, isError){
+  els.status.textContent = msg || '';
+  els.status.classList.toggle('visible', !!msg);
+  els.status.classList.toggle('error', !!isError);
+}
+
+function haversineKm(lat1, lon1, lat2, lon2){
+  const R = 6371;
+  const dLat = (lat2-lat1) * Math.PI/180;
+  const dLon = (lon2-lon1) * Math.PI/180;
+  const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+function formatDistance(km){
+  const miles = km * 0.621371;
+  if (miles < 0.1) return Math.round(miles * 5280) + ' ft';
+  return miles.toFixed(2) + ' mi';
+}
+
+/* ---------------- Three.js panorama viewer ---------------- */
+
+let renderer, scene, camera, controls, sphereMesh, textureLoader, animating = false;
+
+function initThree(){
+  if (renderer) return;
+  renderer = new THREE.WebGLRenderer({ canvas: els.sceneCanvas, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.outputEncoding = THREE.sRGBEncoding;
+
+  scene = new THREE.Scene();
+  camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+  camera.position.set(0, 0, 0.01);
+
+  const geometry = new THREE.SphereGeometry(500, 60, 40);
+  geometry.scale(-1, 1, 1); // invert so texture renders on the inside
+  const material = new THREE.MeshBasicMaterial();
+  sphereMesh = new THREE.Mesh(geometry, material);
+  scene.add(sphereMesh);
+
+  textureLoader = new THREE.TextureLoader();
+  textureLoader.crossOrigin = 'anonymous';
+
+  controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.08;
+  controls.enablePan = false;
+  controls.enableZoom = false; // handled manually via FOV below
+  controls.rotateSpeed = -0.35;
+  controls.minPolarAngle = 0.15;
+  controls.maxPolarAngle = Math.PI - 0.15;
+
+  els.sceneCanvas.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    camera.fov = THREE.MathUtils.clamp(camera.fov + e.deltaY * 0.02, 30, 100);
+    camera.updateProjectionMatrix();
+  }, { passive: false });
+
+  // basic pinch-to-zoom for touch
+  let pinchStartDist = null, pinchStartFov = null;
+  els.sceneCanvas.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 2){
+      pinchStartDist = Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
+      pinchStartFov = camera.fov;
+    }
+  });
+  els.sceneCanvas.addEventListener('touchmove', (e) => {
+    if (e.touches.length === 2 && pinchStartDist){
+      const d = Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
+      camera.fov = THREE.MathUtils.clamp(pinchStartFov * (pinchStartDist/d), 30, 100);
+      camera.updateProjectionMatrix();
+    }
+  });
+  els.sceneCanvas.addEventListener('touchend', () => { pinchStartDist = null; });
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth/window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+
+  if (!animating){
+    animating = true;
+    animate();
+  }
+}
+
+function animate(){
+  requestAnimationFrame(animate);
+  if (!controls) return;
+  controls.update();
+  renderer.render(scene, camera);
+
+  const azimuth = controls.getAzimuthalAngle(); // radians
+  const deg = azimuth * 180 / Math.PI;
+  els.dialRotor.style.transform = `rotate(${deg}deg)`;
+}
+
+function loadCustomPanorama(url){
+  return new Promise((resolve, reject) => {
+    initThree();
+    textureLoader.load(
+      url,
+      (texture) => {
+        texture.encoding = THREE.sRGBEncoding;
+        sphereMesh.material.map = texture;
+        sphereMesh.material.needsUpdate = true;
+        camera.fov = 75;
+        camera.updateProjectionMatrix();
+        resolve();
+      },
+      undefined,
+      (err) => reject(err)
+    );
+  });
+}
+
+function showThreeViewer(){
+  els.sceneCanvas.classList.remove('hidden');
+  els.streetviewDiv.classList.remove('visible');
+}
+
+/* ---------------- Street View fallback ---------------- */
+
+let googleMapsLoading = null;
+
+function loadGoogleMaps(){
+  if (window.google && window.google.maps) return Promise.resolve();
+  if (googleMapsLoading) return googleMapsLoading;
+  googleMapsLoading = new Promise((resolve, reject) => {
+    if (!GOOGLE_MAPS_API_KEY){
+      reject(new Error('no-key'));
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}`;
+    script.onload = resolve;
+    script.onerror = () => reject(new Error('load-failed'));
+    document.head.appendChild(script);
+  });
+  return googleMapsLoading;
+}
+
+function tryStreetView(lat, lng){
+  return loadGoogleMaps().then(() => {
+    return new Promise((resolve, reject) => {
+      const svService = new google.maps.StreetViewService();
+      svService.getPanorama({ location: { lat, lng }, radius: 200 }, (data, status) => {
+        if (status === 'OK'){
+          els.sceneCanvas.classList.add('hidden');
+          els.streetviewDiv.classList.add('visible');
+          new google.maps.StreetViewPanorama(els.streetviewDiv, {
+            position: data.location.latLng,
+            pov: { heading: 0, pitch: 0 },
+            addressControl: false,
+            fullscreenControl: false,
+            motionTracking: false,
+            motionTrackingControl: false,
+          });
+          resolve({
+            lat: data.location.latLng.lat(),
+            lng: data.location.latLng.lng(),
+          });
+        } else {
+          reject(new Error('no-panorama'));
+        }
+      });
+    });
+  });
+}
+
+/* ---------------- Geocoding (OpenStreetMap Nominatim, no key required) ---------------- */
+
+async function geocode(address){
+  const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(address)}`;
+  const res = await fetch(url, { headers: { 'Accept-Language': 'en' } });
+  if (!res.ok) throw new Error('geocode-failed');
+  const data = await res.json();
+  if (!data.length) throw new Error('not-found');
+  return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon), display: data[0].display_name };
+}
+
+/* ---------------- Local photo folder scan ---------------- */
+
+let activeBlobUrls = [];
+
+function isValidCoord(lat, lng){
+  const la = Number(lat), ln = Number(lng);
+  return Number.isFinite(la) && Number.isFinite(ln) && !(la === 0 && ln === 0);
+}
+
+async function extractLocation(file){
+  // 1) Standard EXIF GPS IFD — covers most cameras and phones.
+  try {
+    const gps = await exifr.gps(file);
+    if (gps && isValidCoord(gps.latitude, gps.longitude)){
+      return { lat: gps.latitude, lng: gps.longitude };
+    }
+  } catch (err){ /* fall through to XMP */ }
+
+  // 2) Full parse including XMP. DJI drones in particular often write
+  // location as plain signed decimal degrees under XMP tags named
+  // GpsLatitude / GpsLongitude (the drone-dji namespace) instead of, or
+  // in addition to, the standard EXIF GPS block — exifr.gps() alone
+  // never looks there.
+  try {
+    const full = await exifr.parse(file, {
+      xmp: true, exif: true, gps: true, tiff: true, ifd0: true,
+      translateValues: true, reviveValues: true
+    });
+    if (full){
+      if (isValidCoord(full.GpsLatitude, full.GpsLongitude)){
+        return { lat: Number(full.GpsLatitude), lng: Number(full.GpsLongitude) };
+      }
+      // Last resort: scan every field for anything latitude/longitude-shaped.
+      let lat = null, lng = null;
+      for (const key of Object.keys(full)){
+        const kl = key.toLowerCase();
+        const num = typeof full[key] === 'number' ? full[key] : parseFloat(full[key]);
+        if (!Number.isFinite(num)) continue;
+        if (lat === null && kl.includes('latitude')) lat = num;
+        if (lng === null && kl.includes('longitude')) lng = num;
+      }
+      if (isValidCoord(lat, lng)) return { lat, lng };
+    }
+  } catch (err){ /* nothing more we can try automatically */ }
+
+  return null;
+}
+
+async function loadPhotoFolder(){
+  if (!window.showDirectoryPicker){
+    setStatus('Your browser can\'t open local folders like this — use Chrome or Edge (this needs the File System Access API).', true);
+    return;
+  }
+
+  let dirHandle;
+  try {
+    dirHandle = await window.showDirectoryPicker();
+  } catch (err){
+    return; // user cancelled the picker — not an error
+  }
+
+  els.folderBtn.disabled = true;
+  setStatus('Scanning folder for geotagged photos…', false);
+
+  // release any blob URLs from a previous scan
+  activeBlobUrls.forEach(u => URL.revokeObjectURL(u));
+  activeBlobUrls = [];
+
+  const found = [];
+  let noGpsCount = 0;
+
+  for await (const [name, handle] of dirHandle.entries()){
+    if (handle.kind !== 'file') continue;
+    if (!/\.(jpe?g)$/i.test(name)) continue;
+
+    let file;
+    try {
+      file = await handle.getFile();
+    } catch (err){
+      continue; // unreadable file entirely — skip it
+    }
+
+    // exifr reads only the metadata bytes it needs, so this is fast
+    // even on very large files (60MB+ panoramas included).
+    let loc = null;
+    try {
+      loc = await extractLocation(file);
+    } catch (err){
+      loc = null;
+    }
+
+    const hasGps = !!loc;
+    if (!hasGps) noGpsCount++;
+
+    const url = URL.createObjectURL(file);
+    activeBlobUrls.push(url);
+    found.push({
+      name,
+      lat: hasGps ? loc.lat : null,
+      lng: hasGps ? loc.lng : null,
+      url
+    });
+  }
+
+  customPanoramas.length = 0;
+  customPanoramas.push(...found);
+  renderLibrary();
+
+  els.folderBtn.disabled = false;
+
+  if (found.length === 0){
+    setStatus('No JPGs found in that folder.', true);
+  } else {
+    setStatus(
+      `Loaded ${found.length} photo(s)` +
+      (noGpsCount ? `, ${noGpsCount} without usable GPS — click "Set location" in the Library to add coordinates manually` : '') +
+      '.',
+      false
+    );
+    setLibraryOpen(true);
+  }
+}
+
+els.folderBtn.addEventListener('click', loadPhotoFolder);
+
+function renderLibrary(){
+  els.libraryList.innerHTML = '';
+  customPanoramas.forEach((p) => {
+    const hasGps = Number.isFinite(p.lat) && Number.isFinite(p.lng);
+
+    const row = document.createElement('div');
+    row.className = 'library-row';
+
+    const viewBtn = document.createElement('button');
+    viewBtn.type = 'button';
+    viewBtn.className = 'library-view-btn';
+
+    const name = document.createElement('span');
+    name.className = 'library-name';
+    name.textContent = p.name;
+
+    const coords = document.createElement('span');
+    coords.className = 'library-coords' + (hasGps ? '' : ' missing');
+    coords.textContent = hasGps ? `${p.lat.toFixed(5)}, ${p.lng.toFixed(5)}` : 'No GPS data';
+
+    viewBtn.appendChild(name);
+    viewBtn.appendChild(coords);
+    viewBtn.addEventListener('click', () => loadFromLibrary(p));
+    row.appendChild(viewBtn);
+
+    if (!hasGps){
+      const fixBtn = document.createElement('button');
+      fixBtn.type = 'button';
+      fixBtn.className = 'library-fix-btn';
+      fixBtn.textContent = 'Set location';
+      fixBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        promptForLocation(p);
+      });
+      row.appendChild(fixBtn);
+    } else {
+      const mapsLink = document.createElement('a');
+      mapsLink.className = 'library-maps-link';
+      mapsLink.href = `https://www.google.com/maps?q=${p.lat},${p.lng}`;
+      mapsLink.target = '_blank';
+      mapsLink.rel = 'noopener noreferrer';
+      mapsLink.textContent = 'Maps ↗';
+      mapsLink.addEventListener('click', (e) => e.stopPropagation());
+      row.appendChild(mapsLink);
+    }
+
+    els.libraryList.appendChild(row);
+  });
+  els.libraryCountBadge.textContent = customPanoramas.length;
+}
+
+function promptForLocation(entry){
+  const input = window.prompt(
+    `Enter coordinates for "${entry.name}" as "lat, lng" (e.g. 45.5231, -122.6765):`
+  );
+  if (!input) return;
+  const parts = input.split(',').map(s => parseFloat(s.trim()));
+  if (parts.length !== 2 || !Number.isFinite(parts[0]) || !Number.isFinite(parts[1])){
+    setStatus('Could not parse those coordinates — use "lat, lng" format.', true);
+    return;
+  }
+  entry.lat = parts[0];
+  entry.lng = parts[1];
+  renderLibrary();
+  setStatus(`Location set for "${entry.name}".`, false);
+}
+
+function setLibraryOpen(open){
+  els.libraryList.hidden = !open;
+  els.libraryToggle.setAttribute('aria-expanded', String(open));
+}
+
+els.libraryToggle.addEventListener('click', () => {
+  setLibraryOpen(els.libraryList.hidden);
+});
+
+async function loadFromLibrary(entry){
+  setStatus('Loading photo…', false);
+  try {
+    await loadCustomPanorama(entry.url);
+    showThreeViewer();
+    els.empty.classList.add('hidden');
+    els.instrument.classList.add('visible');
+    updateInstrument({ label: entry.name, lat: entry.lat, lng: entry.lng, distanceKm: null, source: 'custom' });
+    setStatus('', false);
+  } catch (err){
+    setStatus('Could not load that photo.', true);
+  }
+}
+
+/* ---------------- Main search flow ---------------- */
+
+async function handleSearch(){
+  const address = els.input.value.trim();
+  if (!address) return;
+
+  els.btn.disabled = true;
+  setStatus('Scanning…', false);
+
+  try {
+    const geo = await geocode(address);
+
+    // find nearest custom panorama
+    let nearest = null, nearestDist = Infinity;
+    for (const p of customPanoramas){
+      if (!Number.isFinite(p.lat) || !Number.isFinite(p.lng)) continue;
+      const d = haversineKm(geo.lat, geo.lng, p.lat, p.lng);
+      if (d < nearestDist){ nearestDist = d; nearest = p; }
+    }
+
+    if (nearest && nearestDist <= CUSTOM_MATCH_RADIUS_KM){
+      setStatus('Loading panorama…', false);
+      await loadCustomPanorama(nearest.url);
+      showThreeViewer();
+      updateInstrument({ label: nearest.name, lat: nearest.lat, lng: nearest.lng, distanceKm: nearestDist, source: 'custom' });
+    } else {
+      setStatus('Nothing on file nearby — checking Street View…', false);
+      try {
+        const svLoc = await tryStreetView(geo.lat, geo.lng);
+        const dist = haversineKm(geo.lat, geo.lng, svLoc.lat, svLoc.lng);
+        updateInstrument({ label: geo.display.split(',').slice(0,2).join(','), lat: svLoc.lat, lng: svLoc.lng, distanceKm: dist, source: 'streetview' });
+      } catch (svErr){
+        if (svErr.message === 'no-key'){
+          setStatus('No custom panorama nearby. Add a Google Maps API key in the script to enable the Street View fallback.', true);
+        } else {
+          setStatus('No panorama found near that address. Try somewhere else.', true);
+        }
+        els.btn.disabled = false;
+        return;
+      }
+    }
+
+    setStatus('', false);
+    els.empty.classList.add('hidden');
+    els.instrument.classList.add('visible');
+  } catch (err){
+    setStatus(err.message === 'not-found' ? "Couldn't find that address." : 'Something went wrong. Try again.', true);
+  } finally {
+    els.btn.disabled = false;
+  }
+}
+
+function updateInstrument({ label, lat, lng, distanceKm, source }){
+  els.roAddress.textContent = label;
+  const valid = Number.isFinite(lat) && Number.isFinite(lng);
+  els.roCoords.textContent = valid ? `${lat.toFixed(5)}, ${lng.toFixed(5)}` : '—';
+  els.roDistance.textContent = distanceKm != null ? formatDistance(distanceKm) + ' away' : '—';
+  els.roSource.textContent = source === 'custom' ? 'Custom' : 'Street View';
+  els.roSource.className = 'source-badge ' + source;
+  if (valid){
+    els.roMapsLink.href = `https://www.google.com/maps?q=${lat},${lng}`;
+    els.roMapsRow.hidden = false;
+  } else {
+    els.roMapsRow.hidden = true;
+  }
+}
+
+els.btn.addEventListener('click', handleSearch);
+els.input.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleSearch(); });
+
+renderLibrary();
+</script>
+</body>
+</html>
