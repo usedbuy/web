@@ -250,10 +250,12 @@
   .grid-3{ display:grid; grid-template-columns:2fr 1fr 1fr; gap:14px; }
   @media (max-width:520px){ .grid-3{ grid-template-columns:1fr; } }
   label{ display:block; font-size:13px; font-weight:700; margin-bottom:6px; }
-  input[type="text"], input[type="email"], input[type="tel"], input[type="number"], input[type="url"]{
+  input[type="text"], input[type="email"], input[type="tel"], input[type="number"], input[type="url"], select{
     width:100%; padding:13px 14px; border-radius:4px; border:1.5px solid var(--line);
     background:var(--card); font-family:'Inter',sans-serif; font-size:15px; color:var(--ink);
   }
+  select{ cursor:pointer; }
+  select option{ background:var(--card); color:var(--ink); }
   input::placeholder{ color:#8792A6; }
   .field{ margin-bottom:14px; }
 
@@ -567,6 +569,33 @@
               <div class="field"><label for="phone">Telephone</label><input required type="tel" id="phone" placeholder="(555) 010-0199"></div>
             </div>
             <div class="field"><label for="bizName">Business name</label><input required type="text" id="bizName" placeholder="ComfortAir Heating & Cooling"></div>
+            <div class="field"><label for="industry">Industry</label><select required id="industry">
+                <option value="Plumbing Services">Plumbing Services</option>
+                <option value="Electricians">Electricians</option>
+                <option value="Heating &amp; Cooling Services" selected>Heating &amp; Cooling Services</option>
+                <option value="Roofing">Roofing</option>
+                <option value="IT support">IT support</option>
+                <option value="Fencing &amp; Decking">Fencing &amp; Decking</option>
+                <option value="Hardscaping Services">Hardscaping Services</option>
+                <option value="Landscaping Services">Landscaping Services</option>
+                <option value="Pest Control Services">Pest Control Services</option>
+                <option value="House Cleaning Services">House Cleaning Services</option>
+                <option value="Pressure Washing Services">Pressure Washing Services</option>
+                <option value="Moving Companies">Moving Companies</option>
+                <option value="Self-Storage Facilities">Self-Storage Facilities</option>
+                <option value="Locksmiths">Locksmiths</option>
+                <option value="Remodeling Services">Remodeling Services</option>
+                <option value="Handyman Services">Handyman Services</option>
+                <option value="Appliance Repair">Appliance Repair</option>
+                <option value="Auto Repair Shops">Auto Repair Shops</option>
+                <option value="Auto Detailing">Auto Detailing</option>
+                <option value="Restaurants">Restaurants</option>
+                <option value="Coffee Shops">Coffee Shops</option>
+                <option value="Daycares">Daycares</option>
+                <option value="Junk Removal Services">Junk Removal Services</option>
+                <option value="Window Repair &amp; Replacement">Window Repair &amp; Replacement</option>
+                <option value="Other">Other</option>
+              </select></div>
             <div class="field"><label for="bizWebsite">Business website <span style="font-weight:400;color:var(--ink-soft);">(optional)</span></label><input type="text" id="bizWebsite" placeholder="www.yourbusiness.com"></div>
             <div class="grid-2">
               <div class="field"><label for="bizPhone">Company phone number</label><input required type="tel" id="bizPhone" placeholder="(555) 010-0199"></div>
@@ -1014,6 +1043,7 @@
       designNotes: document.getElementById('designNotes').value || undefined,
       qrForwardUrl: document.getElementById('qrForwardUrl').value || undefined,
       source: SOURCE,
+      industry: document.getElementById('industry').value,
       radius: state.radius,
       size: state.size,
       qty: state.qty,
