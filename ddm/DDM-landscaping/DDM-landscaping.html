@@ -250,7 +250,7 @@
   .grid-3{ display:grid; grid-template-columns:2fr 1fr 1fr; gap:14px; }
   @media (max-width:520px){ .grid-3{ grid-template-columns:1fr; } }
   label{ display:block; font-size:13px; font-weight:700; margin-bottom:6px; }
-  input[type="text"], input[type="email"], input[type="tel"], input[type="number"]{
+  input[type="text"], input[type="email"], input[type="tel"], input[type="number"], input[type="url"]{
     width:100%; padding:13px 14px; border-radius:4px; border:1.5px solid var(--line);
     background:var(--card); font-family:'Inter',sans-serif; font-size:15px; color:var(--ink);
   }
@@ -400,7 +400,6 @@
       <a href="#pricing">Pricing</a>
       <a href="#faq">FAQ</a>
     </div>
-    <a class="btn btn-primary" href="#builder">Place order</a>
   </nav>
 </header>
 
@@ -561,7 +560,7 @@
             <p class="sub">Who we'll send proofs and updates to.</p>
             <div class="grid-2">
               <div class="field"><label for="fullName">Full name</label><input required type="text" id="fullName" placeholder="Jordan Alvarez"></div>
-              <div class="field"><label for="title">Title at company</label><input required type="text" id="title" placeholder="Owner"></div>
+              <div class="field"><label for="title">Job Title</label><input required type="text" id="title" placeholder="Owner"></div>
             </div>
             <div class="grid-2">
               <div class="field"><label for="email">Email</label><input required type="email" id="email" placeholder="jordan@yourbusiness.com"></div>
@@ -569,6 +568,10 @@
             </div>
             <div class="field"><label for="bizName">Business name</label><input required type="text" id="bizName" placeholder="Greenline Landscaping"></div>
             <div class="field"><label for="bizWebsite">Business website <span style="font-weight:400;color:var(--ink-soft);">(optional)</span></label><input type="text" id="bizWebsite" placeholder="www.yourbusiness.com"></div>
+            <div class="grid-2">
+              <div class="field"><label for="bizPhone">Company phone number</label><input required type="tel" id="bizPhone" placeholder="(555) 010-0199"></div>
+              <div class="field"><label for="bizEmail">Company email</label><input required type="email" id="bizEmail" placeholder="office@yourbusiness.com"></div>
+            </div>
             <div class="field"><label for="bizStreet">Street address</label><input required type="text" id="bizStreet" placeholder="123 Main St"></div>
             <div class="grid-3">
               <div class="field"><label for="bizCity">City</label><input required type="text" id="bizCity" placeholder="Springfield"></div>
@@ -625,7 +628,7 @@
             <span class="step-num">4</span>
             <h3>QR forwarding URL</h3>
             <p class="sub">Where should scans of your door hanger's QR code be sent?</p>
-            <input type="url" id="qrForwardUrl" placeholder="https://yourbusiness.com/promo" style="width:100%;padding:12px 14px;border-radius:5px;border:1.5px solid var(--line);background:var(--card);font-family:'Inter',sans-serif;font-size:14.5px;">
+            <input type="url" id="qrForwardUrl" placeholder="https://yourbusiness.com/promo">
           </div>
 
           <div class="field-group">
@@ -821,10 +824,6 @@
         <img src="images/logo.png" alt="Direct to Door Marketing (DDM) logo" style="width:24px;height:24px;border-radius:6px;">
         Direct to Door Marketing
       </div>
-      <div class="foot-contact">
-        <a href="mailto:hello@directtodoormarketing.com">hello@directtodoormarketing.com</a>
-        <a href="tel:+18005551234">(800) 555-1234</a>
-      </div>
     </div>
     <div class="foot-bottom">© 2026 Direct to Door Marketing (DDM). Local advertising for landscaping companies, delivered by hand.</div>
   </div>
@@ -1006,6 +1005,8 @@
       jobTitle: document.getElementById('title').value,
       businessName: document.getElementById('bizName').value,
       businessWebsite: document.getElementById('bizWebsite').value || undefined,
+      businessPhone: document.getElementById('bizPhone').value,
+      businessEmail: document.getElementById('bizEmail').value,
       businessStreet: document.getElementById('bizStreet').value,
       businessCity: document.getElementById('bizCity').value,
       businessState: document.getElementById('bizState').value.toUpperCase(),
