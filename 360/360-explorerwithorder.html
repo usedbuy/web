@@ -1,0 +1,1717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bearing — 360° Address Explorer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#0b0e13;
+    --panel:#151b24cc;
+    --panel-solid:#151b24;
+    --panel-border:#2a3441;
+    --bone:#e9e6dc;
+    --bone-dim:#9ba3ae;
+    --brass:#c9a227;
+    --brass-dim:#8c7620;
+    --teal:#3fa796;
+    --teal-dim:#2b7268;
+    --danger:#c4574a;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;height:100%;background:var(--void);color:var(--bone);font-family:'Inter',sans-serif;overflow:hidden;}
+
+  #void-bg{
+    position:fixed;inset:0;
+    background:radial-gradient(ellipse at 50% 40%, #131a24 0%, #0b0e13 70%);
+    z-index:0;
+  }
+
+  #scene{position:fixed;inset:0;z-index:1;cursor:grab;touch-action:none;}
+  #scene:active{cursor:grabbing;}
+  #scene.hidden{display:none;}
+
+  #streetview{position:fixed;inset:0;z-index:1;display:none;}
+  #streetview.visible{display:block;}
+
+  /* ---------- Empty state ---------- */
+  #empty-state{
+    position:fixed;inset:0;z-index:2;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:24px;pointer-events:none;
+    transition:opacity .5s ease;
+  }
+  #empty-state.hidden{opacity:0;pointer-events:none;}
+  #empty-state h1{
+    font-family:'Fraunces',serif;font-style:italic;font-weight:500;
+    font-size:clamp(28px,5vw,44px);margin:0 0 10px;color:var(--bone);
+    letter-spacing:-.01em;
+  }
+  #empty-state .rule{width:56px;height:2px;background:var(--brass);margin:18px 0;}
+  #empty-state p{max-width:420px;color:var(--bone-dim);font-size:14.5px;line-height:1.6;margin:0;}
+
+  /* ---------- Search bar ---------- */
+  #search-panel{
+    position:fixed;top:20px;left:50%;transform:translateX(-50%);
+    z-index:3;
+    background:var(--panel);backdrop-filter:blur(14px);
+    border:1px solid var(--panel-border);
+    border-radius:999px;
+    padding:6px 6px 6px 20px;
+    display:flex;align-items:center;gap:10px;
+    box-shadow:0 12px 32px rgba(0,0,0,.4);
+    width:min(560px,90vw);
+  }
+  #search-panel .eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;
+    color:var(--brass-dim);text-transform:uppercase;white-space:nowrap;display:none;
+  }
+  #address-input{
+    flex:1;background:transparent;border:none;outline:none;
+    color:var(--bone);font-family:'Inter',sans-serif;font-size:14.5px;
+    padding:10px 0;min-width:0;
+  }
+  #address-input::placeholder{color:var(--bone-dim);}
+  #search-btn{
+    background:var(--brass);color:#151206;border:none;border-radius:999px;
+    font-family:'Inter',sans-serif;font-weight:600;font-size:13.5px;
+    padding:10px 18px;cursor:pointer;white-space:nowrap;
+    transition:background .15s ease, transform .1s ease;
+  }
+  #search-btn:hover{background:#ddb531;}
+  #search-btn:active{transform:scale(.97);}
+  #search-btn:disabled{background:var(--brass-dim);cursor:progress;}
+  #folder-btn{
+    background:transparent;border:1px solid var(--panel-border);color:var(--bone-dim);
+    border-radius:999px;width:36px;height:36px;flex:none;cursor:pointer;font-size:15px;
+    display:flex;align-items:center;justify-content:center;transition:border-color .15s ease;
+  }
+  #folder-btn:hover{border-color:var(--teal);color:var(--bone);}
+  #address-input:focus-visible, #search-btn:focus-visible, #folder-btn:focus-visible{
+    outline:2px solid var(--teal);outline-offset:2px;
+  }
+
+  #status-line{
+    position:fixed;top:74px;left:50%;transform:translateX(-50%);
+    z-index:3;font-family:'JetBrains Mono',monospace;font-size:12px;
+    padding:6px 14px;border-radius:6px;
+    color:var(--bone-dim);
+    background:var(--panel);backdrop-filter:blur(10px);
+    border:1px solid var(--panel-border);
+    opacity:0;pointer-events:none;transition:opacity .25s ease;
+    max-width:min(520px,88vw);text-align:center;
+  }
+  #status-line.visible{opacity:1;}
+  #status-line.error{color:var(--danger);border-color:#4a2a26;}
+
+  /* ---------- Library panel (top-right) ---------- */
+  #library-panel{
+    position:fixed;top:20px;right:20px;z-index:3;
+    display:flex;flex-direction:column;align-items:flex-end;gap:8px;
+  }
+  #library-toggle{
+    background:var(--panel);backdrop-filter:blur(14px);
+    border:1px solid var(--panel-border);border-radius:999px;
+    color:var(--bone);font-family:'JetBrains Mono',monospace;font-size:11.5px;
+    padding:9px 16px;cursor:pointer;display:flex;align-items:center;gap:8px;
+    box-shadow:0 8px 24px rgba(0,0,0,.4);
+  }
+  #library-count-badge{
+    background:var(--teal-dim);color:#c9f3ec;border-radius:999px;
+    padding:1px 8px;font-size:10px;
+  }
+  #library-toggle:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
+  #library-list{
+    background:var(--panel);backdrop-filter:blur(14px);
+    border:1px solid var(--panel-border);border-radius:12px;
+    box-shadow:0 8px 24px rgba(0,0,0,.4);
+    width:min(300px,80vw);max-height:min(360px,50vh);overflow-y:auto;
+    display:flex;flex-direction:column;
+  }
+  .library-row{
+    display:flex;align-items:center;justify-content:space-between;gap:6px;
+    border-bottom:1px solid var(--panel-border);padding:2px;
+  }
+  .library-row:last-child{border-bottom:none;}
+  .library-view-btn{
+    display:flex;flex-direction:column;align-items:flex-start;gap:2px;
+    background:transparent;border:none;border-radius:8px;
+    color:var(--bone);text-align:left;padding:8px 10px;cursor:pointer;
+    flex:1;min-width:0;font-family:'Inter',sans-serif;
+  }
+  .library-view-btn:hover{background:#1e2733;}
+  .library-view-btn:focus-visible{outline:2px solid var(--teal);outline-offset:-2px;}
+  .library-name{
+    font-size:13px;color:var(--bone);white-space:nowrap;overflow:hidden;
+    text-overflow:ellipsis;max-width:200px;
+  }
+  .library-coords{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--bone-dim);}
+  .library-coords.missing{color:var(--danger);}
+  .library-fix-btn{
+    background:transparent;border:1px solid var(--brass-dim);color:var(--brass);
+    border-radius:999px;padding:5px 10px;font-size:10px;white-space:nowrap;cursor:pointer;
+    font-family:'JetBrains Mono',monospace;flex:none;margin-right:6px;
+  }
+  .library-fix-btn:hover{border-color:var(--brass);}
+  .library-fix-btn:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
+  .library-maps-link{
+    background:transparent;border:1px solid var(--teal-dim);color:var(--teal);
+    border-radius:999px;padding:5px 10px;font-size:10px;white-space:nowrap;
+    font-family:'JetBrains Mono',monospace;flex:none;margin-right:6px;
+    text-decoration:none;
+  }
+  .library-maps-link:hover{border-color:var(--teal);}
+  .library-maps-link:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
+
+  #ro-maps-row{margin-top:2px;}
+  .maps-link{
+    color:var(--teal);text-decoration:none;font-size:11px;
+    border-bottom:1px solid var(--teal-dim);padding-bottom:1px;
+  }
+  .maps-link:hover{border-bottom-color:var(--teal);}
+  .maps-link:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
+
+  @media (max-width:640px){
+    #library-panel{top:auto;bottom:20px;right:14px;}
+    #library-list{max-height:40vh;}
+  }
+
+  /* ---------- Instrument panel (bottom-left) ---------- */
+  #instrument{
+    position:fixed;left:20px;bottom:20px;z-index:3;
+    display:flex;align-items:flex-end;gap:14px;
+    opacity:0;transform:translateY(8px);
+    transition:opacity .4s ease, transform .4s ease;
+  }
+  #instrument.visible{opacity:1;transform:translateY(0);}
+
+  #dial-wrap{
+    width:88px;height:88px;flex:none;
+    background:var(--panel);backdrop-filter:blur(14px);
+    border:1px solid var(--panel-border);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 8px 24px rgba(0,0,0,.4);
+  }
+  #dial-rotor{transition:transform .05s linear;transform-origin:60px 60px;}
+
+  #readout{
+    background:var(--panel);backdrop-filter:blur(14px);
+    border:1px solid var(--panel-border);border-radius:12px;
+    padding:12px 16px;font-family:'JetBrains Mono',monospace;font-size:11.5px;
+    color:var(--bone-dim);line-height:1.9;min-width:200px;
+    box-shadow:0 8px 24px rgba(0,0,0,.4);
+  }
+  #readout .label{color:var(--brass-dim);letter-spacing:.06em;font-size:9.5px;text-transform:uppercase;margin-right:8px;}
+  #readout .val{color:var(--bone);}
+  #readout .source-badge{
+    display:inline-block;margin-top:2px;padding:2px 8px;border-radius:999px;
+    font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;
+  }
+  #readout .source-badge.custom{background:var(--teal-dim);color:#c9f3ec;}
+  #readout .source-badge.streetview{background:#2a3a5a;color:#c9d8f3;}
+
+  @media (max-width:640px){
+    #instrument{left:14px;bottom:14px;flex-direction:column-reverse;align-items:flex-start;}
+    #dial-wrap{width:64px;height:64px;}
+    #readout{min-width:0;font-size:10.5px;padding:10px 12px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+
+  /* ---------- Advertise button ---------- */
+  #advertise-btn{
+    position:fixed;top:20px;left:20px;z-index:3;
+    background:var(--brass);color:#151206;border:none;border-radius:999px;
+    font-family:'Inter',sans-serif;font-weight:600;font-size:12px;letter-spacing:.06em;
+    padding:11px 18px;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.4);
+    transition:background .15s ease, transform .1s ease;
+  }
+  #advertise-btn:hover{background:#ddb531;}
+  #advertise-btn:active{transform:scale(.97);}
+  #advertise-btn:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
+  @media (max-width:640px){
+    #advertise-btn{padding:9px 14px;font-size:11px;}
+  }
+
+  /* ---------- Advertise modal ---------- */
+  #ad-modal-overlay{
+    position:fixed;inset:0;z-index:50;
+    background:rgba(6,8,11,.72);backdrop-filter:blur(4px);
+    display:flex;align-items:center;justify-content:center;padding:20px;
+  }
+  #ad-modal-overlay.hidden{display:none;}
+
+  #ad-modal{
+    width:min(560px,100%);max-height:min(700px,92vh);
+    background:var(--panel-solid);border:1px solid var(--panel-border);
+    border-radius:16px;box-shadow:0 24px 64px rgba(0,0,0,.55);
+    display:flex;flex-direction:column;overflow:hidden;
+  }
+
+  #ad-modal-header{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 20px;border-bottom:1px solid var(--panel-border);flex:none;
+  }
+  #ad-modal-header h2{
+    font-family:'Fraunces',serif;font-style:italic;font-weight:500;
+    font-size:19px;margin:0;color:var(--bone);
+  }
+  #ad-modal-close{
+    background:transparent;border:none;color:var(--bone-dim);font-size:16px;
+    cursor:pointer;padding:5px 9px;border-radius:6px;line-height:1;
+  }
+  #ad-modal-close:hover{color:var(--bone);background:#1e2733;}
+  #ad-modal-close:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
+
+  #ad-steps{display:flex;gap:4px;padding:12px 20px 0;flex:none;}
+  .ad-step-dot{
+    flex:1;background:transparent;border:none;border-bottom:2px solid var(--panel-border);
+    color:var(--bone-dim);font-family:'Inter',sans-serif;padding:0 2px 10px;cursor:pointer;
+    display:flex;flex-direction:column;align-items:center;gap:5px;
+  }
+  .ad-step-dot .num{
+    width:20px;height:20px;border-radius:50%;border:1px solid var(--panel-border);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--bone-dim);flex:none;
+  }
+  .ad-step-dot .step-label{
+    font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;
+  }
+  .ad-step-dot.active{border-bottom-color:var(--brass);color:var(--bone);}
+  .ad-step-dot.active .num{border-color:var(--brass);color:var(--brass);}
+  .ad-step-dot.done .num{background:var(--teal-dim);border-color:var(--teal);color:#c9f3ec;}
+  .ad-step-dot:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
+  @media (max-width:480px){
+    .ad-step-dot .step-label{display:none;}
+  }
+
+  #ad-modal-body{flex:1;overflow-y:auto;padding:18px 20px;}
+  .ad-panel{display:none;flex-direction:column;gap:14px;}
+  .ad-panel.active{display:flex;}
+
+  .ad-field{display:flex;flex-direction:column;gap:5px;}
+  .ad-field label{
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--brass-dim);
+  }
+  .ad-field input, .ad-field textarea{
+    background:#0f141b;border:1px solid var(--panel-border);border-radius:8px;
+    color:var(--bone);font-family:'Inter',sans-serif;font-size:13.5px;
+    padding:9px 12px;outline:none;width:100%;
+  }
+  .ad-field input:focus, .ad-field textarea:focus{border-color:var(--teal);}
+  .ad-row{display:flex;gap:10px;}
+  .ad-row .ad-field{flex:1;min-width:0;}
+  @media (max-width:480px){
+    .ad-row{flex-direction:column;}
+  }
+
+  .ad-checkbox-row{
+    display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--bone-dim);
+  }
+  .ad-checkbox-row input{width:auto;}
+
+  .ad-error-text{color:var(--danger);font-size:11px;min-height:14px;}
+
+  #ad-image-drop{
+    border:1.5px dashed var(--panel-border);border-radius:10px;
+    padding:18px;text-align:center;cursor:pointer;color:var(--bone-dim);font-size:12px;
+    line-height:1.6;transition:border-color .15s ease, color .15s ease;
+  }
+  #ad-image-drop:hover, #ad-image-drop:focus-visible{border-color:var(--teal);color:var(--bone);outline:none;}
+  #ad-image-thumbs{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+  .ad-thumb{position:relative;width:60px;height:60px;border-radius:8px;overflow:hidden;border:1px solid var(--panel-border);flex:none;}
+  .ad-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+  .ad-thumb button{
+    position:absolute;top:2px;right:2px;width:17px;height:17px;border-radius:50%;
+    background:rgba(11,14,19,.85);border:none;color:var(--bone);font-size:9px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;line-height:1;
+  }
+
+  #ad-location-row{display:flex;gap:8px;}
+  #ad-location-row input{flex:1;}
+  #ad-check-btn{
+    background:var(--teal-dim);color:#c9f3ec;border:none;border-radius:8px;
+    padding:0 16px;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap;
+  }
+  #ad-check-btn:hover{background:var(--teal);color:#06110e;}
+
+  .ad-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:10.5px;color:var(--bone-dim);}
+  .ad-legend span{display:inline-flex;align-items:center;gap:5px;}
+  .ad-legend i{width:10px;height:10px;border-radius:3px;display:inline-block;flex:none;}
+
+  #ad-locations{display:flex;flex-direction:column;gap:14px;}
+  .ad-loc-card{
+    border:1px solid var(--panel-border);border-radius:10px;padding:12px;background:#0f141b;
+  }
+  .ad-loc-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;gap:8px;}
+  .ad-loc-name{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--bone);word-break:break-word;}
+  .ad-loc-remove{background:transparent;border:none;color:var(--bone-dim);cursor:pointer;font-size:11px;flex:none;}
+  .ad-loc-remove:hover{color:var(--danger);}
+
+  .ad-sphere-svg{width:100%;height:auto;display:block;}
+  .slot{cursor:pointer;transition:fill .15s ease,opacity .15s ease;}
+  .slot.available{fill:#1c2a2f;stroke:var(--teal);stroke-width:2;}
+  .slot.available:hover{fill:var(--teal-dim);}
+  .slot.selected{fill:var(--brass);stroke:var(--brass);}
+  .slot.taken{fill:#1a1d24;stroke:#3a3f49;stroke-width:1;cursor:not-allowed;}
+  .slot-label{font-family:'JetBrains Mono',monospace;font-size:8.5px;fill:var(--bone-dim);pointer-events:none;}
+  .slot-label.selected{fill:#151206;}
+
+  #ad-pay-note{
+    font-size:11px;color:var(--bone-dim);background:#0f141b;
+    border:1px solid var(--panel-border);border-radius:8px;padding:9px 11px;line-height:1.5;
+  }
+
+  #ad-order-summary{
+    display:flex;flex-direction:column;gap:6px;background:#0f141b;
+    border:1px solid var(--panel-border);border-radius:8px;padding:10px 12px;font-size:12.5px;
+  }
+  .ad-summary-row{display:flex;justify-content:space-between;gap:10px;color:var(--bone-dim);}
+  .ad-summary-row.ad-summary-total{
+    color:var(--bone);font-weight:600;border-top:1px solid var(--panel-border);
+    padding-top:6px;margin-top:2px;
+  }
+  .ad-summary-row.ad-summary-total span:last-child{color:var(--brass);}
+
+  .ad-coupon-row{display:flex;gap:8px;}
+  .ad-coupon-row input{flex:1;text-transform:uppercase;}
+  #ad-coupon-apply{
+    background:var(--teal-dim);color:#c9f3ec;border:none;border-radius:8px;
+    padding:0 16px;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap;
+  }
+  #ad-coupon-apply:hover{background:var(--teal);color:#06110e;}
+  .ad-coupon-feedback{font-size:11px;min-height:14px;}
+  .ad-coupon-feedback.ad-coupon-ok{color:var(--teal);}
+  .ad-coupon-feedback.ad-coupon-error{color:var(--danger);}
+
+  #ad-modal-footer{
+    flex:none;border-top:1px solid var(--panel-border);padding:12px 20px;
+    display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+  }
+  #ad-total{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--bone-dim);}
+  #ad-total strong{color:var(--brass);font-size:14px;font-weight:600;}
+  #ad-nav-btns{display:flex;gap:8px;}
+  #ad-back-btn, #ad-next-btn, #ad-submit-btn{
+    border-radius:999px;padding:9px 18px;font-size:12.5px;font-weight:600;cursor:pointer;border:none;
+    font-family:'Inter',sans-serif;
+  }
+  #ad-back-btn{background:transparent;border:1px solid var(--panel-border);color:var(--bone-dim);}
+  #ad-back-btn:hover{border-color:var(--bone-dim);color:var(--bone);}
+  #ad-back-btn:disabled{opacity:.4;cursor:default;}
+  #ad-next-btn, #ad-submit-btn{background:var(--brass);color:#151206;}
+  #ad-next-btn:hover, #ad-submit-btn:hover{background:#ddb531;}
+
+  #ad-success{
+    display:none;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:40px 24px;gap:12px;flex:1;
+  }
+  #ad-success.visible{display:flex;}
+  #ad-success .check{
+    width:52px;height:52px;border-radius:50%;background:var(--teal-dim);color:#c9f3ec;
+    display:flex;align-items:center;justify-content:center;font-size:22px;flex:none;
+  }
+  #ad-success h3{font-family:'Fraunces',serif;font-style:italic;font-weight:500;font-size:20px;margin:0;color:var(--bone);}
+  #ad-success p{color:var(--bone-dim);font-size:13px;max-width:360px;line-height:1.6;margin:0;}
+  #ad-success-close{
+    margin-top:6px;background:var(--brass);color:#151206;border:none;border-radius:999px;
+    padding:10px 22px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;
+  }
+  #ad-success-close:hover{background:#ddb531;}
+
+  @media (max-width:640px){
+    #ad-modal-overlay{padding:0;}
+    #ad-modal{width:100%;height:100%;max-height:100dvh;border-radius:0;}
+  }
+</style>
+</head>
+<body>
+
+<div id="void-bg"></div>
+<canvas id="scene"></canvas>
+<div id="streetview"></div>
+
+<div id="empty-state">
+  <h1>Point it somewhere.</h1>
+  <div class="rule"></div>
+  <p>Type an address above. We'll find the closest 360° panorama on file, or pull the nearest Street View if nothing's tagged nearby.</p>
+</div>
+
+<div id="search-panel">
+  <button id="folder-btn" title="Load photos folder from your computer" aria-label="Load photos folder">📁</button>
+  <input id="address-input" type="text" placeholder="Enter an address…" autocomplete="off" aria-label="Address" />
+  <button id="search-btn">Locate</button>
+</div>
+<div id="status-line"></div>
+
+<div id="library-panel">
+  <button id="library-toggle" aria-expanded="false">
+    <span>Library</span>
+    <span id="library-count-badge">0</span>
+  </button>
+  <div id="library-list" hidden></div>
+</div>
+
+<div id="instrument">
+  <div id="dial-wrap">
+    <svg viewBox="0 0 120 120" width="100%" height="100%">
+      <circle cx="60" cy="60" r="55" fill="none" stroke="#2a3441" stroke-width="1"/>
+      <circle cx="60" cy="60" r="46" fill="none" stroke="#2a3441" stroke-width="1"/>
+      <g id="dial-rotor">
+        <text x="60" y="20" text-anchor="middle" fill="#c9a227" font-family="JetBrains Mono" font-size="12" font-weight="500">N</text>
+        <text x="60" y="106" text-anchor="middle" fill="#9ba3ae" font-family="JetBrains Mono" font-size="9">S</text>
+        <text x="14" y="64" text-anchor="middle" fill="#9ba3ae" font-family="JetBrains Mono" font-size="9">W</text>
+        <text x="106" y="64" text-anchor="middle" fill="#9ba3ae" font-family="JetBrains Mono" font-size="9">E</text>
+      </g>
+      <polygon points="60,10 55,22 65,22" fill="#3fa796"/>
+    </svg>
+  </div>
+  <div id="readout">
+    <div><span class="label">Loaded</span><span class="val" id="ro-address">—</span></div>
+    <div><span class="label">Coords</span><span class="val" id="ro-coords">—</span></div>
+    <div><span class="label">Distance</span><span class="val" id="ro-distance">—</span></div>
+    <div><span class="label">Source</span><span class="source-badge" id="ro-source">—</span></div>
+    <div id="ro-maps-row" hidden><a id="ro-maps-link" href="#" target="_blank" rel="noopener noreferrer" class="maps-link">Open in Google Maps ↗</a></div>
+  </div>
+</div>
+
+<button id="advertise-btn" type="button">ADVERTISE</button>
+
+<div id="ad-modal-overlay" class="hidden">
+  <div id="ad-modal" role="dialog" aria-modal="true" aria-labelledby="ad-modal-title">
+    <div id="ad-modal-header">
+      <h2 id="ad-modal-title">Advertise Here</h2>
+      <button id="ad-modal-close" type="button" aria-label="Close">✕</button>
+    </div>
+
+    <div id="ad-steps">
+      <button class="ad-step-dot active" type="button" data-step="0"><span class="num">1</span><span class="step-label">Business</span></button>
+      <button class="ad-step-dot" type="button" data-step="1"><span class="num">2</span><span class="step-label">Ad Design</span></button>
+      <button class="ad-step-dot" type="button" data-step="2"><span class="num">3</span><span class="step-label">Placement</span></button>
+      <button class="ad-step-dot" type="button" data-step="3"><span class="num">4</span><span class="step-label">Payment</span></button>
+    </div>
+
+    <div id="ad-modal-body">
+      <section class="ad-panel active" data-panel="0">
+        <div class="ad-field">
+          <label for="ad-biz-name">Business Name</label>
+          <input id="ad-biz-name" type="text" autocomplete="organization" />
+        </div>
+        <div class="ad-field">
+          <label for="ad-biz-contact">Contact Name</label>
+          <input id="ad-biz-contact" type="text" autocomplete="name" />
+        </div>
+        <div class="ad-row">
+          <div class="ad-field">
+            <label for="ad-biz-phone">Phone</label>
+            <input id="ad-biz-phone" type="tel" autocomplete="tel" placeholder="(555) 555-5555" />
+          </div>
+          <div class="ad-field">
+            <label for="ad-biz-email">Email</label>
+            <input id="ad-biz-email" type="email" autocomplete="email" />
+          </div>
+        </div>
+        <div class="ad-field">
+          <label for="ad-biz-address">Business Address</label>
+          <input id="ad-biz-address" type="text" autocomplete="street-address" />
+        </div>
+        <div class="ad-error-text" id="ad-panel0-error"></div>
+      </section>
+
+      <section class="ad-panel" data-panel="1">
+        <label class="ad-checkbox-row"><input type="checkbox" id="ad-design-same" /> Same as business info</label>
+        <div class="ad-field">
+          <label for="ad-design-name">Company Name (on ad)</label>
+          <input id="ad-design-name" type="text" />
+        </div>
+        <div class="ad-row">
+          <div class="ad-field">
+            <label for="ad-design-phone">Phone</label>
+            <input id="ad-design-phone" type="tel" />
+          </div>
+          <div class="ad-field">
+            <label for="ad-design-email">Email</label>
+            <input id="ad-design-email" type="email" />
+          </div>
+        </div>
+        <div class="ad-field">
+          <label for="ad-design-address">Address</label>
+          <input id="ad-design-address" type="text" />
+        </div>
+        <div class="ad-field">
+          <label>Ad Images</label>
+          <div id="ad-image-drop" tabindex="0" role="button" aria-label="Upload ad images">Click to upload, or drag &amp; drop<br/><span style="opacity:.7">JPG or PNG · multiple allowed</span></div>
+          <input id="ad-image-input" type="file" accept="image/*" multiple hidden />
+          <div id="ad-image-thumbs"></div>
+        </div>
+        <div class="ad-error-text" id="ad-panel1-error"></div>
+      </section>
+
+      <section class="ad-panel" data-panel="2">
+        <div class="ad-field">
+          <label for="ad-location-input">Zip Code(s) or City, State</label>
+          <div id="ad-location-row">
+            <input id="ad-location-input" type="text" placeholder="e.g. 97205 or Portland, OR" />
+            <button id="ad-check-btn" type="button">Check</button>
+          </div>
+        </div>
+        <div class="ad-legend">
+          <span><i style="background:#1c2a2f;border:1px solid var(--teal);"></i>Available</span>
+          <span><i style="background:var(--brass);"></i>Selected</span>
+          <span><i style="background:#1a1d24;border:1px solid #3a3f49;"></i>Taken</span>
+        </div>
+        <div id="ad-locations"></div>
+        <div class="ad-error-text" id="ad-panel2-error"></div>
+      </section>
+
+      <section class="ad-panel" data-panel="3">
+        <div id="ad-pay-note">Demo checkout — your card details stay in this browser and no real charge is made.</div>
+
+        <div id="ad-order-summary">
+          <div class="ad-summary-row"><span>Subtotal</span><span id="ad-summary-subtotal">$0</span></div>
+          <div class="ad-summary-row" id="ad-summary-discount-row" hidden><span>Coupon discount</span><span id="ad-summary-discount">-$0</span></div>
+          <div class="ad-summary-row ad-summary-total"><span>Total (one-time)</span><span id="ad-summary-total">$0</span></div>
+        </div>
+
+        <div class="ad-field">
+          <label for="ad-coupon-input">Coupon Code</label>
+          <div class="ad-coupon-row">
+            <input id="ad-coupon-input" type="text" placeholder="Enter code" autocomplete="off" />
+            <button id="ad-coupon-apply" type="button">Apply</button>
+          </div>
+          <div class="ad-coupon-feedback" id="ad-coupon-feedback"></div>
+        </div>
+
+        <div class="ad-field">
+          <label for="ad-pay-name">Name on Card</label>
+          <input id="ad-pay-name" type="text" autocomplete="cc-name" />
+        </div>
+        <div class="ad-field">
+          <label for="ad-pay-number">Card Number</label>
+          <input id="ad-pay-number" type="text" inputmode="numeric" autocomplete="cc-number" placeholder="1234 1234 1234 1234" maxlength="23" />
+        </div>
+        <div class="ad-row">
+          <div class="ad-field">
+            <label for="ad-pay-exp">Expiry</label>
+            <input id="ad-pay-exp" type="text" inputmode="numeric" autocomplete="cc-exp" placeholder="MM/YY" maxlength="5" />
+          </div>
+          <div class="ad-field">
+            <label for="ad-pay-cvc">CVC</label>
+            <input id="ad-pay-cvc" type="text" inputmode="numeric" autocomplete="cc-csc" placeholder="123" maxlength="4" />
+          </div>
+          <div class="ad-field">
+            <label for="ad-pay-zip">Billing ZIP</label>
+            <input id="ad-pay-zip" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="10" />
+          </div>
+        </div>
+        <div class="ad-error-text" id="ad-panel3-error"></div>
+      </section>
+
+      <div id="ad-success">
+        <div class="check">✓</div>
+        <h3>Order submitted</h3>
+        <p>Your ad request has been received. We'll follow up at the email you provided once your creative is approved and your spots are locked in.</p>
+        <button id="ad-success-close" type="button">Done</button>
+      </div>
+    </div>
+
+    <div id="ad-modal-footer">
+      <div id="ad-total">Total <strong id="ad-total-amount">$0</strong></div>
+      <div id="ad-nav-btns">
+        <button id="ad-back-btn" type="button" disabled>Back</button>
+        <button id="ad-next-btn" type="button">Next</button>
+        <button id="ad-submit-btn" type="button" hidden>Submit Order</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/three@0.128.0/build/three.min.js"></script>
+<script src="https://unpkg.com/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/exifr/dist/full.umd.js"></script>
+<script>
+/* =========================================================================
+   CUSTOMIZE ME
+   ========================================================================= */
+
+// Your own geotagged 360° (equirectangular) JPGs. Add as many as you like.
+// lat/lng = where the photo was taken. url = a direct link to the jpg.
+// The demo entry below is a real public equirectangular sample, geotagged
+// to downtown Portland, OR so you can test the flow immediately — replace
+// or extend this list with your own photos and coordinates.
+// Starts with a demo entry so the page works before you load a folder.
+// "Load Photos Folder" replaces this list entirely with whatever it finds.
+const customPanoramas = [
+  {
+    name: "Demo panorama — Pioneer Courthouse Square area",
+    lat: 45.5189,
+    lng: -122.6779,
+    url: "https://threejs.org/examples/textures/2294472375_24a3b8ef46_o.jpg"
+  }
+];
+
+// How close (in km) an address has to be to a custom panorama to use it
+// instead of falling back to Street View.
+const CUSTOM_MATCH_RADIUS_KM = 2;
+
+// Optional: add a Google Maps API key (with Street View Static + Maps
+// JavaScript API enabled) to power the fallback when no custom panorama
+// is close enough. Leave blank to disable the fallback.
+const GOOGLE_MAPS_API_KEY = "";
+
+/* =========================================================================
+   App logic — shouldn't need to touch below this line
+   ========================================================================= */
+
+const els = {
+  input: document.getElementById('address-input'),
+  btn: document.getElementById('search-btn'),
+  folderBtn: document.getElementById('folder-btn'),
+  status: document.getElementById('status-line'),
+  empty: document.getElementById('empty-state'),
+  instrument: document.getElementById('instrument'),
+  dialRotor: document.getElementById('dial-rotor'),
+  roAddress: document.getElementById('ro-address'),
+  roCoords: document.getElementById('ro-coords'),
+  roDistance: document.getElementById('ro-distance'),
+  roSource: document.getElementById('ro-source'),
+  roMapsRow: document.getElementById('ro-maps-row'),
+  roMapsLink: document.getElementById('ro-maps-link'),
+  libraryToggle: document.getElementById('library-toggle'),
+  libraryList: document.getElementById('library-list'),
+  libraryCountBadge: document.getElementById('library-count-badge'),
+  sceneCanvas: document.getElementById('scene'),
+  streetviewDiv: document.getElementById('streetview'),
+};
+
+function setStatus(msg, isError){
+  els.status.textContent = msg || '';
+  els.status.classList.toggle('visible', !!msg);
+  els.status.classList.toggle('error', !!isError);
+}
+
+function haversineKm(lat1, lon1, lat2, lon2){
+  const R = 6371;
+  const dLat = (lat2-lat1) * Math.PI/180;
+  const dLon = (lon2-lon1) * Math.PI/180;
+  const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+function formatDistance(km){
+  const miles = km * 0.621371;
+  if (miles < 0.1) return Math.round(miles * 5280) + ' ft';
+  return miles.toFixed(2) + ' mi';
+}
+
+/* ---------------- Three.js panorama viewer ---------------- */
+
+let renderer, scene, camera, controls, sphereMesh, textureLoader, animating = false;
+
+function initThree(){
+  if (renderer) return;
+  renderer = new THREE.WebGLRenderer({ canvas: els.sceneCanvas, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.outputEncoding = THREE.sRGBEncoding;
+
+  scene = new THREE.Scene();
+  camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+  camera.position.set(0, 0, 0.01);
+
+  const geometry = new THREE.SphereGeometry(500, 60, 40);
+  geometry.scale(-1, 1, 1); // invert so texture renders on the inside
+  const material = new THREE.MeshBasicMaterial();
+  sphereMesh = new THREE.Mesh(geometry, material);
+  scene.add(sphereMesh);
+
+  textureLoader = new THREE.TextureLoader();
+  textureLoader.crossOrigin = 'anonymous';
+
+  controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.08;
+  controls.enablePan = false;
+  controls.enableZoom = false; // handled manually via FOV below
+  controls.rotateSpeed = -0.35;
+  controls.minPolarAngle = 0.15;
+  controls.maxPolarAngle = Math.PI - 0.15;
+
+  els.sceneCanvas.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    camera.fov = THREE.MathUtils.clamp(camera.fov + e.deltaY * 0.02, 30, 100);
+    camera.updateProjectionMatrix();
+  }, { passive: false });
+
+  // basic pinch-to-zoom for touch
+  let pinchStartDist = null, pinchStartFov = null;
+  els.sceneCanvas.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 2){
+      pinchStartDist = Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
+      pinchStartFov = camera.fov;
+    }
+  });
+  els.sceneCanvas.addEventListener('touchmove', (e) => {
+    if (e.touches.length === 2 && pinchStartDist){
+      const d = Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
+      camera.fov = THREE.MathUtils.clamp(pinchStartFov * (pinchStartDist/d), 30, 100);
+      camera.updateProjectionMatrix();
+    }
+  });
+  els.sceneCanvas.addEventListener('touchend', () => { pinchStartDist = null; });
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth/window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+
+  if (!animating){
+    animating = true;
+    animate();
+  }
+}
+
+function animate(){
+  requestAnimationFrame(animate);
+  if (!controls) return;
+  controls.update();
+  renderer.render(scene, camera);
+
+  const azimuth = controls.getAzimuthalAngle(); // radians
+  const deg = azimuth * 180 / Math.PI;
+  els.dialRotor.style.transform = `rotate(${deg}deg)`;
+}
+
+function loadCustomPanorama(url){
+  return new Promise((resolve, reject) => {
+    initThree();
+    textureLoader.load(
+      url,
+      (texture) => {
+        texture.encoding = THREE.sRGBEncoding;
+        sphereMesh.material.map = texture;
+        sphereMesh.material.needsUpdate = true;
+        camera.fov = 75;
+        camera.updateProjectionMatrix();
+        resolve();
+      },
+      undefined,
+      (err) => reject(err)
+    );
+  });
+}
+
+function showThreeViewer(){
+  els.sceneCanvas.classList.remove('hidden');
+  els.streetviewDiv.classList.remove('visible');
+}
+
+/* ---------------- Street View fallback ---------------- */
+
+let googleMapsLoading = null;
+
+function loadGoogleMaps(){
+  if (window.google && window.google.maps) return Promise.resolve();
+  if (googleMapsLoading) return googleMapsLoading;
+  googleMapsLoading = new Promise((resolve, reject) => {
+    if (!GOOGLE_MAPS_API_KEY){
+      reject(new Error('no-key'));
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}`;
+    script.onload = resolve;
+    script.onerror = () => reject(new Error('load-failed'));
+    document.head.appendChild(script);
+  });
+  return googleMapsLoading;
+}
+
+function tryStreetView(lat, lng){
+  return loadGoogleMaps().then(() => {
+    return new Promise((resolve, reject) => {
+      const svService = new google.maps.StreetViewService();
+      svService.getPanorama({ location: { lat, lng }, radius: 200 }, (data, status) => {
+        if (status === 'OK'){
+          els.sceneCanvas.classList.add('hidden');
+          els.streetviewDiv.classList.add('visible');
+          new google.maps.StreetViewPanorama(els.streetviewDiv, {
+            position: data.location.latLng,
+            pov: { heading: 0, pitch: 0 },
+            addressControl: false,
+            fullscreenControl: false,
+            motionTracking: false,
+            motionTrackingControl: false,
+          });
+          resolve({
+            lat: data.location.latLng.lat(),
+            lng: data.location.latLng.lng(),
+          });
+        } else {
+          reject(new Error('no-panorama'));
+        }
+      });
+    });
+  });
+}
+
+/* ---------------- Geocoding (OpenStreetMap Nominatim, no key required) ---------------- */
+
+async function geocode(address){
+  const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(address)}`;
+  const res = await fetch(url, { headers: { 'Accept-Language': 'en' } });
+  if (!res.ok) throw new Error('geocode-failed');
+  const data = await res.json();
+  if (!data.length) throw new Error('not-found');
+  return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon), display: data[0].display_name };
+}
+
+/* ---------------- Local photo folder scan ---------------- */
+
+let activeBlobUrls = [];
+
+function isValidCoord(lat, lng){
+  const la = Number(lat), ln = Number(lng);
+  return Number.isFinite(la) && Number.isFinite(ln) && !(la === 0 && ln === 0);
+}
+
+async function extractLocation(file){
+  // 1) Standard EXIF GPS IFD — covers most cameras and phones.
+  try {
+    const gps = await exifr.gps(file);
+    if (gps && isValidCoord(gps.latitude, gps.longitude)){
+      return { lat: gps.latitude, lng: gps.longitude };
+    }
+  } catch (err){ /* fall through to XMP */ }
+
+  // 2) Full parse including XMP. DJI drones in particular often write
+  // location as plain signed decimal degrees under XMP tags named
+  // GpsLatitude / GpsLongitude (the drone-dji namespace) instead of, or
+  // in addition to, the standard EXIF GPS block — exifr.gps() alone
+  // never looks there.
+  try {
+    const full = await exifr.parse(file, {
+      xmp: true, exif: true, gps: true, tiff: true, ifd0: true,
+      translateValues: true, reviveValues: true
+    });
+    if (full){
+      if (isValidCoord(full.GpsLatitude, full.GpsLongitude)){
+        return { lat: Number(full.GpsLatitude), lng: Number(full.GpsLongitude) };
+      }
+      // Last resort: scan every field for anything latitude/longitude-shaped.
+      let lat = null, lng = null;
+      for (const key of Object.keys(full)){
+        const kl = key.toLowerCase();
+        const num = typeof full[key] === 'number' ? full[key] : parseFloat(full[key]);
+        if (!Number.isFinite(num)) continue;
+        if (lat === null && kl.includes('latitude')) lat = num;
+        if (lng === null && kl.includes('longitude')) lng = num;
+      }
+      if (isValidCoord(lat, lng)) return { lat, lng };
+    }
+  } catch (err){ /* nothing more we can try automatically */ }
+
+  return null;
+}
+
+async function loadPhotoFolder(){
+  if (!window.showDirectoryPicker){
+    setStatus('Your browser can\'t open local folders like this — use Chrome or Edge (this needs the File System Access API).', true);
+    return;
+  }
+
+  let dirHandle;
+  try {
+    dirHandle = await window.showDirectoryPicker();
+  } catch (err){
+    return; // user cancelled the picker — not an error
+  }
+
+  els.folderBtn.disabled = true;
+  setStatus('Scanning folder for geotagged photos…', false);
+
+  // release any blob URLs from a previous scan
+  activeBlobUrls.forEach(u => URL.revokeObjectURL(u));
+  activeBlobUrls = [];
+
+  const found = [];
+  let noGpsCount = 0;
+
+  for await (const [name, handle] of dirHandle.entries()){
+    if (handle.kind !== 'file') continue;
+    if (!/\.(jpe?g)$/i.test(name)) continue;
+
+    let file;
+    try {
+      file = await handle.getFile();
+    } catch (err){
+      continue; // unreadable file entirely — skip it
+    }
+
+    // exifr reads only the metadata bytes it needs, so this is fast
+    // even on very large files (60MB+ panoramas included).
+    let loc = null;
+    try {
+      loc = await extractLocation(file);
+    } catch (err){
+      loc = null;
+    }
+
+    const hasGps = !!loc;
+    if (!hasGps) noGpsCount++;
+
+    const url = URL.createObjectURL(file);
+    activeBlobUrls.push(url);
+    found.push({
+      name,
+      lat: hasGps ? loc.lat : null,
+      lng: hasGps ? loc.lng : null,
+      url
+    });
+  }
+
+  customPanoramas.length = 0;
+  customPanoramas.push(...found);
+  renderLibrary();
+
+  els.folderBtn.disabled = false;
+
+  if (found.length === 0){
+    setStatus('No JPGs found in that folder.', true);
+  } else {
+    setStatus(
+      `Loaded ${found.length} photo(s)` +
+      (noGpsCount ? `, ${noGpsCount} without usable GPS — click "Set location" in the Library to add coordinates manually` : '') +
+      '.',
+      false
+    );
+    setLibraryOpen(true);
+  }
+}
+
+els.folderBtn.addEventListener('click', loadPhotoFolder);
+
+function renderLibrary(){
+  els.libraryList.innerHTML = '';
+  customPanoramas.forEach((p) => {
+    const hasGps = Number.isFinite(p.lat) && Number.isFinite(p.lng);
+
+    const row = document.createElement('div');
+    row.className = 'library-row';
+
+    const viewBtn = document.createElement('button');
+    viewBtn.type = 'button';
+    viewBtn.className = 'library-view-btn';
+
+    const name = document.createElement('span');
+    name.className = 'library-name';
+    name.textContent = p.name;
+
+    const coords = document.createElement('span');
+    coords.className = 'library-coords' + (hasGps ? '' : ' missing');
+    coords.textContent = hasGps ? `${p.lat.toFixed(5)}, ${p.lng.toFixed(5)}` : 'No GPS data';
+
+    viewBtn.appendChild(name);
+    viewBtn.appendChild(coords);
+    viewBtn.addEventListener('click', () => loadFromLibrary(p));
+    row.appendChild(viewBtn);
+
+    if (!hasGps){
+      const fixBtn = document.createElement('button');
+      fixBtn.type = 'button';
+      fixBtn.className = 'library-fix-btn';
+      fixBtn.textContent = 'Set location';
+      fixBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        promptForLocation(p);
+      });
+      row.appendChild(fixBtn);
+    } else {
+      const mapsLink = document.createElement('a');
+      mapsLink.className = 'library-maps-link';
+      mapsLink.href = `https://www.google.com/maps?q=${p.lat},${p.lng}`;
+      mapsLink.target = '_blank';
+      mapsLink.rel = 'noopener noreferrer';
+      mapsLink.textContent = 'Maps ↗';
+      mapsLink.addEventListener('click', (e) => e.stopPropagation());
+      row.appendChild(mapsLink);
+    }
+
+    els.libraryList.appendChild(row);
+  });
+  els.libraryCountBadge.textContent = customPanoramas.length;
+}
+
+function promptForLocation(entry){
+  const input = window.prompt(
+    `Enter coordinates for "${entry.name}" as "lat, lng" (e.g. 45.5231, -122.6765):`
+  );
+  if (!input) return;
+  const parts = input.split(',').map(s => parseFloat(s.trim()));
+  if (parts.length !== 2 || !Number.isFinite(parts[0]) || !Number.isFinite(parts[1])){
+    setStatus('Could not parse those coordinates — use "lat, lng" format.', true);
+    return;
+  }
+  entry.lat = parts[0];
+  entry.lng = parts[1];
+  renderLibrary();
+  setStatus(`Location set for "${entry.name}".`, false);
+}
+
+function setLibraryOpen(open){
+  els.libraryList.hidden = !open;
+  els.libraryToggle.setAttribute('aria-expanded', String(open));
+}
+
+els.libraryToggle.addEventListener('click', () => {
+  setLibraryOpen(els.libraryList.hidden);
+});
+
+async function loadFromLibrary(entry){
+  setStatus('Loading photo…', false);
+  try {
+    await loadCustomPanorama(entry.url);
+    showThreeViewer();
+    els.empty.classList.add('hidden');
+    els.instrument.classList.add('visible');
+    updateInstrument({ label: entry.name, lat: entry.lat, lng: entry.lng, distanceKm: null, source: 'custom' });
+    setStatus('', false);
+  } catch (err){
+    setStatus('Could not load that photo.', true);
+  }
+}
+
+/* ---------------- Main search flow ---------------- */
+
+async function handleSearch(){
+  const address = els.input.value.trim();
+  if (!address) return;
+
+  els.btn.disabled = true;
+  setStatus('Scanning…', false);
+
+  try {
+    const geo = await geocode(address);
+
+    // find nearest custom panorama
+    let nearest = null, nearestDist = Infinity;
+    for (const p of customPanoramas){
+      if (!Number.isFinite(p.lat) || !Number.isFinite(p.lng)) continue;
+      const d = haversineKm(geo.lat, geo.lng, p.lat, p.lng);
+      if (d < nearestDist){ nearestDist = d; nearest = p; }
+    }
+
+    if (nearest && nearestDist <= CUSTOM_MATCH_RADIUS_KM){
+      setStatus('Loading panorama…', false);
+      await loadCustomPanorama(nearest.url);
+      showThreeViewer();
+      updateInstrument({ label: nearest.name, lat: nearest.lat, lng: nearest.lng, distanceKm: nearestDist, source: 'custom' });
+    } else {
+      setStatus('Nothing on file nearby — checking Street View…', false);
+      try {
+        const svLoc = await tryStreetView(geo.lat, geo.lng);
+        const dist = haversineKm(geo.lat, geo.lng, svLoc.lat, svLoc.lng);
+        updateInstrument({ label: geo.display.split(',').slice(0,2).join(','), lat: svLoc.lat, lng: svLoc.lng, distanceKm: dist, source: 'streetview' });
+      } catch (svErr){
+        if (svErr.message === 'no-key'){
+          setStatus('No custom panorama nearby. Add a Google Maps API key in the script to enable the Street View fallback.', true);
+        } else {
+          setStatus('No panorama found near that address. Try somewhere else.', true);
+        }
+        els.btn.disabled = false;
+        return;
+      }
+    }
+
+    setStatus('', false);
+    els.empty.classList.add('hidden');
+    els.instrument.classList.add('visible');
+  } catch (err){
+    setStatus(err.message === 'not-found' ? "Couldn't find that address." : 'Something went wrong. Try again.', true);
+  } finally {
+    els.btn.disabled = false;
+  }
+}
+
+function updateInstrument({ label, lat, lng, distanceKm, source }){
+  els.roAddress.textContent = label;
+  const valid = Number.isFinite(lat) && Number.isFinite(lng);
+  els.roCoords.textContent = valid ? `${lat.toFixed(5)}, ${lng.toFixed(5)}` : '—';
+  els.roDistance.textContent = distanceKm != null ? formatDistance(distanceKm) + ' away' : '—';
+  els.roSource.textContent = source === 'custom' ? 'Custom' : 'Street View';
+  els.roSource.className = 'source-badge ' + source;
+  if (valid){
+    els.roMapsLink.href = `https://www.google.com/maps?q=${lat},${lng}`;
+    els.roMapsRow.hidden = false;
+  } else {
+    els.roMapsRow.hidden = true;
+  }
+}
+
+els.btn.addEventListener('click', handleSearch);
+els.input.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleSearch(); });
+
+renderLibrary();
+</script>
+
+<script>
+(function(){
+  const adEls = {
+    advertiseBtn: document.getElementById('advertise-btn'),
+    overlay: document.getElementById('ad-modal-overlay'),
+    close: document.getElementById('ad-modal-close'),
+    steps: document.getElementById('ad-steps'),
+    stepDots: Array.from(document.querySelectorAll('.ad-step-dot')),
+    panels: Array.from(document.querySelectorAll('.ad-panel')),
+    footer: document.getElementById('ad-modal-footer'),
+    backBtn: document.getElementById('ad-back-btn'),
+    nextBtn: document.getElementById('ad-next-btn'),
+    submitBtn: document.getElementById('ad-submit-btn'),
+    success: document.getElementById('ad-success'),
+    successClose: document.getElementById('ad-success-close'),
+    totalAmount: document.getElementById('ad-total-amount'),
+
+    bizName: document.getElementById('ad-biz-name'),
+    bizContact: document.getElementById('ad-biz-contact'),
+    bizPhone: document.getElementById('ad-biz-phone'),
+    bizEmail: document.getElementById('ad-biz-email'),
+    bizAddress: document.getElementById('ad-biz-address'),
+
+    designSame: document.getElementById('ad-design-same'),
+    designName: document.getElementById('ad-design-name'),
+    designPhone: document.getElementById('ad-design-phone'),
+    designEmail: document.getElementById('ad-design-email'),
+    designAddress: document.getElementById('ad-design-address'),
+    imageDrop: document.getElementById('ad-image-drop'),
+    imageInput: document.getElementById('ad-image-input'),
+    imageThumbs: document.getElementById('ad-image-thumbs'),
+
+    locationInput: document.getElementById('ad-location-input'),
+    checkBtn: document.getElementById('ad-check-btn'),
+    locations: document.getElementById('ad-locations'),
+
+    payName: document.getElementById('ad-pay-name'),
+    payNumber: document.getElementById('ad-pay-number'),
+    payExp: document.getElementById('ad-pay-exp'),
+    payCvc: document.getElementById('ad-pay-cvc'),
+    payZip: document.getElementById('ad-pay-zip'),
+
+    summarySubtotal: document.getElementById('ad-summary-subtotal'),
+    summaryDiscountRow: document.getElementById('ad-summary-discount-row'),
+    summaryDiscount: document.getElementById('ad-summary-discount'),
+    summaryTotal: document.getElementById('ad-summary-total'),
+    couponInput: document.getElementById('ad-coupon-input'),
+    couponApply: document.getElementById('ad-coupon-apply'),
+    couponFeedback: document.getElementById('ad-coupon-feedback'),
+  };
+
+  const adState = {
+    step: 0,
+    images: [],
+    locations: [],
+    selections: {},
+    locCounter: 0,
+    couponCode: null,
+    couponInvalid: false,
+  };
+
+  /* ---------- helpers ---------- */
+  function seededRandom(seedStr){
+    let seed = 0;
+    for (let i=0;i<seedStr.length;i++){ seed = (seed*31 + seedStr.charCodeAt(i)) >>> 0; }
+    if (seed === 0) seed = 1;
+    return function(){
+      seed = (seed*1103515245 + 12345) >>> 0;
+      return (seed % 100000) / 100000;
+    };
+  }
+
+  function luhnValid(num){
+    let sum = 0, alt = false;
+    for (let i=num.length-1;i>=0;i--){
+      let n = parseInt(num[i],10);
+      if (alt){ n*=2; if (n>9) n-=9; }
+      sum += n; alt = !alt;
+    }
+    return sum % 10 === 0;
+  }
+
+  /* ---------- open / close ---------- */
+  function openModal(){
+    // Guard against reopening right after a submit was left on the
+    // success screen (e.g. closed via Escape/backdrop instead of "Done") —
+    // without this, the steps/footer stayed hidden and the success
+    // screen stayed visible underneath the reset form on reopen.
+    if (adEls.success.classList.contains('visible')){
+      resetForm();
+    }
+    adEls.success.classList.remove('visible');
+    adEls.steps.style.display = '';
+    adEls.footer.style.display = '';
+    adEls.overlay.classList.remove('hidden');
+    showStep(0);
+  }
+  function closeModal(){
+    adEls.overlay.classList.add('hidden');
+  }
+  adEls.advertiseBtn.addEventListener('click', openModal);
+  adEls.close.addEventListener('click', closeModal);
+  adEls.overlay.addEventListener('click', (e) => { if (e.target === adEls.overlay) closeModal(); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !adEls.overlay.classList.contains('hidden')) closeModal();
+  });
+
+  /* ---------- step navigation ---------- */
+  function showStep(n){
+    adState.step = n;
+    adEls.panels.forEach(p => p.classList.toggle('active', parseInt(p.dataset.panel,10) === n));
+    adEls.stepDots.forEach(d => {
+      const dn = parseInt(d.dataset.step,10);
+      d.classList.toggle('active', dn === n);
+      d.classList.toggle('done', dn < n);
+    });
+    adEls.backBtn.disabled = n === 0;
+    adEls.nextBtn.hidden = n === 3;
+    adEls.submitBtn.hidden = n !== 3;
+  }
+  adEls.stepDots.forEach(d => d.addEventListener('click', () => showStep(parseInt(d.dataset.step,10))));
+  adEls.backBtn.addEventListener('click', () => showStep(Math.max(0, adState.step-1)));
+  adEls.nextBtn.addEventListener('click', () => {
+    if (!validateStep(adState.step)) return;
+    showStep(Math.min(3, adState.step+1));
+  });
+
+  function setStepError(n, msg){
+    const el = document.getElementById('ad-panel'+n+'-error');
+    if (el) el.textContent = msg || '';
+  }
+
+  function validateStep(n){
+    if (n === 0){
+      const req = [adEls.bizName, adEls.bizContact, adEls.bizPhone, adEls.bizEmail, adEls.bizAddress];
+      if (req.some(el => !el.value.trim())){
+        setStepError(0, 'Please fill in all business info fields.');
+        return false;
+      }
+      if (!/^\S+@\S+\.\S+$/.test(adEls.bizEmail.value.trim())){
+        setStepError(0, 'Please enter a valid email address.');
+        return false;
+      }
+      setStepError(0, '');
+      return true;
+    }
+    if (n === 1){
+      const req = [adEls.designName, adEls.designPhone, adEls.designEmail, adEls.designAddress];
+      if (req.some(el => !el.value.trim())){
+        setStepError(1, 'Please fill in all ad design fields.');
+        return false;
+      }
+      if (adState.images.length === 0){
+        setStepError(1, 'Please upload at least one image for your ad.');
+        return false;
+      }
+      setStepError(1, '');
+      return true;
+    }
+    if (n === 2){
+      if (adState.locations.length === 0){
+        setStepError(2, 'Enter a zip code or city/state and click Check.');
+        return false;
+      }
+      if (Object.keys(adState.selections).length === 0){
+        setStepError(2, 'Select at least one available ad spot to continue.');
+        return false;
+      }
+      setStepError(2, '');
+      return true;
+    }
+    if (n === 3){
+      const name = adEls.payName.value.trim();
+      const num = adEls.payNumber.value.replace(/\s+/g,'');
+      const exp = adEls.payExp.value.trim();
+      const cvc = adEls.payCvc.value.trim();
+      const zip = adEls.payZip.value.trim();
+      if (!name || !num || !exp || !cvc || !zip){
+        setStepError(3, 'Please fill in all payment fields.');
+        return false;
+      }
+      if (!/^\d{13,19}$/.test(num) || !luhnValid(num)){
+        setStepError(3, 'Please enter a valid card number.');
+        return false;
+      }
+      const m = exp.match(/^(\d{2})\/(\d{2})$/);
+      if (!m){
+        setStepError(3, 'Expiry must be in MM/YY format.');
+        return false;
+      }
+      const mm = parseInt(m[1],10), yy = 2000 + parseInt(m[2],10);
+      if (mm < 1 || mm > 12){
+        setStepError(3, 'Enter a valid expiry month.');
+        return false;
+      }
+      const expDate = new Date(yy, mm, 0);
+      if (expDate < new Date()){
+        setStepError(3, 'That card has expired.');
+        return false;
+      }
+      if (!/^\d{3,4}$/.test(cvc)){
+        setStepError(3, 'Enter a valid CVC.');
+        return false;
+      }
+      setStepError(3, '');
+      return true;
+    }
+    return true;
+  }
+
+  /* ---------- ad design: same-as-business ---------- */
+  function syncDesignFromBiz(){
+    if (!adEls.designSame.checked) return;
+    adEls.designName.value = adEls.bizName.value;
+    adEls.designPhone.value = adEls.bizPhone.value;
+    adEls.designEmail.value = adEls.bizEmail.value;
+    adEls.designAddress.value = adEls.bizAddress.value;
+  }
+  adEls.designSame.addEventListener('change', syncDesignFromBiz);
+  [adEls.bizName, adEls.bizPhone, adEls.bizEmail, adEls.bizAddress].forEach(el => {
+    el.addEventListener('input', syncDesignFromBiz);
+  });
+
+  /* ---------- image upload ---------- */
+  function handleFiles(fileList){
+    Array.from(fileList).forEach(file => {
+      if (!file.type.startsWith('image/')) return;
+      adState.images.push({ file, url: URL.createObjectURL(file) });
+    });
+    renderThumbs();
+  }
+  function renderThumbs(){
+    adEls.imageThumbs.innerHTML = '';
+    adState.images.forEach((img, i) => {
+      const div = document.createElement('div');
+      div.className = 'ad-thumb';
+      const image = document.createElement('img');
+      image.src = img.url;
+      image.alt = 'Ad image ' + (i+1);
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.dataset.i = i;
+      btn.setAttribute('aria-label','Remove image');
+      btn.textContent = '✕';
+      div.appendChild(image);
+      div.appendChild(btn);
+      adEls.imageThumbs.appendChild(div);
+    });
+  }
+  adEls.imageDrop.addEventListener('click', () => adEls.imageInput.click());
+  adEls.imageDrop.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); adEls.imageInput.click(); }
+  });
+  adEls.imageDrop.addEventListener('dragover', (e) => { e.preventDefault(); adEls.imageDrop.style.borderColor = 'var(--teal)'; });
+  adEls.imageDrop.addEventListener('dragleave', () => { adEls.imageDrop.style.borderColor = ''; });
+  adEls.imageDrop.addEventListener('drop', (e) => {
+    e.preventDefault();
+    adEls.imageDrop.style.borderColor = '';
+    handleFiles(e.dataTransfer.files);
+  });
+  adEls.imageInput.addEventListener('change', () => {
+    handleFiles(adEls.imageInput.files);
+    adEls.imageInput.value = '';
+  });
+  adEls.imageThumbs.addEventListener('click', (e) => {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    const i = parseInt(btn.dataset.i,10);
+    URL.revokeObjectURL(adState.images[i].url);
+    adState.images.splice(i,1);
+    renderThumbs();
+  });
+
+  /* ---------- placement: mock availability + pricing ----------
+     No backend here — availability/price per location+slot is derived
+     deterministically from the location text, so the same input always
+     maps to the same layout while still feeling data-driven. Swap
+     getLocationSlots() for a real API call to wire this up for real. */
+  function getLocationSlots(seedKey){
+    const rand = seededRandom(seedKey);
+    const slots = [];
+    for (let i=0;i<14;i++){
+      const r1 = rand(), r2 = rand();
+      slots.push({
+        id: 'rect'+i,
+        type: 'rect',
+        available: r1 > 0.35,
+        price: Math.round((120 + r2*140)/5)*5
+      });
+    }
+    const rc1 = rand(), rc2 = rand();
+    slots.push({
+      id: 'circle',
+      type: 'circle',
+      available: rc1 > 0.5,
+      price: Math.round((420 + rc2*180)/10)*10
+    });
+    return slots;
+  }
+
+  function buildSphereSVG(slots, locId){
+    const rectCount = 14;
+    const width = 900, height = 190;
+    const rectW = 42, rectH = 34, gap = 8;
+    const totalRectsWidth = rectCount*rectW + (rectCount-1)*gap;
+    const startX = (width - totalRectsWidth)/2;
+    const rectY = height - rectH - 14;
+    const circleR = 38;
+    const circleCx = width/2;
+    const circleCy = rectY - circleR - 8;
+
+    let inner = `<line x1="0" y1="${rectY + rectH/2}" x2="${width}" y2="${rectY + rectH/2}" stroke="#2a3441" stroke-width="1" stroke-dasharray="3 5"/>`;
+
+    const circleSlot = slots.find(s => s.type === 'circle');
+    inner += `<circle class="slot ${circleSlot.available ? 'available' : 'taken'}" data-loc="${locId}" data-slot="${circleSlot.id}" cx="${circleCx}" cy="${circleCy}" r="${circleR}"/>`;
+    inner += `<text class="slot-label" x="${circleCx}" y="${circleCy+4}" text-anchor="middle">${circleSlot.available ? '$'+circleSlot.price : 'TAKEN'}</text>`;
+
+    slots.filter(s => s.type === 'rect').forEach((s, i) => {
+      const x = startX + i*(rectW+gap);
+      inner += `<rect class="slot ${s.available ? 'available' : 'taken'}" data-loc="${locId}" data-slot="${s.id}" x="${x}" y="${rectY}" width="${rectW}" height="${rectH}" rx="4"/>`;
+      inner += `<text class="slot-label" x="${x+rectW/2}" y="${rectY+rectH/2+4}" text-anchor="middle">${s.available ? '$'+s.price : '✕'}</text>`;
+    });
+
+    return `<svg class="ad-sphere-svg" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg" aria-label="Ad spot map — 14 rectangle spots on the horizon, 1 circle spot at the top">${inner}</svg>`;
+  }
+
+  function addLocation(rawInput){
+    const label = rawInput.trim();
+    if (!label) return;
+    const norm = label.toLowerCase();
+    if (adState.locations.some(l => l.norm === norm)) return;
+    const id = 'loc' + (++adState.locCounter);
+    const slots = getLocationSlots(norm);
+    adState.locations.push({ id, norm, label, slots });
+    renderLocations();
+  }
+
+  function renderLocations(){
+    adEls.locations.innerHTML = '';
+    adState.locations.forEach(loc => {
+      const card = document.createElement('div');
+      card.className = 'ad-loc-card';
+
+      const head = document.createElement('div');
+      head.className = 'ad-loc-card-head';
+      const name = document.createElement('span');
+      name.className = 'ad-loc-name';
+      name.textContent = loc.label;
+      const removeBtn = document.createElement('button');
+      removeBtn.type = 'button';
+      removeBtn.className = 'ad-loc-remove';
+      removeBtn.dataset.loc = loc.id;
+      removeBtn.textContent = 'Remove';
+      head.appendChild(name);
+      head.appendChild(removeBtn);
+      card.appendChild(head);
+
+      card.insertAdjacentHTML('beforeend', buildSphereSVG(loc.slots, loc.id));
+      adEls.locations.appendChild(card);
+    });
+
+    Object.keys(adState.selections).forEach(selKey => {
+      const [locId, slotId] = selKey.split('|');
+      const el = adEls.locations.querySelector(`[data-loc="${locId}"][data-slot="${slotId}"]`);
+      if (el){
+        el.classList.add('selected');
+        if (el.nextElementSibling) el.nextElementSibling.classList.add('selected');
+      }
+    });
+  }
+
+  adEls.locations.addEventListener('click', (e) => {
+    const removeBtn = e.target.closest('.ad-loc-remove');
+    if (removeBtn){
+      const locId = removeBtn.dataset.loc;
+      adState.locations = adState.locations.filter(l => l.id !== locId);
+      Object.keys(adState.selections).forEach(k => { if (k.startsWith(locId+'|')) delete adState.selections[k]; });
+      renderLocations();
+      updateTotal();
+      return;
+    }
+    const slotEl = e.target.closest('.slot.available');
+    if (slotEl){
+      const locId = slotEl.dataset.loc, slotId = slotEl.dataset.slot;
+      const loc = adState.locations.find(l => l.id === locId);
+      const slot = loc.slots.find(s => s.id === slotId);
+      const selKey = locId + '|' + slotId;
+      if (adState.selections[selKey]){
+        delete adState.selections[selKey];
+        slotEl.classList.remove('selected');
+        if (slotEl.nextElementSibling) slotEl.nextElementSibling.classList.remove('selected');
+      } else {
+        adState.selections[selKey] = { price: slot.price, type: slot.type };
+        slotEl.classList.add('selected');
+        if (slotEl.nextElementSibling) slotEl.nextElementSibling.classList.add('selected');
+      }
+      updateTotal();
+    }
+  });
+
+  /* ---------- coupon + one-time total ----------
+     Coupon codes apply to a single rectangle placement — the priciest
+     one currently selected, so the customer gets the best available
+     value from the code. This is a one-time purchase, so there's no
+     recurring/monthly fee anywhere in the total. */
+  function computeSubtotal(){
+    return Object.values(adState.selections).reduce((sum, s) => sum + s.price, 0);
+  }
+  function computeDiscount(){
+    if (!adState.couponCode) return 0;
+    const rectPrices = Object.values(adState.selections)
+      .filter(s => s.type === 'rect')
+      .map(s => s.price);
+    if (rectPrices.length === 0) return 0;
+    const maxPrice = Math.max(...rectPrices);
+    if (adState.couponCode === '1free2try') return maxPrice;
+    if (adState.couponCode === '50off2try') return Math.round(maxPrice / 2);
+    return 0;
+  }
+  function renderCouponFeedback(discount){
+    const el = adEls.couponFeedback;
+    if (!el) return;
+    el.classList.remove('ad-coupon-ok','ad-coupon-error');
+    if (adState.couponInvalid){
+      el.textContent = 'Invalid coupon code.';
+      el.classList.add('ad-coupon-error');
+      return;
+    }
+    if (!adState.couponCode){
+      el.textContent = '';
+      return;
+    }
+    const label = adState.couponCode === '1free2try' ? '1FREE2TRY' : '50OFF2TRY';
+    const rectSelected = Object.values(adState.selections).some(s => s.type === 'rect');
+    if (!rectSelected){
+      el.textContent = `Code ${label} applied — select a rectangle ad spot to use it.`;
+    } else if (adState.couponCode === '1free2try'){
+      el.textContent = `Code ${label} applied — 1 rectangle ad spot is free (-$${discount.toLocaleString()}).`;
+    } else {
+      el.textContent = `Code ${label} applied — 50% off 1 rectangle ad spot (-$${discount.toLocaleString()}).`;
+    }
+    el.classList.add('ad-coupon-ok');
+  }
+  function applyCoupon(rawInput){
+    const code = rawInput.trim().toLowerCase();
+    if (!code){
+      adState.couponCode = null;
+      adState.couponInvalid = false;
+      updateTotal();
+      return;
+    }
+    if (code === '1free2try' || code === '50off2try'){
+      adState.couponCode = code;
+      adState.couponInvalid = false;
+    } else {
+      adState.couponCode = null;
+      adState.couponInvalid = true;
+    }
+    updateTotal();
+  }
+
+  function updateTotal(){
+    const subtotal = computeSubtotal();
+    const discount = computeDiscount();
+    const total = Math.max(0, subtotal - discount);
+    adEls.totalAmount.textContent = '$' + total.toLocaleString();
+    if (adEls.summarySubtotal) adEls.summarySubtotal.textContent = '$' + subtotal.toLocaleString();
+    if (adEls.summaryTotal) adEls.summaryTotal.textContent = '$' + total.toLocaleString();
+    if (adEls.summaryDiscountRow){
+      if (discount > 0){
+        adEls.summaryDiscountRow.hidden = false;
+        adEls.summaryDiscount.textContent = '-$' + discount.toLocaleString();
+      } else {
+        adEls.summaryDiscountRow.hidden = true;
+      }
+    }
+    renderCouponFeedback(discount);
+  }
+
+  adEls.couponApply.addEventListener('click', () => applyCoupon(adEls.couponInput.value));
+  adEls.couponInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter'){ e.preventDefault(); adEls.couponApply.click(); }
+  });
+
+  adEls.checkBtn.addEventListener('click', () => {
+    const raw = adEls.locationInput.value;
+    if (!raw.trim()) return;
+    // One "Check" = one location. Splitting on commas here would break
+    // "City, State" entries (e.g. "Portland, OR") into two bogus
+    // locations — click Check again to add another zip/city.
+    addLocation(raw);
+    adEls.locationInput.value = '';
+    setStepError(2, '');
+  });
+  adEls.locationInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter'){ e.preventDefault(); adEls.checkBtn.click(); }
+  });
+
+  /* ---------- payment formatting ---------- */
+  adEls.payNumber.addEventListener('input', () => {
+    const v = adEls.payNumber.value.replace(/\D/g,'').slice(0,19);
+    adEls.payNumber.value = v.replace(/(.{4})/g, '$1 ').trim();
+  });
+  adEls.payExp.addEventListener('input', () => {
+    let v = adEls.payExp.value.replace(/\D/g,'').slice(0,4);
+    if (v.length >= 3) v = v.slice(0,2) + '/' + v.slice(2);
+    adEls.payExp.value = v;
+  });
+  adEls.payCvc.addEventListener('input', () => {
+    adEls.payCvc.value = adEls.payCvc.value.replace(/\D/g,'').slice(0,4);
+  });
+
+  /* ---------- submit ---------- */
+  function resetForm(){
+    document.querySelectorAll('#ad-modal input[type="text"], #ad-modal input[type="tel"], #ad-modal input[type="email"]').forEach(i => i.value = '');
+    adEls.designSame.checked = false;
+    adState.images.forEach(img => URL.revokeObjectURL(img.url));
+    adState.images = [];
+    adState.locations = [];
+    adState.selections = {};
+    adState.couponCode = null;
+    adState.couponInvalid = false;
+    renderThumbs();
+    renderLocations();
+    updateTotal();
+    [0,1,2,3].forEach(n => setStepError(n, ''));
+  }
+
+  adEls.submitBtn.addEventListener('click', () => {
+    // The step-dots allow jumping straight to Payment without visiting
+    // earlier steps, so re-validate every step here (not just Payment)
+    // and jump back to the first one that's incomplete.
+    for (let i=0;i<=3;i++){
+      if (!validateStep(i)){
+        showStep(i);
+        return;
+      }
+    }
+    adEls.steps.style.display = 'none';
+    adEls.panels.forEach(p => p.classList.remove('active'));
+    adEls.footer.style.display = 'none';
+    adEls.success.classList.add('visible');
+  });
+
+  adEls.successClose.addEventListener('click', () => {
+    resetForm();
+    adEls.success.classList.remove('visible');
+    adEls.steps.style.display = '';
+    adEls.footer.style.display = '';
+    showStep(0);
+    closeModal();
+  });
+})();
+</script>
+</body>
+</html>
