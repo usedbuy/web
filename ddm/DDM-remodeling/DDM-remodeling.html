@@ -1060,7 +1060,16 @@
         body: JSON.stringify(payload)
       });
 
-      if (!res.ok) throw new Error('Request failed with status ' + res.status);
+      if (!res.ok) {
+        let detail = '';
+        try {
+          const errBody = await res.json();
+          detail = errBody && errBody.error ? (typeof errBody.error === 'string' ? errBody.error : JSON.stringify(errBody.error)) : JSON.stringify(errBody);
+        } catch (e) {
+          detail = await res.text().catch(() => '');
+        }
+        throw new Error('Request failed with status ' + res.status + (detail ? ': ' + detail : ''));
+      }
       const data = await res.json();
       if (!data.ok) throw new Error('Worker returned ok:false');
 
