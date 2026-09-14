@@ -36,6 +36,10 @@
   #streetview{position:fixed;inset:0;z-index:1;display:none;}
   #streetview.visible{display:block;}
 
+  #embed-view{position:fixed;inset:0;z-index:1;display:none;}
+  #embed-view.visible{display:block;}
+  #embed-frame{width:100%;height:100%;border:0;display:block;}
+
   /* ---------- Empty state ---------- */
   #empty-state{
     position:fixed;inset:0;z-index:2;
@@ -434,6 +438,7 @@
 <div id="void-bg"></div>
 <canvas id="scene"></canvas>
 <div id="streetview"></div>
+<div id="embed-view"><iframe id="embed-frame" src="" title="Embedded Street View panorama" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
 
 <div id="empty-state">
   <h1>Point it somewhere.</h1>
@@ -693,6 +698,8 @@ const els = {
   libraryCountBadge: document.getElementById('library-count-badge'),
   sceneCanvas: document.getElementById('scene'),
   streetviewDiv: document.getElementById('streetview'),
+  embedView: document.getElementById('embed-view'),
+  embedFrame: document.getElementById('embed-frame'),
 };
 
 function setStatus(msg, isError){
@@ -813,9 +820,22 @@ function loadCustomPanorama(url){
   });
 }
 
-function showThreeViewer(){
-  els.sceneCanvas.classList.remove('hidden');
+function hideAllViewers(){
+  els.sceneCanvas.classList.add('hidden');
   els.streetviewDiv.classList.remove('visible');
+  els.embedView.classList.remove('visible');
+  els.embedFrame.src = 'about:blank'; // stop any embed running in the background
+}
+
+function showThreeViewer(){
+  hideAllViewers();
+  els.sceneCanvas.classList.remove('hidden');
+}
+
+function showEmbedViewer(src){
+  hideAllViewers();
+  els.embedFrame.src = src;
+  els.embedView.classList.add('visible');
 }
 
 /* ---------------- Street View fallback ---------------- */
@@ -845,7 +865,7 @@ function tryStreetView(lat, lng){
       const svService = new google.maps.StreetViewService();
       svService.getPanorama({ location: { lat, lng }, radius: 200 }, (data, status) => {
         if (status === 'OK'){
-          els.sceneCanvas.classList.add('hidden');
+          hideAllViewers();
           els.streetviewDiv.classList.add('visible');
           new google.maps.StreetViewPanorama(els.streetviewDiv, {
             position: data.location.latLng,
@@ -928,35 +948,86 @@ async function extractLocation(file){
 
 /* ---------------- Auto-load photos from /images on page open ----------------
    GitHub Pages (and static hosting generally) can't list a folder's contents
-   at runtime, so this reads images/manifest.json — a plain JSON array of
-   filenames that live in the images/ folder next to this HTML file — and
-   builds the panorama list from that instead of a live directory scan.
-   See images/README.md for how to add your own photos. */
+   at runtime, so this reads images/manifest.json — a plain JSON array that
+   lives in the images/ folder next to this HTML file — and builds the
+   panorama list from that instead of a live directory scan.
+
+   Each entry is either:
+     "filename.jpg"                                   — GPS read from EXIF/XMP
+     { "file": "filename.jpg", "lat": 45.5, "lng": -122.6, "name": "Optional" }
+                                                        — GPS (and display name)
+                                                          given explicitly,
+                                                          skips the EXIF lookup
+                                                          entirely (use this
+                                                          when the file's own
+                                                          metadata was stripped,
+                                                          e.g. by a "download
+                                                          photo" export)
+   See images/README.md for details. */
 async function loadImagesFromManifest(){
-  let filenames;
+  let rawEntries;
   try {
     const res = await fetch(IMAGE_MANIFEST, { cache: 'no-store' });
     if (!res.ok) throw new Error('manifest-not-found');
-    filenames = await res.json();
-    if (!Array.isArray(filenames) || filenames.length === 0) throw new Error('manifest-empty');
+    rawEntries = await res.json();
+    if (!Array.isArray(rawEntries) || rawEntries.length === 0) throw new Error('manifest-empty');
   } catch (err){
     // Falls back to the single hardcoded demo panorama already in
     // customPanoramas — most common cause is opening this file directly
     // via file:// instead of serving it over http(s) (fetch() of local
     // files is blocked by the browser in that case), or an empty/missing
     // images/manifest.json.
-    setStatus('Couldn\'t load images/manifest.json — showing a demo panorama instead. Add photos to /images and list their filenames in images/manifest.json (see images/README.md).', true);
+    setStatus('Couldn\'t load images/manifest.json — showing a demo panorama instead. Add photos to /images and list them in images/manifest.json (see images/README.md).', true);
     return false;
   }
 
-  const found = filenames
-    .filter(filename => typeof filename === 'string' && filename.trim())
-    .map(filename => ({
-      name: filename.split('/').pop().replace(/\.[^/.]+$/, ''), // basename, extension dropped, for a cleaner display name
-      lat: null,
-      lng: null,
+  const found = [];
+  const needsGpsLookup = [];
+  let embedCounter = 0;
+
+  rawEntries.forEach(raw => {
+    // Shape 3: a manually-specified Google Maps embed (Maps' own
+    // "Share > Embed a map" iframe src) — displayed directly in an
+    // iframe instead of loaded as a texture, so it needs no local file
+    // and no EXIF/GPS lookup.
+    if (raw && typeof raw === 'object' && typeof raw.embed === 'string' && raw.embed.trim()){
+      const overrideLat = isValidCoord(raw.lat, raw.lng) ? Number(raw.lat) : null;
+      const overrideLng = isValidCoord(raw.lat, raw.lng) ? Number(raw.lng) : null;
+      const displayName = (typeof raw.name === 'string' && raw.name.trim())
+        ? raw.name.trim()
+        : `Street View embed ${++embedCounter}`;
+      found.push({
+        name: displayName,
+        lat: overrideLat,
+        lng: overrideLng,
+        embed: raw.embed.trim()
+      });
+      return;
+    }
+
+    let filename, overrideLat = null, overrideLng = null, displayName = null;
+    if (typeof raw === 'string' && raw.trim()){
+      filename = raw;
+    } else if (raw && typeof raw === 'object' && typeof raw.file === 'string' && raw.file.trim()){
+      filename = raw.file;
+      if (isValidCoord(raw.lat, raw.lng)){
+        overrideLat = Number(raw.lat);
+        overrideLng = Number(raw.lng);
+      }
+      if (typeof raw.name === 'string' && raw.name.trim()) displayName = raw.name.trim();
+    } else {
+      return; // malformed entry — skip it rather than fail the whole manifest
+    }
+
+    const entry = {
+      name: displayName || filename.split('/').pop().replace(/\.[^/.]+$/, ''),
+      lat: overrideLat,
+      lng: overrideLng,
       url: IMAGE_FOLDER + encodeURIComponent(filename).replace(/%2F/g, '/')
-    }));
+    };
+    found.push(entry);
+    if (overrideLat === null) needsGpsLookup.push(entry); // only look up what wasn't given explicitly
+  });
 
   if (found.length === 0) return false;
 
@@ -964,11 +1035,14 @@ async function loadImagesFromManifest(){
   customPanoramas.push(...found);
 
   // GPS lookups happen in the background, one photo at a time, *after*
-  // the list is already populated. GPS isn't needed to display a photo —
-  // only for the address-search matching flow — so the first panorama
-  // (and the rest of the library) don't sit waiting on metadata fetches
-  // for every file before anything appears on screen.
-  enrichPanoramaGps(found).catch(err => console.warn('GPS enrichment failed:', err));
+  // the list is already populated, and only for entries that didn't supply
+  // coordinates directly. GPS isn't needed to display a photo — only for
+  // the address-search matching flow — so the first panorama (and the rest
+  // of the library) don't sit waiting on metadata fetches before anything
+  // appears on screen.
+  if (needsGpsLookup.length > 0){
+    enrichPanoramaGps(needsGpsLookup).catch(err => console.warn('GPS enrichment failed:', err));
+  }
 
   return true;
 }
@@ -1145,8 +1219,12 @@ els.libraryToggle.addEventListener('click', () => {
 async function loadFromLibrary(entry){
   setStatus('Loading photo…', false);
   try {
-    await loadCustomPanorama(entry.url);
-    showThreeViewer();
+    if (entry.embed){
+      showEmbedViewer(entry.embed);
+    } else {
+      await loadCustomPanorama(entry.url);
+      showThreeViewer();
+    }
     els.empty.classList.add('hidden');
     els.instrument.classList.add('visible');
     activeLibraryEntry = entry;
@@ -1179,8 +1257,13 @@ async function handleSearch(){
 
     if (nearest && nearestDist <= CUSTOM_MATCH_RADIUS_KM){
       setStatus('Loading panorama…', false);
-      await loadCustomPanorama(nearest.url);
-      showThreeViewer();
+      if (nearest.embed){
+        showEmbedViewer(nearest.embed);
+      } else {
+        await loadCustomPanorama(nearest.url);
+        showThreeViewer();
+      }
+      activeLibraryEntry = nearest;
       updateInstrument({ label: nearest.name, lat: nearest.lat, lng: nearest.lng, distanceKm: nearestDist, source: 'custom' });
     } else {
       setStatus('Nothing on file nearby — checking Street View…', false);
