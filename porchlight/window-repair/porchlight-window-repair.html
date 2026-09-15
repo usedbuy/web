@@ -349,6 +349,24 @@
   .carousel-dots{ position:absolute; left:0; right:0; bottom:14px; display:flex; justify-content:center; gap:8px; z-index:2; }
   .carousel-dots .dot{ width:8px; height:8px; border-radius:50%; border:none; background:rgba(255,255,255,0.55); cursor:pointer; padding:0; transition:background .15s ease, transform .15s ease; }
   .carousel-dots .dot.active{ background:#fff; transform:scale(1.25); }
+
+  /* ---------- INDUSTRY SELECT ---------- */
+  select#industry{
+    width:100%; padding:14px 15px; border-radius:12px; border:1.5px solid var(--line);
+    background:#fff; font-family:'Inter',sans-serif; font-size:15px; color:var(--ink);
+    appearance:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%2363697A' stroke-width='2'%3E%3Cpath d='M5 8l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat:no-repeat; background-position:right 14px center; background-size:16px;
+  }
+
+  /* ---------- INCLUDED / EXTRAS SUMMARY ---------- */
+  .included-list{ margin:10px 0; }
+  .included-row{ display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+  .included-badge{ white-space:nowrap; font-weight:700; font-size:10.5px; letter-spacing:.04em; text-transform:uppercase;
+    color:var(--green-dark); background:var(--green-tint); border:1px solid var(--green); border-radius:20px; padding:3px 10px; }
+  .included-label{ font-size:12.5px; color:var(--ink-soft); }
+  .extras-summary-row{ display:none; }
+  .extras-summary-row.active{ display:flex; }
 </style>
 </head>
 <body>
@@ -551,8 +569,43 @@
               <div class="field"><label for="fullName">Full name</label><input required type="text" id="fullName" placeholder="Owen Castillo"></div>
               <div class="field"><label for="title">Title at company</label><input required type="text" id="title" placeholder="Owner"></div>
             </div>
+            <div class="grid-2">
+              <div class="field"><label for="email">Email</label><input required type="email" id="email" placeholder="owen@castilloglass.com"></div>
+              <div class="field"><label for="phone">Telephone</label><input required type="tel" id="phone" placeholder="(555) 010-0199"></div>
+            </div>
             <div class="field"><label for="bizName">Business name</label><input required type="text" id="bizName" placeholder="Castillo Window &amp; Glass"></div>
+            <div class="field"><label for="industry">Industry</label><select required id="industry">
+                <option value="Plumbing Services">Plumbing Services</option>
+                <option value="Electricians">Electricians</option>
+                <option value="Heating &amp; Cooling Services">Heating &amp; Cooling Services</option>
+                <option value="Roofing">Roofing</option>
+                <option value="IT support">IT support</option>
+                <option value="Fencing &amp; Decking">Fencing &amp; Decking</option>
+                <option value="Hardscaping Services">Hardscaping Services</option>
+                <option value="Landscaping Services">Landscaping Services</option>
+                <option value="Pest Control Services">Pest Control Services</option>
+                <option value="House Cleaning Services">House Cleaning Services</option>
+                <option value="Pressure Washing Services">Pressure Washing Services</option>
+                <option value="Moving Companies">Moving Companies</option>
+                <option value="Self-Storage Facilities">Self-Storage Facilities</option>
+                <option value="Locksmiths">Locksmiths</option>
+                <option value="Remodeling Services">Remodeling Services</option>
+                <option value="Handyman Services">Handyman Services</option>
+                <option value="Appliance Repair">Appliance Repair</option>
+                <option value="Auto Repair Shops">Auto Repair Shops</option>
+                <option value="Auto Detailing">Auto Detailing</option>
+                <option value="Restaurants">Restaurants</option>
+                <option value="Coffee Shops">Coffee Shops</option>
+                <option value="Daycares">Daycares</option>
+                <option value="Junk Removal Services">Junk Removal Services</option>
+                <option value="Window Repair &amp; Replacement" selected>Window Repair &amp; Replacement</option>
+                <option value="Other">Other</option>
+              </select></div>
             <div class="field"><label for="bizWebsite">Business website <span style="font-weight:400;color:var(--ink-soft);">(optional)</span></label><input type="text" id="bizWebsite" placeholder="www.castilloglass.com"></div>
+            <div class="grid-2">
+              <div class="field"><label for="bizPhone">Company phone number</label><input required type="tel" id="bizPhone" placeholder="(555) 010-0199"></div>
+              <div class="field"><label for="bizEmail">Company email</label><input required type="email" id="bizEmail" placeholder="office@castilloglass.com"></div>
+            </div>
             <div class="field"><label for="bizStreet">Street address</label><input required type="text" id="bizStreet" placeholder="123 Main St"></div>
             <div class="grid-3">
               <div class="field"><label for="bizCity">City</label><input required type="text" id="bizCity" placeholder="Springfield"></div>
@@ -560,7 +613,6 @@
               <div class="field"><label for="bizZip">ZIP</label><input required type="text" id="bizZip" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="45501"></div>
             </div>
             <div class="field"><label for="designNotes">Notes for the design team <span style="font-weight:400;color:var(--ink-soft);">(optional)</span></label><input type="text" id="designNotes" placeholder="Logo, financing options, energy-efficiency messaging"></div>
-            <div class="field"><label for="qrUrl">QR forwarding URL (where scans should be sent)</label><input type="url" id="qrUrl" value="https://yourbusiness.com/special-offer"></div>
           </div>
 
           <div class="field-group">
@@ -608,6 +660,13 @@
 
           <div class="field-group">
             <span class="step-num">4</span>
+            <h3>QR forwarding URL</h3>
+            <p class="sub">Where should scans of your door hanger's QR code be sent?</p>
+            <input type="url" id="qrForwardUrl" placeholder="https://yourbusiness.com/promo">
+          </div>
+
+          <div class="field-group">
+            <span class="step-num">5</span>
             <h3>Your quantity</h3>
             <p class="sub">Campaigns start at 2,000 door hangers.</p>
             <div class="qty-chips">
@@ -618,57 +677,59 @@
             </div>
           </div>
 
-          <div class="field-group">
-            <span class="step-num">5</span>
-            <h3>Add-ons</h3>
-            <p class="sub">Optional extras for your campaign — everything else here is already included.</p>
+          <div class="field-group" id="extrasGroup">
+            <span class="step-num">6</span>
+            <h3>Optional extras</h3>
+            <p class="sub">Basic design and QR tracking are included with every campaign at no cost. Add any of these upgrades if you want more.</p>
 
-            <label class="addon-card">
-              <input type="checkbox" id="addonPremiumDesign">
-              <span class="addon-copy">
-                <strong>Premium design package</strong>
-                <span>Want to design a fully unique, company-branded ad?</span>
-              </span>
-              <span class="addon-price">$90</span>
-            </label>
+            <div id="extrasList">
+              <label class="addon-card" for="extraPremiumDesign">
+                <input type="checkbox" id="extraPremiumDesign" class="extra-checkbox" data-extra="premiumDesign">
+                <span class="addon-copy">
+                  <strong>Premium design package</strong>
+                  <span>Want to design a fully unique, company-branded ad?</span>
+                </span>
+                <span class="addon-price">+$90</span>
+              </label>
 
-            <div class="addon-included">
-              <span class="addon-copy">
-                <strong>Basic ad design package</strong>
-                <span>Highly optimized design that gets your ad seen.</span>
-              </span>
-              <span class="addon-badge">Included</span>
+              <div class="addon-included">
+                <span class="addon-copy">
+                  <strong>Basic ad design package</strong>
+                  <span>Highly optimized design that gets your ad seen.</span>
+                </span>
+                <span class="addon-badge">Included</span>
+              </div>
+
+              <label class="addon-card" for="extraQrDashboard">
+                <input type="checkbox" id="extraQrDashboard" class="extra-checkbox" data-extra="qrDashboard">
+                <span class="addon-copy">
+                  <strong>QR code web dashboard</strong>
+                  <span>See when, how many times, and who scans your ad through an online dashboard.</span>
+                </span>
+                <span class="addon-price">+$79</span>
+              </label>
+
+              <div class="addon-included">
+                <span class="addon-copy">
+                  <strong>Basic QR code tracking</strong>
+                  <span>We'll update you when you request information on the performance and progress of your door-to-door campaign.</span>
+                </span>
+                <span class="addon-badge">Included</span>
+              </div>
+
+              <label class="addon-card" for="extraWebsite">
+                <input type="checkbox" id="extraWebsite" class="extra-checkbox" data-extra="website">
+                <span class="addon-copy">
+                  <strong>Clean website design package</strong>
+                  <span>Custom-built one-page website for your business, built to match your door hanger ad and current offer, service, or product.</span>
+                </span>
+                <span class="addon-price">+$149.99</span>
+              </label>
             </div>
-
-            <label class="addon-card">
-              <input type="checkbox" id="addonQrDashboard">
-              <span class="addon-copy">
-                <strong>QR code web dashboard</strong>
-                <span>See when, how many times, and who scans your ad through an online dashboard.</span>
-              </span>
-              <span class="addon-price">$79</span>
-            </label>
-
-            <div class="addon-included">
-              <span class="addon-copy">
-                <strong>Basic QR code tracking</strong>
-                <span>We'll update you when you request information on the performance and progress of your door-to-door campaign.</span>
-              </span>
-              <span class="addon-badge">Included</span>
-            </div>
-
-            <label class="addon-card">
-              <input type="checkbox" id="addonWebsite">
-              <span class="addon-copy">
-                <strong>Clean website design package</strong>
-                <span>Custom-built one-page website for your business, built to match your door hanger ad and current offer, service, or product.</span>
-              </span>
-              <span class="addon-price">$149.99</span>
-            </label>
           </div>
 
           <div class="field-group static">
-            <span class="step-num">6</span>
+            <span class="step-num">7</span>
             <h3>We print, deliver &amp; track</h3>
             <div class="static-note">
               <p>Once you submit, our design team sends you proofs, then we print and hand-deliver your hangers around the neighborhoods you name — the whole reason window companies hire Porchlight instead of managing flyers themselves.</p>
@@ -727,7 +788,13 @@
             <div class="price-row"><span class="k">Radius</span><span class="v" id="sumRadius">5 miles</span></div>
             <div class="price-row"><span class="k">Quantity</span><span class="v" id="sumQty">2,000 hangers</span></div>
             <div class="price-row"><span class="k">Per hanger</span><span class="v" id="sumPerHanger">$0.275</span></div>
-            <div class="price-row" id="addonRow" style="display:none;"><span class="k">Add-ons</span><span class="v" id="sumAddon">$0.00</span></div>
+            <div class="included-list" id="includedList">
+              <div class="included-row" id="includedDesignRow"><span class="included-badge">Included</span><span class="included-label">Basic ad design package</span></div>
+              <div class="included-row" id="includedQrRow"><span class="included-badge">Included</span><span class="included-label">Basic QR code tracking</span></div>
+            </div>
+            <div class="price-row extras-summary-row" id="sumExtraPremiumDesign"><span class="k">Premium design package</span><span class="v">+$90</span></div>
+            <div class="price-row extras-summary-row" id="sumExtraQrDashboard"><span class="k">QR code web dashboard</span><span class="v">+$79</span></div>
+            <div class="price-row extras-summary-row" id="sumExtraWebsite"><span class="k">Clean website design package</span><span class="v">+$149.99</span></div>
             <div class="price-total"><span class="k">Total</span><span class="v" id="sumTotal">$550</span></div>
           </div>
 
@@ -830,7 +897,7 @@
   navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
 
   // ---- State ----
-  const state = { radius: 30, size: 'third', slot: 'top', qty: 2000, flipped: false, addonPremiumDesign: false, addonQrDashboard: false, addonWebsite: false };
+  const state = { radius: 30, size: 'third', slot: 'top', qty: 2000, flipped: false, extras: { premiumDesign: false, qrDashboard: false, website: false } };
 
   const slotGeom = { top: {y:110,h:100}, mid: {y:215,h:100}, bottom: {y:320,h:100} };
   const sizeGeom = {
@@ -879,39 +946,38 @@
 
   }
 
-  const ADDON_PREMIUM_DESIGN_PRICE = 90;
-  const ADDON_QR_DASHBOARD_PRICE = 79;
-  const ADDON_WEBSITE_PRICE = 149.99;
+  // Must match EXTRA_PRICES in the Worker's index.js exactly — the Worker
+  // recomputes price server-side from these same flags, it never trusts a
+  // dollar amount sent from the browser.
+  const EXTRA_PRICES = { premiumDesign: 90, qrDashboard: 79, website: 149.99 };
 
-  function addonTotalPrice() {
+  function extrasTotal() {
     let t = 0;
-    if (state.addonPremiumDesign) t += ADDON_PREMIUM_DESIGN_PRICE;
-    if (state.addonQrDashboard) t += ADDON_QR_DASHBOARD_PRICE;
-    if (state.addonWebsite) t += ADDON_WEBSITE_PRICE;
+    if (state.extras.premiumDesign) t += EXTRA_PRICES.premiumDesign;
+    if (state.extras.qrDashboard) t += EXTRA_PRICES.qrDashboard;
+    if (state.extras.website) t += EXTRA_PRICES.website;
     return t;
   }
 
   function updatePricing() {
     const units = sizeUnits[state.size];
-    // Matches the Worker's formula exactly: price = 550 * unitsForSize * (qty / 2000)
+    // Matches the Worker's formula exactly: price = 550 * unitsForSize * (qty / 2000), plus extras
     const hangerTotal = 550 * units * (state.qty / 2000);
-    const addonTotal = addonTotalPrice();
-    const total = Number((hangerTotal + addonTotal).toFixed(2));
-    const perHanger = hangerTotal / state.qty;
+    const total = Number((hangerTotal + extrasTotal()).toFixed(2));
+    const perHanger = total / state.qty;
 
     document.getElementById('sumSize').textContent = sizeName[state.size];
     document.getElementById('sumRadius').textContent = state.radius + ' miles';
     document.getElementById('sumQty').textContent = state.qty.toLocaleString() + ' hangers';
     document.getElementById('sumPerHanger').textContent = '$' + perHanger.toFixed(3);
-    const addonRow = document.getElementById('addonRow');
-    if (addonTotal > 0) {
-      addonRow.style.display = 'flex';
-      document.getElementById('sumAddon').textContent = '$' + addonTotal.toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2});
-    } else {
-      addonRow.style.display = 'none';
-    }
     document.getElementById('sumTotal').textContent = '$' + total.toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2});
     document.getElementById('topTotal').innerHTML = '$' + total.toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2}) + ' <small>/ ' + state.qty.toLocaleString() + ' hangers</small>';
+
+    document.getElementById('includedDesignRow').style.display = state.extras.premiumDesign ? 'none' : 'flex';
+    document.getElementById('includedQrRow').style.display = state.extras.qrDashboard ? 'none' : 'flex';
+    document.getElementById('sumExtraPremiumDesign').classList.toggle('active', state.extras.premiumDesign);
+    document.getElementById('sumExtraQrDashboard').classList.toggle('active', state.extras.qrDashboard);
+    document.getElementById('sumExtraWebsite').classList.toggle('active', state.extras.website);
   }
 
   function render() { updateVisual(); updatePricing(); }
@@ -966,21 +1032,13 @@
     });
   });
 
-  // ---- Add-ons ----
-  const addonPremiumDesign = document.getElementById('addonPremiumDesign');
-  addonPremiumDesign.addEventListener('change', () => {
-    state.addonPremiumDesign = addonPremiumDesign.checked;
-    render();
-  });
-  const addonQrDashboard = document.getElementById('addonQrDashboard');
-  addonQrDashboard.addEventListener('change', () => {
-    state.addonQrDashboard = addonQrDashboard.checked;
-    render();
-  });
-  const addonWebsite = document.getElementById('addonWebsite');
-  addonWebsite.addEventListener('change', () => {
-    state.addonWebsite = addonWebsite.checked;
-    render();
+  // Optional extras — the two "Included" rows are static markup with no
+  // checkbox and are intentionally not wired to anything here.
+  document.querySelectorAll('.extra-checkbox').forEach(cb => {
+    cb.addEventListener('change', () => {
+      state.extras[cb.dataset.extra] = cb.checked;
+      render();
+    });
   });
 
   // ---- Flip ----
@@ -1000,7 +1058,7 @@
   // came from. It must NOT be generic or reused from another site.
   // This build does not know where it will be hosted, so this is left as an
   // explicit, clearly-flagged placeholder — replace before deploying.
-  const SOURCE = 'REPLACE-WITH-THIS-SITES-ACTUAL-DOMAIN';
+  const SOURCE = 'REPLACE-WITH-WINDOW-REPAIR-ACTUAL-DOMAIN';
 
   const submitBtn = document.querySelector('#builderForm button[type="submit"]');
   const successCard = document.getElementById('successCard');
@@ -1012,27 +1070,29 @@
     errorCard.classList.add('hidden');
 
     const units = sizeUnits[state.size];
-    const addonTotal = addonTotalPrice();
-    const price = Number((550 * units * (state.qty / 2000) + addonTotal).toFixed(2));
+    const price = Number((550 * units * (state.qty / 2000) + extrasTotal()).toFixed(2));
 
     const payload = {
       fullName: document.getElementById('fullName').value,
+      email: document.getElementById('email').value,
+      phone: document.getElementById('phone').value,
       jobTitle: document.getElementById('title').value,
       businessName: document.getElementById('bizName').value,
       businessWebsite: document.getElementById('bizWebsite').value || undefined,
+      businessPhone: document.getElementById('bizPhone').value,
+      businessEmail: document.getElementById('bizEmail').value,
       businessStreet: document.getElementById('bizStreet').value,
       businessCity: document.getElementById('bizCity').value,
       businessState: document.getElementById('bizState').value.toUpperCase(),
       businessZip: document.getElementById('bizZip').value,
       designNotes: document.getElementById('designNotes').value || undefined,
-      qrForwardingUrl: document.getElementById('qrUrl').value || undefined,
-      addonPremiumDesign: state.addonPremiumDesign,
-      addonQrDashboard: state.addonQrDashboard,
-      addonWebsiteDesign: state.addonWebsite,
+      qrForwardUrl: document.getElementById('qrForwardUrl').value || undefined,
       source: SOURCE,
+      industry: document.getElementById('industry').value,
       radius: state.radius,
       size: state.size,
-      qty: state.qty
+      qty: state.qty,
+      extras: state.extras
     };
 
     submitBtn.disabled = true;
@@ -1045,7 +1105,16 @@
         body: JSON.stringify(payload)
       });
 
-      if (!res.ok) throw new Error('Request failed with status ' + res.status);
+      if (!res.ok) {
+        let detail = '';
+        try {
+          const errBody = await res.json();
+          detail = errBody && errBody.error ? (typeof errBody.error === 'string' ? errBody.error : JSON.stringify(errBody.error)) : JSON.stringify(errBody);
+        } catch (e) {
+          detail = await res.text().catch(() => '');
+        }
+        throw new Error('Request failed with status ' + res.status + (detail ? ': ' + detail : ''));
+      }
       const data = await res.json();
       if (!data.ok) throw new Error('Worker returned ok:false');
 
@@ -1053,15 +1122,16 @@
       const details = {
         'Business': payload.businessName,
         'Contact': payload.fullName + ' — ' + (payload.jobTitle || '—'),
+        'Email': payload.email,
         'Address': payload.businessStreet + ', ' + payload.businessCity + ', ' + payload.businessState + ' ' + payload.businessZip,
         'Radius': state.radius + ' miles',
         'Ad size': sizeName[state.size],
         'Quantity': state.qty.toLocaleString() + ' door hangers',
         ...(function(){
           const chosen = [];
-          if (state.addonPremiumDesign) chosen.push('Premium design package — $90');
-          if (state.addonQrDashboard) chosen.push('QR code web dashboard — $79');
-          if (state.addonWebsite) chosen.push('Clean website design package — $149.99');
+          if (state.extras.premiumDesign) chosen.push('Premium design package — $90');
+          if (state.extras.qrDashboard) chosen.push('QR code web dashboard — $79');
+          if (state.extras.website) chosen.push('Clean website design package — $149.99');
           return chosen.length ? { 'Add-ons': chosen.join(', ') } : {};
         })(),
         'Total': '$' + data.price.toLocaleString()
