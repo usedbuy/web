@@ -1,0 +1,1717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Porch Delivery Marketing (PDM) for Roofing Contractors — Door Hanger Advertising</title>
+<meta name="description" content="Door hanger advertising built for roofing repair and replacement companies. Target the exact streets around every job site while the crew is still on the roof.">
+<meta name="theme-color" content="#0a0a0f">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0a0a0f;
+    --bg-alt: #101019;
+    --paper: #0a0a0f;
+    --paper-card: #14141f;
+    --ink: #eef4ff;
+    --ink-soft: #8d96ab;
+    --teal: #00e5ff;
+    --teal-dark: #0091a8;
+    --yellow: #fcee0a;
+    --brick: #ff2079;
+    --line: rgba(0,229,255,0.28);
+    --line-yellow: rgba(252,238,10,0.35);
+    --bar-h: 76px;
+    --shadow: 0 0 24px rgba(252,238,10,0.15);
+    --maxw: 1180px;
+    --cut: 14px; /* corner-cut size for HUD-style panels */
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; }
+  }
+
+  body{
+    margin:0;
+    padding-top:var(--bar-h);
+    background:
+      linear-gradient(rgba(10,10,15,0.94), rgba(10,10,15,0.98)),
+      repeating-linear-gradient(0deg, rgba(0,229,255,0.05) 0px, rgba(0,229,255,0.05) 1px, transparent 1px, transparent 3px),
+      radial-gradient(circle at 15% 0%, rgba(0,229,255,0.10), transparent 45%),
+      radial-gradient(circle at 85% 20%, rgba(255,32,121,0.10), transparent 45%),
+      #0a0a0f;
+    color:var(--ink);
+    font-family:'Inter', -apple-system, sans-serif;
+    -webkit-font-smoothing:antialiased;
+    font-size:16px;
+    line-height:1.5;
+  }
+
+  h1,h2,h3,h4{
+    font-family:'Chakra Petch', sans-serif; font-weight:700; text-transform:uppercase;
+    letter-spacing:0.01em; line-height:1.1; margin:0 0 0.4em; color:var(--ink);
+  }
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+  p{ margin:0 0 1em; color:var(--ink-soft); }
+  .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 24px; }
+  a{ color:inherit; }
+  button{ font-family:inherit; cursor:pointer; }
+  section{ scroll-margin-top:calc(var(--bar-h) + 20px); }
+
+  /* Neon focus ring everywhere */
+  button:focus-visible, a:focus-visible, input:focus-visible, .pill:focus-visible, .size-card:focus-visible{
+    outline:2px solid var(--yellow); outline-offset:2px;
+  }
+
+  /* Corner-cut "HUD panel" utility -- used on cards, buttons, badges */
+  .hud-cut{ clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut)); }
+
+  /* ================= STICKY PRICE / CTA BAR ================= */
+  /* Single, permanent source of truth for price + next action. */
+  /* Toast for "not available in your city" style notices */
+  .notice-toast{
+    position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(140%);
+    z-index:200; max-width:min(92vw, 420px); background:#0a0a0f; border:1px solid var(--brick);
+    color:var(--ink); font-size:13.5px; padding:14px 18px; box-shadow:0 0 24px rgba(255,32,121,0.35);
+    opacity:0; transition:transform .3s ease, opacity .3s ease; pointer-events:none; text-align:center;
+  }
+  .notice-toast.show{ transform:translateX(-50%) translateY(0); opacity:1; }
+  .notice-toast b{ color:var(--brick); }
+
+  .pricebar{
+    position:fixed; top:0; left:0; right:0; z-index:100; height:var(--bar-h);
+    background:rgba(10,10,15,0.92); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line-yellow);
+    box-shadow:0 1px 18px rgba(252,238,10,0.18);
+  }
+  .pricebar .wrap{ height:100%; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+  .pb-logo{ display:flex; align-items:center; gap:8px; text-decoration:none; font-family:'Chakra Petch',sans-serif; text-transform:uppercase; font-weight:700; font-size:19px; flex-shrink:0; color:var(--ink); }
+  .pb-logo .dot{ width:8px; height:8px; border-radius:50%; background:var(--brick); box-shadow:0 0 8px var(--brick); }
+  .pb-mid{ display:flex; align-items:center; gap:16px; overflow:hidden; flex:1; justify-content:flex-end; }
+  .pb-config{ font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--teal); white-space:nowrap; }
+  .pb-price-badge{
+    display:flex; align-items:baseline; gap:6px; background:var(--yellow); border:1px solid var(--yellow);
+    padding:6px 16px; white-space:nowrap; box-shadow:0 0 14px rgba(252,238,10,0.55);
+  }
+  .pb-price-label{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:#0a0a0f; font-weight:600; }
+  .pb-price{ font-family:'Chakra Petch',sans-serif; font-weight:700; font-size:22px; color:#0a0a0f; white-space:nowrap; }
+  .pb-cta{
+    flex-shrink:0; background:var(--yellow); color:#0a0a0f; border:1px solid var(--yellow); padding:13px 24px;
+    font-weight:700; font-size:14px; text-transform:uppercase; letter-spacing:.04em; text-decoration:none; white-space:nowrap;
+    min-height:44px; display:inline-flex; align-items:center; font-family:'Chakra Petch',sans-serif;
+    box-shadow:0 0 14px rgba(252,238,10,0.55); transition:box-shadow .15s, transform .15s;
+  }
+  .pb-cta:hover{ box-shadow:0 0 24px rgba(252,238,10,0.85); }
+  .pb-cta:active{ transform:translateY(1px); }
+
+  @media (max-width:760px){
+    .pb-config{ display:none; }
+    .pb-logo span.txt{ display:none; }
+    .pricebar .wrap{ padding:0 14px; gap:10px; }
+    .pb-price-badge{ padding:5px 10px; }
+    .pb-price{ font-size:19px; }
+    .pb-cta{ padding:12px 16px; font-size:13.5px; }
+  }
+
+  /* ================= HERO ================= */
+  .hero-section{ padding:52px 0 20px; }
+  .hero-section .wrap{ display:grid; grid-template-columns:1.15fr 0.85fr; gap:48px; align-items:center; }
+
+  .hero-copy .eyebrow{
+    font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--teal); font-weight:600; margin-bottom:14px; display:flex; align-items:center; gap:10px;
+  }
+  .hero-copy .eyebrow::before{ content:""; width:20px; height:1px; background:var(--teal); box-shadow:0 0 6px var(--teal); }
+  .hero-copy h1{
+    font-size:clamp(30px,4.4vw,46px); max-width:16ch; position:relative;
+    text-shadow: 0 0 18px rgba(0,229,255,0.35), 2px 0 0 rgba(255,32,121,0.5), -2px 0 0 rgba(0,229,255,0.5);
+  }
+  .hero-copy .lede{ font-size:17px; max-width:48ch; margin-top:14px; }
+
+  /* Video template -- responsive 16:9 frame. Placeholder overlay shows until
+     a real embed src replaces "about:blank" above. */
+  .video-frame{
+    position:relative; width:100%; max-width:520px; aspect-ratio:16/9; margin-top:22px;
+    background:var(--paper-card); border:1px solid var(--line); box-shadow:0 0 24px rgba(0,229,255,0.12);
+  }
+  .video-frame iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+  .video-placeholder{
+    position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:10px; pointer-events:none; background:
+      repeating-linear-gradient(135deg, rgba(0,229,255,0.05) 0 2px, transparent 2px 10px);
+  }
+  .video-play{
+    width:56px; height:56px; border-radius:50%; border:2px solid var(--yellow); color:var(--yellow);
+    display:flex; align-items:center; justify-content:center; font-size:18px; box-shadow:0 0 16px rgba(252,238,10,0.4);
+  }
+  .video-placeholder-label{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-soft); }
+
+  /* Chatbox template -- same treatment as the video frame, sized for a live-chat widget. */
+  .chatbox-frame{
+    position:relative; width:100%; max-width:460px; height:360px; margin:14px auto 4px;
+    background:var(--bg); border:1px solid var(--line); box-shadow:0 0 24px rgba(0,229,255,0.12);
+  }
+  .chatbox-frame iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+  .chatbox-placeholder{
+    position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:10px; pointer-events:none; background:
+      repeating-linear-gradient(135deg, rgba(0,229,255,0.05) 0 2px, transparent 2px 10px);
+  }
+  .chatbox-icon{ font-size:30px; }
+  .chatbox-placeholder-label{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-soft); }
+
+  .hero-visual{ display:flex; flex-direction:column; align-items:center; gap:14px; }
+
+  /* Shared by the hero's interactive hanger visual */
+  /* Hero hanger entrance: drops onto its hook, settles, then sways gently --
+     borrowed from the reference file's hanger-hook animation. Swing pauses
+     the moment someone actually interacts with it, since a moving target is
+     bad UX for a click surface. */
+  .hanger-hook{
+    transform-origin:50% 5%;
+    animation: hangerDropIn 0.9s cubic-bezier(.34,1.56,.64,1) both,
+               hangerSwing 3.6s ease-in-out 0.9s infinite;
+  }
+  .hanger-hook.settled{ animation-play-state:paused; }
+  @keyframes hangerDropIn{
+    0%{ transform:translateY(-46px) rotate(9deg); opacity:0; }
+    55%{ transform:translateY(4px) rotate(-4deg); opacity:1; }
+    75%{ transform:translateY(-2px) rotate(2deg); }
+    100%{ transform:translateY(0) rotate(-3deg); }
+  }
+  @keyframes hangerSwing{ 0%,100%{ transform:rotate(-3deg); } 50%{ transform:rotate(3deg); } }
+
+  /* Ambient "this is trackable" ping near the ad area -- purely decorative. */
+  .scan-ring{ pointer-events:none; opacity:0; animation:scanPulse 4.2s ease-out infinite; transform-origin:150px 144px; }
+  .scan-ring.delay{ animation-delay:1.4s; }
+  @keyframes scanPulse{
+    0%{ opacity:0; transform:scale(0.55); }
+    18%{ opacity:0.7; }
+    45%{ opacity:0; transform:scale(1.9); }
+    100%{ opacity:0; transform:scale(1.9); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .hanger-hook{ animation:none; transform:rotate(-3deg); }
+    .scan-ring{ animation:none; opacity:0; }
+  }
+
+  .flip-scene{ perspective:1600px; width:100%; max-width:260px; }
+  .flip-card{ position:relative; width:100%; padding-top:173%; transform-style:preserve-3d; transition:transform .7s cubic-bezier(.4,.2,.2,1); filter:drop-shadow(0 0 26px rgba(0,229,255,0.28)); }
+  .flip-card.flipped{ transform:rotateY(180deg); }
+  .flip-face{ position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; }
+  .flip-face.back{ transform:rotateY(180deg); }
+  .flip-face svg{ width:100%; height:100%; overflow:visible; }
+  .hanger-base{ fill:url(#hangerGrad); stroke:var(--teal); stroke-width:2; }
+  .slot-frame{ fill:rgba(0,229,255,0.045); stroke:var(--teal); stroke-opacity:0.4; stroke-width:1.5; pointer-events:none; }
+  .slot-frame-label{
+    font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:.08em; fill:var(--ink);
+    opacity:.95; text-anchor:middle; pointer-events:none;
+  }
+  .highlight{ fill:var(--brick); fill-opacity:0; stroke:var(--brick); stroke-width:2.5; stroke-opacity:0; transition:y .25s ease, height .25s ease, fill-opacity .2s, stroke-opacity .2s; pointer-events:none; filter:drop-shadow(0 0 6px rgba(255,32,121,0.7)); }
+  .side-label{ font-family:'IBM Plex Mono',monospace; font-size:12.5px; font-weight:700; letter-spacing:.08em; fill:var(--ink); }
+  .slot-hit{ fill:rgba(0,0,0,0.001); stroke:var(--line); stroke-width:1.5; cursor:pointer; transition:stroke .15s, stroke-width .15s; }
+  .slot-hit:hover, .slot-hit:focus{ stroke:var(--teal); stroke-width:2.5; outline:none; }
+  .fullpage-hit{ cursor:pointer; }
+  .fullpage-hit .fp-hit-rect{ fill:rgba(0,0,0,0.001); }
+  .fullpage-hit .fp-label{ fill:var(--teal); font-weight:700; transition:fill .15s; }
+  .fullpage-hit .fp-underline{ stroke:var(--teal); stroke-width:1; stroke-dasharray:2 3; }
+  .fullpage-hit:hover .fp-label{ fill:var(--yellow); }
+  .fullpage-hit:hover .fp-underline{ stroke:var(--yellow); }
+  .hanger-hint{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:600; letter-spacing:.05em; fill:var(--yellow); opacity:.95; }
+
+  .flip-toggle{
+    display:flex; align-items:center; gap:8px; background:transparent; border:1px solid var(--teal); color:var(--teal);
+    padding:8px 15px; font-weight:600; font-size:13px; font-family:'IBM Plex Mono',monospace; text-transform:uppercase; letter-spacing:.04em;
+    box-shadow:0 0 10px rgba(0,229,255,0.25);
+  }
+  .flip-toggle:hover{ background:var(--teal); color:#0a0a0f; }
+  .visual-caption{ font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--ink-soft); text-align:center; }
+  .visual-caption b{ color:var(--yellow); }
+
+  @media (max-width:860px){
+    .hero-section .wrap{ grid-template-columns:1fr; }
+    .flip-scene{ max-width:220px; }
+    .hero-visual{ margin-top:8px; }
+  }
+
+  /* ================= RESULTS CAROUSEL ================= */
+  .results-section{ padding:40px 0 8px; }
+  .results-heading{
+    font-size:clamp(24px,3.2vw,32px); text-align:center; margin-bottom:28px;
+    text-shadow:0 0 16px rgba(0,229,255,0.3), 2px 0 0 rgba(255,32,121,0.4), -2px 0 0 rgba(0,229,255,0.4);
+  }
+  .results-carousel{
+    position:relative; width:100%; max-width:280px; aspect-ratio:9/16; margin:0 auto;
+    overflow:hidden; border:1px solid var(--line); box-shadow:0 0 26px rgba(0,229,255,0.16);
+    background:var(--paper-card);
+  }
+  .results-track{ display:flex; height:100%; transition:transform .6s cubic-bezier(.4,.2,.2,1); }
+  .results-track img{ flex:0 0 100%; width:100%; height:100%; object-fit:cover; display:block; }
+  .results-nav{
+    position:absolute; top:50%; transform:translateY(-50%); width:36px; height:36px; border-radius:50%;
+    background:rgba(10,10,15,0.72); border:1px solid var(--teal); color:var(--ink); font-size:20px; line-height:1;
+    display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:5;
+    transition:background .15s, box-shadow .15s;
+  }
+  .results-nav:hover{ background:var(--teal); color:#0a0a0f; box-shadow:0 0 14px rgba(0,229,255,0.5); }
+  .results-nav.prev{ left:10px; }
+  .results-nav.next{ right:10px; }
+  .results-dots{ display:flex; justify-content:center; gap:6px; margin-top:16px; }
+  .results-dots .rs-dot{ width:7px; height:7px; border-radius:50%; background:var(--line); border:none; padding:0; cursor:pointer; }
+  .results-dots .rs-dot.active{ background:var(--yellow); box-shadow:0 0 8px rgba(252,238,10,0.7); }
+
+  /* ================= STEP SECTIONS (shared shell) ================= */
+  /* ================= 3-STEP PROCESS OVERVIEW ================= */
+  .process-section{ padding:20px 0 56px; }
+  .process-heading{ font-size:clamp(24px,3.2vw,32px); }
+  .process-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; margin-top:8px; }
+  .process-card{
+    background:var(--paper-card); border:1px solid var(--line); padding:26px 24px 22px; position:relative;
+    transition:border-color .15s, box-shadow .15s;
+  }
+  .process-card:hover{ border-color:var(--teal); box-shadow:0 0 18px rgba(0,229,255,0.18); }
+  .process-num{ display:block; font-size:14px; color:var(--yellow); font-weight:700; margin-bottom:10px; }
+  .process-num::before{ content:"//"; color:var(--teal); margin-right:2px; }
+  .process-card h3{ font-size:17px; margin-bottom:8px; }
+  .process-card p{ font-size:14px; margin:0; }
+
+  @media (max-width:860px){
+    .process-grid{ grid-template-columns:1fr; }
+  }
+
+  .step-section{ padding:52px 0; border-top:1px solid var(--line); position:relative; }
+  .step-section::before{
+    content:""; position:absolute; top:-1px; left:0; width:64px; height:1px; background:var(--yellow);
+    box-shadow:0 0 8px var(--yellow);
+  }
+  .step-narrow{ max-width:640px; }
+  .step-head{ display:flex; align-items:baseline; gap:12px; margin-bottom:6px; }
+  .step-no{ font-family:'IBM Plex Mono',monospace; font-size:14px; color:var(--yellow); font-weight:700; }
+  .step-no::before{ content:"//"; color:var(--teal); margin-right:2px; }
+  .step-head h2{ font-size:clamp(20px,2.4vw,25px); margin:0; }
+  .step-sub{ font-size:14px; margin:0 0 20px; }
+
+  /* Step 2: controls + product slideshow, side by side on desktop, stacked (visual first) on mobile */
+  .step2-grid{ display:grid; grid-template-columns:1.1fr 0.9fr; gap:40px; align-items:start; margin-top:8px; }
+  .step2-visual{ display:flex; flex-direction:column; align-items:center; gap:14px; }
+
+  @media (max-width:860px){
+    .step2-grid{ grid-template-columns:1fr; gap:24px; }
+    .step2-visual{ order:-1; }
+  }
+
+  /* ================= PRODUCT SLIDESHOW (Step 2) ================= */
+  .slideshow{ position:relative; width:100%; max-width:240px; aspect-ratio:300/520; }
+  .slideshow img{
+    position:absolute; inset:0; width:100%; height:100%; object-fit:contain;
+    opacity:0; transition:opacity .8s ease; filter:drop-shadow(0 0 20px rgba(0,229,255,0.22));
+  }
+  .slideshow img.active{ opacity:1; }
+
+  .pill-row{ display:flex; gap:10px; flex-wrap:wrap; }
+  .pill{
+    border:1px solid var(--line); background:var(--paper-card); padding:10px 16px; font-weight:600; font-size:14px;
+    color:var(--ink-soft); min-height:44px; transition:border-color .15s, background .15s, color .15s, box-shadow .15s;
+    font-family:'IBM Plex Mono',monospace;
+  }
+  .pill:hover{ border-color:var(--teal); }
+  .pill.active{ border-color:var(--yellow); background:var(--yellow); color:#0a0a0f; box-shadow:0 0 14px rgba(252,238,10,0.4); }
+  .pill.unavailable{ opacity:.7; display:inline-flex; align-items:center; gap:6px; }
+  .pill.unavailable:hover{ border-color:var(--brick); opacity:.9; }
+  .unavail-tag{
+    font-family:'IBM Plex Mono',monospace; font-size:9.5px; text-transform:uppercase; letter-spacing:.04em;
+    color:var(--brick); border:1px solid var(--brick); padding:2px 6px; border-radius:3px;
+  }
+
+  .radar-row{ display:flex; gap:18px; align-items:center; margin-top:18px; flex-wrap:wrap; }
+  .radius-caption{ font-size:13px; color:var(--ink-soft); max-width:34ch; }
+  .radius-caption b{ color:var(--yellow); }
+
+  .size-list{ display:flex; flex-direction:column; gap:10px; }
+  .size-card{
+    border:1px solid var(--line); background:var(--paper-card); padding:14px 16px; text-align:left; width:100%;
+    display:flex; justify-content:space-between; align-items:center; gap:10px; transition:border-color .15s, box-shadow .15s;
+    color:var(--ink);
+  }
+  .size-card:hover{ border-color:var(--teal); }
+  .size-card.active{ border-color:var(--brick); box-shadow:0 0 0 1px var(--brick), 0 0 18px rgba(255,32,121,0.35); }
+  .size-card .sc-left b{ display:block; font-size:15px; font-family:'Chakra Petch',sans-serif; text-transform:uppercase; letter-spacing:.02em; }
+  .size-card .sc-left span{ font-size:12.5px; color:var(--ink-soft); }
+  .size-card .sc-price{ font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:15px; white-space:nowrap; color:var(--yellow); }
+  .sub-controls{ display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
+
+  .qty-row{ display:flex; align-items:center; gap:12px; }
+  .qty-btn{ width:44px; height:44px; border:1px solid var(--line); background:var(--paper-card); color:var(--ink); font-size:20px; font-weight:700; display:flex; align-items:center; justify-content:center; }
+  .qty-btn.unavailable{ opacity:.45; }
+  .qty-btn.unavailable:hover{ border-color:var(--brick); opacity:.7; }
+  .qty-btn:hover{ border-color:var(--yellow); color:var(--yellow); }
+  .qty-input{ width:110px; text-align:center; font-family:'IBM Plex Mono',monospace; font-size:16px; font-weight:600; padding:10px; border:1px solid var(--line); background:var(--paper-card); color:var(--ink); }
+  .qty-note{ font-size:13px; color:var(--ink-soft); margin-top:14px; }
+  .qty-note b{ color:var(--yellow); }
+
+  /* ================= FORM (STEP 4, full width) ================= */
+  #step4{ padding:76px 0; background:var(--bg-alt); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .form-shell{ max-width:680px; margin:0 auto; }
+  .form-shell .step-head, .form-shell .step-sub{ text-align:center; justify-content:center; }
+  .form-shell .step-head{ justify-content:center; }
+  .form-grid{ display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:28px; }
+  .field{ display:flex; flex-direction:column; gap:6px; }
+  .field.full{ grid-column:1/-1; }
+  .field label{ font-size:12px; font-weight:600; color:var(--teal); text-transform:uppercase; letter-spacing:.04em; font-family:'IBM Plex Mono',monospace; }
+  .field input{ padding:12px 14px; border:1px solid var(--line); background:var(--paper-card); font-family:inherit; font-size:15px; color:var(--ink); }
+  .field input:focus, button:focus-visible, .pill:focus-visible, .size-card:focus-visible{ outline:2px solid var(--yellow); outline-offset:1px; border-color:var(--yellow); }
+  .review-line{ grid-column:1/-1; font-size:13.5px; color:var(--ink-soft); margin:4px 0 4px; font-family:'IBM Plex Mono',monospace; }
+  .review-line b{ color:var(--yellow); }
+  .form-submit{ grid-column:1/-1; margin-top:4px; }
+  .btn-primary{
+    display:inline-flex; align-items:center; justify-content:center; width:100%; background:var(--yellow); color:#0a0a0f;
+    border:1px solid var(--yellow); padding:15px 24px; font-weight:700; font-size:15.5px; min-height:50px;
+    font-family:'Chakra Petch',sans-serif; text-transform:uppercase; letter-spacing:.05em;
+    box-shadow:0 0 18px rgba(252,238,10,0.4); transition:box-shadow .15s, transform .15s;
+  }
+  .btn-primary:hover{ box-shadow:0 0 28px rgba(252,238,10,0.7); }
+  .form-note{ font-size:12.5px; color:var(--ink-soft); margin-top:10px; text-align:center; }
+  .no-pay-note{
+    max-width:520px; margin:18px auto 0; display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+    justify-content:center; background:var(--paper-card); border:1px dashed var(--teal);
+    padding:12px 16px; font-size:13px; color:var(--ink-soft); text-align:center;
+  }
+  .no-pay-badge{
+    flex-shrink:0; background:var(--teal); color:#0a0a0f; font-family:'IBM Plex Mono',monospace;
+    font-size:11px; font-weight:600; letter-spacing:.04em; text-transform:uppercase;
+    padding:4px 10px; box-shadow:0 0 10px rgba(0,229,255,0.5);
+  }
+
+  /* Itemized value breakdown -- shows the buyer what's included for free and
+     what they're saving by ordering now. Fully driven by render(). */
+  .value-stack{
+    max-width:520px; margin:22px auto 0; background:var(--paper-card); border:1px solid var(--line);
+    padding:18px 20px 6px;
+  }
+  .vs-row{ display:flex; justify-content:space-between; align-items:baseline; gap:12px; font-size:13.5px; padding:9px 0; border-bottom:1px dashed var(--line); color:var(--ink-soft); }
+  .vs-row small{ color:var(--ink-soft); font-size:11.5px; }
+  .vs-row span:first-child{ color:var(--ink); }
+  .vs-row.free span:last-child{ color:var(--teal); font-weight:700; letter-spacing:.04em; }
+  .vs-row.vs-total{ border-bottom:1px dashed var(--line); }
+  .vs-row.vs-total span:first-child{ color:var(--ink-soft); }
+  .vs-strike{ text-decoration:line-through; color:var(--ink-soft) !important; opacity:.8; }
+  .vs-row.vs-subtotal{ border-top:1px dashed var(--line); border-bottom:none; padding-top:12px; }
+  .vs-row.vs-subtotal span:first-child{ color:var(--ink-soft); }
+  .vs-row.vs-subtotal span:last-child{ font-weight:600; color:var(--ink); }
+  .vs-row.vs-today{ border-top:1px solid var(--yellow); border-bottom:none; padding-top:14px; padding-bottom:14px; margin-top:4px; }
+  .vs-row.vs-today span:first-child{ font-weight:700; color:var(--ink); font-family:'Chakra Petch',sans-serif; text-transform:uppercase; letter-spacing:.03em; font-size:14.5px; }
+  .vs-row.vs-today span:last-child{ font-size:22px; font-weight:700; color:var(--yellow); text-shadow:0 0 12px rgba(252,238,10,0.5); }
+  .vs-row.vs-addon{ border-top:1px dashed var(--teal); border-bottom:none; padding-top:12px; }
+  .vs-row.vs-addon span:first-child{ color:var(--teal); }
+  .vs-row.vs-addon span:last-child{ color:var(--teal); font-weight:700; }
+  .vs-save{
+    margin:0 -20px; padding:12px 20px; text-align:center; background:var(--brick); color:#0a0a0f;
+    font-family:'Chakra Petch',sans-serif; font-weight:700; text-transform:uppercase; letter-spacing:.03em;
+    font-size:13.5px; box-shadow:0 0 18px rgba(255,32,121,0.35);
+  }
+  .vs-save b{ font-size:15px; }
+
+  .confirm-panel{ display:none; text-align:center; padding:10px 0; }
+  .confirm-panel.show{ display:block; }
+  .confirm-panel .check{ width:54px; height:54px; border-radius:50%; background:var(--teal); color:#0a0a0f; display:flex; align-items:center; justify-content:center; margin:0 auto 16px; font-size:24px; box-shadow:0 0 20px rgba(0,229,255,0.6); }
+  .confirm-panel .check.err{ background:var(--brick); box-shadow:0 0 20px rgba(255,32,121,0.6); }
+  .confirm-panel h3{ font-size:21px; margin-bottom:8px; }
+  .confirm-panel .btn-ghost{ display:inline-flex; margin-top:14px; border:1px solid var(--ink); background:transparent; padding:11px 20px; font-weight:600; font-size:14px; text-decoration:none; cursor:pointer; color:var(--ink); font-family:'IBM Plex Mono',monospace; text-transform:uppercase; letter-spacing:.04em; }
+  .confirm-panel .btn-ghost:hover{ background:var(--ink); color:#0a0a0f; }
+  .ref-id{ font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:600; color:var(--yellow); margin-top:6px; }
+  .field label .opt{ font-weight:500; color:var(--ink-soft); text-transform:none; letter-spacing:0; }
+
+  .extras-section{ max-width:520px; margin:22px auto 0; }
+  .extras-heading{ font-size:14px; text-transform:uppercase; letter-spacing:.06em; color:var(--yellow); text-align:center; margin-bottom:12px; }
+  .extras-list{ display:flex; flex-direction:column; gap:10px; }
+  .extra-row{
+    display:flex; align-items:center; gap:14px; background:var(--paper-card); border:1px solid var(--line);
+    padding:12px 16px;
+  }
+  .extra-row.toggle{ cursor:pointer; }
+  .extra-row.toggle:hover{ border-color:var(--teal); }
+  .extra-row input[type="checkbox"]{ width:20px; height:20px; flex-shrink:0; accent-color:var(--teal); cursor:pointer; }
+  .extra-main{ display:flex; flex-direction:column; gap:2px; flex:1; min-width:0; }
+  .extra-main b{ font-family:'Chakra Petch',sans-serif; text-transform:none; font-size:14.5px; color:var(--ink); }
+  .extra-note{ font-size:12px; color:var(--ink-soft); }
+  .extra-price{ color:var(--teal); font-weight:600; font-size:14.5px; flex-shrink:0; }
+  .extra-badge{
+    flex-shrink:0; background:rgba(0,230,120,0.12); border:1px solid #00e678; color:#00e678;
+    font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; text-transform:uppercase;
+    letter-spacing:.04em; padding:5px 10px;
+  }
+  .extras-footnote{ font-size:12px; color:var(--ink-soft); text-align:center; margin-top:12px; }
+  .btn-primary[disabled]{ opacity:.5; cursor:not-allowed; box-shadow:none; }
+
+  @media (max-width:640px){ .form-grid{ grid-template-columns:1fr; } }
+
+  /* ================= FAQ ================= */
+  #faq{ padding:76px 0; }
+  .section-head{ max-width:640px; margin:0 auto 36px; text-align:center; }
+  .section-tag{ font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--teal); font-weight:600; margin-bottom:10px; }
+  .faq-heading{
+    font-size:clamp(40px,6vw,64px); margin:0;
+    text-shadow: 0 0 18px rgba(0,229,255,0.35), 2px 0 0 rgba(255,32,121,0.45), -2px 0 0 rgba(0,229,255,0.45);
+  }
+  .faq{ max-width:720px; margin:0 auto; display:flex; flex-direction:column; gap:12px; }
+  .faq-item{ background:var(--paper-card); border:1px solid var(--line); overflow:hidden; }
+  .faq-item.open{ border-color:var(--yellow); box-shadow:0 0 14px rgba(252,238,10,0.2); }
+  .faq-q{ width:100%; text-align:left; background:none; border:none; padding:19px 22px; font-weight:700; font-size:14.5px; display:flex; justify-content:space-between; align-items:center; gap:16px; color:var(--ink); font-family:'IBM Plex Mono',monospace; letter-spacing:.02em; }
+  .faq-q .plus{ font-size:19px; color:var(--yellow); transition:transform .2s; flex-shrink:0; }
+  .faq-item.open .faq-q .plus{ transform:rotate(45deg); }
+  .faq-a{ max-height:0; overflow:hidden; transition:max-height .25s ease; }
+  .faq-a p{ padding:0 22px 19px; margin:0; font-size:14.5px; }
+
+  /* ================= REVIEWS ================= */
+  #reviews{ padding:20px 0 76px; }
+  .reviews-heading{ font-size:18px; text-transform:uppercase; letter-spacing:.06em; color:var(--yellow); margin-bottom:8px; }
+  .reviews-sub{ font-size:14px; max-width:52ch; margin:0 auto; }
+
+  .reviews-viewport{ overflow:hidden; margin-top:32px; }
+  .reviews-track{ display:flex; gap:20px; transition:transform .6s cubic-bezier(.4,.2,.2,1); }
+  .review-card-slide{ flex:0 0 100%; }
+  .review-card-slide img{ width:100%; display:block; filter:drop-shadow(0 0 18px rgba(0,229,255,0.12)); }
+
+  @media (min-width:641px){ .review-card-slide{ flex-basis:calc(50% - 10px); } }
+  @media (min-width:961px){ .review-card-slide{ flex-basis:calc(33.333% - 14px); } }
+  @media (min-width:1281px){ .review-card-slide{ flex-basis:calc(25% - 15px); } }
+
+  .reviews-dots{ display:flex; gap:6px; justify-content:center; margin-top:22px; }
+  .reviews-dots .rv-dot{ width:7px; height:7px; border-radius:50%; background:var(--line); border:none; padding:0; cursor:pointer; }
+  .reviews-dots .rv-dot.active{ background:var(--yellow); box-shadow:0 0 8px rgba(252,238,10,0.7); }
+
+  /* ================= FOOTER ================= */
+  footer{ padding:32px 0; border-top:1px solid var(--line); }
+  .footer-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
+  .footer-row .pb-logo{ font-size:16px; }
+  footer p{ margin:0; font-size:13px; }
+
+  .reveal{ opacity:0; transform:translateY(16px); transition:opacity .5s ease, transform .5s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- Toast notice for unavailable options -->
+<div class="notice-toast" id="noticeToast" role="status" aria-live="polite"></div>
+
+<!-- ============ PERSISTENT PRICE + CTA BAR ============ -->
+<div class="pricebar">
+  <div class="wrap">
+    <a href="#top" class="pb-logo"><span class="dot"></span><span class="txt">PDM</span></a>
+    <div class="pb-mid">
+      <span class="pb-config mono" id="pbConfig">1/3 page · 30 mi · 2,000 hangers</span>
+      <span class="pb-price-badge">
+        <span class="pb-price-label">Est. total</span>
+        <span class="pb-price mono" id="pbPrice">$550</span>
+      </span>
+    </div>
+    <a href="#step4" class="pb-cta">Order my campaign</a>
+  </div>
+</div>
+
+<main id="top">
+
+  <!-- ============ HERO (copy + the interactive, animated door hanger) ============ -->
+  <section class="hero-section">
+    <div class="wrap">
+      <div class="hero-copy reveal">
+        <div class="eyebrow">Local advertising for roofers, simplified</div>
+        <h1>Turn every roof you fix into five more leads next door.</h1>
+        <p class="lede">Neighbors notice a roofing crew on the block. We put your name on their doorstep while your truck is still parked out front.</p>
+
+        <!-- VIDEO TEMPLATE: swap the src below for a real YouTube/Vimeo embed URL,
+             e.g. https://www.youtube.com/embed/VIDEO_ID or
+             https://player.vimeo.com/video/VIDEO_ID -->
+        <div class="video-frame">
+          <iframe
+            src="about:blank"
+            title="PDM roofing campaign overview video"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+          <div class="video-placeholder" aria-hidden="true">
+            <span class="video-play">▶</span>
+            <span class="video-placeholder-label">Your campaign video goes here</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual reveal">
+        <div class="hanger-hook" id="hangerHook">
+          <div class="flip-scene">
+            <div class="flip-card" id="flipCard">
+              <div class="flip-face front" id="faceFront">
+                <svg viewBox="0 0 300 520">
+                  <mask id="mFront"><rect width="300" height="520" rx="20" fill="#fff"/><circle cx="150" cy="58" r="30" fill="#000"/><rect x="134" y="0" width="32" height="58" fill="#000"/></mask>
+                  <linearGradient id="hangerGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#1b1b28"/>
+                    <stop offset="1" stop-color="#0e0e16"/>
+                  </linearGradient>
+                  <g mask="url(#mFront)"><rect width="300" height="520" class="hanger-base"/></g>
+                  <rect x="6" y="6" width="288" height="508" rx="15" fill="none" stroke="var(--line)" stroke-width="1.5"/>
+
+                  <g class="fullpage-hit" data-fullside="front" tabindex="0" role="button" aria-label="Select full page, front">
+                    <rect class="fp-hit-rect" x="14" y="26" width="272" height="34"/>
+                    <text x="150" y="46" text-anchor="middle" class="side-label fp-label">FRONT</text>
+                    <line x1="118" y1="52" x2="182" y2="52" class="fp-underline"/>
+                  </g>
+                  <text x="150" y="66" text-anchor="middle" class="hanger-hint">tap for full page</text>
+
+                  <rect class="slot-frame" x="26" y="104" width="248" height="132" rx="0"/>
+                  <text x="150" y="175" text-anchor="middle" class="slot-frame-label">1/3 PAGE AD SPACE</text>
+                  <rect class="slot-frame" x="26" y="236" width="248" height="132" rx="0"/>
+                  <text x="150" y="307" text-anchor="middle" class="slot-frame-label">1/3 PAGE AD SPACE</text>
+                  <rect class="slot-frame" x="26" y="368" width="248" height="132" rx="0"/>
+                  <text x="150" y="439" text-anchor="middle" class="slot-frame-label">1/3 PAGE AD SPACE</text>
+                  <rect class="slot-hit" data-side="front" tabindex="0" role="button" aria-label="Select 1/3 page, front" x="26" y="104" width="248" height="396" fill="none" stroke="none"/>
+                  <rect id="hlFront" class="highlight" x="26" y="104" width="248" height="132" rx="0"/>
+                  <circle class="scan-ring" cx="150" cy="170" r="14" fill="none" stroke="var(--yellow)" stroke-width="2"/>
+                  <circle class="scan-ring delay" cx="150" cy="170" r="14" fill="none" stroke="var(--yellow)" stroke-width="2"/>
+                </svg>
+              </div>
+              <div class="flip-face back" id="faceBack">
+                <svg viewBox="0 0 300 520">
+                  <mask id="mBack"><rect width="300" height="520" rx="20" fill="#fff"/><circle cx="150" cy="58" r="30" fill="#000"/><rect x="134" y="0" width="32" height="58" fill="#000"/></mask>
+                  <linearGradient id="hangerGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#1b1b28"/>
+                    <stop offset="1" stop-color="#0e0e16"/>
+                  </linearGradient>
+                  <g mask="url(#mBack)"><rect width="300" height="520" class="hanger-base"/></g>
+                  <rect x="6" y="6" width="288" height="508" rx="15" fill="none" stroke="var(--line)" stroke-width="1.5"/>
+
+                  <g class="fullpage-hit" data-fullside="back" tabindex="0" role="button" aria-label="Select full page, back">
+                    <rect class="fp-hit-rect" x="14" y="26" width="272" height="34"/>
+                    <text x="150" y="46" text-anchor="middle" class="side-label fp-label">BACK</text>
+                    <line x1="118" y1="52" x2="182" y2="52" class="fp-underline"/>
+                  </g>
+                  <text x="150" y="66" text-anchor="middle" class="hanger-hint">tap for full page</text>
+
+                  <rect class="slot-frame" x="26" y="104" width="248" height="132" rx="0"/>
+                  <text x="150" y="175" text-anchor="middle" class="slot-frame-label">1/3 PAGE AD SPACE</text>
+                  <rect class="slot-frame" x="26" y="236" width="248" height="132" rx="0"/>
+                  <text x="150" y="307" text-anchor="middle" class="slot-frame-label">1/3 PAGE AD SPACE</text>
+                  <rect class="slot-frame" x="26" y="368" width="248" height="132" rx="0"/>
+                  <text x="150" y="439" text-anchor="middle" class="slot-frame-label">1/3 PAGE AD SPACE</text>
+                  <rect class="slot-hit" data-side="back" tabindex="0" role="button" aria-label="Select 1/3 page, back" x="26" y="104" width="248" height="396" fill="none" stroke="none"/>
+                  <rect id="hlBack" class="highlight" x="26" y="104" width="248" height="132" rx="0"/>
+                  <circle class="scan-ring" cx="150" cy="170" r="14" fill="none" stroke="var(--yellow)" stroke-width="2"/>
+                  <circle class="scan-ring delay" cx="150" cy="170" r="14" fill="none" stroke="var(--yellow)" stroke-width="2"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 3-STEP PROCESS OVERVIEW ============ -->
+  <section class="process-section reveal" id="process">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-tag">The process</div>
+        <h2 class="process-heading">How PDM works</h2>
+      </div>
+      <div class="process-grid">
+        <div class="process-card hud-cut">
+          <span class="process-num mono">01</span>
+          <h3>Tell us about your business</h3>
+          <p>Register your business with us, then specify your marketing goals and your industry so we can tailor your campaign.</p>
+        </div>
+        <div class="process-card hud-cut">
+          <span class="process-num mono">02</span>
+          <h3>Design &amp; approve</h3>
+          <p>Select your distribution area and ad size, then approve the custom-designed ad before anything goes to print.</p>
+        </div>
+        <div class="process-card hud-cut">
+          <span class="process-num mono">03</span>
+          <h3>Track the results</h3>
+          <p>We hand-deliver your marketing message to doors of your future customers, and you track it all on your dashboard.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ INDUSTRY BENEFITS ============ -->
+  <section class="process-section reveal" id="whyPdm">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-tag">Made for your business</div>
+        <h2 class="process-heading">Why roofers use PDM</h2>
+      </div>
+      <p class="step-sub" style="max-width:640px;margin:0 auto 28px;text-align:center;">Roofing is a big-ticket, low-frequency purchase. Door hangers put you in front of homeowners at the exact moment they start noticing their own roof.</p>
+      <div class="process-grid">
+        <div class="process-card hud-cut">
+          <span class="process-num mono">01</span>
+          <h3>Storm & season timing</h3>
+          <p>Hail, wind, and heavy rain make whole neighborhoods think about their roof at once. Drop hangers within days of a storm or at the start of roofing season and you're the name they remember.</p>
+        </div>
+        <div class="process-card hud-cut">
+          <span class="process-num mono">02</span>
+          <h3>Proof is already on the street</h3>
+          <p>A ladder, a dumpster, and a crew on a neighbor's roof is the best advertisement you'll ever get. We deliver your ad to every house that can see the job in progress.</p>
+        </div>
+        <div class="process-card hud-cut">
+          <span class="process-num mono">03</span>
+          <h3>High ticket, low volume math</h3>
+          <p>One average re-roof covers the cost of thousands of door hangers many times over. You only need a small percentage of doors to convert to make this pay for itself.</p>
+        </div>
+        <div class="process-card hud-cut">
+          <span class="process-num mono">04</span>
+          <h3>Trust before the estimate call</h3>
+          <p>A physical, professional hanger on the door — not a random truck flyer — signals a licensed, established company before a homeowner ever picks up the phone.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ RESULTS CAROUSEL ============ -->
+  <section class="results-section reveal" id="resultsSection">
+    <div class="wrap">
+      <h2 class="results-heading">Door hangers that deliver results</h2>
+      <div class="results-carousel" id="resultsCarousel">
+        <div class="results-track" id="resultsTrack"></div>
+        <button class="results-nav prev" id="resultsPrev" aria-label="Previous image" type="button">&#8249;</button>
+        <button class="results-nav next" id="resultsNext" aria-label="Next image" type="button">&#8250;</button>
+      </div>
+      <div class="results-dots" id="resultsDots"></div>
+    </div>
+  </section>
+
+  <!-- ============ STEP 1: RADIUS ============ -->
+  <section class="step-section reveal" id="step1">
+    <div class="wrap step-narrow">
+      <div class="step-head"><span class="step-no mono">01</span><h2>How far do you want to reach?</h2></div>
+      <p class="step-sub">Set the delivery radius around your business address. <b>5 mi and 15 mi aren't available in your city yet</b> — 30 mi is currently the only option.</p>
+      <div class="pill-row" role="group" aria-label="Delivery radius">
+        <button class="pill unavailable" data-radius="5">5 mi <span class="unavail-tag">unavailable</span></button>
+        <button class="pill unavailable" data-radius="15">15 mi <span class="unavail-tag">unavailable</span></button>
+        <button class="pill active" data-radius="30">30 mi</button>
+      </div>
+      <div class="radar-row">
+        <svg width="110" height="110" viewBox="0 0 130 130" aria-hidden="true">
+          <circle cx="65" cy="65" r="18" id="ring5" fill="none" stroke="var(--line)" stroke-width="3"/>
+          <circle cx="65" cy="65" r="36" id="ring15" fill="none" stroke="var(--line)" stroke-width="3"/>
+          <circle cx="65" cy="65" r="56" id="ring30" fill="none" stroke="var(--brick)" stroke-width="4"/>
+          <circle cx="65" cy="65" r="5" fill="var(--brick)"/>
+        </svg>
+        <p class="radius-caption" id="radiusCaption"><b>30 mi</b> — the whole metro area.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STEP 2: AD SIZE + THE DOOR HANGER, TOGETHER ============ -->
+  <!-- Controls and visual live in the same block on every screen size, so they're
+       never separated by other steps -- this is the one place they need to be read together. -->
+  <section class="step-section reveal" id="step2">
+    <div class="wrap">
+      <div class="step-head"><span class="step-no mono">02</span><h2>How much space do you need?</h2></div>
+      <p class="step-sub">Every hanger holds 6 ad slots — 3 on the front, 3 on the back. Prices below are for our 2,000-hanger starting run; your live total is always in the bar above.</p>
+
+      <div class="step2-grid">
+        <div class="step2-controls">
+          <div class="size-list" role="group" aria-label="Ad size">
+            <button class="size-card active" data-size="third">
+              <span class="sc-left"><b>1/3 Page</b><span>One of 3 slots per side</span></span>
+              <span class="sc-price mono">$550</span>
+            </button>
+            <button class="size-card" data-size="half">
+              <span class="sc-left"><b>Half Page</b><span>Half the hanger, front or back</span></span>
+              <span class="sc-price mono">$1,100</span>
+            </button>
+            <button class="size-card" data-size="full">
+              <span class="sc-left"><b>Full Page</b><span>The whole front, or the whole back</span></span>
+              <span class="sc-price mono">$1,650</span>
+            </button>
+            <button class="size-card" data-size="both">
+              <span class="sc-left"><b>Both Sides</b><span>Every inch, front and back</span></span>
+              <span class="sc-price mono">$3,300</span>
+            </button>
+          </div>
+
+          <div class="sub-controls" id="sideControls" role="group" aria-label="Front or back">
+            <button class="pill active" data-side="front">Front</button>
+            <button class="pill" data-side="back">Back</button>
+          </div>
+        </div>
+
+        <div class="step2-visual">
+          <div class="slideshow" aria-label="Examples of printed door hangers">
+            <img class="slide active" data-index="0" src="images/sample-door-hanger-01.png" alt="Sample door hanger ad #1">
+            <img class="slide" data-index="1" src="images/sample-door-hanger-02.png" alt="Sample door hanger ad #2">
+            <img class="slide" data-index="2" src="images/sample-door-hanger-03.png" alt="Sample door hanger ad #3">
+            <img class="slide" data-index="3" src="images/sample-door-hanger-04.png" alt="Sample door hanger ad #4">
+            <img class="slide" data-index="4" src="images/sample-door-hanger-05.png" alt="Sample door hanger ad #5">
+            <img class="slide" data-index="5" src="images/sample-door-hanger-06.png" alt="Sample door hanger ad #6">
+            <img class="slide" data-index="6" src="images/sample-door-hanger-07.png" alt="Sample door hanger ad #7">
+            <img class="slide" data-index="7" src="images/sample-door-hanger-08.png" alt="Sample door hanger ad #8">
+            <img class="slide" data-index="8" src="images/sample-door-hanger-09.png" alt="Sample door hanger ad #9">
+            <img class="slide" data-index="9" src="images/sample-door-hanger-10.png" alt="Sample door hanger ad #10">
+          </div>
+          <p class="visual-caption" style="opacity:.85">A real example matching what you’ve selected above.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STEP 3: QUANTITY ============ -->
+  <section class="step-section reveal" id="step3">
+    <div class="wrap step-narrow">
+      <div class="step-head"><span class="step-no mono">03</span><h2>How many door hangers?</h2></div>
+      <p class="step-sub">2,000 is currently the only quantity available in your city.</p>
+      <div class="qty-row">
+        <button class="qty-btn unavailable" id="qtyMinus" aria-label="Decrease quantity">–</button>
+        <input class="qty-input" id="qtyInput" type="number" min="2000" max="2000" step="1000" value="2000" inputmode="numeric">
+        <button class="qty-btn unavailable" id="qtyPlus" aria-label="Increase quantity">+</button>
+      </div>
+      <p class="qty-note">2,000 hangers is the only run size we can deliver in your area right now.</p>
+    </div>
+  </section>
+
+  <!-- ============ STEP 4: FORM ============ -->
+
+  <section id="step4">
+    <div class="wrap">
+      <div class="form-shell">
+        <div class="step-head" style="justify-content:center;"><span class="step-no mono">04</span><h2>Place your order</h2></div>
+        <p class="step-sub" style="text-align:center;">This places your order — you're not paying anything on this page. We'll confirm your design, then email or text you a secure payment link before printing begins.</p>
+        <div class="no-pay-note">
+          <span class="no-pay-badge">No payment now</span>
+          <span>Submitting this form places your order. We'll reach out by email or SMS to arrange payment once your design is confirmed.</span>
+        </div>
+
+        <div class="extras-section">
+          <h3 class="extras-heading">Optional extras</h3>
+          <div class="extras-list">
+            <label class="extra-row toggle" for="extraPremiumDesign">
+              <input id="extraPremiumDesign" name="extraPremiumDesign" type="checkbox">
+              <span class="extra-main">
+                <b>Premium design package</b>
+                <span class="extra-note">Priority, more elaborate design work on your door hanger beyond the basic service.</span>
+              </span>
+              <span class="extra-price mono">$90.00</span>
+            </label>
+
+            <div class="extra-row static">
+              <span class="extra-main">
+                <b>Basic ad design package</b>
+                <span class="extra-note">Up to 3 free design drafts from our team.</span>
+              </span>
+              <span class="extra-badge">Included</span>
+            </div>
+
+            <label class="extra-row toggle" for="extraQrDashboard">
+              <input id="extraQrDashboard" name="extraQrDashboard" type="checkbox">
+              <span class="extra-main">
+                <b>QR code web dashboard</b>
+                <span class="extra-note">Full analytics: scan locations, times, and trends over time.</span>
+              </span>
+              <span class="extra-price mono">$79.00</span>
+            </label>
+
+            <div class="extra-row static">
+              <span class="extra-main">
+                <b>Basic QR code tracking</b>
+                <span class="extra-note">See total scan counts on your printed QR code.</span>
+              </span>
+              <span class="extra-badge">Included</span>
+            </div>
+
+            <label class="extra-row toggle" for="extraWebsite">
+              <input id="extraWebsite" name="extraWebsite" type="checkbox">
+              <span class="extra-main">
+                <b>Clean website design package</b>
+                <span class="extra-note">One page website to showcase your business, your special offer, and make it simple for customers to reach you.</span>
+              </span>
+              <span class="extra-price mono">$149.99</span>
+            </label>
+
+          </div>
+          <p class="extras-footnote">Toggle any extra above and your total below updates automatically.</p>
+        </div>
+
+        <div class="value-stack" id="valueStack">
+          <div class="vs-row"><span>Ad size <small id="vsSizeNote">(1/3 Page, per 2,000 hangers)</small></span><span class="mono" id="vsSizeVal">$550.00</span></div>
+          <div class="vs-row"><span>Quantity <small id="vsQtyNote">(2,000 hangers)</small></span><span class="mono" id="vsQtyVal">×1.00</span></div>
+          <div class="vs-row free"><span>Basic ad design package <small>(reg. $99)</small></span><span class="mono">FREE</span></div>
+          <div class="vs-row free"><span>Basic QR code tracking <small>(reg. $79)</small></span><span class="mono">FREE</span></div>
+          <div class="vs-row vs-total"><span>Total value</span><span class="mono vs-strike" id="vsTotalValue">$728.00</span></div>
+          <div class="vs-row vs-subtotal"><span>Campaign subtotal</span><span class="mono" id="vsPriceToday">$550.00</span></div>
+          <div class="vs-row vs-addon" id="vsPremiumRow" style="display:none;"><span>+ Premium design package</span><span class="mono" id="vsPremiumVal">$90.00</span></div>
+          <div class="vs-row vs-addon" id="vsQrDashboardRow" style="display:none;"><span>+ QR code web dashboard</span><span class="mono" id="vsQrDashboardVal">$79.00</span></div>
+          <div class="vs-row vs-addon" id="vsAddonRow" style="display:none;"><span>+ Clean website design package</span><span class="mono" id="vsAddonVal">$149.99</span></div>
+          <div class="vs-row vs-today"><span>Your total today</span><span class="mono" id="vsGrandTotal">$550.00</span></div>
+          <div class="vs-save" id="vsSaveLine">You're saving <b>$178</b> by ordering now</div>
+        </div>
+
+        <form id="signupForm" novalidate>
+          <div class="form-grid">
+            <div class="field">
+              <label for="fullName">Full name</label>
+              <input id="fullName" name="fullName" type="text" required autocomplete="name">
+            </div>
+            <div class="field">
+              <label for="jobTitle">Title at company</label>
+              <input id="jobTitle" name="jobTitle" type="text" autocomplete="organization-title">
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" required autocomplete="email">
+            </div>
+            <div class="field">
+              <label for="phone">Telephone</label>
+              <input id="phone" name="phone" type="tel" required autocomplete="tel">
+            </div>
+            <div class="field">
+              <label for="businessName">Business name</label>
+              <input id="businessName" name="businessName" type="text" required autocomplete="organization">
+            </div>
+            <div class="field">
+              <label for="businessWebsite">Business website <span class="opt">(optional)</span></label>
+              <input id="businessWebsite" name="businessWebsite" type="text" autocomplete="url" placeholder="www.yourbusiness.com">
+            </div>
+            <div class="field">
+              <label for="businessPhone">Company phone number</label>
+              <input id="businessPhone" name="businessPhone" type="tel" required autocomplete="tel">
+            </div>
+            <div class="field">
+              <label for="businessEmail">Company email</label>
+              <input id="businessEmail" name="businessEmail" type="email" required autocomplete="email">
+            </div>
+            <div class="field full">
+              <label for="businessStreet">Business street address</label>
+              <input id="businessStreet" name="businessStreet" type="text" required autocomplete="address-line1">
+            </div>
+            <div class="field">
+              <label for="businessCity">City</label>
+              <input id="businessCity" name="businessCity" type="text" required autocomplete="address-level2">
+            </div>
+            <div class="field">
+              <label for="businessState">State <span class="opt">(2-letter, e.g. OR)</span></label>
+              <input id="businessState" name="businessState" type="text" required autocomplete="address-level1" maxlength="2" pattern="[A-Za-z]{2}" style="text-transform:uppercase" placeholder="OR">
+            </div>
+            <div class="field">
+              <label for="businessZip">ZIP code</label>
+              <input id="businessZip" name="businessZip" type="text" required inputmode="numeric" autocomplete="postal-code" maxlength="5" pattern="[0-9]{5}" placeholder="97204">
+            </div>
+            <input type="hidden" id="industry" name="industry" value="Roofing">
+            <div class="field full">
+              <label for="qrForwardUrl">QR forwarding URL (where scans should be sent)</label>
+              <input id="qrForwardUrl" name="qrForwardUrl" type="url" value="https://yourbusiness.com/special-offer">
+            </div>
+            <div class="field full">
+              <label for="designNotes">Notes for our design team <span class="opt">(optional)</span></label>
+              <input id="designNotes" name="designNotes" type="text" placeholder="Logo files, colors, offer details, anything else to know">
+            </div>
+
+            <p class="review-line" id="reviewLine">You're requesting <b>2,000 door hangers</b> — <b>1/3 page</b>, <b>30 mi</b> radius. This is an estimate — check the total in the bar above before you order. No payment is collected here.</p>
+
+            <div class="form-submit">
+              <button type="submit" class="btn-primary" id="submitBtn">Order my campaign</button>
+              <p class="form-note">Submitting places your order — it does not charge you. We'll email or text you to arrange payment once your design is confirmed, before anything goes to print.</p>
+            </div>
+          </div>
+        </form>
+
+        <div class="confirm-panel" id="confirmPanel">
+          <div class="check">✓</div>
+          <h3>Request received</h3>
+          <p id="confirmSummary"></p>
+          <p class="ref-id" id="refIdLine"></p>
+        </div>
+
+        <div class="confirm-panel" id="errorPanel">
+          <div class="check err">!</div>
+          <h3>Something went wrong</h3>
+          <p>We couldn't submit your request. Please check your connection and try again, or email us directly.</p>
+          <button type="button" class="btn-ghost" id="tryAgainBtn">Try again</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section id="faq">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <h2 class="faq-heading">FAQ</h2>
+      </div>
+      <div class="faq">
+        <div class="faq-item reveal">
+          <button class="faq-q" aria-expanded="false">DO I PAY WHEN I SUBMIT MY ORDER ON THIS SITE?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No — placing your order here doesn't charge you anything. Once we've confirmed your design and details, we'll email or text you a secure payment link. Printing and delivery begin after that payment is complete.</p></div>
+        </div>
+        <div class="faq-item reveal">
+          <button class="faq-q" aria-expanded="false">HOW LONG DOES IT TAKE FOR THE DOOR HANGER TO BE DELIVERED?<span class="plus">+</span></button>
+          <div class="faq-a"><p>After full payment, it usually takes 3–4 weeks for all door hangers to be delivered.</p></div>
+        </div>
+        <div class="faq-item reveal">
+          <button class="faq-q" aria-expanded="false">IS THE DESIGN OF THE DOOR HANGER INCLUDED?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Yes — our design team will provide you with up to 3 free design variations.</p></div>
+        </div>
+        <div class="faq-item reveal">
+          <button class="faq-q" aria-expanded="false">IS THE TRACKING SERVICE FREE?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Yes — we provide a free dashboard through which you can track the performance of the QR code on your distributed door hangers.</p></div>
+        </div>
+        <div class="faq-item reveal">
+          <button class="faq-q" aria-expanded="false">GOT MORE QUESTIONS?<span class="plus">+</span></button>
+          <div class="faq-a">
+            <p>Chat with our customer service team right here.</p>
+            <!-- CHATBOX TEMPLATE: swap the src below for a real live-chat
+                 provider's embed URL (e.g. Intercom, Tawk.to, Crisp, Zendesk). -->
+            <div class="chatbox-frame">
+              <iframe
+                src="about:blank"
+                title="PDM roofing customer service chat"
+                loading="lazy">
+              </iframe>
+              <div class="chatbox-placeholder" aria-hidden="true">
+                <span class="chatbox-icon">💬</span>
+                <span class="chatbox-placeholder-label">Live chat widget goes here</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ REVIEWS ============ -->
+  <section id="reviews">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <h3 class="reviews-heading">Our glowing reviews</h3>
+        <p class="reviews-sub">Small business owners understand the importance of offline direct to customer marketing.</p>
+      </div>
+      <div class="reviews-viewport reveal">
+        <div class="reviews-track" id="reviewsTrack">
+          <div class="review-card-slide"><img src="images/customer-review-01.png" alt="Customer review #1" loading="lazy"></div>
+          <div class="review-card-slide"><img src="images/customer-review-02.png" alt="Customer review #2" loading="lazy"></div>
+          <div class="review-card-slide"><img src="images/customer-review-03.png" alt="Customer review #3" loading="lazy"></div>
+          <div class="review-card-slide"><img src="images/customer-review-04.png" alt="Customer review #4" loading="lazy"></div>
+          <div class="review-card-slide"><img src="images/customer-review-05.png" alt="Customer review #5" loading="lazy"></div>
+          <div class="review-card-slide"><img src="images/customer-review-06.png" alt="Customer review #6" loading="lazy"></div>
+          <div class="review-card-slide"><img src="images/customer-review-07.png" alt="Customer review #7" loading="lazy"></div>
+          <div class="review-card-slide"><img src="images/customer-review-08.png" alt="Customer review #8" loading="lazy"></div>
+        </div>
+      </div>
+      <div class="reviews-dots" id="reviewsDots"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-row">
+    <a href="#top" class="pb-logo"><span class="dot"></span>PDM</a>
+    <p>© 2026 Porch Delivery Marketing (PDM). Hyper-local door hanger advertising for roofing repair and replacement companies.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- Reveal on scroll ---------- */
+  var revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.1 });
+    revealEls.forEach(function(el){ io.observe(el); });
+  } else {
+    revealEls.forEach(function(el){ el.classList.add('in'); });
+  }
+
+  /* ---------- State ---------- */
+  var state = {
+    radius: 30,      // only 30 is currently offered -- see AVAILABLE_RADIUS below
+    size: 'third',   // third | half | full | both
+    side: 'front',   // front | back (ignored for 'both')
+    qty: 2000,       // 2,000 is currently the only quantity offered -- see MAX_QTY below
+    premiumDesignAddon: false,
+    qrDashboardAddon: false,
+    websiteAddon: false
+  };
+
+  var AVAILABLE_RADIUS = 30; // 5 and 15 aren't live in this city yet
+  var MAX_QTY = 2000;        // larger runs aren't available in this city yet
+  var PREMIUM_DESIGN_PRICE = 90.00;
+  var QR_DASHBOARD_PRICE = 79.00;
+  var WEBSITE_ADDON_PRICE = 149.99;
+
+  // Pricing must match the Worker's server-side formula exactly, or the
+  // number shown here will disagree with the number that's actually charged.
+  // price = 550 * unitsForSize * (qty / 2000)
+  var UNITS_FOR_SIZE = { third: 1, half: 2, full: 3, both: 6 };
+
+  function unitRate(size, qty){
+    return (550 * UNITS_FOR_SIZE[size]) / 2000;
+  }
+  function totalPrice(size, qty){
+    var raw = 550 * UNITS_FOR_SIZE[size] * (qty / 2000);
+    return Math.round(raw * 100) / 100;
+  }
+
+  var SIZE_LABEL = { third: '1/3 page', half: 'half page', full: 'full page', both: 'both sides' };
+  var SIZE_DISPLAY = { third: '1/3 Page', half: 'Half Page', full: 'Full Page', both: 'Both Sides' };
+  var DESIGN_VALUE = 99;
+  var QR_VALUE = 79;
+  // Values sent to the API must be these exact keys, not the display labels above.
+  var API_SIZE_KEY = { third: 'third', half: 'half', full: 'full', both: 'both' };
+  var RADIUS_CAPTIONS = {
+    5: 'the streets right around your shop.',
+    15: 'your whole neighborhood and then some.',
+    30: 'the whole metro area.'
+  };
+
+  var AD_TOP = 104, AD_BOTTOM = 500, AD_HEIGHT = AD_BOTTOM - AD_TOP;
+  var THIRD_GEO = { y: AD_TOP, h: AD_HEIGHT / 3 }; // true equal third -- 3 of these fit exactly on one side, edge-to-edge
+  function fmtMoney(n){ return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  function fmtInt(n){ return n.toLocaleString('en-US'); }
+  function capitalize(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
+
+  /* ---------- Toast for "not available in your city" notices ---------- */
+  var noticeToast = document.getElementById('noticeToast');
+  var noticeTimer = null;
+  function showNotice(message){
+    if (!noticeToast) return;
+    noticeToast.innerHTML = message;
+    noticeToast.classList.add('show');
+    if (noticeTimer) window.clearTimeout(noticeTimer);
+    noticeTimer = window.setTimeout(function(){
+      noticeToast.classList.remove('show');
+    }, 3800);
+  }
+
+  /* ---------- DOM refs ---------- */
+  var radiusPills = document.querySelectorAll('[data-radius]');
+  var sizeCards = document.querySelectorAll('[data-size]');
+  var sideControls = document.getElementById('sideControls');
+  var sidePills = sideControls.querySelectorAll('[data-side]');
+  var qtyInput = document.getElementById('qtyInput');
+  var qtyMinus = document.getElementById('qtyMinus');
+  var qtyPlus = document.getElementById('qtyPlus');
+
+  var radiusCaption = document.getElementById('radiusCaption');
+  var ring5 = document.getElementById('ring5');
+  var ring15 = document.getElementById('ring15');
+  var ring30 = document.getElementById('ring30');
+
+  var flipCard = document.getElementById('flipCard');
+  var hangerHook = document.getElementById('hangerHook');
+  if (hangerHook){
+    var settle = function(){ hangerHook.classList.add('settled'); };
+    var unsettle = function(){ hangerHook.classList.remove('settled'); };
+    hangerHook.addEventListener('pointerenter', settle);
+    hangerHook.addEventListener('pointerleave', unsettle);
+    hangerHook.addEventListener('focusin', settle);
+    hangerHook.addEventListener('focusout', unsettle);
+  }
+  var flipBtn = document.getElementById('flipBtn');
+  var faceFront = document.getElementById('faceFront');
+  var faceBack = document.getElementById('faceBack');
+  var hlFront = document.getElementById('hlFront');
+  var hlBack = document.getElementById('hlBack');
+  var visualCaption = document.getElementById('visualCaption');
+  var slotHits = document.querySelectorAll('.slot-hit');
+  var fullpageHits = document.querySelectorAll('.fullpage-hit');
+
+  var pbConfig = document.getElementById('pbConfig');
+  var pbPrice = document.getElementById('pbPrice');
+  var reviewLine = document.getElementById('reviewLine');
+  var vsSizeNote = document.getElementById('vsSizeNote');
+  var vsSizeVal = document.getElementById('vsSizeVal');
+  var vsQtyNote = document.getElementById('vsQtyNote');
+  var vsQtyVal = document.getElementById('vsQtyVal');
+  var vsTotalValue = document.getElementById('vsTotalValue');
+  var vsPriceToday = document.getElementById('vsPriceToday');
+  var vsSaveLine = document.getElementById('vsSaveLine');
+  var premiumDesignCheckbox = document.getElementById('extraPremiumDesign');
+  var qrDashboardCheckbox = document.getElementById('extraQrDashboard');
+  var websiteAddonCheckbox = document.getElementById('extraWebsite');
+
+  /* ---------- Controls: every input just mutates state and calls render(). ----------
+     render() then calls syncControls(), which is the single place that keeps every
+     control -- radius pills, size cards, the front/back pills, AND the door hanger
+     itself -- reflecting the same shared state, no matter which one the user touched. */
+
+  radiusPills.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var val = parseInt(btn.getAttribute('data-radius'), 10);
+      if (val !== AVAILABLE_RADIUS){
+        showNotice('The <b>' + val + ' mi</b> radius isn\u2019t available in your city yet \u2014 <b>30 mi</b> is currently the only option.');
+        return;
+      }
+      state.radius = val;
+      render();
+    });
+  });
+
+  function renderRadiusRings(){
+    [ring5, ring15, ring30].forEach(function(r){ r.setAttribute('stroke', 'var(--line)'); r.setAttribute('stroke-width', '3'); });
+    var active = state.radius === 5 ? ring5 : (state.radius === 15 ? ring15 : ring30);
+    active.setAttribute('stroke', 'var(--brick)');
+    active.setAttribute('stroke-width', '4');
+    radiusCaption.innerHTML = '<b>' + state.radius + ' mi</b> — ' + RADIUS_CAPTIONS[state.radius];
+  }
+
+  sizeCards.forEach(function(card){
+    card.addEventListener('click', function(){
+      state.size = card.getAttribute('data-size');
+      render();
+    });
+  });
+  sidePills.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      state.side = btn.getAttribute('data-side');
+      render();
+    });
+  });
+
+  if (premiumDesignCheckbox){
+    premiumDesignCheckbox.addEventListener('change', function(){
+      state.premiumDesignAddon = premiumDesignCheckbox.checked;
+      render();
+    });
+  }
+
+  if (qrDashboardCheckbox){
+    qrDashboardCheckbox.addEventListener('change', function(){
+      state.qrDashboardAddon = qrDashboardCheckbox.checked;
+      render();
+    });
+  }
+
+  if (websiteAddonCheckbox){
+    websiteAddonCheckbox.addEventListener('change', function(){
+      state.websiteAddon = websiteAddonCheckbox.checked;
+      render();
+    });
+  }
+
+  /* ---------- The door hanger itself is a control, not just a display. ---------- */
+  slotHits.forEach(function(hit){
+    function pick(){
+      state.size = 'third';
+      state.side = hit.getAttribute('data-side');
+      render();
+    }
+    hit.addEventListener('click', pick);
+    hit.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); pick(); } });
+  });
+  fullpageHits.forEach(function(hit){
+    function pick(){
+      state.size = 'full';
+      state.side = hit.getAttribute('data-fullside');
+      render();
+    }
+    hit.addEventListener('click', pick);
+    hit.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); pick(); } });
+  });
+
+  function syncControls(){
+    radiusPills.forEach(function(b){ b.classList.toggle('active', parseInt(b.getAttribute('data-radius'),10) === state.radius); });
+    sizeCards.forEach(function(c){ c.classList.toggle('active', c.getAttribute('data-size') === state.size); });
+    sidePills.forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-side') === state.side); });
+  }
+
+  /* ---------- Quantity (2,000 is currently the only size available) ---------- */
+  function setQty(n){
+    n = Math.round(n / 1000) * 1000;
+    if (n > MAX_QTY){
+      showNotice('Runs larger than <b>2,000 hangers</b> aren\u2019t available in your city yet.');
+      n = MAX_QTY;
+    }
+    n = Math.max(MAX_QTY, n);
+    state.qty = n;
+    qtyInput.value = n;
+    render();
+  }
+  qtyMinus.addEventListener('click', function(){ setQty(state.qty - 1000); });
+  qtyPlus.addEventListener('click', function(){ setQty(state.qty + 1000); });
+  qtyInput.addEventListener('change', function(){
+    var v = parseInt(qtyInput.value, 10);
+    if (isNaN(v)) v = MAX_QTY;
+    setQty(v);
+  });
+
+  /* ---------- Flip ---------- */
+  var userFlipped = false;
+  if (flipBtn){
+    flipBtn.addEventListener('click', function(){
+      userFlipped = !userFlipped;
+      flipCard.classList.toggle('flipped', userFlipped);
+      state.side = userFlipped ? 'back' : 'front';
+      render();
+    });
+  }
+
+  /* ---------- Render (single function drives bar + visual + form review) ---------- */
+  function render(){
+    syncControls();
+
+    sideControls.style.display = (state.size === 'both') ? 'none' : 'flex';
+
+    if (state.size !== 'both'){
+      var shouldFlip = state.side === 'back';
+      flipCard.classList.toggle('flipped', shouldFlip);
+      userFlipped = shouldFlip;
+    }
+    // Only the face currently facing the user should be clickable.
+    var flippedNow = flipCard.classList.contains('flipped');
+    faceFront.style.pointerEvents = flippedNow ? 'none' : 'auto';
+    faceBack.style.pointerEvents = flippedNow ? 'auto' : 'none';
+
+    [hlFront, hlBack].forEach(function(h){
+      h.setAttribute('fill-opacity', '0');
+      h.setAttribute('stroke-opacity', '0');
+    });
+
+    var geo = (state.size === 'third') ? THIRD_GEO : { y: AD_TOP, h: AD_HEIGHT };
+
+    function applyHighlight(el, g){
+      el.setAttribute('y', g.y);
+      el.setAttribute('height', g.h);
+      el.setAttribute('fill-opacity', '0.16');
+      el.setAttribute('stroke-opacity', '1');
+    }
+
+    if (state.size === 'both'){
+      applyHighlight(hlFront, geo);
+      applyHighlight(hlBack, geo);
+    } else if (state.side === 'front'){
+      applyHighlight(hlFront, geo);
+    } else {
+      applyHighlight(hlBack, geo);
+    }
+
+    var total = totalPrice(state.size, state.qty);
+
+    // Itemized value breakdown -- design + QR analytics are flat, one-time
+    // freebies regardless of quantity, so the savings figure stays constant
+    // even as the ad-size/quantity price above it changes.
+    var baseRate = 550 * UNITS_FOR_SIZE[state.size];
+    var qtyMultiplier = state.qty / 2000;
+    var savings = DESIGN_VALUE + QR_VALUE;
+    var totalValue = Math.round((total + savings) * 100) / 100;
+    vsSizeNote.textContent = '(' + SIZE_DISPLAY[state.size] + ', per 2,000 hangers)';
+    vsSizeVal.textContent = fmtMoney(baseRate);
+    vsQtyNote.textContent = '(' + fmtInt(state.qty) + ' hangers)';
+    vsQtyVal.textContent = '\u00d7' + qtyMultiplier.toFixed(2);
+    vsTotalValue.textContent = fmtMoney(totalValue);
+    vsPriceToday.textContent = fmtMoney(total);
+    vsSaveLine.innerHTML = 'You\u2019re saving <b>$' + savings + '</b> by ordering now';
+
+    // Selected optional extras add directly onto the total -- toggling any
+    // of them updates the grand total below and the price bar above.
+    var addonsTotal = 0;
+
+    var vsPremiumRow = document.getElementById('vsPremiumRow');
+    var vsPremiumVal = document.getElementById('vsPremiumVal');
+    if (vsPremiumRow && vsPremiumVal){
+      vsPremiumRow.style.display = state.premiumDesignAddon ? 'flex' : 'none';
+      vsPremiumVal.textContent = fmtMoney(PREMIUM_DESIGN_PRICE);
+      if (state.premiumDesignAddon) addonsTotal += PREMIUM_DESIGN_PRICE;
+    }
+
+    var vsQrDashboardRow = document.getElementById('vsQrDashboardRow');
+    var vsQrDashboardVal = document.getElementById('vsQrDashboardVal');
+    if (vsQrDashboardRow && vsQrDashboardVal){
+      vsQrDashboardRow.style.display = state.qrDashboardAddon ? 'flex' : 'none';
+      vsQrDashboardVal.textContent = fmtMoney(QR_DASHBOARD_PRICE);
+      if (state.qrDashboardAddon) addonsTotal += QR_DASHBOARD_PRICE;
+    }
+
+    var vsAddonRow = document.getElementById('vsAddonRow');
+    var vsAddonVal = document.getElementById('vsAddonVal');
+    if (vsAddonRow && vsAddonVal){
+      vsAddonRow.style.display = state.websiteAddon ? 'flex' : 'none';
+      vsAddonVal.textContent = fmtMoney(WEBSITE_ADDON_PRICE);
+      if (state.websiteAddon) addonsTotal += WEBSITE_ADDON_PRICE;
+    }
+
+    var grandTotal = Math.round((total + addonsTotal) * 100) / 100;
+    var vsGrandTotal = document.getElementById('vsGrandTotal');
+    if (vsGrandTotal) vsGrandTotal.textContent = fmtMoney(grandTotal);
+
+    // Single source of truth: the sticky bar. Reflects the full grand total,
+    // including any selected optional extras.
+    pbConfig.textContent = SIZE_LABEL[state.size] + ' · ' + state.radius + ' mi · ' + fmtInt(state.qty) + ' hangers';
+    pbPrice.textContent = fmtMoney(grandTotal);
+
+    renderRadiusRings();
+
+    var placeText = (state.size === 'both') ? 'front + back, full page' : (capitalize(state.side) + ', ' + SIZE_LABEL[state.size]);
+    if (visualCaption){
+      visualCaption.innerHTML = SIZE_LABEL[state.size] + ' &middot; <b>' + placeText + '</b>';
+    }
+
+    var selectedExtras = [];
+    if (state.premiumDesignAddon) selectedExtras.push('premium design package ($90.00)');
+    if (state.qrDashboardAddon) selectedExtras.push('QR code web dashboard ($79.00)');
+    var extrasNote = selectedExtras.length
+      ? ' Includes the <b>' + selectedExtras.join(', ') + '</b> extra' + (selectedExtras.length > 1 ? 's' : '') + '.'
+      : '';
+
+    reviewLine.innerHTML = 'You\u2019re requesting <b>' + fmtInt(state.qty) + ' door hangers</b> — <b>' + SIZE_LABEL[state.size] + '</b>, <b>' + state.radius + ' mi</b> radius. Check the total in the bar above before you send.' + extrasNote;
+
+    updateProductPhoto();
+  }
+
+  /* ---------- Form: submits to the Doorstep lead-intake Worker ----------
+
+     Endpoint contract (see integration brief):
+       POST https://broken-grass-80ae.usedbuy.workers.dev/api/lead
+       body: { fullName, email, phone, jobTitle, businessName, businessWebsite,
+               businessStreet, businessCity, businessState, businessZip,
+               designNotes, source, radius, size, qty }
+       success: { ok:true, price, personId, companyId, campaignId,
+                  campaignError, referenceId }
+       failure: 400/500 with { error: "..." }
+
+     TWO THINGS STILL NEED TO HAPPEN BEFORE THIS WILL WORK LIVE, NEITHER OF
+     WHICH CAN BE DONE FROM THIS FILE:
+       1. This site's deployed origin (protocol + domain, no path, no
+          trailing slash) must be added to the Worker's ALLOWED_ORIGINS in
+          the Cloudflare dashboard -- that's a manual step for whoever
+          controls that Worker.
+       2. LEAD_SOURCE below must be set to this site's real, final deployed
+          domain before going live. It is intentionally left as an obvious
+          placeholder rather than something that looks like a working value,
+          so it can't be missed in a final review. */
+  var WORKER_URL = 'https://broken-grass-80ae.usedbuy.workers.dev/api/lead';
+  var LEAD_SOURCE = 'pdm_roofing'; // CONFIRM before going live: replace with this site's real deployed domain (e.g. 'your-org.github.io/pdm_roofing')
+
+  var form = document.getElementById('signupForm');
+  var submitBtn = document.getElementById('submitBtn');
+  var confirmPanel = document.getElementById('confirmPanel');
+  var confirmSummary = document.getElementById('confirmSummary');
+  var refIdLine = document.getElementById('refIdLine');
+  var errorPanel = document.getElementById('errorPanel');
+  var tryAgainBtn = document.getElementById('tryAgainBtn');
+
+  function fieldVal(id){
+    var el = document.getElementById(id);
+    return el ? el.value.trim() : '';
+  }
+
+  function showError(){
+    form.style.display = 'none';
+    confirmPanel.classList.remove('show');
+    errorPanel.classList.add('show');
+    errorPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  tryAgainBtn.addEventListener('click', function(){
+    errorPanel.classList.remove('show');
+    form.style.display = '';
+    form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    if (!form.checkValidity()){
+      form.reportValidity();
+      return;
+    }
+
+    var payload = {
+      fullName: fieldVal('fullName'),
+      email: fieldVal('email'),
+      phone: fieldVal('phone'),
+      jobTitle: fieldVal('jobTitle'),
+      businessName: fieldVal('businessName'),
+      industry: fieldVal('industry'),
+      businessWebsite: fieldVal('businessWebsite') || undefined,
+      businessPhone: fieldVal('businessPhone'),
+      businessEmail: fieldVal('businessEmail'),
+      businessStreet: fieldVal('businessStreet'),
+      businessCity: fieldVal('businessCity'),
+      businessState: fieldVal('businessState').toUpperCase(),
+      businessZip: fieldVal('businessZip'),
+      designNotes: fieldVal('designNotes') || undefined,
+      qrForwardUrl: fieldVal('qrForwardUrl') || undefined,
+      source: LEAD_SOURCE,
+      radius: state.radius,
+      size: API_SIZE_KEY[state.size],
+      qty: state.qty,
+      extras: {
+        premiumDesign: state.premiumDesignAddon,
+        qrDashboard: state.qrDashboardAddon,
+        website: state.websiteAddon
+      }
+    };
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+
+    fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+      .then(function(res){
+        if (!res.ok){
+          return res.json().catch(function(){ return {}; }).then(function(){
+            throw new Error('request failed');
+          });
+        }
+        return res.json();
+      })
+      .then(function(body){
+        if (!body || body.ok !== true){
+          throw new Error('unexpected response');
+        }
+        var firstName = payload.fullName.split(' ')[0] || 'there';
+        var confirmExtras = [];
+        if (state.premiumDesignAddon) confirmExtras.push('the $90.00 premium design package');
+        if (state.qrDashboardAddon) confirmExtras.push('the $79.00 QR code web dashboard');
+        if (state.websiteAddon) confirmExtras.push('the $149.99 clean website design package');
+        var confirmExtrasNote = confirmExtras.length
+          ? ' Your total includes ' + confirmExtras.join(', ') + '.'
+          : '';
+        confirmSummary.textContent = 'Thanks, ' + firstName + ' — your order for ' +
+          fmtInt(state.qty) + ' door hangers (' + SIZE_LABEL[state.size] + ', ' + state.radius +
+          ' mi radius) is in. Nothing has been charged yet. We\u2019ll follow up by email or text ' +
+          'to confirm your design and send a payment link before anything goes to print.' +
+          confirmExtrasNote;
+        refIdLine.textContent = body.referenceId ? ('Reference ID: ' + body.referenceId) : '';
+
+        form.style.display = 'none';
+        errorPanel.classList.remove('show');
+        confirmPanel.classList.add('show');
+        confirmPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      })
+      .catch(function(){
+        showError();
+      })
+      .finally(function(){
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Order my campaign';
+      });
+  });
+
+  /* ---------- Product photo (Step 2) ----------
+     Shows one real example matching the current size + side. It only changes
+     when the user actually changes their selection -- never on its own. */
+  var productSlides = document.querySelectorAll('.slideshow .slide');
+  // Index (0-based) of the example photo for each size+side combination.
+  var PHOTO_FOR = {
+    'third_front': 0, 'third_back': 2,
+    'half_front': 5, 'half_back': 4,
+    'full_front': 7, 'full_back': 8,
+    'both_front': 7, 'both_back': 7
+  };
+  function updateProductPhoto(){
+    if (!productSlides.length) return;
+    var key = state.size + '_' + state.side;
+    var target = PHOTO_FOR[key];
+    if (target === undefined) target = 0;
+    productSlides.forEach(function(s){
+      s.classList.toggle('active', parseInt(s.getAttribute('data-index'), 10) === target);
+    });
+  }
+
+  /* ---------- "Door hangers that deliver results" carousel ----------
+     A single-image, 9:16 auto-sliding carousel. Pauses while the mouse is
+     over it (or it has focus), and can be stepped through manually with the
+     prev/next arrows or the dots. Reuses the same example images already
+     embedded for the Step 2 slideshow instead of re-embedding the same PNG
+     data a second time. */
+  (function initResultsCarousel(){
+    var carousel = document.getElementById('resultsCarousel');
+    var track = document.getElementById('resultsTrack');
+    var dotsWrap = document.getElementById('resultsDots');
+    var prevBtn = document.getElementById('resultsPrev');
+    var nextBtn = document.getElementById('resultsNext');
+    if (!carousel || !track) return;
+
+    var sourceImgs = document.querySelectorAll('.slideshow .slide img');
+    if (!sourceImgs.length) return;
+
+    sourceImgs.forEach(function(src, i){
+      var img = document.createElement('img');
+      img.src = src.getAttribute('src');
+      img.alt = src.getAttribute('alt') || ('Door hanger example ' + (i + 1));
+      img.loading = 'lazy';
+      track.appendChild(img);
+    });
+
+    var slides = track.querySelectorAll('img');
+    var total = slides.length;
+    var index = 0;
+    var timer = null;
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function renderDots(){
+      dotsWrap.innerHTML = '';
+      for (var i = 0; i < total; i++){
+        var d = document.createElement('button');
+        d.className = 'rs-dot' + (i === index ? ' active' : '');
+        d.setAttribute('type', 'button');
+        d.setAttribute('aria-label', 'Show image ' + (i + 1));
+        d.setAttribute('data-index', i);
+        dotsWrap.appendChild(d);
+      }
+      dotsWrap.querySelectorAll('.rs-dot').forEach(function(d){
+        d.addEventListener('click', function(){
+          goTo(parseInt(d.getAttribute('data-index'), 10));
+          restart();
+        });
+      });
+    }
+
+    function apply(){
+      track.style.transform = 'translateX(-' + (index * 100) + '%)';
+      dotsWrap.querySelectorAll('.rs-dot').forEach(function(d, i){ d.classList.toggle('active', i === index); });
+    }
+
+    function goTo(i){ index = (i + total) % total; apply(); }
+    function next(){ goTo(index + 1); }
+    function prev(){ goTo(index - 1); }
+
+    function start(){
+      if (reduceMotion) return;
+      stop();
+      timer = window.setInterval(next, 3200);
+    }
+    function stop(){ if (timer){ window.clearInterval(timer); timer = null; } }
+    function restart(){ start(); }
+
+    nextBtn.addEventListener('click', function(){ next(); restart(); });
+    prevBtn.addEventListener('click', function(){ prev(); restart(); });
+
+    carousel.addEventListener('mouseenter', stop);
+    carousel.addEventListener('mouseleave', start);
+    carousel.addEventListener('focusin', stop);
+    carousel.addEventListener('focusout', start);
+
+    renderDots();
+    apply();
+    start();
+  })();
+
+  /* ---------- Reviews carousel ----------
+     Shows 1/2/3/4 review cards at once depending on viewport width (matching
+     the CSS breakpoints), auto-rotating one card at a time and wrapping. */
+  (function initReviews(){
+    var track = document.getElementById('reviewsTrack');
+    var dotsWrap = document.getElementById('reviewsDots');
+    if (!track) return;
+    var slides = track.querySelectorAll('.review-card-slide');
+    var total = slides.length;
+    var index = 0;
+    var timer = null;
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function perView(){
+      var w = window.innerWidth;
+      if (w >= 1281) return 4;
+      if (w >= 961) return 3;
+      if (w >= 641) return 2;
+      return 1;
+    }
+
+    function maxIndex(){ return Math.max(0, total - perView()); }
+
+    function renderDots(){
+      var count = maxIndex() + 1;
+      dotsWrap.innerHTML = '';
+      for (var i = 0; i < count; i++){
+        var d = document.createElement('button');
+        d.className = 'rv-dot' + (i === index ? ' active' : '');
+        d.setAttribute('aria-label', 'Show reviews starting at ' + (i + 1));
+        d.setAttribute('data-index', i);
+        dotsWrap.appendChild(d);
+      }
+      dotsWrap.querySelectorAll('.rv-dot').forEach(function(d){
+        d.addEventListener('click', function(){
+          goTo(parseInt(d.getAttribute('data-index'), 10));
+          restart();
+        });
+      });
+    }
+
+    function apply(){
+      var pv = perView();
+      var slideWidth = 100 / pv;
+      track.style.transform = 'translateX(-' + (index * slideWidth) + '%)';
+      dotsWrap.querySelectorAll('.rv-dot').forEach(function(d, i){
+        d.classList.toggle('active', i === index);
+      });
+    }
+
+    function goTo(i){
+      index = Math.max(0, Math.min(i, maxIndex()));
+      apply();
+    }
+
+    function next(){
+      index = index >= maxIndex() ? 0 : index + 1;
+      apply();
+    }
+
+    function start(){
+      if (reduceMotion) return;
+      stop();
+      timer = window.setInterval(next, 4000);
+    }
+    function stop(){ if (timer){ window.clearInterval(timer); timer = null; } }
+    function restart(){ start(); }
+
+    window.addEventListener('resize', function(){
+      index = Math.min(index, maxIndex());
+      renderDots();
+      apply();
+    });
+
+    var viewport = document.querySelector('.reviews-viewport');
+    if (viewport){
+      viewport.addEventListener('mouseenter', stop);
+      viewport.addEventListener('mouseleave', start);
+      viewport.addEventListener('focusin', stop);
+      viewport.addEventListener('focusout', start);
+    }
+
+    renderDots();
+    apply();
+    start();
+  })();
+
+  /* ---------- FAQ accordion ---------- */
+  document.querySelectorAll('.faq-item').forEach(function(item){
+    var q = item.querySelector('.faq-q');
+    var a = item.querySelector('.faq-a');
+    q.addEventListener('click', function(){
+      var isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(function(openItem){
+        if (openItem !== item){
+          openItem.classList.remove('open');
+          openItem.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+          openItem.querySelector('.faq-a').style.maxHeight = null;
+        }
+      });
+      item.classList.toggle('open', !isOpen);
+      q.setAttribute('aria-expanded', (!isOpen).toString());
+      a.style.maxHeight = isOpen ? null : (a.scrollHeight + 'px');
+    });
+  });
+
+  /* ---------- init ---------- */
+  render();
+})();
+</script>
+
+</body>
+</html>
