@@ -231,6 +231,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, .faq-q:focus-visible
 .opt-tag{font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:500; color:var(--muted); text-transform:uppercase; letter-spacing:.04em;}
 .form-field input{ border:1.5px solid var(--line); border-radius:10px; padding:12px 14px; font-size:15px; font-family:'Inter',sans-serif; background:var(--paper); color:var(--text);}
 .form-field input:focus{border-color:var(--red);}
+.form-field select{ border:1.5px solid var(--line); border-radius:10px; padding:12px 14px; font-size:15px; font-family:'Inter',sans-serif; background:var(--paper); color:var(--text); appearance:none; -webkit-appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1L7 7L13 1' stroke='%235E584C' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 14px center; padding-right:36px;}
+.form-field select:focus{border-color:var(--red); outline:none;}
 .field-hint{font-size:12px; color:var(--muted); line-height:1.4;}
 
 .rings-wrap{display:flex; align-items:center; gap:24px; flex-wrap:wrap;}
@@ -271,6 +273,19 @@ input[type="range"]::-moz-range-thumb{ width:20px; height:20px; border-radius:50
 .qty-chip{ cursor:pointer; border:1px solid var(--line); background:var(--paper); border-radius:8px; padding:6px 10px; font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--muted); display:flex; flex-direction:column; align-items:center; gap:2px; line-height:1.2;}
 .qty-chip.active{border-color:var(--red); color:var(--red); font-weight:600;}
 .qty-chip:disabled{cursor:not-allowed; opacity:.55;}
+
+.extras-list{display:flex; flex-direction:column; gap:10px;}
+.extra-item{ display:flex; align-items:center; justify-content:space-between; gap:16px; width:100%; border:1.5px solid var(--line); background:var(--paper); border-radius:14px; padding:14px 18px; font-size:14.5px; font-family:inherit; text-align:left;}
+button.extra-item{cursor:pointer; transition:all .15s ease;}
+button.extra-item:hover{border-color:var(--red);}
+button.extra-item.active{border-color:var(--red); background:var(--red-soft);}
+button.extra-item:focus-visible{outline:2px solid var(--red); outline-offset:2px;}
+.extra-label{font-weight:600; color:var(--ink-soft);}
+button.extra-item.active .extra-label{color:var(--ink);}
+.extra-price{font-family:'IBM Plex Mono',monospace; font-weight:600; color:var(--muted); white-space:nowrap;}
+button.extra-item.active .extra-price{color:var(--red);}
+.extra-item.extra-included{cursor:default;}
+.extra-badge{font-family:'IBM Plex Mono',monospace; font-size:11.5px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; background:#EAF0E9; color:var(--moss); border:1px solid var(--moss); border-radius:999px; padding:4px 12px; white-space:nowrap;}
 
 .tb-label{font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted);}
 
@@ -375,6 +390,13 @@ footer{background:var(--ink); color:#C7CCDC; padding:52px 0 30px 0;}
   "contact_email": "hello@dplm.example",
   "design_service_value": 99,
   "qr_analytics_value": 79,
+  "extras": [
+    { "key": "premiumDesign", "label": "Premium design package", "type": "toggle", "price": 90 },
+    { "key": "basicDesign", "label": "Basic ad design package", "type": "included" },
+    { "key": "qrDashboard", "label": "QR code web dashboard", "type": "toggle", "price": 79 },
+    { "key": "basicQr", "label": "Basic QR code tracking", "type": "included" },
+    { "key": "website", "label": "Clean website design package", "type": "toggle", "price": 149.99 }
+  ],
   "available": true
 }
 </script>
@@ -405,10 +427,10 @@ footer{background:var(--ink); color:#C7CCDC; padding:52px 0 30px 0;}
     </div>
     <div class="hero-visual">
       <div class="slideshow" id="heroSlideshow">
-        <img class="slide active" src="1.png" data-cms="hero_slide_1" alt="Sample door hanger with a 1/3 page ad">
-        <img class="slide" src="2.png" data-cms="hero_slide_2" alt="Sample door hanger with a half page ad">
-        <img class="slide" src="3.png" data-cms="hero_slide_3" alt="Sample door hanger with a full page ad">
-        <img class="slide" src="4.png" data-cms="hero_slide_4" alt="Sample door hanger printed on both sides">
+        <img class="slide active" src="images/1.png" data-cms="hero_slide_1" alt="Sample door hanger with a 1/3 page ad">
+        <img class="slide" src="images/2.png" data-cms="hero_slide_2" alt="Sample door hanger with a half page ad">
+        <img class="slide" src="images/3.png" data-cms="hero_slide_3" alt="Sample door hanger with a full page ad">
+        <img class="slide" src="images/4.png" data-cms="hero_slide_4" alt="Sample door hanger printed on both sides">
         <div class="slide-dots" id="slideDots"></div>
       </div>
     </div>
@@ -437,13 +459,46 @@ footer{background:var(--ink); color:#C7CCDC; padding:52px 0 30px 0;}
           <div class="form-grid">
             <div class="form-field"><label for="fullName">Full name</label><input id="fullName" type="text" required placeholder="Jordan Lee"></div>
             <div class="form-field"><label for="jobTitle">Title at company</label><input id="jobTitle" type="text" placeholder="Owner"></div>
+            <div class="form-field"><label for="email">Email</label><input id="email" type="email" required placeholder="jordan@yourbrand.com"></div>
+            <div class="form-field"><label for="phone">Telephone</label><input id="phone" type="tel" required placeholder="(555) 010-0199"></div>
             <div class="form-field full"><label for="businessName">Business name</label><input id="businessName" type="text" required placeholder="Yourbrand Co."></div>
+            <div class="form-field full"><label for="industry">Industry</label>
+              <select id="industry" required>
+                <option value="Plumbing Services">Plumbing Services</option>
+                <option value="Electricians">Electricians</option>
+                <option value="Heating &amp; Cooling Services">Heating &amp; Cooling Services</option>
+                <option value="Roofing">Roofing</option>
+                <option value="IT support">IT support</option>
+                <option value="Fencing &amp; Decking">Fencing &amp; Decking</option>
+                <option value="Hardscaping Services">Hardscaping Services</option>
+                <option value="Landscaping Services">Landscaping Services</option>
+                <option value="Pest Control Services">Pest Control Services</option>
+                <option value="House Cleaning Services">House Cleaning Services</option>
+                <option value="Pressure Washing Services">Pressure Washing Services</option>
+                <option value="Moving Companies">Moving Companies</option>
+                <option value="Self-Storage Facilities">Self-Storage Facilities</option>
+                <option value="Locksmiths">Locksmiths</option>
+                <option value="Remodeling Services" selected>Remodeling Services</option>
+                <option value="Handyman Services">Handyman Services</option>
+                <option value="Appliance Repair">Appliance Repair</option>
+                <option value="Auto Repair Shops">Auto Repair Shops</option>
+                <option value="Auto Detailing">Auto Detailing</option>
+                <option value="Restaurants">Restaurants</option>
+                <option value="Coffee Shops">Coffee Shops</option>
+                <option value="Daycares">Daycares</option>
+                <option value="Junk Removal Services">Junk Removal Services</option>
+                <option value="Window Repair &amp; Replacement">Window Repair &amp; Replacement</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
             <div class="form-field full"><label for="businessWebsite">Business website <span class="opt-tag">optional</span></label><input id="businessWebsite" type="text" placeholder="www.yourbrand.com"></div>
             <div class="form-field full">
-              <label for="qrForwardingUrl">QR forwarding URL <span class="opt-tag">optional</span></label>
-              <input id="qrForwardingUrl" type="text" placeholder="www.yourbrand.com/menu">
+              <label for="qrForwardUrl">QR forwarding URL <span class="opt-tag">optional</span></label>
+              <input id="qrForwardUrl" type="url" placeholder="https://www.yourbrand.com/menu">
               <span class="field-hint">Where scans of your door hanger's QR code should be sent. Leave blank to use your business website.</span>
             </div>
+            <div class="form-field"><label for="businessPhone">Company phone number</label><input id="businessPhone" type="tel" required placeholder="(555) 010-0199"></div>
+            <div class="form-field"><label for="businessEmail">Company email</label><input id="businessEmail" type="email" required placeholder="office@yourbrand.com"></div>
             <div class="form-field full"><label for="businessStreet">Business street address</label><input id="businessStreet" type="text" required placeholder="123 Main St"></div>
             <div class="form-field"><label for="businessCity">City</label><input id="businessCity" type="text" required placeholder="Springfield"></div>
             <div class="form-field"><label for="businessState">State</label><input id="businessState" type="text" required maxlength="2" pattern="[A-Za-z]{2}" placeholder="OR" style="text-transform:uppercase;"></div>
@@ -523,11 +578,21 @@ footer{background:var(--ink); color:#C7CCDC; padding:52px 0 30px 0;}
           <div class="qty-chips" id="qtyChips"></div>
         </div>
 
-        <!-- STEP 05 — PLACE ORDER -->
-        <div class="build-step" id="buildSummary">
+        <!-- STEP 05 — OPTIONAL EXTRAS -->
+        <div class="build-step">
           <div class="step-head">
             <span class="bstep-num">05</span>
-            <div><h3 data-cms="step5_title">Place your order</h3><p data-cms="step5_description">This places your order — you're not paying on this page. Once your design is approved, we'll send a secure payment request.</p></div>
+            <div><h3 data-cms="step5_title">Optional extras</h3><p data-cms="step5_description">Add extra services to this order, or keep what's already included at no charge.</p></div>
+          </div>
+          <!-- rendered at runtime from CONFIG.extras — see script at end of page -->
+          <div class="extras-list" id="extrasList"></div>
+        </div>
+
+        <!-- STEP 06 — PLACE ORDER -->
+        <div class="build-step" id="buildSummary">
+          <div class="step-head">
+            <span class="bstep-num">06</span>
+            <div><h3 data-cms="step6_title">Place your order</h3><p data-cms="step6_description">This places your order — you're not paying on this page. Once your design is approved, we'll send a secure payment request.</p></div>
           </div>
 
           <div class="price-breakdown">
@@ -552,6 +617,9 @@ footer{background:var(--ink); color:#C7CCDC; padding:52px 0 30px 0;}
               <span class="pb-k">QR code analytics <span class="pb-note" id="qrValueLabel">(reg. $79)</span></span>
               <span class="pb-v pb-free">FREE</span>
             </div>
+
+            <!-- rows for any selected optional extras are inserted here at runtime -->
+            <div id="extrasBreakdown"></div>
 
             <div class="pb-divider"></div>
 
@@ -688,7 +756,8 @@ if(designValueLabel) designValueLabel.textContent = '(reg. $' + CONFIG.design_se
 if(qrValueLabel) qrValueLabel.textContent = '(reg. $' + CONFIG.qr_analytics_value + ')';
 
 // ---------- state ----------
-const state = { radius: CONFIG.default_radius, size: CONFIG.default_size, qty: CONFIG.default_qty };
+const state = { radius: CONFIG.default_radius, size: CONFIG.default_size, qty: CONFIG.default_qty, extras: {} };
+(CONFIG.extras || []).forEach(x => { if(x.type === 'toggle') state.extras[x.key] = false; });
 
 function fmt(n){ return n.toLocaleString('en-US'); }
 function fmtMoney(n){
@@ -737,6 +806,37 @@ function setSize(s){
   render();
 }
 sizeCards.forEach(c => c.addEventListener('click', () => setSize(c.dataset.size)));
+
+// ---------- optional extras (rendered from CONFIG.extras) ----------
+// Two kinds of rows: "toggle" items are clickable buttons the customer can
+// add to their order; "included" items are static, non-clickable badges
+// showing what's already bundled in for free. Toggle keys (premiumDesign,
+// qrDashboard, website) match the Worker's EXTRA_PRICES exactly, since the
+// Worker recomputes price server-side from these same flags.
+const extrasListWrap = document.getElementById('extrasList');
+function buildExtrasList(){
+  extrasListWrap.innerHTML = (CONFIG.extras || []).map(x => {
+    if(x.type === 'included'){
+      return `<div class="extra-item extra-included" aria-disabled="true">`
+        + `<span class="extra-label">${x.label}</span>`
+        + `<span class="extra-badge">Included</span>`
+        + `</div>`;
+    }
+    return `<button type="button" class="extra-item" data-extra="${x.key}" aria-pressed="false">`
+      + `<span class="extra-label">${x.label}</span>`
+      + `<span class="extra-price">+${fmtMoney(x.price)}</span>`
+      + `</button>`;
+  }).join('');
+}
+buildExtrasList();
+const extraToggleButtons = document.querySelectorAll('.extra-item[data-extra]');
+function setExtra(key, on){
+  state.extras[key] = on;
+  const btn = extrasListWrap.querySelector(`.extra-item[data-extra="${key}"]`);
+  if(btn){ btn.classList.toggle('active', on); btn.setAttribute('aria-pressed', String(on)); }
+  render();
+}
+extraToggleButtons.forEach(btn => btn.addEventListener('click', () => setExtra(btn.dataset.extra, !state.extras[btn.dataset.extra])));
 
 // ---------- quantity (slider bounds + chips built from CONFIG) ----------
 const qtySlider = document.getElementById('qtySlider');
@@ -862,7 +962,12 @@ function render(){
   const adPrice = meta.base * multiplier;           // what the ad itself costs at this quantity
   const bundledValue = CONFIG.design_service_value + CONFIG.qr_analytics_value;
   const totalValue = adPrice + bundledValue;         // what it would be worth if those weren't free
-  const price = Math.round(adPrice);                 // whole-dollar price used for sticky bar / CRM
+
+  // ---- selected optional extras (toggle-type only; "included" items are always free) ----
+  const selectedExtras = (CONFIG.extras || []).filter(x => x.type === 'toggle' && state.extras[x.key]);
+  const extrasTotal = selectedExtras.reduce((sum, x) => sum + x.price, 0);
+  const finalPrice = adPrice + extrasTotal;          // what the customer actually owes today
+  const price = Math.round(finalPrice * 100) / 100;  // 2-decimal price used for sticky bar / CRM
 
   // ---- itemized price breakdown ----
   document.getElementById('pbRadius').textContent = state.radius + ' miles delivery radius';
@@ -871,12 +976,17 @@ function render(){
   document.getElementById('pbQtyLabel').textContent = fmt(state.qty) + ' hangers';
   document.getElementById('pbMultiplier').textContent = '× ' + multiplier.toFixed(2);
   document.getElementById('pbTotalValue').textContent = fmtMoney(totalValue);
-  document.getElementById('pbYourPrice').textContent = fmtMoney(adPrice);
+  document.getElementById('pbYourPrice').textContent = fmtMoney(finalPrice);
   document.getElementById('pbSavings').textContent = '$' + bundledValue;
 
-  const recapShort = `${state.radius} miles · ${meta.label} · ${fmt(state.qty)} hangers`;
+  document.getElementById('extrasBreakdown').innerHTML = selectedExtras.map(x =>
+    `<div class="pb-row"><span class="pb-k">${x.label}</span><span class="pb-v">${fmtMoney(x.price)}</span></div>`
+  ).join('');
+
+  const extrasNote = selectedExtras.length ? ` · +${selectedExtras.length} extra${selectedExtras.length > 1 ? 's' : ''}` : '';
+  const recapShort = `${state.radius} miles · ${meta.label} · ${fmt(state.qty)} hangers${extrasNote}`;
   document.getElementById('stickyRecap').textContent = recapShort;
-  document.getElementById('stickyPrice').textContent = '$' + fmt(price);
+  document.getElementById('stickyPrice').textContent = fmtMoney(price);
 }
 
 // ---------- sticky bar visibility ----------
@@ -928,9 +1038,14 @@ document.getElementById('regForm').addEventListener('submit', async function(e){
   const payload = {
     fullName: fieldValue('fullName'),
     jobTitle: fieldValue('jobTitle') || undefined,
+    email: fieldValue('email'),
+    phone: fieldValue('phone'),
     businessName: fieldValue('businessName'),
+    industry: fieldValue('industry'),
     businessWebsite: fieldValue('businessWebsite') || undefined,
-    qrForwardingUrl: fieldValue('qrForwardingUrl') || undefined,
+    qrForwardUrl: fieldValue('qrForwardUrl') || undefined,
+    businessPhone: fieldValue('businessPhone'),
+    businessEmail: fieldValue('businessEmail'),
     businessStreet: fieldValue('businessStreet'),
     businessCity: fieldValue('businessCity'),
     businessState: fieldValue('businessState').toUpperCase(),
@@ -939,7 +1054,8 @@ document.getElementById('regForm').addEventListener('submit', async function(e){
     source: INTEGRATION.SOURCE,
     radius: state.radius,
     size: state.size,
-    qty: state.qty
+    qty: state.qty,
+    extras: { ...state.extras }
   };
 
   const submitButtons = [document.getElementById('submitBtn'), document.getElementById('stickySubmitBtn')];
@@ -965,6 +1081,7 @@ document.getElementById('regForm').addEventListener('submit', async function(e){
       confirmMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
       e.target.reset();
       setRadius(CONFIG.default_radius); setSize(CONFIG.default_size); setQty(CONFIG.default_qty);
+      Object.keys(state.extras).forEach(key => setExtra(key, false));
     } else {
       errorMsg.classList.add('show');
       errorMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
