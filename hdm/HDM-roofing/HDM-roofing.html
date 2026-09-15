@@ -3,1408 +3,1123 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hand Delivered Marketing (HDM) — Door hanger advertising for roofing companies</title>
+<title>Hand Delivered Marketing — Door Hanger Advertising for Roofing Contractors</title>
+<meta name="description" content="HDM prints and delivers targeted door hanger campaigns for residential roof repair and replacement contractors, reaching the exact streets that need you — starting at $550.">
+<link rel="icon" type="image/png" href="images/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper: #efe7d6;
-    --paper-light: #faf6ec;
-    --ink: #1f2e4a;
-    --ink-soft: #4a5b7c;
-    --stamp: #b23a2e;
-    --stamp-dark: #8f2e24;
-    --gold: #c99a3b;
-    /* Selection / primary-action accent — buttons, active choices, active
-       tabs and steps, focus states. --stamp (red) stays reserved for
-       warnings and errors only (unavailable messages, form errors).
-       A postal-ink blue, since blue postmarks are just as period-accurate
-       as red ones, and it reads as one family with --ink rather than a
-       third unrelated hue. */
-    --select: #2f6690;
-    --select-dark: #234d6d;
-    --select-tint: #e8f0f5;
-    --charcoal: #2b2620;
-    --line: rgba(31,46,74,0.16);
-    --line-strong: rgba(31,46,74,0.3);
-    --radius-s: 6px;
-    --radius-m: 14px;
-    --shadow: 0 10px 30px rgba(31,46,74,0.10);
-    --shadow-sm: 0 4px 14px rgba(31,46,74,0.08);
+    /* Instrument-panel palette: cool dark graphite base, signal-orange as
+       the one confident accent (a precision/logistics signal color, not a
+       generic neon), electric blue as the cooler secondary accent.
+       Variable names kept from the original build (--green/--yellow) since
+       hundreds of rules already reference them — only the values changed. */
+    --paper:#0F1420;
+    --paper-dim:#141B29;
+    --card:#1A2233;
+    --ink:#EDF1F7;
+    --ink-soft:#8792A6;
+    --green:#FF7A1A;
+    --green-dark:#FFA24C;
+    --green-deep:#B24800;
+    --green-tint:rgba(255,122,26,0.14);
+    --yellow:#4C8DFF;
+    --line: rgba(140,160,190,0.18);
+    --radius-lg: 8px;
+    --shadow: 0 16px 36px rgba(0,0,0,0.45);
   }
+
   *{box-sizing:border-box;}
-  html{scroll-behavior:smooth; overflow-x:hidden;}
+  html{scroll-behavior:smooth;}
   body{
     margin:0;
     background:var(--paper);
-    color:var(--charcoal);
-    font-family:'Space Grotesk', sans-serif;
-    -webkit-font-smoothing:antialiased;
-    line-height:1.5;
-    overflow-x:hidden;
-  }
-  h1,h2,h3,h4{
-    font-family:'Fraunces', serif;
     color:var(--ink);
-    margin:0;
-    letter-spacing:-0.01em;
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
   }
-  .mono{font-family:'JetBrains Mono', monospace;}
-  a{color:inherit;}
   img,svg{display:block;max-width:100%;}
-  .wrap{
-    width:100%;
-    max-width:1120px;
-    margin:0 auto;
-    padding:0 28px;
-  }
-  section{padding:96px 0;}
-  @media (max-width:700px){ section{padding:64px 0;} .wrap{padding:0 20px;} }
-  /* Extra breathing room around How it works / Showcase / Reviews / FAQ */
-  #how, #showcase, #reviews, #faq{ padding-top:150px; padding-bottom:150px; }
-  @media (max-width:700px){ #how, #showcase, #reviews, #faq{ padding-top:96px; padding-bottom:96px; } }
-
+  a{color:inherit;}
+  h1,h2,h3{font-family:'Chakra Petch', sans-serif; font-weight:400; letter-spacing:0.01em; line-height:1.02; margin:0;}
   .eyebrow{
-    font-family:'JetBrains Mono', monospace;
+    font-family:'IBM Plex Mono', monospace;
     font-size:12.5px;
     letter-spacing:0.14em;
     text-transform:uppercase;
-    color:var(--select);
-    font-weight:600;
+    color:var(--green-dark);
     display:inline-flex;
     align-items:center;
     gap:8px;
-    margin-bottom:14px;
   }
-  .eyebrow::before{
-    content:'';
-    width:16px;height:1px;background:var(--select);
+  .eyebrow::before{ content:""; width:18px;height:2px;background:var(--yellow); display:inline-block; }
+  p{color:var(--ink-soft); line-height:1.6; margin:0;}
+  .wrap{max-width:1160px; margin:0 auto; padding:0 24px;}
+  section{padding:88px 0;}
+  @media (max-width:720px){ section{padding:60px 0;} }
+
+  button, .btn{
+    font-family:'Inter', sans-serif; font-weight:700; cursor:pointer; border:none;
+    border-radius:4px; display:inline-flex; align-items:center; gap:8px; justify-content:center;
+    min-height:44px;
+  }
+  .btn-primary{ background:var(--green); color:#fff; padding:15px 26px; font-size:15.5px; transition:transform .15s ease, background .2s ease; }
+  .btn-primary:hover{ background:var(--green-deep); transform:translateY(-1px); }
+  button:focus-visible, a:focus-visible, input:focus-visible, .pill:focus-visible, summary:focus-visible{
+    outline:3px solid var(--yellow); outline-offset:2px;
   }
 
-  /* ---------- NAV ---------- */
-  header.site{
-    position:sticky; top:0; z-index:50;
-    background:rgba(239,231,214,0.88);
-    backdrop-filter:blur(8px);
-    border-bottom:1px solid var(--line);
-  }
-  nav{
+  /* ---------- PERSISTENT PRICE BAR ---------- */
+  body{ padding-top:50px; }
+  .price-bar a.btn{ background:var(--green); color:#fff; padding:6px 16px; font-size:12.5px; font-family:'Inter',sans-serif; min-height:38px; }
+  .price-bar{
+    position:fixed; top:0; left:0; right:0; z-index:1000;
+    background:var(--card); color:var(--ink);
     display:flex; align-items:center; justify-content:space-between;
-    padding:16px 28px; max-width:1120px; margin:0 auto;
+    padding:0 20px; height:50px;
+    font-family:'IBM Plex Mono', monospace;
   }
-  .logo{
-    display:flex; align-items:center; gap:10px;
-    font-family:'Fraunces', serif; font-weight:600; font-size:20px; color:var(--ink);
-    text-decoration:none;
+  .price-bar-live{ display:flex; align-items:baseline; gap:10px; }
+  .price-bar-live .dot{ width:7px; height:7px; border-radius:50%; background:var(--yellow); flex:none; }
+  .price-bar-live .lbl{ font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:#8792A6; }
+  .price-bar-live .val{ font-size:18px; font-weight:600; color:#fff; }
+  .price-bar-live .val small{ font-size:11px; color:#8792A6; font-weight:500; }
+  .price-bar a.btn:hover{ background:#E56A0F; }
+  @media (max-width:520px){
+    .price-bar-live .lbl{ font-size:9.5px; }
+    .price-bar{ padding:0 14px; }
   }
-  .logo .dot{width:9px;height:9px;border-radius:50%;background:var(--select);display:inline-block;}
-  .nav-links{
-    display:flex; gap:32px; list-style:none; margin:0; padding:0;
-    font-size:14.5px; font-weight:500;
+
+  /* ---------- HEADER ---------- */
+  header{ position:sticky; top:50px; z-index:50; background:rgba(15,20,32,0.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); }
+  .nav{ display:flex; align-items:center; justify-content:space-between; padding:16px 24px; max-width:1160px; margin:0 auto; }
+  .brand{ display:flex; align-items:center; gap:10px; font-family:'Chakra Petch',sans-serif; font-size:17px; font-weight:600; letter-spacing:0.01em; text-decoration:none; white-space:nowrap; }
+  .brand-mark{ width:30px; height:30px; }
+  .nav-links{ display:flex; align-items:center; gap:30px; font-weight:600; font-size:14.5px; }
+  .nav-links a{ text-decoration:none; padding:6px 0; border-bottom:2px solid transparent; }
+  .nav-links a:hover{ border-color:var(--yellow); }
+  .burger{ display:none; background:none; border:none; padding:6px; }
+  .burger span{ display:block; width:22px; height:2px; background:var(--ink); margin:5px 0; }
+  @media (max-width:840px){
+    .nav-links{ position:fixed; inset:64px 0 auto 0; background:var(--paper); flex-direction:column; align-items:flex-start;
+      gap:0; padding:8px 24px 20px; border-bottom:1px solid var(--line); transform:translateY(-130%); transition:transform .25s ease; }
+    .nav-links.open{ transform:translateY(0); }
+    .nav-links a{ width:100%; padding:14px 0; border-bottom:1px solid var(--line); }
+    .burger{ display:block; }
   }
-  .nav-links a{text-decoration:none; color:var(--ink-soft); transition:color .15s;}
-  .nav-links a:hover{color:var(--select);}
-  .btn{
-    display:inline-flex; align-items:center; justify-content:center; gap:8px;
-    padding:12px 22px; border-radius:999px; border:1px solid transparent;
-    font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:14.5px;
-    cursor:pointer; text-decoration:none; transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
-  }
-  .btn-primary{background:var(--select); color:#fff8f2;}
-  .btn-primary:hover{background:var(--select-dark); transform:translateY(-1px); box-shadow:var(--shadow-sm);}
-  .btn-ghost{background:transparent; border-color:var(--line-strong); color:var(--ink);}
-  .btn-ghost:hover{border-color:var(--ink); transform:translateY(-1px);}
-  .nav-cta{display:flex; align-items:center; gap:18px;}
-  @media (max-width:760px){ .nav-links{display:none;} }
 
   /* ---------- HERO ---------- */
-  .hero{
-    display:grid; grid-template-columns:1.05fr 0.95fr; gap:56px; align-items:center;
-    padding-top:64px;
-  }
-  @media (max-width:900px){ .hero{grid-template-columns:1fr; padding-top:36px;} }
-  .hero h1{
-    font-size:clamp(34px,5vw,56px); line-height:1.05; font-weight:600;
-  }
-  .hero p.lead{
-    font-size:18px; color:var(--ink-soft); max-width:46ch; margin:20px 0 30px;
-  }
-  .hero .cta-row{display:flex; gap:14px; flex-wrap:wrap;}
+  .hero{ padding-top:60px; overflow:hidden; }
+  .hero-grid{ display:grid; grid-template-columns:1.1fr 0.9fr; gap:48px; align-items:center; }
+  @media (max-width:900px){ .hero-grid{ grid-template-columns:1fr; gap:40px; } }
 
-  /* hero visual: hanger on a door with radius rings */
-  .hero-visual{
-    position:relative; display:flex; align-items:center; justify-content:center;
-    min-height:540px;
+  /* results / slideshow section */
+  .results-section{ background:var(--green-deep); color:#fff; }
+  .results-section .eyebrow{ color:var(--yellow); }
+  .results-section .eyebrow::before{ background:var(--yellow); }
+  .results-section h2{ color:#fff; }
+  .results-section .lede{ color:#C9D6CE; }
+  .slideshow-frame{
+    width:min(300px,72vw); aspect-ratio:9/16; margin:0 auto; position:relative;
+    border-radius:6px; overflow:hidden; box-shadow:0 24px 50px rgba(0,0,0,.4);
+    border:7px solid #0B241D; background:var(--card);
   }
-  .rings{position:absolute; inset:0; display:flex; align-items:center; justify-content:center;}
-  .ring{
-    position:absolute; border:1.5px dashed var(--line-strong); border-radius:50%;
-    animation:pulse 4.5s ease-in-out infinite;
+  .rslide{ position:absolute; inset:0; opacity:0; animation:rslideFade 18s infinite; display:flex; flex-direction:column; }
+  .rslide:nth-child(1){ animation-delay:0s; }
+  .rslide:nth-child(2){ animation-delay:3.6s; }
+  .rslide:nth-child(3){ animation-delay:7.2s; }
+  .rslide:nth-child(4){ animation-delay:10.8s; }
+  .rslide:nth-child(5){ animation-delay:14.4s; }
+  @keyframes rslideFade{ 0%{opacity:0;} 4%{opacity:1;} 18%{opacity:1;} 22%{opacity:0;} 100%{opacity:0;} }
+  @media (prefers-reduced-motion:reduce){
+    .rslide{ animation:none; opacity:0; }
+    .rslide:first-child{ opacity:1; }
   }
-  .ring.r1{width:220px;height:220px; animation-delay:0s;}
-  .ring.r2{width:340px;height:340px; animation-delay:.5s; border-color:rgba(178,58,46,0.25);}
-  .ring.r3{width:460px;height:460px; animation-delay:1s;}
-  @media (max-width:520px){
-    .ring.r1{width:160px;height:160px;}
-    .ring.r2{width:230px;height:230px;}
-    .ring.r3{width:300px;height:300px;}
+  .hmock{ flex:1; margin:22px; border-radius:6px; position:relative; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 8px 20px rgba(0,0,0,.3); }
+  .hmock::before{ content:''; position:absolute; top:14px; left:50%; transform:translateX(-50%); width:26px; height:26px; border-radius:50%; border:3px solid rgba(255,255,255,.55); }
+  .hmock .hm-band{ padding:38px 16px 12px; text-align:center; }
+  .hmock .hm-biz{ font-family:'Chakra Petch',sans-serif; font-size:19px; color:#fff; }
+  .hmock .hm-tag{ font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.06em; text-transform:uppercase; color:rgba(255,255,255,.75); margin-top:4px; }
+  .hmock .hm-body{ flex:1; margin:0 16px 16px; border-radius:4px; background:rgba(255,255,255,.16); }
+  .hmock .hm-qr{
+    position:absolute; bottom:14px; right:14px; width:34px; height:34px; border-radius:5px; opacity:.9;
+    background:
+      linear-gradient(90deg,#fff 0 33%,transparent 33% 66%,#fff 66%) 0 0/100% 34% no-repeat,
+      linear-gradient(90deg,#fff 0 33%,transparent 33% 66%,#fff 66%) 0 33%/100% 34% no-repeat,
+      linear-gradient(90deg,#fff 0 33%,transparent 33% 66%,#fff 66%) 0 66%/100% 34% no-repeat;
   }
-  @keyframes pulse{
-    0%,100%{opacity:.35; transform:scale(1);}
-    50%{opacity:.75; transform:scale(1.02);}
+  .hmock .hm-caption{ position:absolute; left:16px; bottom:16px; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.05em; text-transform:uppercase; color:rgba(255,255,255,.85); }
+  .rslide:nth-child(1) .hmock{ background:linear-gradient(160deg,var(--green),var(--green-deep)); }
+  .rslide:nth-child(2) .hmock{ background:linear-gradient(160deg,#B8873E,#7A5A28); }
+  .rslide:nth-child(3) .hmock{ background:linear-gradient(160deg,#4C8DFF,#1B3A66); }
+  .rslide:nth-child(4) .hmock{ background:linear-gradient(160deg,#2A3548,#0F1420); }
+  .rslide:nth-child(5) .hmock{ background:linear-gradient(160deg,#1A2233,#0B0F18); }
+  .hero h1{ font-size:clamp(38px,6vw,64px); text-transform:uppercase; }
+  .hero h1 em{ font-style:normal; color:var(--green); }
+  .hero p.lead{ font-size:17.5px; margin-top:20px; max-width:48ch; }
+
+  .hero-art{ position:relative; display:flex; justify-content:center; }
+  .door-scene{ width:100%; max-width:340px; }
+
+  @keyframes dropIn{
+    0%{ transform:translateY(-46px) rotate(9deg); opacity:0; }
+    55%{ transform:translateY(4px) rotate(-4deg); opacity:1; }
+    75%{ transform:translateY(-2px) rotate(2deg); }
+    100%{ transform:translateY(0) rotate(-3deg); }
   }
-  .hero-hanger-wrap{
-    position:absolute; top:50%; left:50%; z-index:2;
-    transform:translate(calc(-50% + 63px), calc(-50% + 51px));
+  @keyframes swing{ 0%,100%{ transform:translateY(0) rotate(-3deg); } 50%{ transform:translateY(0) rotate(3deg); } }
+  .hanger-hook{
+    transform-origin:188px 214px;
+    animation: dropIn 0.9s cubic-bezier(.34,1.56,.64,1) both,
+               swing 3.6s ease-in-out 0.9s infinite;
   }
-  .hero-hanger{ transform-origin:50% 11%; animation:sway 6s ease-in-out infinite; filter:drop-shadow(0 12px 14px rgba(31,46,74,0.2)); }
-  .hero-door{
-    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); z-index:1;
-    filter:drop-shadow(0 14px 20px rgba(31,46,74,0.14));
+
+  @keyframes glowPulse{ 0%,100%{ opacity:0.55; } 50%{ opacity:1; } }
+  .porch-glow{ animation:glowPulse 3.2s ease-in-out infinite; transform-origin:140px 40px; }
+
+  @keyframes scanPulse{
+    0%{ opacity:0; transform:scale(0.55); }
+    18%{ opacity:0.55; }
+    45%{ opacity:0; transform:scale(1.7); }
+    100%{ opacity:0; transform:scale(1.7); }
   }
-  @media (max-width:520px){
-    .hero-hanger-wrap{ transform:translate(calc(-50% + 52px), calc(-50% + 42px)) scale(0.82); }
-    .hero-door{ transform:translate(-50%,-50%) scale(0.82); }
-  }
-  @keyframes sway{
-    0%,100%{transform:rotate(-2.2deg);}
-    50%{transform:rotate(2.2deg);}
-  }
+  .scan-ring{ animation:scanPulse 4.2s ease-out infinite; transform-origin:188px 285px; opacity:0; }
+  .scan-ring.delay{ animation-delay:1.4s; }
+
   @media (prefers-reduced-motion: reduce){
-    .ring, .hero-hanger{ animation:none; }
+    .hanger-hook{ animation:none; transform:rotate(-3deg); }
+    .porch-glow{ animation:none; opacity:0.8; }
+    .scan-ring{ animation:none; opacity:0; }
   }
-
-  /* ---------- SECTION HEAD ---------- */
-  .section-head{max-width:640px; margin-bottom:48px;}
-  .section-head h2{font-size:clamp(26px,3.4vw,38px); font-weight:600;}
-  .section-head p{color:var(--ink-soft); font-size:16.5px; margin-top:12px;}
-
-  /* ---------- HOW IT WORKS ---------- */
-  .steps{
-    display:grid; grid-template-columns:repeat(3,1fr); gap:20px;
-  }
-  @media (max-width:760px){ .steps{grid-template-columns:1fr;} }
-  .step{
-    background:var(--paper-light); border:1px solid var(--line); border-radius:var(--radius-m);
-    padding:26px 22px; position:relative;
-  }
-  .step .idx{
-    font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--select); font-weight:600;
-    letter-spacing:.05em; margin-bottom:14px; display:block;
-  }
-  .step h3{font-size:18px; font-weight:600; margin-bottom:8px;}
-  .step p{font-size:14.5px; color:var(--ink-soft); margin:0;}
 
   /* ---------- BUILDER ---------- */
-  .builder{
-    display:grid; grid-template-columns:1fr 420px; gap:44px; align-items:flex-start;
-    margin-top:48px;
+  .builder-section{ background:var(--card); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .builder-head{ max-width:640px; margin-bottom:12px; }
+  .builder-head h2{ font-size:clamp(28px,4vw,42px); text-transform:uppercase; margin-top:14px; }
+  .builder-head p{ margin-top:14px; font-size:16px; max-width:52ch; }
+  .builder-layout{ display:grid; grid-template-columns:1fr 420px; gap:56px; align-items:start; margin-top:48px; }
+  @media (max-width:980px){ .builder-layout{ grid-template-columns:1fr; } }
+
+  .builder-fields{ position:relative; padding-left:52px; }
+  .builder-fields::before{ content:""; position:absolute; left:17px; top:8px; bottom:24px; width:2px; background:var(--line); }
+  @media (max-width:480px){ .builder-fields{ padding-left:42px; } .builder-fields::before{ left:13px; } }
+
+  .field-group{ position:relative; margin-bottom:40px; }
+  .field-group:last-child{ margin-bottom:0; }
+  .step-num{
+    position:absolute; left:-52px; top:-2px; width:34px; height:34px; border-radius:50%;
+    background:var(--card); border:2px solid var(--green); color:var(--green-dark);
+    font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:14px;
+    display:flex; align-items:center; justify-content:center; z-index:1;
   }
-  @media (max-width:980px){ .builder{grid-template-columns:1fr;} }
-  .panel{
-    background:var(--paper-light); border:1px solid var(--line); border-radius:var(--radius-m);
-    padding:30px;
+  @media (max-width:480px){ .step-num{ left:-42px; width:26px; height:26px; font-size:12px; } }
+  .field-group.static .step-num{ background:var(--green); color:#fff; }
+
+  .field-group h3{ font-size:19px; font-family:'Inter',sans-serif; font-weight:800; margin-bottom:4px; }
+  .field-group .sub{ font-size:13.5px; margin-bottom:16px; }
+
+  .extras-list{ display:flex; flex-direction:column; gap:8px; }
+  .extra-row{
+    display:flex; align-items:center; gap:12px; padding:12px 14px;
+    border:1.5px solid var(--line); border-radius:5px; background:var(--card);
+    cursor:pointer; transition:border-color .15s ease, background .15s ease;
   }
-  @media (max-width:560px){ .panel{padding:22px;} }
-  .panel h3.group-title{
-    font-size:15px; text-transform:uppercase; letter-spacing:.08em; font-family:'JetBrains Mono',monospace;
-    color:var(--ink-soft); font-weight:600; margin:0 0 16px;
+  .extra-row:hover{ border-color:var(--green); }
+  .extra-row:has(.extra-checkbox:checked){ border-color:var(--green); background:var(--green-tint); }
+  .extra-checkbox{ width:18px; height:18px; accent-color:var(--green); flex-shrink:0; cursor:pointer; }
+  .extra-label{ flex:1; font-size:14.5px; color:var(--ink); }
+  .extra-price{ font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600; color:var(--green-dark); flex-shrink:0; }
+  .extra-row.extra-included{ cursor:default; background:transparent; border-style:dashed; }
+  .extra-row.extra-included:hover{ border-color:var(--line); }
+  .included-badge-green{
+    font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:700; letter-spacing:.04em; text-transform:uppercase;
+    background:var(--green); color:#fff; padding:3px 7px; border-radius:4px; flex-shrink:0;
   }
-  .step-label{
-    display:inline-flex; align-items:center; gap:8px;
-    font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:700; letter-spacing:.06em;
-    text-transform:uppercase; color:var(--select);
-    padding-bottom:8px; margin-bottom:18px; border-bottom:1px dashed var(--line-strong);
-    width:100%;
+  .extras-summary-row{ display:none; }
+  .price-row.extras-summary-row{ display:none; }
+  .price-row.extras-summary-row.active{ display:flex; }
+  @media(max-width:400px){
+    .extra-row{ flex-wrap:wrap; row-gap:4px; padding:10px 12px; }
+    .extra-label{ flex-basis:100%; font-size:13.5px; }
+    .extra-price{ margin-left:30px; }
   }
 
-  fieldset{border:none; padding:0; margin:0 0 34px;}
-  .ad-preview-block{ margin:0 0 34px; }
-  fieldset:last-of-type{margin-bottom:0;}
-  .field-row{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;}
-  .field-row.field-row-3{grid-template-columns:1.6fr 1fr 1fr;}
-  @media (max-width:560px){ .field-row{grid-template-columns:1fr;} .field-row.field-row-3{grid-template-columns:1fr;} }
-  label{
-    display:block; font-size:13px; font-weight:600; color:var(--ink); margin-bottom:6px;
+  .grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:520px){ .grid-2{ grid-template-columns:1fr; } }
+  .grid-3{ display:grid; grid-template-columns:2fr 1fr 1fr; gap:14px; }
+  @media (max-width:520px){ .grid-3{ grid-template-columns:1fr; } }
+  label{ display:block; font-size:13px; font-weight:700; margin-bottom:6px; }
+  input[type="text"], input[type="email"], input[type="tel"], input[type="number"], input[type="url"], select{
+    width:100%; padding:13px 14px; border-radius:4px; border:1.5px solid var(--line);
+    background:var(--card); font-family:'Inter',sans-serif; font-size:15px; color:var(--ink);
   }
-  .optional-tag{ font-weight:500; color:var(--ink-soft); text-transform:none; letter-spacing:0; }
-  input[type=text], input[type=email], input[type=tel], input[type=number], input[type=url], select, textarea{
-    width:100%; padding:12px 14px; border-radius:var(--radius-s); border:1px solid var(--line-strong);
-    background:#fff; font-family:'Space Grotesk',sans-serif; font-size:15px; color:var(--charcoal);
-  }
-  select{ appearance:none; -webkit-appearance:none;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234a5b7c' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-    background-repeat:no-repeat; background-position:right 12px center; background-size:16px; padding-right:36px;
-  }
-  textarea{ resize:vertical; min-height:70px; font-family:'Space Grotesk',sans-serif; }
-  input:focus, select:focus, textarea:focus{outline:2px solid var(--select); outline-offset:1px; border-color:var(--select);}
-  input:disabled, select:disabled, textarea:disabled, .choice:disabled{
-    opacity:.5; cursor:not-allowed; background:var(--paper);
-  }
-  .field{margin-bottom:16px;}
+  select{ cursor:pointer; }
+  select option{ background:var(--card); color:var(--ink); }
+  input::placeholder{ color:#8792A6; }
+  .field{ margin-bottom:14px; }
 
-  .form-error{
-    display:none; background:#fdf3f1; border:1px solid var(--stamp); border-radius:var(--radius-s);
-    padding:12px 14px; font-size:13.5px; color:var(--stamp-dark); margin-top:14px;
-  }
-  .form-error.show{display:block;}
+  .pill-row{ display:flex; gap:10px; flex-wrap:wrap; }
+  .pill{ background:var(--card); border:1.5px solid var(--line); border-radius:5px; padding:14px 16px; cursor:pointer; text-align:left; flex:1 1 150px; transition:border-color .15s ease, background .15s ease; }
+  .pill strong{ display:block; font-size:16px; font-family:'Chakra Petch',sans-serif; font-weight:400; }
+  .pill span{ font-size:12.5px; color:var(--ink-soft); }
+  .pill.active{ border-color:var(--green); background:var(--green-tint); }
+  .pill.active strong{ color:var(--green-dark); }
+  .pill:disabled{ cursor:not-allowed; opacity:.5; background:var(--paper-dim); }
+  .pill:disabled span{ font-style:italic; }
 
-  .reference-id{
-    background:#fff; border:1px dashed var(--line-strong); border-radius:var(--radius-s);
-    padding:14px 16px; text-align:center; margin:0 0 22px;
-  }
-  .reference-id .rid-label{
-    font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase;
-    color:var(--ink-soft); margin-bottom:6px;
-  }
-  .reference-id .rid-value{
-    font-family:'JetBrains Mono',monospace; font-size:18px; font-weight:600; color:var(--ink);
-  }
+  .size-cards{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media (max-width:520px){ .size-cards{ grid-template-columns:1fr; } }
+  .size-card{ background:var(--card); border:1.5px solid var(--line); border-radius:6px; padding:16px; cursor:pointer; transition:border-color .15s ease, box-shadow .15s ease; }
+  .size-card:hover{ border-color:var(--green); }
+  .size-card.active{ border-color:var(--green); box-shadow:0 0 0 3px var(--green-tint); }
+  .size-card .swatch{ width:100%; height:34px; border-radius:6px; background:var(--paper-dim); margin-bottom:12px; display:flex; overflow:hidden; border:1px solid var(--line); }
+  .size-card .swatch i{ display:block; background:transparent; }
+  .size-card.active .swatch i.filled{ background:var(--green); }
+  .size-card .name{ font-family:'Inter',sans-serif; font-weight:800; font-size:15.5px; }
+  .size-card .desc{ font-size:12.5px; color:var(--ink-soft); margin-top:2px; }
+  .size-card .price{ font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:13.5px; color:var(--green-dark); margin-top:10px; }
 
-  .choice-row{display:flex; gap:10px; flex-wrap:wrap;}
-  #size-group + .field{ margin-top:16px; }
-  .choice{
-    flex:1 1 auto; min-width:100px;
-    border:1px solid var(--line-strong); background:#fff; border-radius:var(--radius-s);
-    padding:12px 14px; cursor:pointer; text-align:left; font-family:'Space Grotesk',sans-serif;
-    transition:border-color .15s, background .15s, transform .1s;
-  }
-  .choice .c-title{font-weight:600; font-size:14.5px; color:var(--ink);}
-  .choice .c-sub{font-size:12px; color:var(--ink-soft); margin-top:3px; font-family:'JetBrains Mono',monospace;}
-  .choice:hover{border-color:var(--ink);}
-  .choice.active{
-    border-color:var(--select); background:var(--select-tint); box-shadow:inset 0 0 0 1px var(--select);
-  }
-  .radius-help{font-size:13px; color:var(--ink-soft); margin-top:10px; min-height:18px;}
-  .radius-help.warning{ color:var(--stamp); font-weight:600; }
+  .qty-chips{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px; }
+  .chip{ background:var(--card); border:1.5px solid var(--line); border-radius:4px; padding:10px 18px; font-weight:700; font-size:14px; cursor:pointer; }
+  .chip.active{ background:var(--green); border-color:var(--green); color:#0F1420; }
+  .chip:disabled{ cursor:not-allowed; opacity:.45; }
 
-  .qty-control{display:flex; align-items:center; gap:12px;}
-  .qty-btn{
-    width:40px; height:40px; border-radius:50%; border:1px solid var(--line-strong); background:#fff;
-    font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--ink);
+  .static-note{
+    background:var(--green-tint); border:1px dashed var(--green); border-radius:5px; padding:16px 18px;
   }
-  .qty-btn:hover{border-color:var(--select); color:var(--select);}
-  .qty-control input{text-align:center; font-family:'JetBrains Mono',monospace; font-weight:600; font-size:16px;}
-  .qty-hint{font-size:12.5px; color:var(--ink-soft); margin-top:8px;}
-  .field-hint{font-size:12.5px; color:var(--ink-soft); margin-top:8px; margin-bottom:0;}
-  input[readonly]{ background:var(--paper); cursor:default; }
-  .unavailable-msg{
-    display:none; font-size:12.5px; color:var(--stamp); font-weight:600; margin-top:8px;
-  }
-  .unavailable-msg.show{ display:block; }
-  .choice.unavailable-flash{ animation:unavailableFlash .6s ease; }
-  @keyframes unavailableFlash{
-    0%,100%{ border-color:var(--line-strong); }
-    30%{ border-color:var(--stamp); background:#fdf3f1; }
-  }
-  .extra-group{ margin-bottom:22px; }
-  .extra-group:last-child{ margin-bottom:0; }
-  .extra-label{ font-size:13px; font-weight:600; color:var(--ink); margin-bottom:8px; }
-  .extra-help{ font-size:13px; color:var(--ink-soft); margin-top:8px; margin-bottom:0; }
+  .static-note p{ font-size:14px; }
+  .static-note a{ font-weight:700; color:var(--green-dark); text-decoration:underline; }
 
-  /* preview panel */
-  .preview-panel{position:sticky; top:100px;}
-  .tabs{display:flex; gap:8px; margin-bottom:18px;}
-  .tab-btn{
-    flex:1; padding:10px; border-radius:999px; border:1px solid var(--line-strong); background:transparent;
-    font-family:'JetBrains Mono',monospace; font-size:12.5px; font-weight:600; letter-spacing:.04em;
-    color:var(--ink-soft); cursor:pointer; text-transform:uppercase;
-  }
-  .tab-btn.active{background:var(--ink); color:var(--paper-light); border-color:var(--ink);}
-  .tab-btn:disabled{opacity:.4; cursor:not-allowed;}
-  .hanger-stage{
-    display:flex; justify-content:center; padding:6px 0 18px;
-  }
-  .hanger-stage svg{ width:260px; max-width:100%; height:auto; }
-  .hanger-stage.dual{gap:14px;}
-  .hanger-stage.dual svg{ width:calc(50% - 7px); max-width:230px; }
-  .slot-rect{
-    transform-box: fill-box; transform-origin:50% 50%;
-  }
-  .slot-rect.active{ fill:var(--select); animation:stampIn .4s cubic-bezier(.34,1.56,.64,1); }
-  .slot-rect.inactive{ fill:#ffffff; }
-  .slot-rect.clickable{ cursor:pointer; }
-  .slot-rect.clickable:focus-visible{ outline:2px solid var(--select); outline-offset:2px; }
-  @keyframes stampIn{
-    0%{ transform:scale(0.82); opacity:0.4; }
-    60%{ transform:scale(1.04); opacity:1; }
-    100%{ transform:scale(1); opacity:1; }
-  }
-  .slot-label{
-    font-family:'JetBrains Mono',monospace; font-size:11px; fill:var(--ink-soft); pointer-events:none;
-  }
-  .slot-label.active-label{ fill:var(--select-tint); animation:labelFade .35s ease; }
-  @keyframes labelFade{
-    0%{ opacity:0; }
-    100%{ opacity:1; }
-  }
-  @media (prefers-reduced-motion: reduce){
-    .slot-rect.active, .slot-label.active-label{ animation:none; }
-  }
+  /* ---------- HANGER VISUAL ---------- */
+  .visual-panel{ position:sticky; top:96px; background:var(--paper-dim); border-radius:var(--radius-lg); padding:28px 24px 24px; border:1px solid var(--line); }
+  @media (max-width:980px){ .visual-panel{ position:static; } }
+  .visual-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+  .visual-top .lbl{ font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-soft); }
+  .flip-btn{ background:var(--card); border:1.5px solid var(--line); border-radius:4px; padding:8px 14px; font-size:12.5px; font-weight:700; display:flex; align-items:center; gap:6px; }
 
-  .summary{
-    border-top:1px solid var(--line); padding-top:18px; margin-top:6px;
-  }
-  .summary-row{display:flex; justify-content:space-between; font-size:14px; margin-bottom:9px; color:var(--ink-soft);}
-  .summary-row strong{color:var(--ink); font-weight:600;}
-  .summary-total{
-    display:flex; justify-content:space-between; align-items:baseline; margin-top:14px; padding-top:14px;
-    border-top:1px dashed var(--line-strong);
-  }
-  .summary-total .label{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-soft); font-family:'JetBrains Mono',monospace;}
-  .summary-total .value{font-family:'Fraunces',serif; font-size:30px; font-weight:600; color:var(--select);}
+  .stage{ perspective:1400px; display:flex; justify-content:center; margin:0 auto; max-width:270px; }
+  .card3d{ position:relative; width:100%; padding-bottom:183%; transform-style:preserve-3d; transition:transform .7s cubic-bezier(.2,.7,.3,1); }
+  .card3d.flipped{ transform:rotateY(180deg); }
+  .face{ position:absolute; inset:0; backface-visibility:hidden; }
+  .face.back{ transform:rotateY(180deg); }
+  .face svg{ width:100%; height:100%; filter:drop-shadow(0 14px 24px rgba(18,63,53,0.22)); }
 
-  .submit-row{margin-top:22px;}
-  .submit-row .btn{width:100%; padding:14px;}
-  .form-note{font-size:12.5px; color:var(--ink-soft); margin-top:10px; text-align:center;}
+  .slot-rect{ fill:var(--card); stroke:var(--line); stroke-width:1.5; }
+  .overlay-rect{ fill:var(--green); fill-opacity:0.88; transition:y .4s ease, height .4s ease, opacity .3s ease; }
+  .overlay-label{ font-family:'IBM Plex Mono',monospace; font-size:11px; fill:#fff; font-weight:600; text-anchor:middle; }
+  .slot-index{ font-family:'IBM Plex Mono',monospace; font-size:9px; fill:#8792A6; }
+  .empty-note{ font-family:'IBM Plex Mono',monospace; font-size:9px; fill:#8792A6; text-anchor:middle; }
 
-  .confirm{
-    display:none; text-align:center; padding:40px 10px;
-  }
-  .confirm.show{display:block;}
-  .confirm .check{
-    width:56px;height:56px;border-radius:50%; background:var(--select); color:#fff; display:flex; align-items:center; justify-content:center;
-    margin:0 auto 18px; font-size:26px;
-  }
-  .confirm h3{font-size:24px; margin-bottom:10px;}
-  .confirm p{color:var(--ink-soft); font-size:15px; max-width:44ch; margin:0 auto 22px;}
-  .confirm-summary{
-    text-align:left; background:#fff; border:1px solid var(--line); border-radius:var(--radius-s);
-    padding:18px 20px; max-width:420px; margin:0 auto 22px; font-size:14px;
-  }
-  .confirm-summary div{display:flex; justify-content:space-between; padding:5px 0; color:var(--ink-soft);}
-  .confirm-summary div strong{color:var(--ink);}
+  .price-summary{ margin-top:22px; padding-top:18px; border-top:1px dashed var(--line); }
+  .price-row{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px; }
+  .price-row .k{ font-size:13px; color:var(--ink-soft); }
+  .price-row .v{ font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600; }
+  .price-total{ display:flex; justify-content:space-between; align-items:baseline; margin-top:12px; }
+  .price-total .k{ font-size:14px; font-weight:800; }
+  .price-total .v{ font-family:'Chakra Petch',sans-serif; font-size:30px; color:var(--green-dark); }
 
-  /* ---------- SLIDER ---------- */
-  .slider-wrap{ display:flex; justify-content:center; }
-  .slider-wrap-narrow .slider{ width:100%; max-width:336px; }
-  .slider-wrap-wide .slider{ width:100%; max-width:480px; }
-  .slider{
-    position:relative; overflow:hidden; border-radius:var(--radius-m);
-    border:1px solid var(--line); background:var(--paper-light); box-shadow:var(--shadow-sm);
-  }
-  .slider-track{
-    display:flex; transition:transform .4s cubic-bezier(.4,0,.2,1); touch-action:pan-y; cursor:grab;
-  }
-  .slider-track:active{ cursor:grabbing; }
-  .slide{ flex:0 0 100%; width:100%; min-width:0; }
-  .slider[data-aspect="9-13"] .slide{ aspect-ratio:9/13; }
-  .slider[data-aspect="4-3"] .slide{ aspect-ratio:4/3; }
-  .slide img{ width:100%; height:100%; object-fit:cover; display:block; pointer-events:none; user-select:none; }
-  .slider-arrow{
-    position:absolute; top:50%; transform:translateY(-50%); z-index:2;
-    width:34px; height:34px; border-radius:50%; border:none; background:rgba(31,46,74,0.55);
-    color:#fff; font-size:20px; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center;
-  }
-  .slider-arrow:hover{ background:rgba(31,46,74,0.8); }
-  .slider-arrow.prev{ left:10px; }
-  .slider-arrow.next{ right:10px; }
-  .slider-dots{
-    position:absolute; bottom:12px; left:0; right:0; z-index:2;
-    display:flex; justify-content:center; gap:6px;
-  }
-  .slider-dot{
-    width:7px; height:7px; border-radius:50%; border:none; background:rgba(255,255,255,0.55); cursor:pointer; padding:0;
-  }
-  .slider-dot.active{ background:#fff; box-shadow:0 0 0 1.5px rgba(31,46,74,0.4); }
+  .included-list{ margin:14px 0; padding:14px 0; border-top:1px dashed var(--line); border-bottom:1px dashed var(--line); display:flex; flex-direction:column; gap:9px; }
+  .included-row{ display:flex; align-items:center; gap:9px; font-size:13px; }
+  .included-badge{ font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; background:var(--green); color:#fff; padding:3px 7px; border-radius:4px; flex-shrink:0; }
+  .included-label{ flex:1; color:var(--ink); }
+  .included-strike{ font-family:'IBM Plex Mono',monospace; text-decoration:line-through; color:var(--ink-soft); font-size:12.5px; }
+
+  .submit-row{ margin-top:26px; }
+  .submit-row .btn-primary{ width:100%; padding:16px; }
+  .fine{ font-size:12px; color:var(--ink-soft); margin-top:10px; text-align:center; }
+
+  .success-card{ background:var(--green-tint); border:1.5px solid var(--green); border-radius:6px; padding:26px; margin-top:20px; }
+  .success-card h4{ font-family:'Chakra Petch',sans-serif; font-size:20px; text-transform:uppercase; color:var(--green-dark); margin-bottom:10px; }
+  .success-card dl{ display:grid; grid-template-columns:auto 1fr; gap:6px 14px; font-size:13.5px; margin:14px 0 0; }
+  .success-card dt{ color:var(--ink-soft); }
+  .success-card dd{ margin:0; font-weight:700; }
+  .error-card{ background:rgba(255,92,92,0.08); border:1.5px solid #FF5C5C; border-radius:6px; padding:26px; margin-top:20px; }
+  .error-card h4{ font-family:'Chakra Petch',sans-serif; font-size:20px; text-transform:uppercase; color:#FF8A8A; margin-bottom:10px; }
+  .error-card a{ font-weight:700; color:#FF8A8A; }
+  .hidden{ display:none !important; }
+  .btn-primary[disabled]{ opacity:0.65; cursor:progress; }
 
   /* ---------- FAQ ---------- */
-  .faq{max-width:760px;}
-  details{
-    border-bottom:1px solid var(--line); padding:20px 0;
+  .faq-head{ max-width:640px; margin-bottom:36px; }
+  .faq-head h2{ font-size:clamp(28px,4vw,42px); text-transform:uppercase; margin-top:14px; }
+  .faq-list{ max-width:760px; border-top:1px solid var(--line); }
+  details{ border-bottom:1px solid var(--line); padding:20px 0; }
+  .chatbot-embed{
+    aspect-ratio:9/16; max-width:340px; width:100%; margin:16px 0 0;
+    border-radius:6px; overflow:hidden; border:1.5px solid var(--line); box-shadow:var(--shadow);
   }
-  details summary{
-    list-style:none; cursor:pointer; display:flex; justify-content:space-between; align-items:center;
-    font-family:'Fraunces',serif; font-size:18px; font-weight:500; color:var(--ink);
-  }
-  details summary::-webkit-details-marker{display:none;}
-  details summary .plus{
-    font-family:'JetBrains Mono',monospace; font-size:20px; color:var(--select); transition:transform .2s ease;
-    flex-shrink:0; margin-left:16px;
-  }
-  details[open] summary .plus{transform:rotate(45deg);}
-  details p{color:var(--ink-soft); font-size:15px; margin:14px 0 0; max-width:60ch;}
-  .ai-chat-embed{
-    margin-top:14px; border:1px dashed var(--line-strong); border-radius:var(--radius-s);
-    overflow:hidden; background:#fff; max-width:60ch;
-  }
-  .ai-chat-embed iframe{ width:100%; height:420px; border:none; display:block; }
-  .ai-chat-note{ font-size:12.5px !important; color:var(--ink-soft); margin-top:8px !important; }
-  .ai-chat-note code{ font-family:'JetBrains Mono',monospace; background:var(--paper); padding:1px 5px; border-radius:4px; }
+  .chatbot-embed iframe{ width:100%; height:100%; border:0; display:block; }
+  summary{ list-style:none; cursor:pointer; display:flex; justify-content:space-between; align-items:center; font-weight:800; font-size:16.5px; gap:16px; }
+  summary::-webkit-details-marker{ display:none; }
+  summary .plus{ flex:none; width:26px; height:26px; border-radius:50%; border:1.5px solid var(--ink); display:flex; align-items:center; justify-content:center; font-size:16px; transition:transform .2s ease; }
+  details[open] summary .plus{ transform:rotate(45deg); }
+  details p{ margin-top:14px; font-size:14.5px; max-width:60ch; }
 
   /* ---------- FOOTER ---------- */
-  footer{
-    border-top:1px solid var(--line); padding:44px 0; background:var(--paper-light);
-  }
-  .footer-row{
-    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;
-  }
-  .footer-row p{font-size:13.5px; color:var(--ink-soft); margin:0;}
+  footer{ background:var(--paper-dim); color:var(--ink); padding:44px 0; }
+  .foot-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:18px; }
+  .foot-brand{ display:flex; align-items:center; gap:10px; font-family:'Chakra Petch',sans-serif; font-size:19px; }
+  .foot-brand svg{ width:24px; height:24px; }
+  .foot-contact{ display:flex; gap:24px; font-size:13.5px; flex-wrap:wrap; }
+  .foot-contact a{ text-decoration:none; opacity:0.9; }
+  .foot-contact a:hover{ opacity:1; text-decoration:underline; }
+  .foot-bottom{ margin-top:24px; padding-top:20px; border-top:1px solid rgba(237,241,247,0.15); font-size:12px; color:#8792A6; }
+
+  /* ---------- WHY-THIS-WORKS (industry benefits) ---------- */
+  .why-section{ background:var(--paper-dim); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .why-head{ max-width:640px; margin:0 auto 40px; text-align:center; }
+  .why-head h2{ font-size:clamp(26px,4vw,38px); text-transform:uppercase; margin-top:14px; }
+  .why-head p{ margin-top:14px; font-size:16px; }
+  .why-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+  @media (max-width:860px){ .why-grid{ grid-template-columns:1fr; } }
+  .why-card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius-lg); padding:26px 24px; }
+  .why-card img{ width:52px; height:52px; margin-bottom:16px; border-radius:12px; }
+  .why-card h3{ font-family:'Inter',sans-serif; font-size:16.5px; font-weight:800; color:var(--ink); margin-bottom:8px; }
+  .why-card p{ font-size:14px; }
 </style>
 </head>
 <body>
 
-<header class="site">
-  <nav>
-    <a href="#top" class="logo"><span class="dot"></span>Hand Delivered Marketing</a>
-    <ul class="nav-links">
-      <li><a href="#why">Why HDM</a></li>
-      <li><a href="#how">How it works</a></li>
-      <li><a href="#build">Register &amp; select</a></li>
-      <li><a href="#reviews">Reviews</a></li>
-      <li><a href="#faq">FAQ</a></li>
-    </ul>
-    <div class="nav-cta">
-      <a href="#build" class="btn btn-primary">Get started</a>
+<div class="price-bar" id="priceBar">
+  <div class="price-bar-live">
+    <span class="dot"></span>
+    <span class="lbl">Estimated total · pay later</span>
+    <span class="val" id="topTotal">$550 <small>/ 2,000 hangers</small></span>
+  </div>
+  <a class="btn" href="#builder">Place order</a>
+</div>
+
+<header>
+  <nav class="nav">
+    <a class="brand" href="#home">
+      <img class="brand-mark" src="images/logo.png" alt="Hand Delivered Marketing (HDM) logo">
+      Hand Delivered Marketing
+    </a>
+    <button class="burger" id="burger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <div class="nav-links" id="navLinks">
+      <a href="#builder">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
     </div>
   </nav>
 </header>
 
-<main id="top">
-
-  <!-- HERO -->
-  <section class="hero wrap">
-    <div>
-      <div class="eyebrow">Door-to-door advertising for roofers</div>
-      <h1>Get on the roof of mind before the next storm hits.</h1>
-      <p class="lead">Hand Delivered Marketing (HDM) designs, prints, and hand-delivers door hangers within 5, 15, or 30 miles of your roofing business — putting your name in front of homeowners with aging roofs before your competitors ever knock.</p>
-      <div class="cta-row">
-        <a href="#build" class="btn btn-primary">Build your door hanger</a>
-        <a href="#how" class="btn btn-ghost">See how it works</a>
+<main>
+  <!-- ================= HERO ================= -->
+  <section class="hero" id="home">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow">Reach every home with an aging roof</span>
+        <h1>A storm-damaged roof<br>is a <em>visible</em> lead.</h1>
+        <p class="lead">You can often tell which roofs are overdue for a repair just by looking up from the street. A door hanger delivered to that exact block puts your name in front of the homeowner who already knows it.</p>
       </div>
-    </div>
+      <div class="hero-art">
+        <svg class="door-scene" viewBox="0 0 360 460" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="glowGrad" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#FF7A1A" stop-opacity="0.45"/>
+              <stop offset="100%" stop-color="#FF7A1A" stop-opacity="0"/>
+            </radialGradient>
+            <mask id="heroHangerMask">
+              <rect x="0" y="0" width="96" height="194" rx="6" fill="#fff"/>
+              <circle cx="48" cy="26" r="14" fill="#000"/>
+              <rect x="34" y="0" width="28" height="26" fill="#000"/>
+            </mask>
+          </defs>
 
-    <div class="hero-visual" aria-hidden="true">
-      <div class="rings">
-        <div class="ring r3"></div>
-        <div class="ring r2"></div>
-        <div class="ring r1"></div>
-      </div>
-      <svg class="hero-door" width="260" height="560" viewBox="0 0 260 560" xmlns="http://www.w3.org/2000/svg">
-        <!-- ground shadow -->
-        <ellipse cx="130" cy="500" rx="112" ry="9" fill="#1f2e4a" opacity="0.10"/>
+          <!-- wall + door -->
+          <rect x="20" y="20" width="240" height="420" rx="4" fill="#1C2536"/>
+          <rect x="20" y="20" width="240" height="420" rx="4" fill="none" stroke="#EDF1F7" stroke-opacity="0.12" stroke-width="2"/>
+          <rect x="46" y="46" width="80" height="120" rx="2" fill="#26314A" stroke="#EDF1F7" stroke-opacity="0.1"/>
+          <rect x="154" y="46" width="80" height="120" rx="2" fill="#26314A" stroke="#EDF1F7" stroke-opacity="0.1"/>
 
-        <!-- frame / casing -->
-        <rect x="8" y="8" width="244" height="486" rx="8" fill="#4a3728" stroke="#2e2015" stroke-width="2"/>
+          <!-- porch light, glowing above the door -->
+          <ellipse class="porch-glow" cx="140" cy="40" rx="100" ry="60" fill="url(#glowGrad)"/>
+          <rect x="132" y="8" width="16" height="6" rx="1" fill="#EDF1F7" fill-opacity="0.45"/>
+          <path d="M126 14 h28 l-6 20 a11 11 0 0 1 -16 0 z" fill="#EDF1F7" fill-opacity="0.5"/>
 
-        <!-- door slab -->
-        <rect x="22" y="22" width="216" height="458" rx="5" fill="#2b3a56" stroke="#17233a" stroke-width="2"/>
+          <!-- doorknob -->
+          <circle cx="228" cy="240" r="7" fill="#FF7A1A"/>
 
-        <!-- top lite (window) -->
-        <rect x="46" y="46" width="168" height="86" rx="4" fill="#dce7ea" stroke="#17233a" stroke-width="1.5" opacity="0.94"/>
-        <line x1="130" y1="46" x2="130" y2="132" stroke="#17233a" stroke-width="1.4"/>
-        <line x1="46" y1="89" x2="214" y2="89" stroke="#17233a" stroke-width="1.4"/>
-
-        <!-- lower raised panel, double-stroked for a beveled look -->
-        <rect x="46" y="150" width="168" height="300" rx="6" fill="#33456a" stroke="#17233a" stroke-width="2"/>
-        <rect x="55" y="159" width="150" height="282" rx="4" fill="none" stroke="#17233a" stroke-width="1.3" opacity="0.5"/>
-        <line x1="48" y1="152" x2="212" y2="152" stroke="#4a5f86" stroke-width="1.2" opacity="0.55"/>
-
-        <!-- kickplate -->
-        <rect x="34" y="452" width="192" height="16" rx="2" fill="#c99a3b" opacity="0.85" stroke="#7a5c22" stroke-width="1"/>
-
-        <!-- hinges -->
-        <rect x="21" y="90" width="7" height="30" rx="1.5" fill="#c99a3b" stroke="#7a5c22" stroke-width="1"/>
-        <rect x="21" y="250" width="7" height="30" rx="1.5" fill="#c99a3b" stroke="#7a5c22" stroke-width="1"/>
-        <rect x="21" y="410" width="7" height="30" rx="1.5" fill="#c99a3b" stroke="#7a5c22" stroke-width="1"/>
-
-        <!-- knob assembly: escutcheon, deadbolt, knob -->
-        <rect x="186" y="204" width="16" height="58" rx="8" fill="#c99a3b" stroke="#7a5c22" stroke-width="1.2"/>
-        <circle cx="194" cy="176" r="6" fill="#e8c374" stroke="#7a5c22" stroke-width="1"/>
-        <circle cx="193" cy="230" r="10" fill="#e8c374" stroke="#7a5c22" stroke-width="1.4"/>
-
-        <!-- floor -->
-        <line x1="0" y1="502" x2="260" y2="502" stroke="#1f2e4a" stroke-width="1" opacity="0.15"/>
-
-        <!-- doormat, resting on the floor -->
-        <rect x="30" y="512" width="200" height="36" rx="6" fill="#efe7d6" stroke="#1a2740" stroke-width="1.4"/>
-        <line x1="42" y1="522" x2="218" y2="522" stroke="#1a2740" stroke-width="0.8" opacity="0.15"/>
-        <line x1="42" y1="530" x2="218" y2="530" stroke="#1a2740" stroke-width="0.8" opacity="0.15"/>
-        <line x1="42" y1="538" x2="218" y2="538" stroke="#1a2740" stroke-width="0.8" opacity="0.15"/>
-        <text x="130" y="534" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9.5" letter-spacing="1.2" fill="#1f2e4a" font-weight="600">YOUR CUSTOMER'S DOOR</text>
-      </svg>
-      <div class="hero-hanger-wrap">
-        <svg class="hero-hanger" width="110" height="260" viewBox="0 0 110 260" xmlns="http://www.w3.org/2000/svg">
-          <rect x="49" y="3" width="12" height="20" rx="2" fill="#efe7d6" stroke="#1f2e4a" stroke-width="1.2"/>
-          <rect x="4" y="29" width="103" height="228" rx="9" fill="#faf6ec" stroke="#1f2e4a" stroke-width="1.4"/>
-          <circle cx="55" cy="29" r="9" fill="#efe7d6" stroke="#1f2e4a" stroke-width="1.4"/>
-          <rect x="10" y="57" width="90" height="48" rx="4" style="fill:var(--select)" opacity="0.92"/>
-          <text x="55" y="86" text-anchor="middle" font-family="Fraunces, serif" font-size="10" fill="#ffffff" font-weight="600" letter-spacing="0.4">YOUR AD</text>
-          <rect x="10" y="116" width="90" height="46" rx="4" fill="#ffffff" stroke="#1f2e4a" stroke-width="0.8" opacity="0.55"/>
-          <rect x="10" y="172" width="90" height="46" rx="4" fill="#ffffff" stroke="#1f2e4a" stroke-width="0.8" opacity="0.35"/>
+          <!-- door hanger: drops onto the knob, settles, then sways -->
+          <g class="hanger-hook">
+            <circle cx="188" cy="214" r="15" fill="none" stroke="#EDF1F7" stroke-opacity="0.25" stroke-width="3"/>
+            <g transform="translate(140,188)">
+              <g mask="url(#heroHangerMask)">
+                <rect x="0" y="0" width="96" height="194" fill="#212B40"/>
+              </g>
+              <text x="48" y="58" text-anchor="middle" font-family="IBM Plex Mono" font-size="7.5" letter-spacing="1" fill="#EDF1F7" opacity="0.85">AD SPACE</text>
+              <rect x="14" y="70" width="68" height="42" rx="2" fill="#FF7A1A"/>
+              <text x="48" y="95" text-anchor="middle" font-family="IBM Plex Mono" font-size="7" letter-spacing="0.5" fill="#0F1420" font-weight="600">YOUR AD HERE</text>
+              <rect x="30" y="132" width="36" height="36" rx="2" fill="#EDF1F7" opacity="0.92"/>
+              <rect x="36" y="138" width="7" height="7" fill="#0F1420"/>
+              <rect x="53" y="138" width="7" height="7" fill="#0F1420"/>
+              <rect x="36" y="155" width="7" height="7" fill="#0F1420"/>
+              <rect x="47" y="147" width="6" height="6" fill="#0F1420"/>
+              <rect x="56" y="155" width="6" height="6" fill="#0F1420"/>
+            </g>
+            <circle class="scan-ring" cx="188" cy="285" r="10" fill="none" stroke="#FF7A1A" stroke-width="2"/>
+            <circle class="scan-ring delay" cx="188" cy="285" r="10" fill="none" stroke="#FF7A1A" stroke-width="2"/>
+          </g>
         </svg>
       </div>
     </div>
   </section>
 
-  <!-- WHY HDM -->
-  <section id="why" class="wrap">
-    <div class="section-head">
-      <div class="eyebrow">Why door hangers work for roofers</div>
-      <h2>Be the name they remember when the roof leaks.</h2>
-      <p>Roofing is a high-trust, high-ticket decision that almost always starts with whoever the homeowner thinks of first.</p>
-    </div>
-    <div class="steps">
-      <div class="step">
-        <span class="idx">01</span>
-        <h3>Storm season is your window</h3>
-        <p>Homeowners search for a roofer within days of hail or wind damage. A door hanger on their porch before the storm means you're their first call, not a stranger who cold-knocked.</p>
+  <!-- ================= WHY THIS WORKS ================= -->
+  <section class="why-section" id="why-it-works">
+    <div class="wrap">
+      <div class="why-head">
+        <span class="eyebrow">Built for roofing contractors</span>
+        <h2>Why door hangers work for roofing contractors</h2>
+        <p>Roof damage is visible from the curb — your targeting can be too.</p>
       </div>
-      <div class="step">
-        <span class="idx">02</span>
-        <h3>Digital ads can't see an aging roof</h3>
-        <p>Google and Facebook can't tell which houses actually need a new roof. A targeted radius around a recent job puts your ad on doorsteps of homes with similar age and construction — where the need is real.</p>
-      </div>
-      <div class="step">
-        <span class="idx">03</span>
-        <h3>Free inspections convert better on paper</h3>
-        <p>A tangible offer sitting on the door — not buried in an inbox — gets homeowners to pick up the phone for that free inspection instead of scrolling past another online ad.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- HOW IT WORKS -->
-  <section id="how" class="wrap">
-    <div class="section-head">
-      <div class="eyebrow">How it works</div>
-      <h2>From your door to theirs.</h2>
-      <p>Register your business and order, select your details, then track your hangers all the way to the door.</p>
-    </div>
-    <div class="steps">
-      <div class="step">
-        <span class="idx">STEP 1</span>
-        <h3>Register</h3>
-        <p>Register your company and tell us about your business.</p>
-      </div>
-      <div class="step">
-        <span class="idx">STEP 2</span>
-        <h3>Select</h3>
-        <p>Select radius, quantity, ad size of your ad.</p>
-      </div>
-      <div class="step">
-        <span class="idx">STEP 3</span>
-        <h3>Track</h3>
-        <p>Track as we deliver door hangers to your future customers.</p>
+      <div class="why-grid">
+        <div class="why-card">
+          <img src="images/icon-roofing.png" alt="">
+          <h3>Storm-season targeting</h3>
+          <p>Canvas the exact blocks hit by a recent hailstorm or windstorm, while the damage is still fresh and top of mind.</p>
+        </div>
+        <div class="why-card">
+          <img src="images/icon-roofing.png" alt="">
+          <h3>A rare, considered purchase</h3>
+          <p>A new roof isn't an impulse buy — a hanger sitting on the counter survives the weeks it takes a homeowner to decide.</p>
+        </div>
+        <div class="why-card">
+          <img src="images/icon-roofing.png" alt="">
+          <h3>Feels like a neighbor's referral</h3>
+          <p>A local, printed piece builds more trust than a random online ad for a project this expensive and this personal.</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- BUILDER / FORM -->
-  <section id="build" class="wrap">
-    <div class="builder">
-      <!-- FORM -->
-      <form class="panel" id="campaign-form" novalidate>
-        <div class="step-label">Step 1 — Register</div>
-        <fieldset>
-          <h3 class="group-title">Your business</h3>
-          <div class="field-row">
-            <div class="field">
-              <label for="fullname">Full name</label>
-              <input type="text" id="fullname" name="fullname" required placeholder="Jordan Alvarez">
-            </div>
-            <div class="field">
-              <label for="title">Title at company</label>
-              <input type="text" id="title" name="title" required placeholder="Owner">
-            </div>
+  <!-- ================= RESULTS ================= -->
+  <section class="results-section" id="results">
+    <div class="wrap">
+      <div style="text-align:center;max-width:600px;margin:0 auto 48px;">
+        <span class="eyebrow">Real placements</span>
+        <h2 style="font-size:clamp(28px,4vw,40px);margin:14px 0 12px;">Door hangers deliver results!</h2>
+        <p class="lede">Every campaign is professionally designed, printed, and hand-delivered door to door — here's a look at the range of layouts we run.</p>
+      </div>
+      <div class="slideshow-frame" role="img" aria-label="Rotating preview of sample door hanger ad layouts">
+        <!--
+          PLACEHOLDER CONTENT: these are illustrated mockups, not real photos.
+          Replace each .hmock block with a real photo when available:
+          e.g. <div class="hmock"><img src="images/hanger-1.png" alt="..."></div>
+          and remove the .hm-band/.hm-body placeholder markup for that slide.
+        -->
+        <div class="rslide">
+          <div class="hmock">
+            <div class="hm-band"><div class="hm-biz">SUMMIT ROOFING CO.</div><div class="hm-tag">1/3 page ad</div></div>
+            <div class="hm-body"></div><div class="hm-qr"></div><div class="hm-caption">1/3 page</div>
           </div>
-          <div class="field-row">
-            <div class="field">
-              <label for="email">Email</label>
-              <input type="email" id="email" name="email" required placeholder="jordan@yourbusiness.com">
-            </div>
-            <div class="field">
-              <label for="phone">Telephone</label>
-              <input type="tel" id="phone" name="phone" required placeholder="(555) 012-3456">
-            </div>
+        </div>
+        <div class="rslide">
+          <div class="hmock">
+            <div class="hm-band"><div class="hm-biz">SUMMIT ROOFING CO.</div><div class="hm-tag">Half page ad</div></div>
+            <div class="hm-body"></div><div class="hm-qr"></div><div class="hm-caption">Half page</div>
           </div>
-          <div class="field-row">
-            <div class="field">
-              <label for="bizname">Business name</label>
-              <input type="text" id="bizname" name="bizname" required placeholder="Local Coffee Co.">
-            </div>
-            <div class="field">
-              <label for="bizwebsite">Business website <span class="optional-tag">(optional)</span></label>
-              <input type="text" id="bizwebsite" name="bizwebsite" placeholder="www.yourbusiness.com">
-            </div>
+        </div>
+        <div class="rslide">
+          <div class="hmock">
+            <div class="hm-band"><div class="hm-biz">SUMMIT ROOFING CO.</div><div class="hm-tag">Full page ad</div></div>
+            <div class="hm-body"></div><div class="hm-qr"></div><div class="hm-caption">Full page</div>
           </div>
-          <div class="field">
-            <label for="bizstreet">Business street address</label>
-            <input type="text" id="bizstreet" name="bizstreet" required placeholder="123 Main St">
+        </div>
+        <div class="rslide">
+          <div class="hmock">
+            <div class="hm-band"><div class="hm-biz">SUMMIT ROOFING CO.</div><div class="hm-tag">Both sides</div></div>
+            <div class="hm-body"></div><div class="hm-qr"></div><div class="hm-caption">Both sides — front</div>
           </div>
-          <div class="field-row field-row-3">
-            <div class="field">
-              <label for="bizcity">City</label>
-              <input type="text" id="bizcity" name="bizcity" required placeholder="Springfield">
-            </div>
-            <div class="field">
-              <label for="bizstate">State</label>
-              <select id="bizstate" name="bizstate" required>
-                <option value="" disabled selected>State</option>
-                <option value="AL">AL</option><option value="AK">AK</option><option value="AZ">AZ</option>
-                <option value="AR">AR</option><option value="CA">CA</option><option value="CO">CO</option>
-                <option value="CT">CT</option><option value="DE">DE</option><option value="DC">DC</option>
-                <option value="FL">FL</option><option value="GA">GA</option><option value="HI">HI</option>
-                <option value="ID">ID</option><option value="IL">IL</option><option value="IN">IN</option>
-                <option value="IA">IA</option><option value="KS">KS</option><option value="KY">KY</option>
-                <option value="LA">LA</option><option value="ME">ME</option><option value="MD">MD</option>
-                <option value="MA">MA</option><option value="MI">MI</option><option value="MN">MN</option>
-                <option value="MS">MS</option><option value="MO">MO</option><option value="MT">MT</option>
-                <option value="NE">NE</option><option value="NV">NV</option><option value="NH">NH</option>
-                <option value="NJ">NJ</option><option value="NM">NM</option><option value="NY">NY</option>
-                <option value="NC">NC</option><option value="ND">ND</option><option value="OH">OH</option>
-                <option value="OK">OK</option><option value="OR">OR</option><option value="PA">PA</option>
-                <option value="RI">RI</option><option value="SC">SC</option><option value="SD">SD</option>
-                <option value="TN">TN</option><option value="TX">TX</option><option value="UT">UT</option>
-                <option value="VT">VT</option><option value="VA">VA</option><option value="WA">WA</option>
-                <option value="WV">WV</option><option value="WI">WI</option><option value="WY">WY</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="bizzip">ZIP</label>
-              <input type="text" id="bizzip" name="bizzip" required placeholder="97204" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" title="5-digit ZIP code">
-            </div>
+        </div>
+        <div class="rslide">
+          <div class="hmock">
+            <div class="hm-band"><div class="hm-biz">SUMMIT ROOFING CO.</div><div class="hm-tag">Both sides</div></div>
+            <div class="hm-body"></div><div class="hm-qr"></div><div class="hm-caption">Both sides — back</div>
           </div>
-          <div class="field">
-            <label for="designnotes">Design notes <span class="optional-tag">(optional)</span></label>
-            <textarea id="designnotes" name="designnotes" rows="3" placeholder="Anything our design team should know — before/after roof photos, storm damage offer, licensing/insurance info, warranty details..."></textarea>
-          </div>
-        </fieldset>
+        </div>
+      </div>
+    </div>
+  </section>
 
-        <div class="step-label">Step 2 — Select</div>
-        <fieldset>
-          <h3 class="group-title">Radius</h3>
-          <div class="choice-row" id="radius-group">
-            <button type="button" class="choice" data-radius="5">
-              <div class="c-title">5 miles</div>
-              <div class="c-sub">HYPER-LOCAL</div>
-            </button>
-            <button type="button" class="choice" data-radius="15">
-              <div class="c-title">15 miles</div>
-              <div class="c-sub">CITY-WIDE</div>
-            </button>
-            <button type="button" class="choice active" data-radius="30">
-              <div class="c-title">30 miles</div>
-              <div class="c-sub">REGIONAL</div>
-            </button>
-          </div>
-          <p class="radius-help" id="radius-help"></p>
-        </fieldset>
+  <!-- ================= BUILDER ================= -->
+  <section class="builder-section" id="builder">
+    <div class="wrap">
+      <div class="builder-head">
+        <span class="eyebrow">Build your campaign</span>
+        <h2>Fill this out once. We take it from here.</h2>
+        <p>Every choice below updates the door hanger and the price on the right, live. Submitting places your order — no payment happens on this site; we'll follow up by email or text once it's ready to pay.</p>
+      </div>
 
-        <fieldset>
-          <h3 class="group-title">Ad size</h3>
-          <div class="choice-row" id="size-group">
-            <button type="button" class="choice active" data-size="third" data-price="550">
-              <div class="c-title">1/3 page</div>
-              <div class="c-sub">$550 · from</div>
-            </button>
-            <button type="button" class="choice" data-size="half" data-price="1100">
-              <div class="c-title">Half page</div>
-              <div class="c-sub">$1,100 · from</div>
-            </button>
-            <button type="button" class="choice" data-size="full" data-price="1650">
-              <div class="c-title">Full page</div>
-              <div class="c-sub">$1,650 · from</div>
-            </button>
-            <button type="button" class="choice" data-size="both" data-price="3300">
-              <div class="c-title">Both sides</div>
-              <div class="c-sub">$3,300 · from</div>
-            </button>
-          </div>
-          <div class="field">
-            <label for="qrurl">QR forwarding URL</label>
-            <input type="url" id="qrurl" name="qrurl" required placeholder="https://yourroofingco.com/free-inspection">
-            <p class="field-hint">Where scans should be sent.</p>
-          </div>
-        </fieldset>
+      <form class="builder-layout" id="builderForm">
+        <div class="builder-fields">
 
-        <div class="ad-preview-block">
-          <h3 class="group-title">Ad preview</h3>
-          <div class="tabs">
-            <button type="button" class="tab-btn active" id="tab-front" data-side="front">Front</button>
-            <button type="button" class="tab-btn" id="tab-back" data-side="back">Back</button>
+          <div class="field-group">
+            <span class="step-num">1</span>
+            <h3>Your business</h3>
+            <p class="sub">Who we'll send proofs and updates to.</p>
+            <div class="grid-2">
+              <div class="field"><label for="fullName">Full name</label><input required type="text" id="fullName" placeholder="Jordan Alvarez"></div>
+              <div class="field"><label for="title">Job Title</label><input required type="text" id="title" placeholder="Owner"></div>
+            </div>
+            <div class="grid-2">
+              <div class="field"><label for="email">Email</label><input required type="email" id="email" placeholder="jordan@yourbusiness.com"></div>
+              <div class="field"><label for="phone">Telephone</label><input required type="tel" id="phone" placeholder="(555) 010-0199"></div>
+            </div>
+            <div class="field"><label for="bizName">Business name</label><input required type="text" id="bizName" placeholder="Summit Roofing Co."></div>
+            <div class="field"><label for="industry">Industry</label><select required id="industry">
+                <option value="Plumbing Services">Plumbing Services</option>
+                <option value="Electricians">Electricians</option>
+                <option value="Heating &amp; Cooling Services">Heating &amp; Cooling Services</option>
+                <option value="Roofing" selected>Roofing</option>
+                <option value="IT support">IT support</option>
+                <option value="Fencing &amp; Decking">Fencing &amp; Decking</option>
+                <option value="Hardscaping Services">Hardscaping Services</option>
+                <option value="Landscaping Services">Landscaping Services</option>
+                <option value="Pest Control Services">Pest Control Services</option>
+                <option value="House Cleaning Services">House Cleaning Services</option>
+                <option value="Pressure Washing Services">Pressure Washing Services</option>
+                <option value="Moving Companies">Moving Companies</option>
+                <option value="Self-Storage Facilities">Self-Storage Facilities</option>
+                <option value="Locksmiths">Locksmiths</option>
+                <option value="Remodeling Services">Remodeling Services</option>
+                <option value="Handyman Services">Handyman Services</option>
+                <option value="Appliance Repair">Appliance Repair</option>
+                <option value="Auto Repair Shops">Auto Repair Shops</option>
+                <option value="Auto Detailing">Auto Detailing</option>
+                <option value="Restaurants">Restaurants</option>
+                <option value="Coffee Shops">Coffee Shops</option>
+                <option value="Daycares">Daycares</option>
+                <option value="Junk Removal Services">Junk Removal Services</option>
+                <option value="Window Repair &amp; Replacement">Window Repair &amp; Replacement</option>
+                <option value="Other">Other</option>
+              </select></div>
+            <div class="field"><label for="bizWebsite">Business website <span style="font-weight:400;color:var(--ink-soft);">(optional)</span></label><input type="text" id="bizWebsite" placeholder="www.yourbusiness.com"></div>
+            <div class="grid-2">
+              <div class="field"><label for="bizPhone">Company phone number</label><input required type="tel" id="bizPhone" placeholder="(555) 010-0199"></div>
+              <div class="field"><label for="bizEmail">Company email</label><input required type="email" id="bizEmail" placeholder="office@yourbusiness.com"></div>
+            </div>
+            <div class="field"><label for="bizStreet">Street address</label><input required type="text" id="bizStreet" placeholder="123 Main St"></div>
+            <div class="grid-3">
+              <div class="field"><label for="bizCity">City</label><input required type="text" id="bizCity" placeholder="Springfield"></div>
+              <div class="field"><label for="bizState">State</label><input required type="text" id="bizState" maxlength="2" pattern="[A-Za-z]{2}" placeholder="OH" style="text-transform:uppercase;"></div>
+              <div class="field"><label for="bizZip">ZIP</label><input required type="text" id="bizZip" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="45501"></div>
+            </div>
+            <div class="field"><label for="designNotes">Notes for the design team <span style="font-weight:400;color:var(--ink-soft);">(optional)</span></label><input type="text" id="designNotes" placeholder="Colors, logo details, anything we should know"></div>
           </div>
-          <div class="hanger-stage" id="hanger-stage"></div>
+
+          <div class="field-group">
+            <span class="step-num">2</span>
+            <h3>Your reach</h3>
+            <p class="sub">How far from your door should we distribute?</p>
+            <div class="pill-row" role="radiogroup" aria-label="Advertising radius">
+              <button type="button" class="pill" data-radius="5" disabled><strong>5 miles</strong><span>Unavailable in your city/state</span></button>
+              <button type="button" class="pill" data-radius="15" disabled><strong>15 miles</strong><span>Unavailable in your city/state</span></button>
+              <button type="button" class="pill active" data-radius="30"><strong>30 miles</strong><span>Full regional coverage</span></button>
+            </div>
+          </div>
+
+          <div class="field-group" id="pricing">
+            <span class="step-num">3</span>
+            <h3>Your ad size</h3>
+            <p class="sub">Each hanger has 3 equal slots per side — 6 in total.</p>
+            <div class="size-cards" role="radiogroup" aria-label="Ad size">
+              <div class="size-card active" data-size="third" data-units="1">
+                <div class="swatch"><i class="filled" style="width:33.3%"></i><i style="width:33.3%"></i><i style="width:33.4%"></i></div>
+                <div class="name">Third page</div>
+                <div class="desc">One of 3 slots on a side</div>
+                <div class="price">$550 at 2,000 pcs</div>
+              </div>
+              <div class="size-card" data-size="half" data-units="2">
+                <div class="swatch"><i class="filled" style="width:66.6%"></i><i style="width:33.4%"></i></div>
+                <div class="name">Half page</div>
+                <div class="desc">Two slots' worth of space</div>
+                <div class="price">$1,100 at 2,000 pcs</div>
+              </div>
+              <div class="size-card" data-size="full" data-units="3">
+                <div class="swatch"><i class="filled" style="width:100%"></i></div>
+                <div class="name">Full page</div>
+                <div class="desc">The entire front, or back</div>
+                <div class="price">$1,650 at 2,000 pcs</div>
+              </div>
+              <div class="size-card" data-size="both" data-units="6">
+                <div class="swatch"><i class="filled" style="width:100%; background:linear-gradient(90deg,#FF7A1A,#FF7A1A 48%,#212B40 48%,#212B40);"></i></div>
+                <div class="name">Both sides</div>
+                <div class="desc">Full front and full back</div>
+                <div class="price">$3,300 at 2,000 pcs</div>
+              </div>
+            </div>
+            <div class="pill-row" id="slotPicker" role="radiogroup" aria-label="Ad slot" style="margin-top:12px;">
+              <button type="button" class="pill active" data-slot="top"><strong>Top slot</strong><span>Slot 1 of 3</span></button>
+              <button type="button" class="pill" data-slot="mid"><strong>Middle slot</strong><span>Slot 2 of 3</span></button>
+              <button type="button" class="pill" data-slot="bottom"><strong>Bottom slot</strong><span>Slot 3 of 3</span></button>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <span class="step-num">4</span>
+            <h3>QR forwarding URL</h3>
+            <p class="sub">Where should scans of your door hanger's QR code be sent?</p>
+            <input type="url" id="qrForwardUrl" placeholder="https://yourbusiness.com/promo">
+          </div>
+
+          <div class="field-group">
+            <span class="step-num">5</span>
+            <h3>Your quantity</h3>
+            <p class="sub">Only 2,000 is currently available for your city/state.</p>
+            <div class="qty-chips">
+              <button type="button" class="chip active" data-qty="2000">2,000</button>
+              <button type="button" class="chip" data-qty="5000" disabled>5,000</button>
+              <button type="button" class="chip" data-qty="10000" disabled>10,000</button>
+              <button type="button" class="chip" data-qty="20000" disabled>20,000</button>
+            </div>
+          </div>
+
+          <div class="field-group" id="extrasGroup">
+            <span class="step-num">6</span>
+            <h3>Optional extras</h3>
+            <p class="sub">Basic design and QR tracking are included with every campaign at no cost. Add any of these upgrades if you want more.</p>
+            <div class="extras-list" id="extrasList">
+              <label class="extra-row" for="extraPremiumDesign">
+                <input type="checkbox" id="extraPremiumDesign" class="extra-checkbox" data-extra="premiumDesign">
+                <span class="extra-label">Premium design package</span>
+                <span class="extra-price">+$90</span>
+              </label>
+              <div class="extra-row extra-included">
+                <span class="included-badge included-badge-green">Included</span>
+                <span class="extra-label">Basic ad design package</span>
+              </div>
+              <label class="extra-row" for="extraQrDashboard">
+                <input type="checkbox" id="extraQrDashboard" class="extra-checkbox" data-extra="qrDashboard">
+                <span class="extra-label">QR code web dashboard</span>
+                <span class="extra-price">+$79</span>
+              </label>
+              <div class="extra-row extra-included">
+                <span class="included-badge included-badge-green">Included</span>
+                <span class="extra-label">Basic QR code tracking</span>
+              </div>
+              <label class="extra-row" for="extraWebsite">
+                <input type="checkbox" id="extraWebsite" class="extra-checkbox" data-extra="website">
+                <span class="extra-label">Clean website design package</span>
+                <span class="extra-price">+$149.99</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="field-group static">
+            <span class="step-num">7</span>
+            <h3>We print, deliver &amp; track</h3>
+            <div class="static-note">
+              <p>Once you submit, our design team sends proofs, then we print and hand-deliver your hangers. Timing, tracking, and design details are all covered in the <a href="#faq">FAQ below ↓</a>.</p>
+            </div>
+          </div>
+
         </div>
 
-        <fieldset>
-          <h3 class="group-title">Quantity</h3>
-          <div class="qty-control">
-            <button type="button" class="qty-btn" id="qty-down" aria-label="Decrease quantity">−</button>
-            <input type="number" id="qty" name="qty" value="2000" min="2000" max="2000" step="250" style="max-width:140px;" readonly>
-            <button type="button" class="qty-btn" id="qty-up" aria-label="Increase quantity">+</button>
+        <!-- Sticky visual + price panel -->
+        <aside class="visual-panel">
+          <div class="visual-top">
+            <span class="lbl" id="faceLabel">Front side</span>
+            <button type="button" class="flip-btn" id="flipBtn"><span id="flipIcon">⟲</span> View back</button>
           </div>
-          <p class="qty-hint">Every campaign starts at 2,000 door hangers.</p>
-          <p class="unavailable-msg" id="qty-unavailable">Unavailable in your city — quantities above 2,000 aren't offered yet.</p>
-        </fieldset>
 
-        <fieldset>
-          <h3 class="group-title">Optional extras</h3>
-
-          <div class="extra-group">
-            <div class="extra-label">Ad design</div>
-            <div class="choice-row" id="design-group">
-              <button type="button" class="choice active" data-design="basic" data-price="0">
-                <div class="c-title">Basic design</div>
-                <div class="c-sub">INCLUDED</div>
-              </button>
-              <button type="button" class="choice" data-design="premium" data-price="90">
-                <div class="c-title">Premium design</div>
-                <div class="c-sub">$90</div>
-              </button>
+          <div class="stage">
+            <div class="card3d" id="card3d">
+              <div class="face front">
+                <svg viewBox="0 0 240 440" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <mask id="hangerMask">
+                      <rect x="0" y="0" width="240" height="440" rx="20" fill="#fff"/>
+                      <circle cx="120" cy="55" r="24" fill="#000"/>
+                      <rect x="106" y="0" width="28" height="55" fill="#000"/>
+                    </mask>
+                  </defs>
+                  <rect x="0" y="0" width="240" height="440" rx="20" fill="var(--card)" stroke="var(--line)" stroke-width="1.5" mask="url(#hangerMask)"/>
+                  <rect class="slot-rect" x="16" y="110" width="208" height="100" rx="6"/>
+                  <text class="slot-index" x="26" y="128">SLOT 1 · TOP</text>
+                  <rect class="slot-rect" x="16" y="215" width="208" height="100" rx="6"/>
+                  <text class="slot-index" x="26" y="233">SLOT 2 · MIDDLE</text>
+                  <rect class="slot-rect" x="16" y="320" width="208" height="100" rx="6"/>
+                  <text class="slot-index" x="26" y="338">SLOT 3 · BOTTOM</text>
+                  <rect id="overlayFront" class="overlay-rect" x="16" y="110" width="208" height="100" rx="6"/>
+                  <text id="overlayLabelFront" class="overlay-label" x="120" y="164">1/3 PAGE AD</text>
+                  <circle cx="120" cy="55" r="24" fill="none" stroke="var(--line)" stroke-width="2"/>
+                  <text x="120" y="97" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#8792A6">HAND DELIVERED MARKETING</text>
+                </svg>
+              </div>
+              <div class="face back">
+                <svg viewBox="0 0 240 440" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="0" y="0" width="240" height="440" rx="20" fill="var(--card)" stroke="var(--line)" stroke-width="1.5" mask="url(#hangerMask)"/>
+                  <rect class="slot-rect" x="16" y="110" width="208" height="100" rx="6"/>
+                  <rect class="slot-rect" x="16" y="215" width="208" height="100" rx="6"/>
+                  <rect class="slot-rect" x="16" y="320" width="208" height="100" rx="6"/>
+                  <rect id="overlayBack" class="overlay-rect" x="16" y="110" width="208" height="0" rx="6" opacity="0"/>
+                  <text id="overlayLabelBack" class="overlay-label" x="120" y="164" opacity="0">FULL PAGE AD</text>
+                  <text id="emptyNote" class="empty-note" x="120" y="270">Add "Both sides" to place an ad here</text>
+                </svg>
+              </div>
             </div>
-            <p class="extra-help" id="design-help">Highly optimized design that gets your ad seen.</p>
           </div>
 
-          <div class="extra-group">
-            <div class="extra-label">QR tracking</div>
-            <div class="choice-row" id="tracking-group">
-              <button type="button" class="choice active" data-tracking="basic" data-price="0">
-                <div class="c-title">Basic tracking</div>
-                <div class="c-sub">INCLUDED</div>
-              </button>
-              <button type="button" class="choice" data-tracking="dashboard" data-price="79">
-                <div class="c-title">Web dashboard</div>
-                <div class="c-sub">$79</div>
-              </button>
+          <div class="price-summary">
+            <div class="price-row"><span class="k">Ad size</span><span class="v" id="sumSize">Third page — top slot</span></div>
+            <div class="price-row"><span class="k">Radius</span><span class="v" id="sumRadius">5 miles</span></div>
+            <div class="price-row"><span class="k">Quantity</span><span class="v" id="sumQty">2,000 hangers</span></div>
+            <div class="price-row"><span class="k">Per hanger</span><span class="v" id="sumPerHanger">$0.275</span></div>
+            <div class="included-list" id="includedList">
+              <div class="included-row" id="includedDesignRow"><span class="included-badge">Included</span><span class="included-label">Basic ad design package</span></div>
+              <div class="included-row" id="includedQrRow"><span class="included-badge">Included</span><span class="included-label">Basic QR code tracking</span></div>
             </div>
-            <p class="extra-help" id="tracking-help">We'll update you when you request information on the performance and progress of your door to door campaign.</p>
+            <div class="price-row extras-summary-row" id="sumExtraPremiumDesign"><span class="k">Premium design package</span><span class="v">+$90</span></div>
+            <div class="price-row extras-summary-row" id="sumExtraQrDashboard"><span class="k">QR code web dashboard</span><span class="v">+$79</span></div>
+            <div class="price-row extras-summary-row" id="sumExtraWebsite"><span class="k">Clean website design package</span><span class="v">+$149.99</span></div>
+            <div class="price-total"><span class="k">Total</span><span class="v" id="sumTotal">$550</span></div>
           </div>
 
-          <div class="extra-group">
-            <div class="extra-label">Website</div>
-            <div class="choice-row">
-              <button type="button" class="choice" id="website-toggle" data-price="149.99">
-                <div class="c-title">Clean website design package</div>
-                <div class="c-sub">$149.99</div>
-              </button>
-            </div>
-            <p class="extra-help">Custom built one-page website for your business, built to match your door hanger ad and current offer/service/product.</p>
+          <div class="submit-row">
+            <button type="submit" class="btn-primary">Place order</button>
+            <p class="fine">This places your order — no payment here. We'll send a payment link by email or text once your design is approved.</p>
           </div>
-        </fieldset>
+        </aside>
       </form>
 
-      <!-- PREVIEW -->
-      <div class="panel preview-panel" id="preview-panel">
-        <h3 class="group-title">Order summary</h3>
+      <div class="success-card hidden" id="successCard">
+        <h4>Your order is in 🎉</h4>
+        <p>Thanks — no payment was taken here. Our design team will email your proofs within 2 business days, and we'll send a payment link by email or text once you approve them. Keep this reference number for support:</p>
+        <p style="margin-top:10px;"><strong id="referenceId" style="font-family:'IBM Plex Mono',monospace; font-size:16px; color:var(--green-dark);"></strong></p>
+        <dl id="successDetails"></dl>
+      </div>
 
-        <div class="summary">
-          <div class="summary-row"><span>Radius</span><strong id="sum-radius">30 miles</strong></div>
-          <div class="summary-row"><span>Ad size</span><strong id="sum-size">1/3 page</strong></div>
-          <div class="summary-row"><span>Quantity</span><strong id="sum-qty">2,000 hangers</strong></div>
-          <div id="extras-rows"></div>
-          <div class="summary-total">
-            <span class="label">Order total</span>
-            <span class="value mono" id="sum-total">$550</span>
+      <div class="error-card hidden" id="errorCard">
+        <h4>Something went wrong</h4>
+        <p>We couldn't submit your order just now. Please try again in a moment — if it keeps happening, contact us at <a href="mailto:hello@handdeliveredmarketing.com">hello@handdeliveredmarketing.com</a>.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= FAQ ================= -->
+  <section class="faq-section" id="faq">
+    <div class="wrap">
+      <div class="faq-head">
+        <span class="eyebrow">Details &amp; logistics</span>
+        <h2>Everything else you need to know.</h2>
+      </div>
+      <div class="faq-list">
+        <details open>
+          <summary>Do I pay when I place my order?<span class="plus">+</span></summary>
+          <p>No. Placing an order here doesn't charge anything — it just gets your campaign started. Once you approve your design proof, we'll send a payment request by email or text, and your door hangers go to print after that's settled.</p>
+        </details>
+        <details>
+          <summary>How long does it take for the door hangers to be delivered?<span class="plus">+</span></summary>
+          <p>Once payment is confirmed (sent to you by email or text after you approve your design), it usually takes 3–4 weeks for all door hangers to be printed and hand-delivered across your chosen radius.</p>
+        </details>
+        <details>
+          <summary>Is the design of the door hanger included?<span class="plus">+</span></summary>
+          <p>Yes. Our design team builds up to 3 free variations for your ad slot, so you can pick the one that fits your brand before anything prints.</p>
+        </details>
+        <details>
+          <summary>Is the tracking service free?<span class="plus">+</span></summary>
+          <p>Yes. Every campaign includes a free dashboard where you can watch scans on the QR code printed on your door hangers, in real time.</p>
+        </details>
+        <details>
+          <summary>Can I change my radius or ad size after signing up?<span class="plus">+</span></summary>
+          <p>You can adjust either one any time before your design is finalized. Once printing begins, changes apply to your next campaign instead.</p>
+        </details>
+        <details>
+          <summary>Do you offer runs larger than 20,000 hangers?<span class="plus">+</span></summary>
+          <p>Pricing scales the same way at any size — there's no markup as you grow. For runs beyond 20,000, contact us and we'll put together a custom quote.</p>
+        </details>
+        <details>
+          <summary>Got more questions?<span class="plus">+</span></summary>
+          <p>If you got more questions, chat with our AI powered virtual assistant.</p>
+          <div class="chatbot-embed">
+            <!-- Placeholder — replace this iframe's src with your chatbot
+                 provider's real embed URL (Intercom, Voiceflow, Chatbase,
+                 a custom widget, etc). -->
+            <iframe
+              title="AI virtual assistant chat"
+              loading="lazy"
+              srcdoc="<html><body style='margin:0;display:flex;align-items:center;justify-content:center;height:100vh;background:#1A2233;color:#EDF1F7;font-family:sans-serif;text-align:center;padding:20px;box-sizing:border-box;'><p style='max-width:220px;'>Chatbot widget placeholder<br><small>Replace this iframe&#8217;s src with your chatbot provider&#8217;s embed URL</small></p></body></html>">
+            </iframe>
           </div>
-        </div>
-        <div class="submit-row">
-          <button type="submit" form="campaign-form" class="btn btn-primary" id="submit-btn">Place my order</button>
-          <p class="form-note">This places your order — you're not paying here. We'll email or text you a secure payment link once your design is approved.</p>
-          <div class="form-error" id="form-error">Something went wrong placing your order. Please try again — if it keeps happening, contact us directly.</div>
-        </div>
-
-        <div class="confirm" id="confirm-panel">
-          <div class="check">✓</div>
-          <h3 id="confirm-name">Your order is in.</h3>
-          <div class="reference-id" id="reference-id">
-            <div class="rid-label">Your reference ID</div>
-            <div class="rid-value mono" id="rid-value">—</div>
-          </div>
-          <p>No payment was taken. Our design team will email you within 1 business day with your 3 free design variations — once you approve one, we'll send a secure payment link by email or text to get your hangers printed.</p>
-          <div class="confirm-summary" id="confirm-summary"></div>
-          <div class="step-label" style="justify-content:center; text-align:center;">Step 3 — Track</div>
-          <p style="font-size:14px; color:var(--ink-soft); margin-top:0;">Once printing begins, you'll get a free dashboard link to track as we deliver your door hangers to your future customers.</p>
-          <button type="button" class="btn btn-ghost" id="reset-form">Start another order</button>
-        </div>
+        </details>
       </div>
     </div>
   </section>
-
-  <!-- SHOWCASE -->
-  <section id="showcase" class="wrap">
-    <div class="section-head">
-      <div class="eyebrow">See it printed</div>
-      <h2>Door hangers we've printed.</h2>
-      <p>A few examples from real campaigns.</p>
-    </div>
-    <div class="slider-wrap slider-wrap-narrow">
-      <div class="slider" data-aspect="9-13" id="hanger-slider">
-        <div class="slider-track">
-          <div class="slide"><img src="images/hanger-1.png" alt="Printed door hanger sample 1" loading="lazy"></div>
-          <div class="slide"><img src="images/hanger-2.png" alt="Printed door hanger sample 2" loading="lazy"></div>
-          <div class="slide"><img src="images/hanger-3.png" alt="Printed door hanger sample 3" loading="lazy"></div>
-        </div>
-        <button type="button" class="slider-arrow prev" aria-label="Previous image">‹</button>
-        <button type="button" class="slider-arrow next" aria-label="Next image">›</button>
-        <div class="slider-dots"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- REVIEWS -->
-  <section id="reviews" class="wrap">
-    <div class="section-head">
-      <div class="eyebrow">Reviews</div>
-      <h2>Our glowing reviews</h2>
-      <p>A few snapshots of feedback from local business owners.</p>
-    </div>
-    <div class="slider-wrap slider-wrap-wide">
-      <div class="slider" data-aspect="4-3" id="review-slider">
-        <div class="slider-track">
-          <div class="slide"><img src="images/review-1.png" alt="Customer review screenshot 1" loading="lazy"></div>
-          <div class="slide"><img src="images/review-2.png" alt="Customer review screenshot 2" loading="lazy"></div>
-          <div class="slide"><img src="images/review-3.png" alt="Customer review screenshot 3" loading="lazy"></div>
-        </div>
-        <button type="button" class="slider-arrow prev" aria-label="Previous review">‹</button>
-        <button type="button" class="slider-arrow next" aria-label="Next review">›</button>
-        <div class="slider-dots"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section id="faq" class="wrap">
-    <div class="section-head">
-      <div class="eyebrow">FAQ</div>
-      <h2>Good to know.</h2>
-    </div>
-    <div class="faq">
-      <details open>
-        <summary>Do I pay on this website?<span class="plus">+</span></summary>
-        <p>No. Submitting the form places your order — it doesn't charge you anything. Once your free design is ready and approved, we'll send a secure payment link by email or text message, and printing begins after that payment is received.</p>
-      </details>
-      <details>
-        <summary>How long does it take for the door hangers to be delivered?<span class="plus">+</span></summary>
-        <p>After full payment, it usually takes 3–4 weeks for all door hangers to be delivered across your chosen radius.</p>
-      </details>
-      <details>
-        <summary>Is the design of the door hanger included?<span class="plus">+</span></summary>
-        <p>Yes. Our design team provides up to 3 free design variations for your ad slot, sized to fit exactly what you purchased.</p>
-      </details>
-      <details>
-        <summary>Is the tracking service free?<span class="plus">+</span></summary>
-        <p>Yes. Every campaign includes a free dashboard where you can track the performance of the QR code printed on your door hangers.</p>
-      </details>
-      <details>
-        <summary>Got more questions?<span class="plus">+</span></summary>
-        <p>Chat with our AI agent to get all of your questions answered.</p>
-        <!--
-          PLACEHOLDER — replace the iframe's src below with the real embed
-          URL from your AI chat provider once it's set up. src="about:blank"
-          is intentional for now so this doesn't point at a fake/broken URL.
-        -->
-        <div class="ai-chat-embed">
-          <iframe src="about:blank" title="AI chat assistant" loading="lazy"></iframe>
-        </div>
-        <p class="ai-chat-note">Placeholder embed — swap the iframe's <code>src</code> for your AI chat widget's URL.</p>
-      </details>
-    </div>
-  </section>
-
 </main>
 
 <footer>
-  <div class="wrap footer-row">
-    <a href="#top" class="logo"><span class="dot"></span>Hand Delivered Marketing</a>
-    <p>Local roofing leads, delivered to the door.</p>
+  <div class="wrap">
+    <div class="foot-row">
+      <div class="foot-brand">
+        <img src="images/logo.png" alt="Hand Delivered Marketing (HDM) logo" style="width:24px;height:24px;border-radius:6px;">
+        Hand Delivered Marketing
+      </div>
+    </div>
+    <div class="foot-bottom">© 2026 Hand Delivered Marketing (HDM). Local advertising for roofing contractors, delivered by hand.</div>
   </div>
 </footer>
 
 <script>
-(function(){
-  // ---- Doorstep order pipeline integration ----
-  // Worker endpoint is fixed/given by the integration brief — do not change.
-  const WORKER_URL = 'https://broken-grass-80ae.usedbuy.workers.dev/api/lead';
-  // ⚠️ PLACEHOLDER — must be replaced with this site's real deployed origin
-  // (e.g. "your-site-name.github.io" or "your-site-name.github.io/spring-promo")
-  // before going live. Leads submitted with this value cannot be traced to
-  // this site in the CRM. See the chat reply for what to do about this.
-  // ⚠️ PLACEHOLDER — replace with this page's real deployed origin (e.g.
-  // 'yourname.github.io/HDM-roofing') before going live, so leads from this page
-  // can be traced back to it in the CRM. Set to the page slug for now so
-  // multiple HDM pages remain distinguishable even before that's done.
-  const SOURCE_DOMAIN = 'HDM-roofing';
+  // ---- Mobile nav ----
+  const burger = document.getElementById('burger');
+  const navLinks = document.getElementById('navLinks');
+  burger.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    burger.setAttribute('aria-expanded', open);
+  });
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
 
-  // price = 550 * unitsForSize * (qty / 2000); unitsForSize: third=1, half=2, full=3, both=6
-  const priceTable = { third: 550, half: 1100, full: 1650, both: 3300 };
-  const sizeLabels = { third: '1/3 page', half: 'Half page', full: 'Full page', both: 'Both sides' };
-  const radiusHelp = {
-    5: 'Hyper-local — just the streets around your door.',
-    15: 'City-wide — covers most of your town or metro core.',
-    30: 'Regional — stretches into neighboring communities.'
+  // ---- State ----
+  const state = { radius: 30, size: 'third', slot: 'top', qty: 2000, flipped: false, extras: { premiumDesign: false, qrDashboard: false, website: false } };
+
+  // Must match EXTRA_PRICES in the Worker's index.js exactly — the Worker
+  // recomputes price server-side from these same flags, it never trusts a
+  // dollar amount sent from the browser.
+  const EXTRA_PRICES = { premiumDesign: 90, qrDashboard: 79, website: 149.99 };
+
+  function extrasTotal() {
+    let t = 0;
+    if (state.extras.premiumDesign) t += EXTRA_PRICES.premiumDesign;
+    if (state.extras.qrDashboard) t += EXTRA_PRICES.qrDashboard;
+    if (state.extras.website) t += EXTRA_PRICES.website;
+    return t;
+  }
+
+  const slotGeom = { top: {y:110,h:100}, mid: {y:215,h:100}, bottom: {y:320,h:100} };
+  const sizeGeom = {
+    third: () => slotGeom[state.slot],
+    half:  () => ({y:110, h:155}),
+    full:  () => ({y:110, h:310}),
+    both:  () => ({y:110, h:310})
   };
+  const sizeLabel = { third: '1/3 PAGE AD', half: 'HALF PAGE AD', full: 'FULL PAGE AD', both: 'FULL PAGE AD' };
+  const sizeName  = { third: 'Third page', half: 'Half page', full: 'Full page', both: 'Both sides' };
+  const slotName  = { top: 'top slot', mid: 'middle slot', bottom: 'bottom slot' };
+  const sizeUnits = { third: 1, half: 2, full: 3, both: 6 };
 
-  const state = { radius: 30, size: 'third', side: 'front', slot: 1, qty: 2000, extras: { design: 'basic', tracking: 'basic', website: false } };
+  // ---- Elements ----
+  const overlayFront = document.getElementById('overlayFront');
+  const overlayLabelFront = document.getElementById('overlayLabelFront');
+  const overlayBack = document.getElementById('overlayBack');
+  const overlayLabelBack = document.getElementById('overlayLabelBack');
+  const emptyNote = document.getElementById('emptyNote');
+  const slotPicker = document.getElementById('slotPicker');
+  const card3d = document.getElementById('card3d');
+  const flipBtn = document.getElementById('flipBtn');
+  const faceLabel = document.getElementById('faceLabel');
 
-  const stage = document.getElementById('hanger-stage');
-  const radiusGroup = document.getElementById('radius-group');
-  const sizeGroup = document.getElementById('size-group');
-  const tabFront = document.getElementById('tab-front');
-  const tabBack = document.getElementById('tab-back');
-  const qtyInput = document.getElementById('qty');
-  const radiusHelpEl = document.getElementById('radius-help');
+  function updateVisual() {
+    const g = sizeGeom[state.size]();
+    overlayFront.setAttribute('y', g.y);
+    overlayFront.setAttribute('height', g.h);
+    overlayFront.setAttribute('opacity', 1);
+    overlayLabelFront.setAttribute('y', g.y + g.h/2 + 4);
+    overlayLabelFront.setAttribute('opacity', 1);
+    overlayLabelFront.textContent = sizeLabel[state.size];
 
-  function priceFor(size, qty){
-    // matches the Worker's own formula exactly, rounded to 2 decimals
-    return Math.round(priceTable[size] * (qty / 2000) * 100) / 100;
-  }
-
-  // Optional extras are not part of the Worker's payload contract (no
-  // pricing fields for them exist in the API). They're shown here for the
-  // buyer's own total, and their selection is folded into designNotes as
-  // free text when the order is submitted.
-  function extrasItems(){
-    const items = [];
-    if (state.extras.design === 'premium') items.push({ name: 'Premium design package', price: 90 });
-    if (state.extras.tracking === 'dashboard') items.push({ name: 'QR code web dashboard', price: 79 });
-    if (state.extras.website) items.push({ name: 'Clean website design package', price: 149.99 });
-    return items;
-  }
-
-  function extrasTotal(){
-    const t = extrasItems().reduce(function(sum, item){ return sum + item.price; }, 0);
-    return Math.round(t * 100) / 100;
-  }
-
-  function extrasDescription(){
-    return extrasItems().map(function(item){ return item.name + ' (' + money(item.price) + ')'; });
-  }
-
-  function money(n){
-    return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  }
-
-  function slotGeom(){
-    // usable ad area within one hanger side
-    const top = 96, height = 372, gap = 6;
-    const third = (height - gap*2) / 3;
-    return { top, height, third, gap };
-  }
-
-  function hangerSVG(side, sizeMode){
-    const g = slotGeom();
-    const w = 220, x = 20;
-    const isBoth = sizeMode === 'both';
-    const activeSide = isBoth ? true : (side === state.side);
-
-    let inner = '';
-    inner += `<rect x="${x+96}" y="4" width="28" height="34" rx="3" fill="#efe7d6" stroke="#1f2e4a" stroke-width="1.3"/>`;
-    inner += `<rect x="${x}" y="40" width="${w}" height="440" rx="16" fill="#ffffff" stroke="#1f2e4a" stroke-width="1.5"/>`;
-    inner += `<circle cx="${x+110}" cy="40" r="15" fill="#efe7d6" stroke="#1f2e4a" stroke-width="1.3"/>`;
-    inner += `<text x="${x+110}" y="70" text-anchor="middle" class="slot-label" style="font-size:10px; letter-spacing:1px;">${side === 'front' ? 'FRONT' : 'BACK'}</text>`;
-
-    if (sizeMode === 'third') {
-      for (let i = 0; i < 3; i++) {
-        const y = g.top + i * (g.third + g.gap);
-        const slotNum = side === 'front' ? i + 1 : i + 4;
-        const isActive = activeSide && side === state.side && (i + 1) === state.slot;
-        const cls = 'slot-rect clickable ' + (isActive ? 'active' : 'inactive');
-        const slotSideName = side === 'front' ? 'front' : 'back';
-        inner += `<rect data-side="${side}" data-slot="${i+1}" class="${cls}" x="${x+10}" y="${y}" width="${w-20}" height="${g.third}" rx="6" stroke="#c99a3b" stroke-width="1" tabindex="0" role="button" aria-pressed="${isActive}" aria-label="Slot ${slotNum}, one third page, ${slotSideName} of hanger${isActive ? ', selected' : ''}"/>`;
-        inner += `<text x="${x+w/2}" y="${y + g.third/2 - 4}" text-anchor="middle" class="slot-label ${isActive ? 'active-label' : ''}" style="font-size:12px; font-weight:600; pointer-events:none;">Slot ${slotNum}</text>`;
-        inner += `<text x="${x+w/2}" y="${y + g.third/2 + 12}" text-anchor="middle" class="slot-label ${isActive ? 'active-label' : ''}" style="pointer-events:none;">1/3 PAGE</text>`;
-      }
-    } else if (sizeMode === 'half') {
-      const halfH = (g.height - g.gap*2) / 2;
-      const isActive = activeSide && side === state.side;
-      const cls = 'slot-rect ' + (isActive ? 'active' : 'inactive');
-      inner += `<rect class="${cls}" x="${x+10}" y="${g.top}" width="${w-20}" height="${halfH}" rx="6" stroke="#c99a3b" stroke-width="1"/>`;
-      inner += `<text x="${x+w/2}" y="${g.top + halfH/2 - 4}" text-anchor="middle" class="slot-label ${isActive?'active-label':''}" style="font-size:13px; font-weight:600;">HALF PAGE</text>`;
-      inner += `<text x="${x+w/2}" y="${g.top + halfH/2 + 14}" text-anchor="middle" class="slot-label ${isActive?'active-label':''}">YOUR AD</text>`;
-      const remTop = g.top + halfH + g.gap;
-      const remH = g.height - halfH - g.gap;
-      inner += `<rect x="${x+10}" y="${remTop}" width="${w-20}" height="${remH}" rx="6" fill="#faf6ec" stroke="#e3dac7" stroke-width="1" opacity="0.8"/>`;
-    } else {
-      // full or both
-      const isActive = isBoth || side === state.side;
-      const cls = 'slot-rect ' + (isActive ? 'active' : 'inactive');
-      inner += `<rect class="${cls}" x="${x+10}" y="${g.top}" width="${w-20}" height="${g.height}" rx="6" stroke="#c99a3b" stroke-width="1"/>`;
-      inner += `<text x="${x+w/2}" y="${g.top + g.height/2 - 6}" text-anchor="middle" class="slot-label ${isActive?'active-label':''}" style="font-size:14px; font-weight:600;">${sizeMode === 'both' ? 'BOTH SIDES' : 'FULL PAGE'}</text>`;
-      inner += `<text x="${x+w/2}" y="${g.top + g.height/2 + 16}" text-anchor="middle" class="slot-label ${isActive?'active-label':''}">YOUR AD, EXCLUSIVE</text>`;
-    }
-
-    return `<svg width="260" height="500" viewBox="0 0 260 500" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
-  }
-
-  function render(){
-    // tabs
     if (state.size === 'both') {
-      tabFront.disabled = true; tabBack.disabled = true;
-      stage.className = 'hanger-stage dual';
-      stage.innerHTML = hangerSVG('front', 'both') + hangerSVG('back', 'both');
+      overlayBack.setAttribute('y', g.y);
+      overlayBack.setAttribute('height', g.h);
+      overlayBack.setAttribute('opacity', 1);
+      overlayLabelBack.setAttribute('y', g.y + g.h/2 + 4);
+      overlayLabelBack.setAttribute('opacity', 1);
+      overlayLabelBack.textContent = sizeLabel[state.size];
+      emptyNote.setAttribute('opacity', 0);
     } else {
-      tabFront.disabled = false; tabBack.disabled = false;
-      tabFront.classList.toggle('active', state.side === 'front');
-      tabBack.classList.toggle('active', state.side === 'back');
-      stage.className = 'hanger-stage';
-      stage.innerHTML = hangerSVG(state.side, state.size);
+      overlayBack.setAttribute('height', 0);
+      overlayBack.setAttribute('opacity', 0);
+      overlayLabelBack.setAttribute('opacity', 0);
+      emptyNote.setAttribute('opacity', 1);
     }
 
-    // wire slot clicks + keyboard activation (third mode only)
-    stage.querySelectorAll('.slot-rect.clickable').forEach(function(el){
-      function select(){
-        state.side = el.getAttribute('data-side');
-        state.slot = parseInt(el.getAttribute('data-slot'), 10);
-        render();
-      }
-      el.addEventListener('click', select);
-      el.addEventListener('keydown', function(ev){
-        if (ev.key === 'Enter' || ev.key === ' ' || ev.key === 'Spacebar') {
-          ev.preventDefault();
-          select();
-        }
-      });
-    });
-
-    // summary
-    const qty = Math.max(2000, parseInt(qtyInput.value || '2000', 10));
-    const hangerTotal = priceFor(state.size, qty);
-    const items = extrasItems();
-    const extras = extrasTotal();
-    const total = Math.round((hangerTotal + extras) * 100) / 100;
-
-    document.getElementById('sum-radius').textContent = state.radius + ' miles';
-    document.getElementById('sum-size').textContent = sizeLabels[state.size];
-    document.getElementById('sum-qty').textContent = qty.toLocaleString('en-US') + ' hangers';
-    document.getElementById('extras-rows').innerHTML = items.map(function(item){
-      return '<div class="summary-row"><span>' + item.name + '</span><strong>' + money(item.price) + '</strong></div>';
-    }).join('');
-    document.getElementById('sum-total').textContent = money(total);
-    radiusHelpEl.classList.remove('warning');
-    radiusHelpEl.textContent = radiusHelp[state.radius];
+    if (slotPicker) slotPicker.style.display = state.size === 'third' ? 'flex' : 'none';
   }
 
-  // radius buttons — only 30 miles is currently available in this city
-  const AVAILABLE_RADII = [30];
-  radiusGroup.querySelectorAll('.choice').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      const r = parseInt(btn.getAttribute('data-radius'), 10);
-      if (AVAILABLE_RADII.indexOf(r) === -1) {
-        radiusHelpEl.textContent = 'Unavailable in your city';
-        radiusHelpEl.classList.add('warning');
-        btn.classList.remove('unavailable-flash');
-        void btn.offsetWidth; // restart the flash animation if clicked repeatedly
-        btn.classList.add('unavailable-flash');
-        return;
-      }
-      radiusHelpEl.classList.remove('warning');
-      radiusGroup.querySelectorAll('.choice').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      state.radius = r;
-      render();
-    });
-  });
+  function updatePricing() {
+    const units = sizeUnits[state.size];
+    // Matches the Worker's formula exactly: price = 550 * unitsForSize * (qty / 2000), plus extras
+    const base = 550 * units * (state.qty / 2000);
+    const total = Number((base + extrasTotal()).toFixed(2));
+    const perHanger = total / state.qty;
 
-  // size buttons
-  sizeGroup.querySelectorAll('.choice').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      sizeGroup.querySelectorAll('.choice').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      state.size = btn.getAttribute('data-size');
-      render();
-    });
-  });
+    document.getElementById('sumSize').textContent = state.size === 'third'
+      ? sizeName[state.size] + ' — ' + slotName[state.slot]
+      : sizeName[state.size];
+    document.getElementById('sumRadius').textContent = state.radius + ' miles';
+    document.getElementById('sumQty').textContent = state.qty.toLocaleString() + ' hangers';
+    document.getElementById('sumPerHanger').textContent = '$' + perHanger.toFixed(3);
+    document.getElementById('sumTotal').textContent = '$' + total.toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2});
+    document.getElementById('topTotal').innerHTML = '$' + total.toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2}) + ' <small>/ ' + state.qty.toLocaleString() + ' hangers</small>';
 
-  // optional extras — ad design (basic / premium)
-  const designGroup = document.getElementById('design-group');
-  const designHelpEl = document.getElementById('design-help');
-  const designCopy = {
-    basic: 'Highly optimized design that gets your ad seen.',
-    premium: 'Want to design a fully unique company branded ad?'
-  };
-  designGroup.querySelectorAll('.choice').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      designGroup.querySelectorAll('.choice').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      state.extras.design = btn.getAttribute('data-design');
-      designHelpEl.textContent = designCopy[state.extras.design];
-      render();
-    });
-  });
-
-  // optional extras — QR tracking (basic / web dashboard)
-  const trackingGroup = document.getElementById('tracking-group');
-  const trackingHelpEl = document.getElementById('tracking-help');
-  const trackingCopy = {
-    basic: "We'll update you when you request information on the performance and progress of your door to door campaign.",
-    dashboard: 'See when, how many times, and who scans your ad through an online dashboard.'
-  };
-  trackingGroup.querySelectorAll('.choice').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      trackingGroup.querySelectorAll('.choice').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      state.extras.tracking = btn.getAttribute('data-tracking');
-      trackingHelpEl.textContent = trackingCopy[state.extras.tracking];
-      render();
-    });
-  });
-
-  // optional extras — website design package (standalone toggle)
-  document.getElementById('website-toggle').addEventListener('click', function(){
-    state.extras.website = !state.extras.website;
-    this.classList.toggle('active', state.extras.website);
-    render();
-  });
-
-  // tabs
-  tabFront.addEventListener('click', function(){ if(!tabFront.disabled){ state.side='front'; render(); } });
-  tabBack.addEventListener('click', function(){ if(!tabBack.disabled){ state.side='back'; render(); } });
-
-  // qty — capped at 2,000; increasing isn't available in this city
-  const qtyUnavailableEl = document.getElementById('qty-unavailable');
-  document.getElementById('qty-up').addEventListener('click', function(){
-    qtyUnavailableEl.classList.add('show');
-  });
-  document.getElementById('qty-down').addEventListener('click', function(){
-    qtyInput.value = Math.max(2000, parseInt(qtyInput.value || '2000', 10) - 250);
-    render();
-  });
-  qtyInput.addEventListener('input', function(){
-    if (qtyInput.value !== '' && parseInt(qtyInput.value,10) < 2000) return;
-    render();
-  });
-  qtyInput.addEventListener('change', function(){
-    const v = Math.max(2000, parseInt(qtyInput.value || '2000', 10));
-    if (v > 2000) {
-      qtyInput.value = 2000;
-      qtyUnavailableEl.classList.add('show');
-    } else {
-      qtyInput.value = v;
-    }
-    render();
-  });
-
-  // form submit
-  const form = document.getElementById('campaign-form');
-  const previewPanel = document.getElementById('preview-panel');
-  const confirmPanel = document.getElementById('confirm-panel');
-  const submitBtn = document.getElementById('submit-btn');
-  const formErrorEl = document.getElementById('form-error');
-
-  function showFormError(){
-    formErrorEl.classList.add('show');
-  }
-  function hideFormError(){
-    formErrorEl.classList.remove('show');
+    document.getElementById('includedDesignRow').style.display = state.extras.premiumDesign ? 'none' : 'flex';
+    document.getElementById('includedQrRow').style.display = state.extras.qrDashboard ? 'none' : 'flex';
+    document.getElementById('sumExtraPremiumDesign').classList.toggle('active', state.extras.premiumDesign);
+    document.getElementById('sumExtraQrDashboard').classList.toggle('active', state.extras.qrDashboard);
+    document.getElementById('sumExtraWebsite').classList.toggle('active', state.extras.website);
   }
 
-  form.addEventListener('submit', function(e){
+  function render() { updateVisual(); updatePricing(); }
+
+  // ---- Radius pills ----
+  document.querySelectorAll('.pill[data-radius]').forEach(p => {
+    p.addEventListener('click', () => {
+      document.querySelectorAll('.pill[data-radius]').forEach(x => x.classList.remove('active'));
+      p.classList.add('active');
+      state.radius = Number(p.dataset.radius);
+      render();
+    });
+  });
+
+  // ---- Size cards ----
+  document.querySelectorAll('.size-card').forEach(c => {
+    c.addEventListener('click', () => {
+      document.querySelectorAll('.size-card').forEach(x => x.classList.remove('active'));
+      c.classList.add('active');
+      state.size = c.dataset.size;
+      render();
+    });
+  });
+
+  // ---- Ad slot (only meaningful for "Third page" — the picker itself is
+  // hidden by render()/updateVisual() otherwise) ----
+  document.querySelectorAll('.pill[data-slot]').forEach(p => {
+    p.addEventListener('click', () => {
+      document.querySelectorAll('.pill[data-slot]').forEach(x => x.classList.remove('active'));
+      p.classList.add('active');
+      state.slot = p.dataset.slot;
+      render();
+    });
+  });
+
+  // ---- Quantity chips (disabled options are unavailable for this
+  // city/state and never fire click events, so no extra guard is needed) ----
+  document.querySelectorAll('.chip').forEach(ch => {
+    ch.addEventListener('click', () => {
+      document.querySelectorAll('.chip').forEach(x => x.classList.remove('active'));
+      ch.classList.add('active');
+      state.qty = Number(ch.dataset.qty);
+      render();
+    });
+  });
+
+  // Optional extras — the two "Included" rows are static markup with no
+  // checkbox and are intentionally not wired to anything here.
+  document.querySelectorAll('.extra-checkbox').forEach(cb => {
+    cb.addEventListener('change', () => {
+      state.extras[cb.dataset.extra] = cb.checked;
+      render();
+    });
+  });
+
+  // ---- Flip ----
+  flipBtn.addEventListener('click', () => {
+    state.flipped = !state.flipped;
+    card3d.classList.toggle('flipped', state.flipped);
+    faceLabel.textContent = state.flipped ? 'Back side' : 'Front side';
+    flipBtn.innerHTML = state.flipped ? '<span>⟲</span> View front' : '<span>⟲</span> View back';
+  });
+
+  // ---- Order submission ----
+  // Real endpoint from the integration brief — not a placeholder.
+  const WORKER_URL = 'https://broken-grass-80ae.usedbuy.workers.dev/api/lead';
+
+  // ⚠️ UNRESOLVED: the brief requires this site's own domain here (e.g.
+  // "your-site-name.github.io"), used by the CRM to trace which site a lead
+  // came from. It must NOT be generic or reused from another site.
+  // This build does not know where it will be hosted, so this is left as an
+  // explicit, clearly-flagged placeholder — replace before deploying.
+  const SOURCE = 'REPLACE-WITH-HDM-ROOFING-ACTUAL-DOMAIN';
+
+  const submitBtn = document.querySelector('#builderForm button[type="submit"]');
+  const successCard = document.getElementById('successCard');
+  const errorCard = document.getElementById('errorCard');
+
+  document.getElementById('builderForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    if (!form.checkValidity()) { form.reportValidity(); return; }
+    successCard.classList.add('hidden');
+    errorCard.classList.add('hidden');
 
-    hideFormError();
-
-    const qty = Math.max(2000, parseInt(qtyInput.value || '2000', 10));
-    const hangerTotal = priceFor(state.size, qty);
-    const extras = extrasTotal();
-    const grandTotal = Math.round((hangerTotal + extras) * 100) / 100;
-    const name = document.getElementById('fullname').value.trim();
-    const biz = document.getElementById('bizname').value.trim();
-    const website = document.getElementById('bizwebsite').value.trim();
-    const qrUrl = document.getElementById('qrurl').value.trim();
-    let notes = document.getElementById('designnotes').value.trim();
-
-    if (qrUrl) {
-      const qrLine = 'QR forwarding URL: ' + qrUrl;
-      notes = notes ? (qrLine + '\n\n' + notes) : qrLine;
-    }
-
-    const extrasList = extrasDescription();
-    if (extrasList.length) {
-      const extrasLine = 'Selected extras: ' + extrasList.join('; ') + '.';
-      notes = notes ? (notes + '\n\n' + extrasLine) : extrasLine;
-    }
+    const units = sizeUnits[state.size];
+    const price = Number((550 * units * (state.qty / 2000) + extrasTotal()).toFixed(2));
 
     const payload = {
-      fullName: name,
-      email: document.getElementById('email').value.trim(),
-      phone: document.getElementById('phone').value.trim(),
-      jobTitle: document.getElementById('title').value.trim(),
-      businessName: biz,
-      businessStreet: document.getElementById('bizstreet').value.trim(),
-      businessCity: document.getElementById('bizcity').value.trim(),
-      businessState: document.getElementById('bizstate').value,
-      businessZip: document.getElementById('bizzip').value.trim(),
-      source: SOURCE_DOMAIN,
+      fullName: document.getElementById('fullName').value,
+      email: document.getElementById('email').value,
+      phone: document.getElementById('phone').value,
+      jobTitle: document.getElementById('title').value,
+      businessName: document.getElementById('bizName').value,
+      businessWebsite: document.getElementById('bizWebsite').value || undefined,
+      businessPhone: document.getElementById('bizPhone').value,
+      businessEmail: document.getElementById('bizEmail').value,
+      businessStreet: document.getElementById('bizStreet').value,
+      businessCity: document.getElementById('bizCity').value,
+      businessState: document.getElementById('bizState').value.toUpperCase(),
+      businessZip: document.getElementById('bizZip').value,
+      designNotes: document.getElementById('designNotes').value || undefined,
+      qrForwardUrl: document.getElementById('qrForwardUrl').value || undefined,
+      source: SOURCE,
+      industry: document.getElementById('industry').value,
       radius: state.radius,
       size: state.size,
-      qty: qty
+      slot: state.size === 'third' ? state.slot : undefined,
+      qty: state.qty,
+      extras: state.extras
     };
-    if (website) payload.businessWebsite = website;
-    if (notes) payload.designNotes = notes;
 
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Placing your order…';
+    submitBtn.textContent = 'Placing order…';
 
-    fetch(WORKER_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    })
-      .then(function(res){
-        return res.json().then(function(body){ return { ok: res.ok, body: body }; });
-      })
-      .then(function(result){
-        if (!result.ok || !result.body || result.body.ok !== true) {
-          throw new Error('order_failed');
-        }
-        const refId = result.body.referenceId || '—';
-
-        document.getElementById('confirm-name').textContent = 'You\'re all set, ' + name.split(' ')[0] + '.';
-        document.getElementById('rid-value').textContent = refId;
-        const extrasRowsHtml = extrasItems().map(function(item){
-          return `<div><span>${item.name}</span><strong>${money(item.price)}</strong></div>`;
-        }).join('');
-        document.getElementById('confirm-summary').innerHTML = `
-          <div><span>Business</span><strong>${biz}</strong></div>
-          <div><span>Radius</span><strong>${state.radius} miles</strong></div>
-          <div><span>Ad size</span><strong>${sizeLabels[state.size]}</strong></div>
-          <div><span>Quantity</span><strong>${qty.toLocaleString('en-US')} hangers</strong></div>
-          <div><span>QR forwards to</span><strong>${qrUrl}</strong></div>
-          ${extrasRowsHtml}
-          <div><span>Order total</span><strong>${money(grandTotal)}</strong></div>
-        `;
-
-        Array.from(previewPanel.children).forEach(function(child){
-          if (child.id !== 'confirm-panel') child.style.display = 'none';
-        });
-        confirmPanel.classList.add('show');
-        // Keep the form locked — on success the submit button and all
-        // fields stay disabled deliberately, so a re-enable in a shared
-        // .finally() below would silently undo this and re-open the door
-        // to a duplicate submission (e.g. via the Enter key). Only the
-        // error branch below restores the button.
-        Array.from(form.elements).forEach(function(el){ el.disabled = true; });
-      })
-      .catch(function(){
-        // Covers both a non-2xx / ok:false response and a network-level failure
-        // (e.g. CORS not yet allow-listed, or an unreachable URL). We don't
-        // surface the raw error to the buyer, per the integration contract.
-        showFormError();
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Place my order';
+    try {
+      const res = await fetch(WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
       });
-  });
 
-  document.getElementById('reset-form').addEventListener('click', function(){
-    form.reset();
-    Array.from(form.elements).forEach(function(el){ el.disabled = false; });
-    state.radius = 30; state.size = 'third'; state.side = 'front'; state.slot = 1;
-    state.extras = { design: 'basic', tracking: 'basic', website: false };
-    qtyInput.value = 2000;
-    radiusGroup.querySelectorAll('.choice').forEach((b) => b.classList.toggle('active', b.getAttribute('data-radius') === '30'));
-    sizeGroup.querySelectorAll('.choice').forEach((b,i) => b.classList.toggle('active', i===0));
-    designGroup.querySelectorAll('.choice').forEach((b,i) => b.classList.toggle('active', i===0));
-    designHelpEl.textContent = designCopy.basic;
-    trackingGroup.querySelectorAll('.choice').forEach((b,i) => b.classList.toggle('active', i===0));
-    trackingHelpEl.textContent = trackingCopy.basic;
-    document.getElementById('website-toggle').classList.remove('active');
-    radiusHelpEl.classList.remove('warning');
-    qtyUnavailableEl.classList.remove('show');
-    Array.from(previewPanel.children).forEach(function(child){
-      if (child.id !== 'confirm-panel') child.style.display = '';
-    });
-    confirmPanel.classList.remove('show');
-    hideFormError();
-    render();
+      if (!res.ok) {
+        let detail = '';
+        try {
+          const errBody = await res.json();
+          detail = errBody && errBody.error ? (typeof errBody.error === 'string' ? errBody.error : JSON.stringify(errBody.error)) : JSON.stringify(errBody);
+        } catch (e) {
+          detail = await res.text().catch(() => '');
+        }
+        throw new Error('Request failed with status ' + res.status + (detail ? ': ' + detail : ''));
+      }
+      const data = await res.json();
+      if (!data.ok) throw new Error('Worker returned ok:false');
+
+      document.getElementById('referenceId').textContent = 'Reference: ' + data.referenceId;
+      const details = {
+        'Business': payload.businessName,
+        'Contact': payload.fullName + ' — ' + (payload.jobTitle || '—'),
+        'Email': payload.email,
+        'Address': payload.businessStreet + ', ' + payload.businessCity + ', ' + payload.businessState + ' ' + payload.businessZip,
+        'Radius': state.radius + ' miles',
+        'Ad size': sizeName[state.size],
+        'Quantity': state.qty.toLocaleString() + ' door hangers',
+        'Total': '$' + data.price.toLocaleString()
+      };
+      document.getElementById('successDetails').innerHTML =
+        Object.entries(details).map(([k,v]) => '<dt>' + k + '</dt><dd>' + v + '</dd>').join('');
+
+      successCard.classList.remove('hidden');
+      successCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } catch (err) {
+      console.error('Order submission failed:', err);
+      errorCard.classList.remove('hidden');
+      errorCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Place order';
+    }
   });
 
   render();
-})();
-
-// ---- image sliders (showcase + reviews): autoplay, pause on hover, drag/arrow/dot navigation ----
-(function(){
-  function initSlider(root, intervalMs){
-    const track = root.querySelector('.slider-track');
-    const slides = Array.from(track.children);
-    if (slides.length < 2) return;
-    const dotsWrap = root.querySelector('.slider-dots');
-    const prevBtn = root.querySelector('.slider-arrow.prev');
-    const nextBtn = root.querySelector('.slider-arrow.next');
-    let index = 0;
-    let timer = null;
-    let isDragging = false;
-    let dragStartX = 0;
-    let dragDeltaX = 0;
-
-    slides.forEach(function(_, i){
-      const dot = document.createElement('button');
-      dot.type = 'button';
-      dot.className = 'slider-dot' + (i === 0 ? ' active' : '');
-      dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
-      dot.addEventListener('click', function(){ goTo(i); restart(); });
-      dotsWrap.appendChild(dot);
-    });
-    const dots = Array.from(dotsWrap.children);
-
-    function update(withTransition){
-      track.style.transition = withTransition === false ? 'none' : '';
-      track.style.transform = 'translateX(' + (-index * 100) + '%)';
-      dots.forEach(function(d, i){ d.classList.toggle('active', i === index); });
-    }
-    function goTo(i){
-      index = (i + slides.length) % slides.length;
-      update();
-    }
-    function next(){ goTo(index + 1); }
-    function prev(){ goTo(index - 1); }
-
-    function start(){
-      stop();
-      timer = setInterval(next, intervalMs);
-    }
-    function stop(){
-      if (timer) clearInterval(timer);
-      timer = null;
-    }
-    function restart(){ start(); }
-
-    nextBtn.addEventListener('click', function(){ next(); restart(); });
-    prevBtn.addEventListener('click', function(){ prev(); restart(); });
-
-    // pause while the pointer is over the slider, resume on leave
-    root.addEventListener('mouseenter', stop);
-    root.addEventListener('mouseleave', start);
-
-    // manual sliding via drag / touch
-    track.addEventListener('pointerdown', function(e){
-      isDragging = true;
-      dragStartX = e.clientX;
-      dragDeltaX = 0;
-      track.style.transition = 'none';
-      try { track.setPointerCapture(e.pointerId); } catch (err) {}
-      stop();
-    });
-    track.addEventListener('pointermove', function(e){
-      if (!isDragging) return;
-      dragDeltaX = e.clientX - dragStartX;
-      const percent = (dragDeltaX / track.clientWidth) * 100;
-      track.style.transform = 'translateX(' + (-index * 100 + percent) + '%)';
-    });
-    function endDrag(){
-      if (!isDragging) return;
-      isDragging = false;
-      track.style.transition = '';
-      const threshold = track.clientWidth * 0.15;
-      if (dragDeltaX > threshold) prev();
-      else if (dragDeltaX < -threshold) next();
-      else update();
-      start();
-    }
-    track.addEventListener('pointerup', endDrag);
-    track.addEventListener('pointerleave', endDrag);
-    track.addEventListener('pointercancel', endDrag);
-
-    update(false);
-    start();
-  }
-
-  const hangerSlider = document.getElementById('hanger-slider');
-  const reviewSlider = document.getElementById('review-slider');
-  if (hangerSlider) initSlider(hangerSlider, 4000);
-  if (reviewSlider) initSlider(reviewSlider, 4500);
-})();
 </script>
 </body>
 </html>
