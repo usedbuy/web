@@ -213,9 +213,30 @@
   .field-group h3{ font-size:19px; font-family:'Public Sans',sans-serif; font-weight:800; margin-bottom:4px; }
   .field-group .sub{ font-size:13.5px; margin-bottom:16px; }
 
+  .extras-list{ display:flex; flex-direction:column; gap:8px; }
+  .extra-row{
+    display:flex; align-items:center; gap:12px; padding:12px 14px;
+    border:1.5px solid var(--line); border-radius:12px; background:var(--card);
+    cursor:pointer; transition:border-color .15s ease, background .15s ease;
+  }
+  .extra-row:hover{ border-color:var(--green); }
+  .extra-row:has(.extra-checkbox:checked){ border-color:var(--green); background:var(--green-tint); }
+  .extra-checkbox{ width:18px; height:18px; accent-color:var(--green); flex-shrink:0; cursor:pointer; }
+  .extra-label{ flex:1; font-size:14.5px; color:var(--ink); }
+  .extra-price{ font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600; color:var(--green-dark); flex-shrink:0; }
+  .extra-row.extra-included{ cursor:default; background:transparent; border-style:dashed; }
+  .extra-row.extra-included:hover{ border-color:var(--line); }
   .included-badge-green{
     font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:700; letter-spacing:.04em; text-transform:uppercase;
     background:var(--green); color:#fff; padding:3px 7px; border-radius:999px; flex-shrink:0;
+  }
+  .extras-summary-row{ display:none; }
+  .price-row.extras-summary-row{ display:none; }
+  .price-row.extras-summary-row.active{ display:flex; }
+  @media(max-width:400px){
+    .extra-row{ flex-wrap:wrap; row-gap:4px; padding:10px 12px; }
+    .extra-label{ flex-basis:100%; font-size:13.5px; }
+    .extra-price{ margin-left:30px; }
   }
 
   .grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
@@ -531,7 +552,38 @@
               <div class="field"><label for="phone">Telephone</label><input required type="tel" id="phone" placeholder="(555) 010-0199"></div>
             </div>
             <div class="field"><label for="bizName">Business name</label><input required type="text" id="bizName" placeholder="Alvarez Family Dental"></div>
+            <div class="field"><label for="industry">Industry</label><select required id="industry">
+                <option value="Plumbing Services">Plumbing Services</option>
+                <option value="Electricians">Electricians</option>
+                <option value="Heating &amp; Cooling Services">Heating &amp; Cooling Services</option>
+                <option value="Roofing">Roofing</option>
+                <option value="IT support">IT support</option>
+                <option value="Fencing &amp; Decking">Fencing &amp; Decking</option>
+                <option value="Hardscaping Services">Hardscaping Services</option>
+                <option value="Landscaping Services">Landscaping Services</option>
+                <option value="Pest Control Services">Pest Control Services</option>
+                <option value="House Cleaning Services">House Cleaning Services</option>
+                <option value="Pressure Washing Services">Pressure Washing Services</option>
+                <option value="Moving Companies">Moving Companies</option>
+                <option value="Self-Storage Facilities">Self-Storage Facilities</option>
+                <option value="Locksmiths">Locksmiths</option>
+                <option value="Remodeling Services">Remodeling Services</option>
+                <option value="Handyman Services">Handyman Services</option>
+                <option value="Appliance Repair">Appliance Repair</option>
+                <option value="Auto Repair Shops">Auto Repair Shops</option>
+                <option value="Auto Detailing">Auto Detailing</option>
+                <option value="Restaurants">Restaurants</option>
+                <option value="Coffee Shops">Coffee Shops</option>
+                <option value="Daycares">Daycares</option>
+                <option value="Junk Removal Services">Junk Removal Services</option>
+                <option value="Window Repair &amp; Replacement" selected>Window Repair &amp; Replacement</option>
+                <option value="Other">Other</option>
+              </select></div>
             <div class="field"><label for="bizWebsite">Business website <span style="font-weight:400;color:var(--ink-soft);">(optional)</span></label><input type="text" id="bizWebsite" placeholder="www.yourbusiness.com"></div>
+            <div class="grid-2">
+              <div class="field"><label for="bizPhone">Company phone number</label><input required type="tel" id="bizPhone" placeholder="(555) 010-0199"></div>
+              <div class="field"><label for="bizEmail">Company email</label><input required type="email" id="bizEmail" placeholder="office@yourbusiness.com"></div>
+            </div>
             <div class="field"><label for="bizStreet">Street address</label><input required type="text" id="bizStreet" placeholder="123 Main St"></div>
             <div class="grid-3">
               <div class="field"><label for="bizCity">City</label><input required type="text" id="bizCity" placeholder="Springfield"></div>
@@ -603,8 +655,39 @@
             </div>
           </div>
 
-          <div class="field-group static">
+          <div class="field-group" id="extrasGroup">
             <span class="step-num">6</span>
+            <h3>Optional extras</h3>
+            <p class="sub">Basic design and QR tracking are included with every campaign at no cost. Add any of these upgrades if you want more.</p>
+            <div class="extras-list" id="extrasList">
+              <label class="extra-row" for="extraPremiumDesign">
+                <input type="checkbox" id="extraPremiumDesign" class="extra-checkbox" data-extra="premiumDesign">
+                <span class="extra-label">Premium design package</span>
+                <span class="extra-price">+$90</span>
+              </label>
+              <div class="extra-row extra-included">
+                <span class="included-badge included-badge-green">Included</span>
+                <span class="extra-label">Basic ad design package</span>
+              </div>
+              <label class="extra-row" for="extraQrDashboard">
+                <input type="checkbox" id="extraQrDashboard" class="extra-checkbox" data-extra="qrDashboard">
+                <span class="extra-label">QR code web dashboard</span>
+                <span class="extra-price">+$79</span>
+              </label>
+              <div class="extra-row extra-included">
+                <span class="included-badge included-badge-green">Included</span>
+                <span class="extra-label">Basic QR code tracking</span>
+              </div>
+              <label class="extra-row" for="extraWebsite">
+                <input type="checkbox" id="extraWebsite" class="extra-checkbox" data-extra="website">
+                <span class="extra-label">Clean website design package</span>
+                <span class="extra-price">+$149.99</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="field-group static">
+            <span class="step-num">7</span>
             <h3>We print, deliver &amp; track</h3>
             <div class="static-note">
               <p>Once you submit, our design team sends proofs, then we print and hand-deliver your hangers. Timing, tracking, and design details are all covered in the <a href="#faq">FAQ below ↓</a>.</p>
@@ -663,9 +746,13 @@
             <div class="price-row"><span class="k">Radius</span><span class="v" id="sumRadius">5 miles</span></div>
             <div class="price-row"><span class="k">Quantity</span><span class="v" id="sumQty">2,000 hangers</span></div>
             <div class="price-row"><span class="k">Per hanger</span><span class="v" id="sumPerHanger">$0.275</span></div>
-            <div class="included-list">
-              <div class="included-row"><span class="included-badge included-badge-green">Included</span><span class="included-label">Basic ad design &amp; QR code tracking</span></div>
+            <div class="included-list" id="includedList">
+              <div class="included-row" id="includedDesignRow"><span class="included-badge included-badge-green">Included</span><span class="included-label">Basic ad design package</span></div>
+              <div class="included-row" id="includedQrRow"><span class="included-badge included-badge-green">Included</span><span class="included-label">Basic QR code tracking</span></div>
             </div>
+            <div class="price-row extras-summary-row" id="sumExtraPremiumDesign"><span class="k">Premium design package</span><span class="v">+$90</span></div>
+            <div class="price-row extras-summary-row" id="sumExtraQrDashboard"><span class="k">QR code web dashboard</span><span class="v">+$79</span></div>
+            <div class="price-row extras-summary-row" id="sumExtraWebsite"><span class="k">Clean website design package</span><span class="v">+$149.99</span></div>
             <div class="price-total"><span class="k">Total</span><span class="v" id="sumTotal">$550</span></div>
           </div>
 
@@ -765,7 +852,20 @@
   navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
 
   // ---- State ----
-  const state = { radius: 30, size: 'third', qty: 2000, flipped: false };
+  const state = { radius: 30, size: 'third', qty: 2000, flipped: false, extras: { premiumDesign: false, qrDashboard: false, website: false } };
+
+  // Must match EXTRA_PRICES in the Worker's index.js exactly — the Worker
+  // recomputes price server-side from these same flags, it never trusts a
+  // dollar amount sent from the browser.
+  const EXTRA_PRICES = { premiumDesign: 90, qrDashboard: 79, website: 149.99 };
+
+  function extrasTotal() {
+    let t = 0;
+    if (state.extras.premiumDesign) t += EXTRA_PRICES.premiumDesign;
+    if (state.extras.qrDashboard) t += EXTRA_PRICES.qrDashboard;
+    if (state.extras.website) t += EXTRA_PRICES.website;
+    return t;
+  }
 
   const slotGeom = { top: {y:110,h:100}, mid: {y:215,h:100}, bottom: {y:320,h:100} };
   const sizeGeom = {
@@ -819,8 +919,9 @@
 
   function updatePricing() {
     const units = sizeUnits[state.size];
-    // Matches the Worker's formula exactly: price = 550 * unitsForSize * (qty / 2000)
-    const total = Number((550 * units * (state.qty / 2000)).toFixed(2));
+    // Matches the Worker's formula exactly: price = 550 * unitsForSize * (qty / 2000), plus extras
+    const base = 550 * units * (state.qty / 2000);
+    const total = Number((base + extrasTotal()).toFixed(2));
     const perHanger = total / state.qty;
 
     document.getElementById('sumSize').textContent = sizeName[state.size];
@@ -829,6 +930,12 @@
     document.getElementById('sumPerHanger').textContent = '$' + perHanger.toFixed(3);
     document.getElementById('sumTotal').textContent = '$' + total.toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2});
     document.getElementById('topTotal').innerHTML = '$' + total.toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2}) + ' <small>/ ' + state.qty.toLocaleString() + ' hangers</small>';
+
+    document.getElementById('includedDesignRow').style.display = state.extras.premiumDesign ? 'none' : 'flex';
+    document.getElementById('includedQrRow').style.display = state.extras.qrDashboard ? 'none' : 'flex';
+    document.getElementById('sumExtraPremiumDesign').classList.toggle('active', state.extras.premiumDesign);
+    document.getElementById('sumExtraQrDashboard').classList.toggle('active', state.extras.qrDashboard);
+    document.getElementById('sumExtraWebsite').classList.toggle('active', state.extras.website);
   }
 
   function render() { updateVisual(); updatePricing(); }
@@ -864,6 +971,15 @@
     });
   });
 
+  // Optional extras — the two "Included" rows are static markup with no
+  // checkbox and are intentionally not wired to anything here.
+  document.querySelectorAll('.extra-checkbox').forEach(cb => {
+    cb.addEventListener('change', () => {
+      state.extras[cb.dataset.extra] = cb.checked;
+      render();
+    });
+  });
+
   // ---- Flip ----
   flipBtn.addEventListener('click', () => {
     state.flipped = !state.flipped;
@@ -892,7 +1008,7 @@
     errorCard.classList.add('hidden');
 
     const units = sizeUnits[state.size];
-    const price = Number((550 * units * (state.qty / 2000)).toFixed(2));
+    const price = Number((550 * units * (state.qty / 2000) + extrasTotal()).toFixed(2));
 
     const payload = {
       fullName: document.getElementById('fullName').value,
@@ -901,6 +1017,8 @@
       jobTitle: document.getElementById('title').value,
       businessName: document.getElementById('bizName').value,
       businessWebsite: document.getElementById('bizWebsite').value || undefined,
+      businessPhone: document.getElementById('bizPhone').value,
+      businessEmail: document.getElementById('bizEmail').value,
       businessStreet: document.getElementById('bizStreet').value,
       businessCity: document.getElementById('bizCity').value,
       businessState: document.getElementById('bizState').value.toUpperCase(),
@@ -908,9 +1026,11 @@
       designNotes: document.getElementById('designNotes').value || undefined,
       qrForwardUrl: document.getElementById('qrForwardUrl').value || undefined,
       source: SOURCE,
+      industry: document.getElementById('industry').value,
       radius: state.radius,
       size: state.size,
-      qty: state.qty
+      qty: state.qty,
+      extras: state.extras
     };
 
     submitBtn.disabled = true;
