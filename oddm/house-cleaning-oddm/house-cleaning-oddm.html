@@ -446,6 +446,26 @@
   }
   .qty-hint{font-size:0.8rem;color:var(--text-dim);margin-top:8px;}
 
+  .extras-list{display:flex;flex-direction:column;gap:10px;}
+  .extra-row{
+    display:flex;align-items:flex-start;gap:12px;
+    background:var(--glass);border:1px solid var(--border);border-radius:14px;
+    padding:14px 16px;cursor:pointer;transition:border-color .15s ease, background .15s ease;
+    -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  }
+  .extra-row:hover{border-color:rgba(49,231,255,0.35);}
+  .extra-row:has(.extra-checkbox:checked){border-color:var(--cyan);background:rgba(49,231,255,0.08);}
+  .extra-checkbox{
+    width:18px;height:18px;flex-shrink:0;margin-top:2px;accent-color:var(--cyan);cursor:pointer;
+  }
+  .extra-copy{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0;}
+  .extra-name{font-family:var(--font-display);font-size:0.92rem;font-weight:600;color:var(--text);}
+  .extra-desc{font-size:0.8rem;color:var(--text-soft);}
+  .extra-price{
+    font-family:var(--font-mono);font-size:0.86rem;font-weight:600;color:var(--cyan);
+    flex-shrink:0;white-space:nowrap;padding-top:1px;
+  }
+
   .price-pointer{
     font-size:0.85rem;color:var(--text-soft);
     background:var(--glass);border:1px dashed var(--border);
@@ -912,6 +932,36 @@
             <p class="qty-hint">Minimum order 2,000 hangers · adjusts in steps of 1,000</p>
           </div>
 
+          <div class="field-group">
+            <label class="group-label">Optional extras</label>
+            <div class="extras-list">
+              <label class="extra-row" for="extraPremiumDesign">
+                <input type="checkbox" id="extraPremiumDesign" class="extra-checkbox" data-extra="premiumDesign">
+                <span class="extra-copy">
+                  <span class="extra-name">Premium design</span>
+                  <span class="extra-desc">A senior designer builds your layout instead of our standard template.</span>
+                </span>
+                <span class="extra-price">+$90</span>
+              </label>
+              <label class="extra-row" for="extraQrDashboard">
+                <input type="checkbox" id="extraQrDashboard" class="extra-checkbox" data-extra="qrDashboard">
+                <span class="extra-copy">
+                  <span class="extra-name">QR scan dashboard</span>
+                  <span class="extra-desc">Live map of scans by street and zip code, exportable any time.</span>
+                </span>
+                <span class="extra-price">+$79</span>
+              </label>
+              <label class="extra-row" for="extraWebsite">
+                <input type="checkbox" id="extraWebsite" class="extra-checkbox" data-extra="website">
+                <span class="extra-copy">
+                  <span class="extra-name">Landing page package</span>
+                  <span class="extra-desc">A one-page mobile site built for your QR code to forward to.</span>
+                </span>
+                <span class="extra-price">+$149.99</span>
+              </label>
+            </div>
+          </div>
+
           <p class="price-pointer">👇 <b>Your live total</b> is pinned to the bar at the bottom of the screen as you configure.</p>
 
         </div>
@@ -950,8 +1000,46 @@
             <input type="text" id="bizName" name="bizName" required placeholder="Sparkle & Shine Home Cleaning" autocomplete="organization">
           </div>
           <div class="field">
+            <label for="industry">Industry</label>
+            <select id="industry" name="industry" required>
+              <option value="Plumbing Services">Plumbing Services</option>
+              <option value="Electricians">Electricians</option>
+              <option value="Heating &amp; Cooling Services">Heating &amp; Cooling Services</option>
+              <option value="Roofing">Roofing</option>
+              <option value="IT support">IT support</option>
+              <option value="Fencing &amp; Decking">Fencing &amp; Decking</option>
+              <option value="Hardscaping Services">Hardscaping Services</option>
+              <option value="Landscaping Services">Landscaping Services</option>
+              <option value="Pest Control Services">Pest Control Services</option>
+              <option value="House Cleaning Services" selected>House Cleaning Services</option>
+              <option value="Pressure Washing Services">Pressure Washing Services</option>
+              <option value="Moving Companies">Moving Companies</option>
+              <option value="Self-Storage Facilities">Self-Storage Facilities</option>
+              <option value="Locksmiths">Locksmiths</option>
+              <option value="Remodeling Services">Remodeling Services</option>
+              <option value="Handyman Services">Handyman Services</option>
+              <option value="Appliance Repair">Appliance Repair</option>
+              <option value="Auto Repair Shops">Auto Repair Shops</option>
+              <option value="Auto Detailing">Auto Detailing</option>
+              <option value="Restaurants">Restaurants</option>
+              <option value="Coffee Shops">Coffee Shops</option>
+              <option value="Daycares">Daycares</option>
+              <option value="Junk Removal Services">Junk Removal Services</option>
+              <option value="Window Repair &amp; Replacement">Window Repair &amp; Replacement</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="field">
             <label for="bizWebsite">Business website <span class="opt">(optional)</span></label>
             <input type="text" id="bizWebsite" name="bizWebsite" placeholder="www.yourbusiness.com" autocomplete="url">
+          </div>
+          <div class="field">
+            <label for="bizPhone">Company phone number</label>
+            <input type="tel" id="bizPhone" name="bizPhone" required placeholder="(555) 010-0199" autocomplete="tel">
+          </div>
+          <div class="field">
+            <label for="bizEmail">Company email</label>
+            <input type="email" id="bizEmail" name="bizEmail" required placeholder="office@yourbusiness.com" autocomplete="email">
           </div>
           <div class="field full">
             <label for="bizStreet">Business street address</label>
@@ -993,8 +1081,8 @@
             </div>
           </div>
           <div class="field full">
-            <label for="qrUrl">QR forwarding URL (where scans should be sent)</label>
-            <input type="text" id="qrUrl" name="qrUrl" value="https://yourbusiness.com/special-offer" placeholder="https://yourbusiness.com/special-offer" autocomplete="off" inputmode="url">
+            <label for="qrForwardUrl">QR forwarding URL (where scans should be sent)</label>
+            <input type="text" id="qrForwardUrl" name="qrForwardUrl" value="https://yourbusiness.com/special-offer" placeholder="https://yourbusiness.com/special-offer" autocomplete="off" inputmode="url">
           </div>
           <div class="field full">
             <label for="designNotes">Notes for our design team <span class="opt">(optional)</span></label>
@@ -1007,6 +1095,9 @@
           <div class="recap-row"><span>Advertising radius</span><span id="recapRadius">15 miles</span></div>
           <div class="recap-row"><span>Ad size</span><span id="recapSize">1/3 Page</span></div>
           <div class="recap-row"><span>Quantity</span><span id="recapQty">2,000</span></div>
+          <div class="recap-row" id="recapExtraDesignRow" style="display:none;"><span>Premium design</span><span>+$90</span></div>
+          <div class="recap-row" id="recapExtraQrRow" style="display:none;"><span>QR scan dashboard</span><span>+$79</span></div>
+          <div class="recap-row" id="recapExtraSiteRow" style="display:none;"><span>Landing page package</span><span>+$149.99</span></div>
           <div class="recap-row"><span>Estimated total</span><span id="recapTotal">$550</span></div>
         </div>
 
@@ -1122,7 +1213,10 @@
   revealEls.forEach(el => io.observe(el));
 
   // ---------- Configurator state ----------
-  const state = { radius: 15, size: 'third', qty: 2000 };
+  const state = { radius: 15, size: 'third', qty: 2000, extras: { premiumDesign: false, qrDashboard: false, website: false } };
+
+  // Must exactly match EXTRA_PRICES in the Cloudflare Worker's computePrice().
+  const EXTRA_PRICES = { premiumDesign: 90, qrDashboard: 79, website: 149.99 };
 
   const sizeMeta = {
     third: { label: 'YOUR AD', sub: '1/3 PAGE', base: 550, display: '1/3 Page' },
@@ -1143,7 +1237,13 @@
   const flipBtn = document.getElementById('flipBtn');
   const stageNote = document.getElementById('stageNote');
 
-  function fmtMoney(n){ return '$' + n.toLocaleString('en-US'); }
+  function fmtMoney(n){
+    // Extras can add cents (e.g. the $149.99 landing-page package), so once
+    // any cents are present, show 2 decimal places consistently rather than
+    // switching format between whole-dollar and cents totals.
+    const hasCents = Math.round(n * 100) % 100 !== 0;
+    return '$' + n.toLocaleString('en-US', hasCents ? { minimumFractionDigits: 2, maximumFractionDigits: 2 } : {});
+  }
 
   function setRect(rect, y, h, opacity, width){
     rect.setAttribute('y', y);
@@ -1196,9 +1296,18 @@
     }
   }
 
+  function extrasTotal(){
+    let sum = 0;
+    if (state.extras.premiumDesign) sum += EXTRA_PRICES.premiumDesign;
+    if (state.extras.qrDashboard) sum += EXTRA_PRICES.qrDashboard;
+    if (state.extras.website) sum += EXTRA_PRICES.website;
+    return sum;
+  }
+
   function currentTotal(){
     const base = sizeMeta[state.size].base;
-    return Math.round(base * (state.qty / 2000));
+    const sizeTotal = Math.round(base * (state.qty / 2000) * 100) / 100;
+    return Math.round((sizeTotal + extrasTotal()) * 100) / 100;
   }
 
   function updatePricing(){
@@ -1206,6 +1315,9 @@
     document.getElementById('recapRadius').textContent = state.radius + ' miles';
     document.getElementById('recapSize').textContent = sizeMeta[state.size].display;
     document.getElementById('recapQty').textContent = state.qty.toLocaleString('en-US');
+    document.getElementById('recapExtraDesignRow').style.display = state.extras.premiumDesign ? 'flex' : 'none';
+    document.getElementById('recapExtraQrRow').style.display = state.extras.qrDashboard ? 'flex' : 'none';
+    document.getElementById('recapExtraSiteRow').style.display = state.extras.website ? 'flex' : 'none';
     document.getElementById('recapTotal').textContent = fmtMoney(total);
 
     // the persistent order bar is now the single "estimated total" display
@@ -1247,6 +1359,14 @@
     updatePricing();
   });
 
+  // Optional extras
+  document.querySelectorAll('.extra-checkbox').forEach(cb => {
+    cb.addEventListener('change', () => {
+      state.extras[cb.dataset.extra] = cb.checked;
+      updatePricing();
+    });
+  });
+
   // Flip button
   flipBtn.addEventListener('click', () => {
     hangerFlip.classList.toggle('flipped');
@@ -1271,7 +1391,10 @@
 
   function showSuccess(referenceId){
     errorBox.classList.remove('show');
-    successBox.innerHTML = '✓ Your order is in — no payment was taken. Your reference number is <strong>' + referenceId + '</strong>. We\'ll follow up by email or text with payment instructions and your 3 free design variations within 2 business days.';
+    const designNote = state.extras.premiumDesign
+      ? 'payment instructions and next steps with your senior designer'
+      : 'payment instructions and your 3 free design variations';
+    successBox.innerHTML = '✓ Your order is in — no payment was taken. Your reference number is <strong>' + referenceId + '</strong>. We\'ll follow up by email or text with ' + designNote + ' within 2 business days.';
     successBox.classList.add('show');
     successBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
@@ -1306,21 +1429,25 @@
       email: val('email'),
       phone: val('phone'),
       businessName: val('bizName'),
+      businessPhone: val('bizPhone'),
+      businessEmail: val('bizEmail'),
       businessStreet: val('bizStreet'),
       businessCity: val('bizCity'),
       businessState: val('bizState'),
       businessZip: val('bizZip'),
+      industry: val('industry'),
       source: SOURCE,
       radius: state.radius,
       size: state.size,
-      qty: state.qty
+      qty: state.qty,
+      extras: state.extras
     };
     const jobTitle = val('title');
     if (jobTitle) payload.jobTitle = jobTitle;
     const bizWebsite = val('bizWebsite');
     if (bizWebsite) payload.businessWebsite = bizWebsite;
-    const qrUrl = val('qrUrl');
-    if (qrUrl) payload.qrForwardingUrl = qrUrl;
+    const qrForwardUrl = val('qrForwardUrl');
+    if (qrForwardUrl) payload.qrForwardUrl = qrForwardUrl;
     const designNotes = val('designNotes');
     if (designNotes) payload.designNotes = designNotes;
 
