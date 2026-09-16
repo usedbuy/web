@@ -27,7 +27,6 @@
     --green-tint:rgba(255,122,26,0.14);
     --yellow:#4C8DFF;
     --line: rgba(140,160,190,0.18);
-    --error: #FF5C5C;
     --radius-lg: 8px;
     --shadow: 0 16px 36px rgba(0,0,0,0.45);
   }
@@ -259,9 +258,6 @@
   select option{ background:var(--card); color:var(--ink); }
   input::placeholder{ color:#8792A6; }
   .field{ margin-bottom:14px; }
-  .field-invalid input, .field-invalid select{ border-color:var(--error) !important; box-shadow:0 0 0 3px rgba(255,92,92,0.16); }
-  .field-invalid label{ color:var(--error); }
-  .consent-check.invalid{ outline:1.5px solid var(--error); outline-offset:5px; border-radius:6px; background:rgba(255,92,92,0.08); }
 
   .pill-row{ display:flex; gap:10px; flex-wrap:wrap; }
   .pill{ background:var(--card); border:1.5px solid var(--line); border-radius:5px; padding:14px 16px; cursor:pointer; text-align:left; flex:1 1 150px; transition:border-color .15s ease, background .15s ease; }
@@ -618,6 +614,11 @@
               <div class="field"><label for="bizZip">ZIP</label><input required type="text" id="bizZip" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="45501"></div>
             </div>
             <div class="field"><label for="designNotes">Notes for the design team <span style="font-weight:400;color:var(--ink-soft);">(optional)</span></label><input type="text" id="designNotes" placeholder="Colors, logo details, anything we should know"></div>
+            <div class="field">
+              <label for="designFiles">Logo or reference photos <span style="font-weight:400;color:var(--ink-soft);">(optional, up to 5 files, 8MB each)</span></label>
+              <input type="file" id="designFiles" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml,application/pdf" multiple>
+              <p id="fileHint" style="margin-top:6px;font-size:12.5px;color:var(--ink-soft);"></p>
+            </div>
           </div>
 
           <div class="field-group">
@@ -1012,6 +1013,67 @@
     });
   });
 
+  // ---- Design file uploads ----
+  // These limits must match MAX_FILES / MAX_FILE_BYTES / ALLOWED_FILE_TYPES
+  // in the Worker — checking here just gives faster feedback; the Worker
+  // re-checks everything itself since the client can't be trusted.
+  const MAX_FILES = 5;
+  const MAX_FILE_BYTES = 8 * 1024 * 1024;
+  const ALLOWED_FILE_TYPES = ['image/png', 'image/jpeg', 'image/webp', 'image/gif', 'image/svg+xml', 'application/pdf'];
+  const designFilesInput = document.getElementById('designFiles');
+  const fileHint = document.getElementById('fileHint');
+  let selectedFiles = [];
+
+  function formatBytes(n) {
+    return n > 1024 * 1024 ? (n / (1024 * 1024)).toFixed(1) + 'MB' : Math.round(n / 1024) + 'KB';
+  }
+
+  designFilesInput.addEventListener('change', () => {
+    const chosen = Array.from(designFilesInput.files || []);
+    const accepted = [];
+    const problems = [];
+
+    if (chosen.length > MAX_FILES) {
+      problems.push(`Only the first ${MAX_FILES} files were kept (max ${MAX_FILES}).`);
+    }
+    for (const f of chosen.slice(0, MAX_FILES)) {
+      if (!ALLOWED_FILE_TYPES.includes(f.type)) {
+        problems.push(`"${f.name}" skipped — unsupported file type.`);
+        continue;
+      }
+      if (f.size > MAX_FILE_BYTES) {
+        problems.push(`"${f.name}" skipped — over 8MB.`);
+        continue;
+      }
+      accepted.push(f);
+    }
+
+    selectedFiles = accepted;
+    const parts = [];
+    if (accepted.length) {
+      parts.push(accepted.map(f => `${f.name} (${formatBytes(f.size)})`).join(', '));
+    }
+    parts.push(...problems);
+    fileHint.textContent = parts.join(' ');
+  });
+
+  function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result.split(',')[1]);
+      reader.onerror = () => reject(reader.error);
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function buildFilesPayload() {
+    return Promise.all(selectedFiles.map(async f => ({
+      name: f.name,
+      type: f.type,
+      data: await fileToBase64(f),
+    })));
+  }
+
   // ---- Flip ----
   flipBtn.addEventListener('click', () => {
     state.flipped = !state.flipped;
@@ -1035,60 +1097,19 @@
   const successCard = document.getElementById('successCard');
   const errorCard = document.getElementById('errorCard');
 
-  // ---- Required-field + consent highlighting ----
-  function clearFieldHighlight(el) {
-    if (el.id === 'agreePolicies') {
-      const wrap = el.closest('.consent-check');
-      if (wrap) wrap.classList.remove('invalid');
-    } else {
-      const wrap = el.closest('.field');
-      if (wrap) wrap.classList.remove('field-invalid');
-    }
-  }
-
-  function highlightInvalidFields() {
-    const invalid = [];
-    document.querySelectorAll('#builderForm [required]').forEach((el) => {
-      clearFieldHighlight(el);
-      if (!el.checkValidity()) {
-        if (el.id === 'agreePolicies') {
-          const wrap = el.closest('.consent-check');
-          if (wrap) wrap.classList.add('invalid');
-        } else {
-          const wrap = el.closest('.field');
-          if (wrap) wrap.classList.add('field-invalid');
-        }
-        invalid.push(el);
-      }
-    });
-    return invalid;
-  }
-
-  // Clear a field's highlight the moment the user fixes it, rather than
-  // making them re-submit to find out it's resolved.
-  document.querySelectorAll('#builderForm [required]').forEach((el) => {
-    const recheck = () => { if (el.checkValidity()) clearFieldHighlight(el); };
-    el.addEventListener('input', recheck);
-    el.addEventListener('change', recheck);
-  });
-
   document.getElementById('builderForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     successCard.classList.add('hidden');
     errorCard.classList.add('hidden');
 
-    // Highlight every missing/invalid required field AND the consent
-    // checkbox in the same error color, so it's immediately obvious what
-    // still needs attention -- rather than relying on the browser's own
-    // (often subtle, inconsistent-looking) native validation styling.
-    const invalidEls = highlightInvalidFields();
-    if (invalidEls.length > 0) {
-      invalidEls[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
-      if (typeof invalidEls[0].focus === 'function') invalidEls[0].focus({ preventScroll: true });
+    // The consent checkbox has the native `required` attribute, so the
+    // browser already blocks submission until it's checked — this is a
+    // second, explicit guard (and where the agreement timestamp comes from).
+    const agreePolicies = document.getElementById('agreePolicies');
+    if (!agreePolicies.checked) {
+      agreePolicies.reportValidity();
       return;
     }
-
-    const agreePolicies = document.getElementById('agreePolicies');
     const agreedAt = new Date().toISOString();
 
     const units = sizeUnits[state.size];
@@ -1120,9 +1141,14 @@
     };
 
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Placing order…';
 
     try {
+      if (selectedFiles.length) {
+        submitBtn.textContent = 'Uploading files…';
+        payload.files = await buildFilesPayload();
+      }
+      submitBtn.textContent = 'Placing order…';
+
       const res = await fetch(WORKER_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -1156,6 +1182,9 @@
       document.getElementById('successDetails').innerHTML =
         Object.entries(details).map(([k,v]) => '<dt>' + k + '</dt><dd>' + v + '</dd>').join('');
 
+      selectedFiles = [];
+      designFilesInput.value = '';
+      fileHint.textContent = '';
       successCard.classList.remove('hidden');
       successCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
     } catch (err) {
