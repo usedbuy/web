@@ -1,0 +1,2705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>360° LOCAL ADVERTISING</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<!-- Leaflet + OpenStreetMap tiles: free, no API key / account / setup required. -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+<style>
+  :root{
+    --void:#0b0e13;
+    --panel:#151b24cc;
+    --panel-solid:#151b24;
+    --panel-border:#2a3441;
+    --bone:#e9e6dc;
+    --bone-dim:#9ba3ae;
+    --brass:#c9a227;
+    --brass-dim:#8c7620;
+    --teal:#3fa796;
+    --teal-dim:#2b7268;
+    --danger:#c4574a;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;height:100%;background:var(--void);color:var(--bone);font-family:'Inter',sans-serif;overflow:hidden;}
+
+  #void-bg{
+    position:fixed;inset:0;
+    background:radial-gradient(ellipse at 50% 40%, #131a24 0%, #0b0e13 70%);
+    z-index:0;
+  }
+
+  /* ---------- Empty state ---------- */
+  #empty-state{
+    position:fixed;inset:0;z-index:2;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:24px;pointer-events:none;
+    transition:opacity .5s ease;
+  }
+  #empty-state.hidden{opacity:0;pointer-events:none;}
+  #empty-state h1{
+    font-family:'Fraunces',serif;font-style:italic;font-weight:500;
+    font-size:clamp(28px,5vw,44px);margin:0 0 10px;color:var(--bone);
+    letter-spacing:-.01em;
+  }
+  #empty-state .rule{width:56px;height:2px;background:var(--brass);margin:18px 0;}
+  #empty-state p{max-width:420px;color:var(--bone-dim);font-size:14.5px;line-height:1.6;margin:0;}
+
+  /* ---------- Search bar ---------- */
+  #search-panel{
+    position:fixed;top:20px;left:50%;transform:translateX(-50%);
+    z-index:3;
+    background:var(--panel);backdrop-filter:blur(14px);
+    border:1px solid var(--panel-border);
+    border-radius:999px;
+    padding:6px 6px 6px 20px;
+    display:flex;align-items:center;gap:10px;
+    box-shadow:0 12px 32px rgba(0,0,0,.4);
+    width:min(560px,90vw);
+  }
+  #search-panel .eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;
+    color:var(--brass-dim);text-transform:uppercase;white-space:nowrap;display:none;
+  }
+  #address-input{
+    flex:1;background:transparent;border:none;outline:none;
+    color:var(--bone);font-family:'Inter',sans-serif;font-size:14.5px;
+    padding:10px 0;min-width:0;
+  }
+  #address-input::placeholder{color:var(--bone-dim);}
+  #search-btn{
+    background:var(--brass);color:#151206;border:none;border-radius:50%;
+    width:36px;height:36px;flex:none;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:background .15s ease, transform .1s ease;
+  }
+  #search-btn:hover{background:#ddb531;}
+  #search-btn:active{transform:scale(.97);}
+  #search-btn:disabled{background:var(--brass-dim);cursor:progress;}
+  #folder-btn{
+    background:transparent;border:1px solid var(--panel-border);color:var(--bone-dim);
+    border-radius:999px;width:36px;height:36px;flex:none;cursor:pointer;font-size:15px;
+    display:flex;align-items:center;justify-content:center;transition:border-color .15s ease;
+  }
+  #folder-btn:hover{border-color:var(--teal);color:var(--bone);}
+  #address-input:focus-visible, #search-btn:focus-visible, #folder-btn:focus-visible{
+    outline:2px solid var(--teal);outline-offset:2px;
+  }
+
+  #status-line{
+    position:fixed;top:74px;left:50%;transform:translateX(-50%);
+    z-index:3;font-family:'JetBrains Mono',monospace;font-size:12px;
+    padding:6px 14px;border-radius:6px;
+    color:var(--bone-dim);
+    background:var(--panel);backdrop-filter:blur(10px);
+    border:1px solid var(--panel-border);
+    opacity:0;pointer-events:none;transition:opacity .25s ease;
+    max-width:min(520px,88vw);text-align:center;
+  }
+  #status-line.visible{opacity:1;}
+  #status-line.error{color:var(--danger);border-color:#4a2a26;}
+
+  /* ---------- Library panel (top-right) ---------- */
+  #library-panel{
+    position:fixed;top:20px;right:20px;z-index:3;
+    display:flex;flex-direction:column;align-items:flex-end;gap:8px;
+  }
+  #library-toggle{
+    background:var(--panel);backdrop-filter:blur(14px);
+    border:1px solid var(--panel-border);border-radius:999px;
+    color:var(--bone);font-family:'JetBrains Mono',monospace;font-size:11.5px;
+    padding:9px 16px;cursor:pointer;display:flex;align-items:center;gap:8px;
+    box-shadow:0 8px 24px rgba(0,0,0,.4);
+  }
+  #library-count-badge{
+    background:var(--teal-dim);color:#c9f3ec;border-radius:999px;
+    padding:1px 8px;font-size:10px;
+  }
+  #library-toggle:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
+  #library-list{
+    background:var(--panel);backdrop-filter:blur(14px);
+    border:1px solid var(--panel-border);border-radius:12px;
+    box-shadow:0 8px 24px rgba(0,0,0,.4);
+    width:min(320px,84vw);max-height:min(420px,55vh);
+    display:flex;flex-direction:column;overflow:hidden;
+  }
+  #library-rows{overflow-y:auto;display:flex;flex-direction:column;flex:1;min-height:0;}
+  .library-row{
+    display:flex;align-items:center;justify-content:space-between;gap:6px;
+    border-bottom:1px solid var(--panel-border);padding:2px;
+  }
+  .library-row:last-child{border-bottom:none;}
+  .library-view-btn{
+    display:flex;flex-direction:column;align-items:flex-start;gap:2px;
+    background:transparent;border:none;border-radius:8px;
+    color:var(--bone);text-align:left;padding:8px 10px;cursor:pointer;
+    flex:1;min-width:0;font-family:'Inter',sans-serif;
+  }
+  .library-view-btn:hover{background:#1e2733;}
+  .library-view-btn:focus-visible{outline:2px solid var(--teal);outline-offset:-2px;}
+  .library-name{
+    font-size:13px;color:var(--bone);white-space:nowrap;overflow:hidden;
+    text-overflow:ellipsis;max-width:200px;
+  }
+  .library-coords{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--bone-dim);}
+  .library-coords.missing{color:var(--danger);}
+  .library-fix-btn{
+    background:transparent;border:1px solid var(--brass-dim);color:var(--brass);
+    border-radius:999px;padding:5px 10px;font-size:10px;white-space:nowrap;cursor:pointer;
+    font-family:'JetBrains Mono',monospace;flex:none;margin-right:6px;
+  }
+  .library-fix-btn:hover{border-color:var(--brass);}
+  .library-fix-btn:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
+  .library-maps-link{
+    background:transparent;border:1px solid var(--teal-dim);color:var(--teal);
+    border-radius:999px;padding:5px 10px;font-size:10px;white-space:nowrap;
+    font-family:'JetBrains Mono',monospace;flex:none;margin-right:6px;
+    text-decoration:none;
+  }
+  .library-maps-link:hover{border-color:var(--teal);}
+  .library-maps-link:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
+
+  #ro-maps-row{margin-top:2px;}
+  .maps-link{
+    color:var(--teal);text-decoration:none;font-size:11px;
+    border-bottom:1px solid var(--teal-dim);padding-bottom:1px;
+  }
+  .maps-link:hover{border-bottom-color:var(--teal);}
+  .maps-link:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
+
+  @media (max-width:640px){
+    #library-panel{top:auto;bottom:20px;right:14px;}
+    #library-list{max-height:40vh;}
+  }
+
+  /* ---------- Instrument panel (bottom-left) ---------- */
+  #instrument{
+    position:fixed;left:20px;bottom:20px;z-index:3;
+    display:flex;align-items:flex-end;gap:14px;
+    opacity:0;transform:translateY(8px);
+    transition:opacity .4s ease, transform .4s ease;
+  }
+  #instrument.visible{opacity:1;transform:translateY(0);}
+
+  #dial-wrap{
+    width:88px;height:88px;flex:none;
+    background:var(--panel);backdrop-filter:blur(14px);
+    border:1px solid var(--panel-border);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 8px 24px rgba(0,0,0,.4);
+  }
+  #dial-rotor{transition:transform .05s linear;transform-origin:60px 60px;}
+
+  #readout{
+    background:var(--panel);backdrop-filter:blur(14px);
+    border:1px solid var(--panel-border);border-radius:12px;
+    padding:12px 16px;font-family:'JetBrains Mono',monospace;font-size:11.5px;
+    color:var(--bone-dim);line-height:1.9;min-width:200px;
+    box-shadow:0 8px 24px rgba(0,0,0,.4);
+  }
+  #readout .label{color:var(--brass-dim);letter-spacing:.06em;font-size:9.5px;text-transform:uppercase;margin-right:8px;}
+  #readout .val{color:var(--bone);}
+  #readout .source-badge{
+    display:inline-block;margin-top:2px;padding:2px 8px;border-radius:999px;
+    font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;
+  }
+  #readout .source-badge.custom{background:var(--teal-dim);color:#c9f3ec;}
+  #readout .source-badge.streetview{background:#2a3a5a;color:#c9d8f3;}
+
+  @media (max-width:640px){
+    #instrument{left:14px;bottom:14px;flex-direction:column-reverse;align-items:flex-start;}
+    #dial-wrap{width:64px;height:64px;}
+    #readout{min-width:0;font-size:10.5px;padding:10px 12px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+
+  /* ---------- Advertise button ---------- */
+  #advertise-btn{
+    position:fixed;top:20px;left:20px;z-index:3;
+    background:var(--brass);color:#151206;border:none;border-radius:999px;
+    font-family:'Inter',sans-serif;font-weight:600;font-size:12px;letter-spacing:.06em;
+    padding:11px 18px;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.4);
+    transition:background .15s ease, transform .1s ease;
+  }
+  #advertise-btn:hover{background:#ddb531;}
+  #advertise-btn:active{transform:scale(.97);}
+  #advertise-btn:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
+  @media (max-width:640px){
+    #advertise-btn{padding:9px 14px;font-size:11px;}
+  }
+
+  /* ---------- Advertise modal ---------- */
+  #ad-modal-overlay{
+    position:fixed;inset:0;z-index:50;
+    background:rgba(6,8,11,.72);backdrop-filter:blur(4px);
+    display:flex;align-items:center;justify-content:center;padding:20px;
+  }
+  #ad-modal-overlay.hidden{display:none;}
+
+  #ad-modal{
+    width:min(560px,100%);max-height:min(700px,92vh);
+    background:var(--panel-solid);border:1px solid var(--panel-border);
+    border-radius:16px;box-shadow:0 24px 64px rgba(0,0,0,.55);
+    display:flex;flex-direction:column;overflow:hidden;
+  }
+
+  #ad-modal-header{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 20px;border-bottom:1px solid var(--panel-border);flex:none;
+  }
+  #ad-modal-header h2{
+    font-family:'Fraunces',serif;font-style:italic;font-weight:500;
+    font-size:19px;margin:0;color:var(--bone);
+  }
+  #ad-modal-close{
+    background:transparent;border:none;color:var(--bone-dim);font-size:16px;
+    cursor:pointer;padding:5px 9px;border-radius:6px;line-height:1;
+  }
+  #ad-modal-close:hover{color:var(--bone);background:#1e2733;}
+  #ad-modal-close:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
+
+  #ad-steps{display:flex;gap:4px;padding:12px 20px 0;flex:none;}
+  .ad-step-dot{
+    flex:1;background:transparent;border:none;border-bottom:2px solid var(--panel-border);
+    color:var(--bone-dim);font-family:'Inter',sans-serif;padding:0 2px 10px;cursor:pointer;
+    display:flex;flex-direction:column;align-items:center;gap:5px;
+  }
+  .ad-step-dot .num{
+    width:20px;height:20px;border-radius:50%;border:1px solid var(--panel-border);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--bone-dim);flex:none;
+  }
+  .ad-step-dot .step-label{
+    font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;
+  }
+  .ad-step-dot.active{border-bottom-color:var(--brass);color:var(--bone);}
+  .ad-step-dot.active .num{border-color:var(--brass);color:var(--brass);}
+  .ad-step-dot.done .num{background:var(--teal-dim);border-color:var(--teal);color:#c9f3ec;}
+  .ad-step-dot:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
+  @media (max-width:480px){
+    .ad-step-dot .step-label{display:none;}
+  }
+
+  #ad-modal-body{flex:1;overflow-y:auto;padding:18px 20px;}
+  .ad-panel{display:none;flex-direction:column;gap:14px;}
+  .ad-panel.active{display:flex;}
+
+  .ad-field{display:flex;flex-direction:column;gap:5px;}
+  .ad-field label{
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--brass-dim);
+  }
+  .ad-field input, .ad-field textarea{
+    background:#0f141b;border:1px solid var(--panel-border);border-radius:8px;
+    color:var(--bone);font-family:'Inter',sans-serif;font-size:13.5px;
+    padding:9px 12px;outline:none;width:100%;
+  }
+  .ad-field input:focus, .ad-field textarea:focus{border-color:var(--teal);}
+  .ad-row{display:flex;gap:10px;}
+  .ad-row .ad-field{flex:1;min-width:0;}
+  @media (max-width:480px){
+    .ad-row{flex-direction:column;}
+  }
+
+  .ad-checkbox-row{
+    display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--bone-dim);
+  }
+  .ad-checkbox-row input{width:auto;}
+
+  #ad-offer-box{
+    background:rgba(201,162,39,.08);border:1px solid var(--brass-dim);border-radius:10px;
+    padding:14px 16px;margin:4px 0 6px;display:flex;flex-direction:column;gap:9px;
+  }
+  #ad-offer-heading{font-family:'Fraunces',serif;font-size:15px;font-weight:600;color:var(--brass);}
+  #ad-offer-intro{font-size:12.5px;color:var(--bone);margin:0;}
+  #ad-offer-box .ad-checkbox-row{color:var(--bone);}
+  #ad-offer-terms{font-size:10.5px;line-height:1.5;color:var(--bone-dim);margin:4px 0 0;}
+
+  .ad-error-text{color:var(--danger);font-size:11px;min-height:14px;}
+
+  #ad-image-drop{
+    border:1.5px dashed var(--panel-border);border-radius:10px;
+    padding:18px;text-align:center;cursor:pointer;color:var(--bone-dim);font-size:12px;
+    line-height:1.6;transition:border-color .15s ease, color .15s ease;
+  }
+  #ad-image-drop:hover, #ad-image-drop:focus-visible{border-color:var(--teal);color:var(--bone);outline:none;}
+  #ad-image-thumbs{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+  .ad-thumb{position:relative;width:60px;height:60px;border-radius:8px;overflow:hidden;border:1px solid var(--panel-border);flex:none;}
+  .ad-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+  .ad-thumb button{
+    position:absolute;top:2px;right:2px;width:17px;height:17px;border-radius:50%;
+    background:rgba(11,14,19,.85);border:none;color:var(--bone);font-size:9px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;line-height:1;
+  }
+
+  #ad-location-row{display:flex;gap:8px;}
+  #ad-location-row input{flex:1;}
+  #ad-check-btn{
+    background:var(--teal-dim);color:#c9f3ec;border:none;border-radius:8px;
+    padding:0 16px;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap;
+  }
+  #ad-check-btn:hover{background:var(--teal);color:#06110e;}
+  #ad-browse-library-btn{
+    align-self:flex-start;background:transparent;border:1px solid var(--teal-dim);color:var(--teal);
+    border-radius:999px;padding:8px 16px;font-size:12px;font-weight:600;cursor:pointer;
+    font-family:'Inter',sans-serif;
+  }
+  #ad-browse-library-btn:hover{border-color:var(--teal);background:var(--teal-dim);color:#c9f3ec;}
+  #ad-browse-library-btn:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
+
+  #ad-placement-note{
+    font-size:12px;line-height:1.5;color:var(--bone-dim);
+    background:rgba(63,167,150,.08);border:1px solid var(--teal-dim);border-radius:8px;
+    padding:10px 12px;margin:2px 0 4px;
+  }
+
+  #ad-locations{display:flex;flex-direction:column;gap:14px;}
+  .ad-loc-card{
+    border:1px solid var(--panel-border);border-radius:10px;padding:12px;background:#0f141b;
+  }
+  .ad-loc-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;gap:8px;}
+  .ad-loc-name{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--bone);word-break:break-word;}
+  .ad-loc-remove{background:transparent;border:none;color:var(--bone-dim);cursor:pointer;font-size:11px;flex:none;}
+  .ad-loc-remove:hover{color:var(--danger);}
+
+  .ad-loc-price-row{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding-top:8px;margin-top:4px;border-top:1px dashed var(--panel-border);
+  }
+  .ad-loc-price{font-family:'JetBrains Mono',monospace;font-size:15px;color:var(--brass);font-weight:600;}
+  .ad-loc-price.is-free{color:var(--teal);}
+  .ad-loc-price-was{
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--bone-dim);
+    text-decoration:line-through;margin-right:6px;
+  }
+  .ad-loc-price-note{font-size:11px;color:var(--bone-dim);}
+  .ad-loc-offer-status{font-size:11px;margin-top:6px;line-height:1.45;}
+  .ad-loc-offer-status.is-free{color:var(--teal);font-weight:600;}
+  .ad-loc-offer-status.is-blocked{color:var(--bone-dim);}
+  .ad-loc-offer-status.is-pending{color:var(--bone-dim);font-style:italic;}
+
+  #ad-pay-note{
+    font-size:11px;color:var(--bone-dim);background:#0f141b;
+    border:1px solid var(--panel-border);border-radius:8px;padding:9px 11px;line-height:1.5;
+  }
+
+  #ad-order-summary{
+    display:flex;flex-direction:column;gap:6px;background:#0f141b;
+    border:1px solid var(--panel-border);border-radius:8px;padding:10px 12px;font-size:12.5px;
+  }
+  .ad-summary-row{display:flex;justify-content:space-between;gap:10px;color:var(--bone-dim);}
+  .ad-summary-row.ad-summary-total{
+    color:var(--bone);font-weight:600;border-top:1px solid var(--panel-border);
+    padding-top:6px;margin-top:2px;
+  }
+  .ad-summary-row.ad-summary-total span:last-child{color:var(--brass);}
+
+  .ad-coupon-row{display:flex;gap:8px;}
+  .ad-coupon-row input{flex:1;text-transform:uppercase;}
+  #ad-coupon-apply{
+    background:var(--teal-dim);color:#c9f3ec;border:none;border-radius:8px;
+    padding:0 16px;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap;
+  }
+  #ad-coupon-apply:hover{background:var(--teal);color:#06110e;}
+  .ad-coupon-feedback{font-size:11px;min-height:14px;}
+  .ad-coupon-feedback.ad-coupon-ok{color:var(--teal);}
+  .ad-coupon-feedback.ad-coupon-error{color:var(--danger);}
+
+  #ad-modal-footer{
+    flex:none;border-top:1px solid var(--panel-border);padding:12px 20px;
+    display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+  }
+  #ad-total{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--bone-dim);}
+  #ad-total strong{color:var(--brass);font-size:14px;font-weight:600;}
+  #ad-nav-btns{display:flex;gap:8px;}
+  #ad-back-btn, #ad-next-btn, #ad-submit-btn{
+    border-radius:999px;padding:9px 18px;font-size:12.5px;font-weight:600;cursor:pointer;border:none;
+    font-family:'Inter',sans-serif;
+  }
+  #ad-back-btn{background:transparent;border:1px solid var(--panel-border);color:var(--bone-dim);}
+  #ad-back-btn:hover{border-color:var(--bone-dim);color:var(--bone);}
+  #ad-back-btn:disabled{opacity:.4;cursor:default;}
+  #ad-next-btn, #ad-submit-btn{background:var(--brass);color:#151206;}
+  #ad-next-btn:hover, #ad-submit-btn:hover{background:#ddb531;}
+
+  #ad-success{
+    display:none;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:40px 24px;gap:12px;flex:1;
+  }
+  #ad-success.visible{display:flex;}
+  #ad-success .check{
+    width:52px;height:52px;border-radius:50%;background:var(--teal-dim);color:#c9f3ec;
+    display:flex;align-items:center;justify-content:center;font-size:22px;flex:none;
+  }
+  #ad-success h3{font-family:'Fraunces',serif;font-style:italic;font-weight:500;font-size:20px;margin:0;color:var(--bone);}
+  #ad-success p{color:var(--bone-dim);font-size:13px;max-width:360px;line-height:1.6;margin:0;}
+  #ad-success-close{
+    margin-top:6px;background:var(--brass);color:#151206;border:none;border-radius:999px;
+    padding:10px 22px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;
+  }
+  #ad-success-close:hover{background:#ddb531;}
+
+  #ad-free-notice{
+    display:flex;align-items:center;gap:12px;
+    background:rgba(63,167,150,.1);border:1px solid var(--teal-dim);border-radius:10px;
+    padding:16px;margin:4px 0 6px;
+  }
+  #ad-free-notice .check{
+    width:38px;height:38px;border-radius:50%;background:var(--teal-dim);color:#c9f3ec;
+    display:flex;align-items:center;justify-content:center;font-size:18px;flex:none;
+  }
+  #ad-free-notice p{color:var(--bone);font-size:12.5px;line-height:1.5;margin:0;}
+  #ad-free-notice p strong{color:var(--teal);}
+
+  @media (max-width:640px){
+    #ad-modal-overlay{padding:0;}
+    #ad-modal{width:100%;height:100%;max-height:100dvh;border-radius:0;}
+  }
+
+  /* ---------- Stage (viewer + expandable map pane) ---------- */
+  #stage{
+    position:fixed;inset:0;z-index:1;
+    display:grid;grid-template-columns:1fr 0fr;
+    transition:grid-template-columns .4s cubic-bezier(.4,0,.2,1);
+  }
+  #stage.split{grid-template-columns:1fr 1fr;}
+  #viewer-wrap{position:relative;width:100%;height:100%;overflow:hidden;min-width:0;}
+  #scene{position:absolute;inset:0;cursor:grab;touch-action:none;width:100%;height:100%;}
+  #scene:active{cursor:grabbing;}
+  #scene.hidden{display:none;}
+  #streetview{position:absolute;inset:0;display:none;width:100%;height:100%;}
+  #streetview.visible{display:block;}
+
+  #map-pane{
+    position:relative;width:100%;height:100%;overflow:hidden;min-width:0;
+    background:#0f141b;border-left:1px solid var(--panel-border);
+    opacity:0;pointer-events:none;transition:opacity .25s ease;
+  }
+  #stage.split #map-pane{opacity:1;pointer-events:auto;transition:opacity .3s ease .15s;}
+  #map-pane-map{width:100%;height:100%;background:#0f141b;}
+  #map-pane-label{
+    position:absolute;top:14px;left:14px;z-index:2;
+    background:var(--panel);backdrop-filter:blur(14px);border:1px solid var(--panel-border);
+    border-radius:999px;padding:7px 12px 7px 14px;display:flex;align-items:center;gap:10px;
+    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--bone-dim);
+    box-shadow:0 8px 24px rgba(0,0,0,.4);max-width:min(320px,60vw);
+  }
+  #map-pane-label span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  #map-collapse-btn{
+    flex:none;background:transparent;border:1px solid var(--panel-border);color:var(--bone-dim);
+    border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:11px;
+    display:flex;align-items:center;justify-content:center;line-height:1;
+  }
+  #map-collapse-btn:hover{color:var(--bone);border-color:var(--teal);}
+  #map-collapse-btn:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
+
+  @media (max-width:768px){
+    #stage{grid-template-columns:1fr !important;grid-template-rows:1fr 0fr;transition:grid-template-rows .4s cubic-bezier(.4,0,.2,1);}
+    #stage.split{grid-template-rows:1fr 1fr;}
+    #map-pane{border-left:none;border-top:1px solid var(--panel-border);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    #stage{transition:none;}
+  }
+
+  #stage.split ~ #search-panel{left:25%;}
+  #stage.split ~ #library-panel{right:calc(50% + 20px);}
+  @media (max-width:768px){
+    #stage.split ~ #search-panel{left:50%;top:14px;}
+    #stage.split ~ #library-panel{right:14px;}
+  }
+
+  /* ---------- Minimap (small square, bottom-right) ---------- */
+  #minimap{
+    position:fixed;right:20px;bottom:20px;z-index:3;
+    width:132px;height:132px;border-radius:12px;overflow:hidden;
+    background:var(--panel-solid);border:1px solid var(--panel-border);
+    box-shadow:0 8px 24px rgba(0,0,0,.4);
+    opacity:0;pointer-events:none;transform:translateY(8px);
+    transition:opacity .3s ease, transform .3s ease;
+  }
+  #minimap.visible{opacity:1;pointer-events:auto;transform:translateY(0);}
+  #minimap.split-hidden{opacity:0;pointer-events:none;transform:translateY(8px);}
+  #minimap-map{width:100%;height:100%;background:#0f141b;}
+  #minimap-label{
+    position:absolute;left:8px;bottom:8px;right:8px;z-index:2;
+    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--bone-dim);background:rgba(11,14,19,.72);padding:2px 6px;border-radius:5px;
+    pointer-events:none;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+  }
+  #minimap-expand{
+    position:absolute;top:6px;right:6px;z-index:3;
+    width:24px;height:24px;border-radius:7px;border:1px solid var(--panel-border);
+    background:rgba(11,14,19,.72);color:var(--bone);cursor:pointer;font-size:12px;
+    display:flex;align-items:center;justify-content:center;line-height:1;
+  }
+  #minimap-expand:hover{border-color:var(--teal);background:var(--teal-dim);}
+  #minimap-expand:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
+  @media (max-width:640px){
+    #minimap{width:96px;height:96px;right:14px;bottom:112px;border-radius:10px;}
+    #minimap-expand{width:22px;height:22px;}
+  }
+
+  /* ---------- Library: thumbnails, tags, selection ---------- */
+  #library-filters{display:flex;gap:6px;flex-wrap:wrap;padding:8px 8px 0;}
+  .lib-filter-chip{
+    background:transparent;border:1px solid var(--panel-border);color:var(--bone-dim);
+    border-radius:999px;padding:4px 10px;font-size:10px;cursor:pointer;
+    font-family:'JetBrains Mono',monospace;letter-spacing:.03em;
+  }
+  .lib-filter-chip:hover{color:var(--bone);}
+  .lib-filter-chip.active{background:var(--teal-dim);border-color:var(--teal);color:#c9f3ec;}
+  .lib-filter-chip:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
+
+  .library-row{align-items:flex-start;padding:8px;gap:8px;}
+  .library-select{
+    flex:none;width:16px;height:16px;margin-top:10px;cursor:pointer;accent-color:var(--teal);
+  }
+  .library-thumb{
+    flex:none;width:44px;height:44px;border-radius:8px;overflow:hidden;
+    background:#0f141b;border:1px solid var(--panel-border);
+  }
+  .library-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+  .library-view-btn{padding:4px 6px;}
+  .library-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:2px;}
+  .library-tag{
+    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.03em;
+    padding:2px 7px;border-radius:999px;border:1px solid;white-space:nowrap;
+  }
+  .library-tag.tour360{color:var(--teal);border-color:var(--teal-dim);background:rgba(63,167,150,.1);}
+  .library-tag.drone360{color:var(--brass);border-color:var(--brass-dim);background:rgba(201,162,39,.1);}
+  .library-tag-toggle{
+    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.03em;
+    padding:2px 7px;border-radius:999px;border:1px dashed var(--panel-border);
+    background:transparent;color:var(--bone-dim);cursor:pointer;white-space:nowrap;
+  }
+  .library-tag-toggle.on.tour360{color:var(--teal);border-style:solid;border-color:var(--teal-dim);background:rgba(63,167,150,.1);}
+  .library-tag-toggle.on.drone360{color:var(--brass);border-style:solid;border-color:var(--brass-dim);background:rgba(201,162,39,.1);}
+  .library-tag-toggle:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
+
+  #book-bar{
+    position:fixed;left:50%;bottom:20px;transform:translateX(-50%) translateY(16px);
+    z-index:6;background:var(--panel-solid);border:1px solid var(--teal-dim);
+    border-radius:999px;padding:8px 8px 8px 18px;display:flex;align-items:center;gap:12px;
+    box-shadow:0 12px 32px rgba(0,0,0,.5);opacity:0;pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease;
+  }
+  #book-bar.visible{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0);}
+  #book-bar-count{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--bone);white-space:nowrap;}
+  #book-bar-clear{
+    background:transparent;border:none;color:var(--bone-dim);font-size:11.5px;cursor:pointer;
+    text-decoration:underline;white-space:nowrap;
+  }
+  #book-bar-clear:hover{color:var(--bone);}
+  #book-bar-go{
+    background:var(--brass);color:#151206;border:none;border-radius:999px;
+    font-family:'Inter',sans-serif;font-weight:600;font-size:12.5px;
+    padding:9px 16px;cursor:pointer;white-space:nowrap;
+  }
+  #book-bar-go:hover{background:#ddb531;}
+  @media (max-width:640px){
+    #book-bar{width:min(340px,92vw);justify-content:space-between;bottom:14px;}
+  }
+
+  .ad-loc-photo-row{display:flex;gap:10px;margin-bottom:8px;align-items:center;}
+  .ad-loc-photo-thumb{
+    flex:none;width:52px;height:52px;border-radius:8px;overflow:hidden;
+    border:1px solid var(--panel-border);background:#0f141b;
+  }
+  .ad-loc-photo-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+  .ad-loc-photo-map{
+    flex:none;width:80px;height:52px;border-radius:8px;overflow:hidden;
+    border:1px solid var(--panel-border);
+  }
+  .ad-loc-photo-map iframe{width:100%;height:100%;border:0;}
+  .ad-loc-photo-tags{display:flex;gap:4px;flex-wrap:wrap;}
+
+  /* ---------- Leaflet theming (dark UI, keeps required OSM attribution) ---------- */
+  .leaflet-container{
+    background:#0f141b;font-family:'Inter',sans-serif;
+  }
+  .leaflet-control-attribution{
+    background:rgba(11,14,19,.72) !important;color:var(--bone-dim) !important;
+    font-size:9.5px !important;
+  }
+  .leaflet-control-attribution a{color:var(--teal) !important;}
+  .leaflet-control-zoom a{
+    background:var(--panel-solid) !important;color:var(--bone) !important;
+    border-color:var(--panel-border) !important;
+  }
+  .leaflet-control-zoom a:hover{background:var(--teal-dim) !important;}
+  .leaflet-popup-content-wrapper{
+    background:var(--panel-solid);color:var(--bone);border-radius:10px;
+    box-shadow:0 8px 24px rgba(0,0,0,.5);
+  }
+  .leaflet-popup-tip{background:var(--panel-solid);}
+  .leaflet-popup-content{margin:10px 12px;font-family:'Inter',sans-serif;font-size:12.5px;}
+  .map-popup-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px;}
+  .map-popup-name{font-weight:600;display:block;margin-bottom:2px;}
+  .map-popup-dist{color:var(--bone-dim);font-size:11px;font-family:'JetBrains Mono',monospace;}
+
+  .photo-marker{
+    width:40px;height:40px;border-radius:50%;overflow:hidden;
+    border:2.5px solid var(--brass);box-shadow:0 4px 14px rgba(0,0,0,.55);
+    cursor:pointer;background:#0f141b;
+  }
+  .photo-marker.tag-drone360{border-color:var(--brass);}
+  .photo-marker.tag-tour360{border-color:var(--teal);}
+  .photo-marker img{width:100%;height:100%;object-fit:cover;display:block;}
+  .photo-marker.current{
+    border-color:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.35), 0 4px 14px rgba(0,0,0,.55);
+  }
+
+  /* ---------- Landing / "Get Started" intro overlay ---------- */
+  #landing-overlay{
+    position:fixed;inset:0;z-index:9999;
+    overflow:hidden;background:var(--void);
+    transition:opacity .65s ease;
+  }
+  #landing-overlay.hidden{opacity:0;pointer-events:none;}
+
+  #landing-slides{position:absolute;inset:0;}
+  .landing-slide{
+    position:absolute;inset:0;overflow:hidden;
+    opacity:0;transition:opacity 1.3s ease;
+  }
+  .landing-slide.active{opacity:1;}
+  .landing-slide img{
+    position:absolute;inset:-6%;width:112%;height:112%;
+    object-fit:cover;display:block;
+    transform:scale(1) translate(0,0);
+    will-change:transform;
+  }
+  @keyframes landing-kenburns{
+    0%   { transform:scale(1)     translate(0%,0%); }
+    45%  { transform:scale(1.10)  translate(-4%,0%); }
+    75%  { transform:scale(1.16)  translate(-4%,-4%); }
+    100% { transform:scale(1.24)  translate(-6%,-7%); }
+  }
+
+  #landing-scrim{
+    position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(11,14,19,.25) 0%, rgba(11,14,19,.55) 50%, rgba(11,14,19,.95) 100%);
+  }
+
+  #landing-content{
+    position:relative;z-index:1;height:100%;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:24px;
+  }
+  #landing-content .eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--teal);margin-bottom:20px;
+    opacity:.85;
+  }
+  #landing-content h1{
+    font-family:'Orbitron',sans-serif;font-weight:900;
+    font-size:clamp(22px,4.5vw,52px);margin:0 0 18px;
+    color:var(--bone);letter-spacing:.04em;line-height:1.15;
+    text-transform:uppercase;
+  }
+  #landing-content h1 span{color:var(--brass);}
+  #landing-content p{
+    max-width:460px;color:var(--bone-dim);font-size:15px;
+    line-height:1.65;margin:0 0 38px;font-family:'Inter',sans-serif;
+  }
+  #get-started-btn{
+    background:var(--brass);color:#0b0e13;border:none;border-radius:4px;
+    font-family:'Orbitron',sans-serif;font-weight:700;font-size:13px;letter-spacing:.12em;
+    padding:16px 42px;cursor:pointer;
+    box-shadow:0 0 0 1px rgba(201,162,39,.4), 0 12px 36px rgba(0,0,0,.5);
+    transition:background .15s ease, box-shadow .15s ease, transform .1s ease;
+    text-transform:uppercase;
+  }
+  #get-started-btn:hover{
+    background:#ddb531;
+    box-shadow:0 0 0 1px rgba(221,181,49,.6), 0 16px 40px rgba(0,0,0,.55);
+    transform:translateY(-1px);
+  }
+  #get-started-btn:active{transform:scale(.97);}
+  #get-started-btn:focus-visible{outline:2px solid var(--teal);outline-offset:3px;}
+</style>
+</head>
+<body>
+
+<div id="landing-overlay">
+  <div id="landing-slides"></div>
+  <div id="landing-scrim"></div>
+  <div id="landing-content">
+    <div class="eyebrow">360° LOCAL ADVERTISING</div>
+    <h1>ADVERTISE in <span>Google Maps</span><br>360 photos</h1>
+    <p>Advertise your small business in Google Maps 360 photos in your area.</p>
+    <button id="get-started-btn" type="button">GET STARTED</button>
+  </div>
+</div>
+
+<div id="void-bg"></div>
+<div id="stage">
+  <div id="viewer-wrap">
+    <canvas id="scene"></canvas>
+    <div id="streetview"></div>
+  </div>
+  <div id="map-pane">
+    <div id="map-pane-label">
+      <span id="map-pane-label-text">Map</span>
+      <button id="map-collapse-btn" type="button" aria-label="Collapse map">✕</button>
+    </div>
+    <div id="map-pane-map"></div>
+  </div>
+</div>
+
+<div id="minimap">
+  <div id="minimap-map"></div>
+  <span id="minimap-label">Location</span>
+  <button id="minimap-expand" type="button" aria-label="Expand map — see nearby photos within 10 miles">⤢</button>
+</div>
+
+<div id="empty-state">
+  <h1>Point it somewhere.</h1>
+  <div class="rule"></div>
+  <p>Search a city and state above. We'll show every 360° photo on file within 10 miles, or pull the nearest Street View if nothing's tagged nearby.</p>
+</div>
+
+<div id="search-panel">
+  <button id="folder-btn" title="Load photos folder from your computer" aria-label="Load photos folder">📁</button>
+  <input id="address-input" type="text" placeholder="Search by city, state…" autocomplete="off" aria-label="Search photos by city, state" />
+  <button id="search-btn" type="button" aria-label="Search" title="Search">
+    <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="11" cy="11" r="7"></circle>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+    </svg>
+  </button>
+</div>
+<div id="status-line"></div>
+
+<div id="library-panel">
+  <button id="library-toggle" aria-expanded="false">
+    <span>Library</span>
+    <span id="library-count-badge">0</span>
+  </button>
+  <div id="library-list" hidden>
+    <div id="library-filters">
+      <button class="lib-filter-chip active" type="button" data-tag="all">All</button>
+      <button class="lib-filter-chip" type="button" data-tag="tour360">#tour360</button>
+      <button class="lib-filter-chip" type="button" data-tag="drone360">#drone360</button>
+    </div>
+    <div id="library-rows"></div>
+  </div>
+</div>
+
+<div id="book-bar">
+  <span id="book-bar-count">0 photos selected</span>
+  <button id="book-bar-clear" type="button">Clear</button>
+  <button id="book-bar-go" type="button">Book Ads →</button>
+</div>
+
+<div id="instrument">
+  <div id="dial-wrap">
+    <svg viewBox="0 0 120 120" width="100%" height="100%">
+      <circle cx="60" cy="60" r="55" fill="none" stroke="#2a3441" stroke-width="1"/>
+      <circle cx="60" cy="60" r="46" fill="none" stroke="#2a3441" stroke-width="1"/>
+      <g id="dial-rotor">
+        <text x="60" y="20" text-anchor="middle" fill="#c9a227" font-family="JetBrains Mono" font-size="12" font-weight="500">N</text>
+        <text x="60" y="106" text-anchor="middle" fill="#9ba3ae" font-family="JetBrains Mono" font-size="9">S</text>
+        <text x="14" y="64" text-anchor="middle" fill="#9ba3ae" font-family="JetBrains Mono" font-size="9">W</text>
+        <text x="106" y="64" text-anchor="middle" fill="#9ba3ae" font-family="JetBrains Mono" font-size="9">E</text>
+      </g>
+      <polygon points="60,10 55,22 65,22" fill="#3fa796"/>
+    </svg>
+  </div>
+  <div id="readout">
+    <div><span class="label">Loaded</span><span class="val" id="ro-address">—</span></div>
+    <div><span class="label">Coords</span><span class="val" id="ro-coords">—</span></div>
+    <div><span class="label">Distance</span><span class="val" id="ro-distance">—</span></div>
+    <div><span class="label">Source</span><span class="source-badge" id="ro-source">—</span></div>
+    <div id="ro-maps-row" hidden><a id="ro-maps-link" href="#" target="_blank" rel="noopener noreferrer" class="maps-link">Open in Google Maps ↗</a></div>
+  </div>
+</div>
+
+<button id="advertise-btn" type="button" title="New customers: your first ad is free. Terms apply.">ADVERTISE FREE</button>
+
+<div id="ad-modal-overlay" class="hidden">
+  <div id="ad-modal" role="dialog" aria-modal="true" aria-labelledby="ad-modal-title">
+    <div id="ad-modal-header">
+      <h2 id="ad-modal-title">Advertise Here</h2>
+      <button id="ad-modal-close" type="button" aria-label="Close">✕</button>
+    </div>
+
+    <div id="ad-steps">
+      <button class="ad-step-dot active" type="button" data-step="0"><span class="num">1</span><span class="step-label">Business</span></button>
+      <button class="ad-step-dot" type="button" data-step="1"><span class="num">2</span><span class="step-label">Ad Design</span></button>
+      <button class="ad-step-dot" type="button" data-step="2"><span class="num">3</span><span class="step-label">Locations</span></button>
+      <button class="ad-step-dot" type="button" data-step="3"><span class="num">4</span><span class="step-label">Payment</span></button>
+    </div>
+
+    <div id="ad-modal-body">
+      <section class="ad-panel active" data-panel="0">
+        <div class="ad-field">
+          <label for="ad-biz-name">Business Name</label>
+          <input id="ad-biz-name" type="text" autocomplete="organization" />
+        </div>
+        <div class="ad-field">
+          <label for="ad-biz-contact">Contact Name</label>
+          <input id="ad-biz-contact" type="text" autocomplete="name" />
+        </div>
+        <div class="ad-row">
+          <div class="ad-field">
+            <label for="ad-biz-phone">Phone</label>
+            <input id="ad-biz-phone" type="tel" autocomplete="tel" placeholder="(555) 555-5555" />
+          </div>
+          <div class="ad-field">
+            <label for="ad-biz-email">Email</label>
+            <input id="ad-biz-email" type="email" autocomplete="email" />
+          </div>
+        </div>
+        <div class="ad-field">
+          <label for="ad-biz-address">Business Address</label>
+          <input id="ad-biz-address" type="text" autocomplete="street-address" />
+        </div>
+        <div class="ad-field">
+          <label for="ad-biz-industry">Industry / Category</label>
+          <input id="ad-biz-industry" type="text" placeholder="e.g. Coffee Shop, Law Firm, Gym" />
+        </div>
+
+        <div id="ad-offer-box">
+          <div id="ad-offer-heading">🎁 Free Ad Offer — New Customers</div>
+          <p id="ad-offer-intro">Get your first ad placed inside one 360° photo, completely free. Check all three to be considered:</p>
+          <label class="ad-checkbox-row"><input type="checkbox" id="ad-offer-new" /> I'm a new customer — this is my first time advertising with you</label>
+          <label class="ad-checkbox-row"><input type="checkbox" id="ad-offer-owner" /> I'm the owner of this business, or authorized to book on its behalf</label>
+          <label class="ad-checkbox-row"><input type="checkbox" id="ad-offer-smallbiz" /> My business qualifies as a small business</label>
+          <p id="ad-offer-terms">Limit one free ad per company. The offer only applies to a photo location within 25 miles of your business address, and availability is limited — it may not be available if your business doesn't qualify as a small business, if the person booking isn't the owner or an authorized rep, or if a direct competitor in your industry has already booked an ad in your selected area. Terms apply.</p>
+        </div>
+
+        <div class="ad-error-text" id="ad-panel0-error"></div>
+      </section>
+
+      <section class="ad-panel" data-panel="1">
+        <label class="ad-checkbox-row"><input type="checkbox" id="ad-design-same" /> Same as business info</label>
+        <div class="ad-field">
+          <label for="ad-design-name">Company Name (on ad)</label>
+          <input id="ad-design-name" type="text" />
+        </div>
+        <div class="ad-row">
+          <div class="ad-field">
+            <label for="ad-design-phone">Phone</label>
+            <input id="ad-design-phone" type="tel" />
+          </div>
+          <div class="ad-field">
+            <label for="ad-design-email">Email</label>
+            <input id="ad-design-email" type="email" />
+          </div>
+        </div>
+        <div class="ad-field">
+          <label for="ad-design-address">Address</label>
+          <input id="ad-design-address" type="text" />
+        </div>
+        <div class="ad-field">
+          <label>Ad Images</label>
+          <div id="ad-image-drop" tabindex="0" role="button" aria-label="Upload ad images">Click to upload, or drag &amp; drop<br/><span style="opacity:.7">JPG or PNG · multiple allowed</span></div>
+          <input id="ad-image-input" type="file" accept="image/*" multiple hidden />
+          <div id="ad-image-thumbs"></div>
+        </div>
+        <div class="ad-error-text" id="ad-panel1-error"></div>
+      </section>
+
+      <section class="ad-panel" data-panel="2">
+        <div class="ad-field">
+          <label for="ad-location-input">Zip Code(s) or City, State</label>
+          <div id="ad-location-row">
+            <input id="ad-location-input" type="text" placeholder="e.g. 97205 or Portland, OR" />
+            <button id="ad-check-btn" type="button">Check</button>
+          </div>
+        </div>
+        <div class="ad-field">
+          <label>Or select specific photos to advertise inside</label>
+          <button id="ad-browse-library-btn" type="button">Choose from Photo Library →</button>
+        </div>
+        <p id="ad-placement-note">You pick the photo — we handle exactly where your ad appears inside it, so it looks natural and doesn't crowd the shot. One ad per photo.</p>
+        <div id="ad-locations"></div>
+        <div class="ad-error-text" id="ad-panel2-error"></div>
+      </section>
+
+      <section class="ad-panel" data-panel="3">
+        <div id="ad-pay-note">Demo checkout — your card details stay in this browser and no real charge is made.</div>
+
+        <div id="ad-order-summary">
+          <div class="ad-summary-row"><span>Subtotal</span><span id="ad-summary-subtotal">$0</span></div>
+          <div class="ad-summary-row" id="ad-summary-freeoffer-row" hidden><span>Free ad offer</span><span id="ad-summary-freeoffer">-$0</span></div>
+          <div class="ad-summary-row" id="ad-summary-discount-row" hidden><span>Coupon discount</span><span id="ad-summary-discount">-$0</span></div>
+          <div class="ad-summary-row ad-summary-total"><span>Total (one-time)</span><span id="ad-summary-total">$0</span></div>
+        </div>
+
+        <div id="ad-free-notice" hidden>
+          <div class="check">🎉</div>
+          <p>Your total is $0 — no payment needed. Click <strong>Claim Free Ad</strong> below to submit your request.</p>
+        </div>
+
+        <div id="ad-payment-fields">
+          <div class="ad-field">
+            <label for="ad-coupon-input">Coupon Code</label>
+            <div class="ad-coupon-row">
+              <input id="ad-coupon-input" type="text" placeholder="Enter code" autocomplete="off" />
+              <button id="ad-coupon-apply" type="button">Apply</button>
+            </div>
+            <div class="ad-coupon-feedback" id="ad-coupon-feedback"></div>
+          </div>
+
+          <div class="ad-field">
+            <label for="ad-pay-name">Name on Card</label>
+            <input id="ad-pay-name" type="text" autocomplete="cc-name" />
+          </div>
+          <div class="ad-field">
+            <label for="ad-pay-number">Card Number</label>
+            <input id="ad-pay-number" type="text" inputmode="numeric" autocomplete="cc-number" placeholder="1234 1234 1234 1234" maxlength="23" />
+          </div>
+          <div class="ad-row">
+            <div class="ad-field">
+              <label for="ad-pay-exp">Expiry</label>
+              <input id="ad-pay-exp" type="text" inputmode="numeric" autocomplete="cc-exp" placeholder="MM/YY" maxlength="5" />
+            </div>
+            <div class="ad-field">
+              <label for="ad-pay-cvc">CVC</label>
+              <input id="ad-pay-cvc" type="text" inputmode="numeric" autocomplete="cc-csc" placeholder="123" maxlength="4" />
+            </div>
+            <div class="ad-field">
+              <label for="ad-pay-zip">Billing ZIP</label>
+              <input id="ad-pay-zip" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="10" />
+            </div>
+          </div>
+        </div>
+        <div class="ad-error-text" id="ad-panel3-error"></div>
+      </section>
+
+      <div id="ad-success">
+        <div class="check">✓</div>
+        <h3 id="ad-success-title">Order submitted</h3>
+        <p id="ad-success-body">Your ad request has been received. We'll follow up at the email you provided once your creative is approved and your ad placement is confirmed.</p>
+        <button id="ad-success-close" type="button">Done</button>
+      </div>
+    </div>
+
+    <div id="ad-modal-footer">
+      <div id="ad-total">Total <strong id="ad-total-amount">$0</strong></div>
+      <div id="ad-nav-btns">
+        <button id="ad-back-btn" type="button" disabled>Back</button>
+        <button id="ad-next-btn" type="button">Next</button>
+        <button id="ad-submit-btn" type="button" hidden>Submit Order</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/three@0.128.0/build/three.min.js"></script>
+<script src="https://unpkg.com/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/exifr/dist/full.umd.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script>
+/* =========================================================================
+   CUSTOMIZE ME
+   ========================================================================= */
+
+// Your own geotagged 360° (equirectangular) JPGs. Add as many as you like.
+// lat/lng = where the photo was taken. url = a direct link to the jpg.
+// The demo entry below is a real public equirectangular sample, geotagged
+// to downtown Portland, OR so you can test the flow immediately — replace
+// or extend this list with your own photos and coordinates.
+// Starts with a demo entry so the page works before you load a folder.
+// "Load Photos Folder" replaces this list entirely with whatever it finds.
+// tags: any mix of "tour360" / "drone360" (or your own) — shown as badges
+// in the Library and used to filter it, and used when booking ads to show
+// what kind of shot the customer is placing their ad inside.
+const customPanoramas = [
+  {
+    id: "demo-1",
+    name: "Demo panorama — Pioneer Courthouse Square area",
+    lat: 45.5189,
+    lng: -122.6779,
+    url: "https://threejs.org/examples/textures/2294472375_24a3b8ef46_o.jpg",
+    tags: ["tour360"]
+  },
+  {
+    id: "demo-2",
+    name: "Demo panorama — aerial sample",
+    lat: 45.5231,
+    lng: -122.6765,
+    url: "https://threejs.org/examples/textures/2294472375_24a3b8ef46_o.jpg",
+    tags: ["drone360"]
+  }
+];
+let panoIdCounter = 0;
+
+// Optional: add a Google Maps API key (with Street View Static + Maps
+// JavaScript API enabled) to power the fallback when no custom panorama
+// is close enough. Leave blank to disable the fallback.
+const GOOGLE_MAPS_API_KEY = "";
+
+/* =========================================================================
+   App logic — shouldn't need to touch below this line
+   ========================================================================= */
+
+const els = {
+  input: document.getElementById('address-input'),
+  btn: document.getElementById('search-btn'),
+  folderBtn: document.getElementById('folder-btn'),
+  status: document.getElementById('status-line'),
+  empty: document.getElementById('empty-state'),
+  instrument: document.getElementById('instrument'),
+  dialRotor: document.getElementById('dial-rotor'),
+  roAddress: document.getElementById('ro-address'),
+  roCoords: document.getElementById('ro-coords'),
+  roDistance: document.getElementById('ro-distance'),
+  roSource: document.getElementById('ro-source'),
+  roMapsRow: document.getElementById('ro-maps-row'),
+  roMapsLink: document.getElementById('ro-maps-link'),
+  libraryToggle: document.getElementById('library-toggle'),
+  libraryList: document.getElementById('library-list'),
+  libraryRows: document.getElementById('library-rows'),
+  libraryFilters: document.getElementById('library-filters'),
+  libraryCountBadge: document.getElementById('library-count-badge'),
+  sceneCanvas: document.getElementById('scene'),
+  streetviewDiv: document.getElementById('streetview'),
+  stage: document.getElementById('stage'),
+  viewerWrap: document.getElementById('viewer-wrap'),
+  mapPane: document.getElementById('map-pane'),
+  mapPaneMap: document.getElementById('map-pane-map'),
+  mapPaneLabelText: document.getElementById('map-pane-label-text'),
+  mapCollapseBtn: document.getElementById('map-collapse-btn'),
+  minimap: document.getElementById('minimap'),
+  minimapMap: document.getElementById('minimap-map'),
+  minimapExpandBtn: document.getElementById('minimap-expand'),
+  bookBar: document.getElementById('book-bar'),
+  bookBarCount: document.getElementById('book-bar-count'),
+  bookBarClear: document.getElementById('book-bar-clear'),
+  bookBarGo: document.getElementById('book-bar-go'),
+  minimapLabel: document.getElementById('minimap-label'),
+};
+
+/* ---------------- Map pane: minimap + expand-to-half-screen ----------------
+   Built on Leaflet + OpenStreetMap tiles — no API key, account, or paid
+   setup of any kind. Shows every photo in the Library within NEARBY_RADIUS_MILES
+   of whatever's currently loaded, each as a clickable thumbnail marker that
+   loads that 360 photo straight into the viewer. */
+
+const NEARBY_RADIUS_MILES = 10;
+const NEARBY_RADIUS_KM = NEARBY_RADIUS_MILES * 1.60934;
+
+let currentLatLng = null;
+let mapExpanded = false;
+let minimapInstance = null, minimapCurrentMarker = null;
+let expandedMapInstance = null, expandedMarkersLayer = null, expandedRadiusCircle = null;
+
+function leafletAvailable(){
+  return typeof window.L !== 'undefined';
+}
+
+// Every photo in the Library with valid GPS, within NEARBY_RADIUS_KM of
+// (lat, lng), nearest first.
+function getNearbyPhotos(lat, lng){
+  return customPanoramas
+    .filter(p => Number.isFinite(p.lat) && Number.isFinite(p.lng))
+    .map(p => ({ photo: p, distanceKm: haversineKm(lat, lng, p.lat, p.lng) }))
+    .filter(x => x.distanceKm <= NEARBY_RADIUS_KM)
+    .sort((a, b) => a.distanceKm - b.distanceKm);
+}
+
+function makeTileLayer(){
+  return L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors'
+  });
+}
+
+function photoDivIcon(photo, opts){
+  opts = opts || {};
+  const size = opts.size || 40;
+  const isCurrent = !!opts.current;
+  const tagClass = photo.tags && photo.tags.includes('drone360') ? 'tag-drone360' : 'tag-tour360';
+  return L.divIcon({
+    className: '',
+    html: `<div class="photo-marker ${tagClass}${isCurrent ? ' current' : ''}"><img src="${photo.url}" alt="" /></div>`,
+    iconSize: [size, size],
+    iconAnchor: [size/2, size/2],
+  });
+}
+
+function ensureMinimap(){
+  if (minimapInstance || !leafletAvailable()) return;
+  minimapInstance = L.map(els.minimapMap, {
+    zoomControl: false, attributionControl: false,
+    dragging: false, scrollWheelZoom: false, doubleClickZoom: false,
+    boxZoom: false, keyboard: false, touchZoom: false, tap: false,
+  }).setView([0, 0], 14);
+  makeTileLayer().addTo(minimapInstance);
+}
+
+function ensureExpandedMap(){
+  if (expandedMapInstance || !leafletAvailable()) return;
+  expandedMapInstance = L.map(els.mapPaneMap, { zoomControl: true, attributionControl: true })
+    .setView([0, 0], 13);
+  makeTileLayer().addTo(expandedMapInstance);
+  expandedMarkersLayer = L.layerGroup().addTo(expandedMapInstance);
+}
+
+function renderNearbyMarkers(){
+  if (!expandedMapInstance || !currentLatLng) return;
+  expandedMarkersLayer.clearLayers();
+  if (expandedRadiusCircle) expandedMapInstance.removeLayer(expandedRadiusCircle);
+
+  expandedRadiusCircle = L.circle([currentLatLng.lat, currentLatLng.lng], {
+    radius: NEARBY_RADIUS_KM * 1000,
+    color: '#3fa796', weight: 1.5, fillColor: '#3fa796', fillOpacity: 0.07,
+  }).addTo(expandedMapInstance);
+
+  const nearby = getNearbyPhotos(currentLatLng.lat, currentLatLng.lng);
+  nearby.forEach(({ photo, distanceKm }) => {
+    const isCurrent = photo.id === currentLatLng.photoId;
+    const marker = L.marker([photo.lat, photo.lng], { icon: photoDivIcon(photo, { current: isCurrent }) })
+      .addTo(expandedMarkersLayer);
+    const tagsHtml = (photo.tags || []).map(t => `<span class="library-tag ${t}">#${t}</span>`).join(' ');
+    marker.bindPopup(
+      `<span class="map-popup-name">${escapeHtml(photo.name)}</span>` +
+      `<span class="map-popup-dist">${distanceKm < 0.1 ? 'This photo' : formatDistance(distanceKm) + ' away'}</span>` +
+      (tagsHtml ? `<div class="map-popup-tags">${tagsHtml}</div>` : '')
+    );
+    marker.on('click', () => { if (!isCurrent) loadFromLibrary(photo); });
+  });
+
+  els.mapPaneLabelText.textContent = nearby.length === 0
+    ? `No other photos within ${NEARBY_RADIUS_MILES} mi`
+    : `${nearby.length} photo${nearby.length === 1 ? '' : 's'} within ${NEARBY_RADIUS_MILES} mi`;
+
+  try {
+    expandedMapInstance.fitBounds(expandedRadiusCircle.getBounds(), { padding: [24, 24] });
+  } catch (e) { /* ignore */ }
+}
+
+function escapeHtml(str){
+  const div = document.createElement('div');
+  div.textContent = str == null ? '' : String(str);
+  return div.innerHTML;
+}
+
+function updateMapLocation(lat, lng, label, photoId){
+  const valid = Number.isFinite(lat) && Number.isFinite(lng);
+  currentLatLng = valid ? { lat, lng, photoId } : null;
+  els.minimap.classList.toggle('visible', valid && !mapExpanded);
+  if (!valid){
+    setMapExpanded(false);
+    return;
+  }
+  if (label && els.minimapLabel) els.minimapLabel.textContent = label;
+
+  if (leafletAvailable()){
+    ensureMinimap();
+    if (minimapInstance){
+      minimapInstance.setView([lat, lng], 14);
+      if (minimapCurrentMarker) minimapInstance.removeLayer(minimapCurrentMarker);
+      const photo = customPanoramas.find(p => p.id === photoId);
+      minimapCurrentMarker = photo
+        ? L.marker([lat, lng], { icon: photoDivIcon(photo, { size: 34, current: true }) }).addTo(minimapInstance)
+        : L.circleMarker([lat, lng], { radius: 7, color: '#fff', weight: 2, fillColor: '#3fa796', fillOpacity: 1 }).addTo(minimapInstance);
+      setTimeout(() => minimapInstance.invalidateSize(), 0);
+    }
+  }
+
+  if (mapExpanded){
+    if (label) els.mapPaneLabelText.textContent = label;
+    ensureExpandedMap();
+    if (expandedMapInstance){
+      expandedMapInstance.setView([lat, lng], 13);
+      renderNearbyMarkers();
+      setTimeout(() => expandedMapInstance.invalidateSize(), 0);
+    }
+  }
+}
+
+function setMapExpanded(open){
+  open = !!open && !!currentLatLng;
+  mapExpanded = open;
+  els.stage.classList.toggle('split', open);
+  els.minimap.classList.toggle('visible', !!currentLatLng && !open);
+  if (open && currentLatLng){
+    ensureExpandedMap();
+    if (expandedMapInstance){
+      expandedMapInstance.setView([currentLatLng.lat, currentLatLng.lng], 13);
+      renderNearbyMarkers();
+      // Leaflet measures its container on setView/fitBounds; the CSS split
+      // transition is still animating at this point (container growing
+      // from 0 width), so re-measure and re-fit a few times as it grows
+      // rather than once at the — possibly still mid-transition — start.
+      [50, 150, 300].forEach(ms => setTimeout(() => expandedMapInstance && expandedMapInstance.invalidateSize(), ms));
+      setTimeout(() => { if (expandedMapInstance){ expandedMapInstance.invalidateSize(); renderNearbyMarkers(); } }, 450);
+    }
+  }
+}
+
+els.minimapExpandBtn.addEventListener('click', () => setMapExpanded(true));
+els.mapCollapseBtn.addEventListener('click', () => setMapExpanded(false));
+
+// Keep the expanded map's tiles correctly sized whenever its pane resizes
+// for any reason (window resize, split toggling, device rotation).
+new ResizeObserver(() => { if (expandedMapInstance) expandedMapInstance.invalidateSize(); }).observe(els.mapPane);
+new ResizeObserver(() => { if (minimapInstance) minimapInstance.invalidateSize(); }).observe(els.minimap);
+
+function setStatus(msg, isError){
+  els.status.textContent = msg || '';
+  els.status.classList.toggle('visible', !!msg);
+  els.status.classList.toggle('error', !!isError);
+}
+
+function haversineKm(lat1, lon1, lat2, lon2){
+  const R = 6371;
+  const dLat = (lat2-lat1) * Math.PI/180;
+  const dLon = (lon2-lon1) * Math.PI/180;
+  const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+function formatDistance(km){
+  const miles = km * 0.621371;
+  if (miles < 0.1) return Math.round(miles * 5280) + ' ft';
+  return miles.toFixed(2) + ' mi';
+}
+
+/* ---------------- Three.js panorama viewer ---------------- */
+
+let renderer, scene, camera, controls, sphereMesh, textureLoader, animating = false;
+
+// The viewer sizes itself off #viewer-wrap (not the window) because that
+// wrap shrinks to half-width/half-height whenever the map pane expands —
+// sizing off window.innerWidth/innerHeight instead would stretch the
+// sphere the moment the layout splits.
+function getViewerSize(){
+  const r = els.viewerWrap.getBoundingClientRect();
+  return { w: Math.max(1, Math.round(r.width)), h: Math.max(1, Math.round(r.height)) };
+}
+
+function resizeViewer(){
+  if (!renderer || !camera) return;
+  const { w, h } = getViewerSize();
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+  renderer.setSize(w, h);
+  if (window.__streetviewPano && window.google){
+    google.maps.event.trigger(window.__streetviewPano, 'resize');
+  }
+}
+
+function initThree(){
+  if (renderer) return;
+  const { w, h } = getViewerSize();
+  renderer = new THREE.WebGLRenderer({ canvas: els.sceneCanvas, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(w, h);
+  renderer.outputEncoding = THREE.sRGBEncoding;
+
+  scene = new THREE.Scene();
+  camera = new THREE.PerspectiveCamera(75, w/h, 0.1, 1000);
+  camera.position.set(0, 0, 0.01);
+
+  const geometry = new THREE.SphereGeometry(500, 60, 40);
+  geometry.scale(-1, 1, 1); // invert so texture renders on the inside
+  const material = new THREE.MeshBasicMaterial();
+  sphereMesh = new THREE.Mesh(geometry, material);
+  scene.add(sphereMesh);
+
+  textureLoader = new THREE.TextureLoader();
+  textureLoader.crossOrigin = 'anonymous';
+
+  controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.08;
+  controls.enablePan = false;
+  controls.enableZoom = false; // handled manually via FOV below
+  controls.rotateSpeed = -0.35;
+  controls.minPolarAngle = 0.15;
+  controls.maxPolarAngle = Math.PI - 0.15;
+
+  els.sceneCanvas.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    camera.fov = THREE.MathUtils.clamp(camera.fov + e.deltaY * 0.02, 30, 100);
+    camera.updateProjectionMatrix();
+  }, { passive: false });
+
+  // basic pinch-to-zoom for touch
+  let pinchStartDist = null, pinchStartFov = null;
+  els.sceneCanvas.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 2){
+      pinchStartDist = Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
+      pinchStartFov = camera.fov;
+    }
+  });
+  els.sceneCanvas.addEventListener('touchmove', (e) => {
+    if (e.touches.length === 2 && pinchStartDist){
+      const d = Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
+      camera.fov = THREE.MathUtils.clamp(pinchStartFov * (pinchStartDist/d), 30, 100);
+      camera.updateProjectionMatrix();
+    }
+  });
+  els.sceneCanvas.addEventListener('touchend', () => { pinchStartDist = null; });
+
+  // Fires on window resize *and* whenever #viewer-wrap changes size for any
+  // other reason (the map pane sliding open/closed, device rotation, etc.)
+  // — so it also runs continuously through that CSS transition, keeping the
+  // sphere's aspect correct the whole time instead of only at the end.
+  new ResizeObserver(resizeViewer).observe(els.viewerWrap);
+
+  if (!animating){
+    animating = true;
+    animate();
+  }
+}
+
+function animate(){
+  requestAnimationFrame(animate);
+  if (!controls) return;
+  controls.update();
+  renderer.render(scene, camera);
+
+  const azimuth = controls.getAzimuthalAngle(); // radians
+  const deg = azimuth * 180 / Math.PI;
+  els.dialRotor.style.transform = `rotate(${deg}deg)`;
+}
+
+function loadCustomPanorama(url){
+  return new Promise((resolve, reject) => {
+    initThree();
+    textureLoader.load(
+      url,
+      (texture) => {
+        texture.encoding = THREE.sRGBEncoding;
+        sphereMesh.material.map = texture;
+        sphereMesh.material.needsUpdate = true;
+        camera.fov = 75;
+        camera.updateProjectionMatrix();
+        resolve();
+      },
+      undefined,
+      (err) => reject(err)
+    );
+  });
+}
+
+function showThreeViewer(){
+  els.sceneCanvas.classList.remove('hidden');
+  els.streetviewDiv.classList.remove('visible');
+}
+
+/* ---------------- Street View fallback ---------------- */
+
+let googleMapsLoading = null;
+
+function loadGoogleMaps(){
+  if (window.google && window.google.maps) return Promise.resolve();
+  if (googleMapsLoading) return googleMapsLoading;
+  googleMapsLoading = new Promise((resolve, reject) => {
+    if (!GOOGLE_MAPS_API_KEY){
+      reject(new Error('no-key'));
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}`;
+    script.onload = resolve;
+    script.onerror = () => reject(new Error('load-failed'));
+    document.head.appendChild(script);
+  });
+  return googleMapsLoading;
+}
+
+function tryStreetView(lat, lng){
+  return loadGoogleMaps().then(() => {
+    return new Promise((resolve, reject) => {
+      const svService = new google.maps.StreetViewService();
+      svService.getPanorama({ location: { lat, lng }, radius: 200 }, (data, status) => {
+        if (status === 'OK'){
+          els.sceneCanvas.classList.add('hidden');
+          els.streetviewDiv.classList.add('visible');
+          window.__streetviewPano = new google.maps.StreetViewPanorama(els.streetviewDiv, {
+            position: data.location.latLng,
+            pov: { heading: 0, pitch: 0 },
+            addressControl: false,
+            fullscreenControl: false,
+            motionTracking: false,
+            motionTrackingControl: false,
+          });
+          resolve({
+            lat: data.location.latLng.lat(),
+            lng: data.location.latLng.lng(),
+          });
+        } else {
+          reject(new Error('no-panorama'));
+        }
+      });
+    });
+  });
+}
+
+/* ---------------- Geocoding (OpenStreetMap Nominatim, no key required) ---------------- */
+
+async function geocode(address){
+  const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(address)}`;
+  const res = await fetch(url, { headers: { 'Accept-Language': 'en' } });
+  if (!res.ok) throw new Error('geocode-failed');
+  const data = await res.json();
+  if (!data.length) throw new Error('not-found');
+  return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon), display: data[0].display_name };
+}
+
+/* ---------------- Local photo folder scan ---------------- */
+
+let activeBlobUrls = [];
+
+function isValidCoord(lat, lng){
+  const la = Number(lat), ln = Number(lng);
+  return Number.isFinite(la) && Number.isFinite(ln) && !(la === 0 && ln === 0);
+}
+
+async function extractLocation(file){
+  // 1) Standard EXIF GPS IFD — covers most cameras and phones.
+  try {
+    const gps = await exifr.gps(file);
+    if (gps && isValidCoord(gps.latitude, gps.longitude)){
+      return { lat: gps.latitude, lng: gps.longitude };
+    }
+  } catch (err){ /* fall through to XMP */ }
+
+  // 2) Full parse including XMP. DJI drones in particular often write
+  // location as plain signed decimal degrees under XMP tags named
+  // GpsLatitude / GpsLongitude (the drone-dji namespace) instead of, or
+  // in addition to, the standard EXIF GPS block — exifr.gps() alone
+  // never looks there.
+  try {
+    const full = await exifr.parse(file, {
+      xmp: true, exif: true, gps: true, tiff: true, ifd0: true,
+      translateValues: true, reviveValues: true
+    });
+    if (full){
+      if (isValidCoord(full.GpsLatitude, full.GpsLongitude)){
+        return { lat: Number(full.GpsLatitude), lng: Number(full.GpsLongitude) };
+      }
+      // Last resort: scan every field for anything latitude/longitude-shaped.
+      let lat = null, lng = null;
+      for (const key of Object.keys(full)){
+        const kl = key.toLowerCase();
+        const num = typeof full[key] === 'number' ? full[key] : parseFloat(full[key]);
+        if (!Number.isFinite(num)) continue;
+        if (lat === null && kl.includes('latitude')) lat = num;
+        if (lng === null && kl.includes('longitude')) lng = num;
+      }
+      if (isValidCoord(lat, lng)) return { lat, lng };
+    }
+  } catch (err){ /* nothing more we can try automatically */ }
+
+  return null;
+}
+
+async function loadPhotoFolder(){
+  if (!window.showDirectoryPicker){
+    setStatus('Your browser can\'t open local folders like this — use Chrome or Edge (this needs the File System Access API).', true);
+    return;
+  }
+
+  let dirHandle;
+  try {
+    dirHandle = await window.showDirectoryPicker();
+  } catch (err){
+    return; // user cancelled the picker — not an error
+  }
+
+  els.folderBtn.disabled = true;
+  setStatus('Scanning folder for geotagged photos…', false);
+
+  // release any blob URLs from a previous scan
+  activeBlobUrls.forEach(u => URL.revokeObjectURL(u));
+  activeBlobUrls = [];
+
+  const found = [];
+  let noGpsCount = 0;
+
+  for await (const [name, handle] of dirHandle.entries()){
+    if (handle.kind !== 'file') continue;
+    if (!/\.(jpe?g)$/i.test(name)) continue;
+
+    let file;
+    try {
+      file = await handle.getFile();
+    } catch (err){
+      continue; // unreadable file entirely — skip it
+    }
+
+    // exifr reads only the metadata bytes it needs, so this is fast
+    // even on very large files (60MB+ panoramas included).
+    let loc = null;
+    try {
+      loc = await extractLocation(file);
+    } catch (err){
+      loc = null;
+    }
+
+    const hasGps = !!loc;
+    if (!hasGps) noGpsCount++;
+
+    const url = URL.createObjectURL(file);
+    activeBlobUrls.push(url);
+    // Best-effort auto-tag from the filename (e.g. "drone_0012.jpg" or
+    // "aerial-warehouse.jpg" → #drone360); everything else defaults to
+    // #tour360. Either tag can be toggled by hand afterwards in the Library.
+    const isDrone = /drone|dji|aerial/i.test(name);
+    found.push({
+      id: 'pano-' + (++panoIdCounter),
+      name,
+      lat: hasGps ? loc.lat : null,
+      lng: hasGps ? loc.lng : null,
+      url,
+      tags: isDrone ? ['drone360'] : ['tour360']
+    });
+  }
+
+  customPanoramas.length = 0;
+  customPanoramas.push(...found);
+  selectedPhotoIds.clear();
+  updateBookBar();
+  renderLibrary();
+
+  els.folderBtn.disabled = false;
+
+  if (found.length === 0){
+    setStatus('No JPGs found in that folder.', true);
+  } else {
+    setStatus(
+      `Loaded ${found.length} photo(s)` +
+      (noGpsCount ? `, ${noGpsCount} without usable GPS — click "Set location" in the Library to add coordinates manually` : '') +
+      '.',
+      false
+    );
+    setLibraryOpen(true);
+  }
+}
+
+els.folderBtn.addEventListener('click', loadPhotoFolder);
+
+/* ---------------- Library: tags, filtering, multi-select for ad booking ---------------- */
+
+const ALL_TAGS = ['tour360', 'drone360'];
+const TAG_LABELS = { tour360: '#tour360', drone360: '#drone360' };
+let activeTagFilter = 'all';
+const selectedPhotoIds = new Set();
+
+// Make sure every entry (including ones defined by hand in customPanoramas
+// above, before this script ever ran) has a stable id and a tags array,
+// so the rest of the Library code can rely on both always being present.
+function ensurePanoMeta(){
+  customPanoramas.forEach(p => {
+    if (!p.id) p.id = 'pano-' + (++panoIdCounter);
+    if (!Array.isArray(p.tags)) p.tags = [];
+  });
+}
+
+function toggleTag(entry, tag){
+  const i = entry.tags.indexOf(tag);
+  if (i === -1) entry.tags.push(tag); else entry.tags.splice(i, 1);
+  renderLibrary();
+}
+
+function togglePhotoSelected(id){
+  if (selectedPhotoIds.has(id)) selectedPhotoIds.delete(id);
+  else selectedPhotoIds.add(id);
+  updateBookBar();
+  renderLibrary();
+}
+
+function updateBookBar(){
+  const n = selectedPhotoIds.size;
+  els.bookBar.classList.toggle('visible', n > 0);
+  els.bookBarCount.textContent = n === 1 ? '1 photo selected' : `${n} photos selected`;
+}
+
+els.bookBarClear.addEventListener('click', () => {
+  selectedPhotoIds.clear();
+  updateBookBar();
+  renderLibrary();
+});
+
+els.bookBarGo.addEventListener('click', () => {
+  const photos = customPanoramas.filter(p => selectedPhotoIds.has(p.id));
+  if (!photos.length || !window.BearingAds) return;
+  window.BearingAds.openWithPhotos(photos);
+  selectedPhotoIds.clear();
+  updateBookBar();
+  renderLibrary();
+  setLibraryOpen(false);
+});
+
+els.libraryFilters.addEventListener('click', (e) => {
+  const chip = e.target.closest('.lib-filter-chip');
+  if (!chip) return;
+  activeTagFilter = chip.dataset.tag;
+  renderLibrary();
+});
+
+function renderLibrary(){
+  ensurePanoMeta();
+
+  Array.from(els.libraryFilters.children).forEach(chip => {
+    chip.classList.toggle('active', chip.dataset.tag === activeTagFilter);
+  });
+
+  const visible = activeTagFilter === 'all'
+    ? customPanoramas
+    : customPanoramas.filter(p => p.tags.includes(activeTagFilter));
+
+  els.libraryRows.innerHTML = '';
+
+  if (visible.length === 0){
+    const empty = document.createElement('div');
+    empty.style.cssText = 'padding:16px;font-size:12px;color:var(--bone-dim);text-align:center;';
+    empty.textContent = customPanoramas.length === 0
+      ? 'No photos loaded yet.'
+      : 'No photos match that tag.';
+    els.libraryRows.appendChild(empty);
+    els.libraryCountBadge.textContent = customPanoramas.length;
+    return;
+  }
+
+  visible.forEach((p) => {
+    const hasGps = Number.isFinite(p.lat) && Number.isFinite(p.lng);
+
+    const row = document.createElement('div');
+    row.className = 'library-row';
+
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.className = 'library-select';
+    checkbox.checked = selectedPhotoIds.has(p.id);
+    checkbox.setAttribute('aria-label', 'Select "' + p.name + '" to book an ad inside it');
+    checkbox.addEventListener('click', (e) => {
+      e.stopPropagation();
+      togglePhotoSelected(p.id);
+    });
+    row.appendChild(checkbox);
+
+    const thumb = document.createElement('div');
+    thumb.className = 'library-thumb';
+    const thumbImg = document.createElement('img');
+    thumbImg.src = p.url;
+    thumbImg.alt = '';
+    thumbImg.loading = 'lazy';
+    thumb.appendChild(thumbImg);
+
+    const viewBtn = document.createElement('button');
+    viewBtn.type = 'button';
+    viewBtn.className = 'library-view-btn';
+
+    const name = document.createElement('span');
+    name.className = 'library-name';
+    name.textContent = p.name;
+
+    const coords = document.createElement('span');
+    coords.className = 'library-coords' + (hasGps ? '' : ' missing');
+    coords.textContent = hasGps ? `${p.lat.toFixed(5)}, ${p.lng.toFixed(5)}` : 'No GPS data';
+
+    const tagsRow = document.createElement('span');
+    tagsRow.className = 'library-tags';
+    ALL_TAGS.forEach(tag => {
+      const on = p.tags.includes(tag);
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'library-tag-toggle ' + tag + (on ? ' on' : '');
+      chip.textContent = TAG_LABELS[tag];
+      chip.title = (on ? 'Remove tag ' : 'Add tag ') + TAG_LABELS[tag];
+      chip.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleTag(p, tag);
+      });
+      tagsRow.appendChild(chip);
+    });
+
+    viewBtn.appendChild(name);
+    viewBtn.appendChild(coords);
+    viewBtn.appendChild(tagsRow);
+    viewBtn.addEventListener('click', () => loadFromLibrary(p));
+
+    row.appendChild(thumb);
+    row.appendChild(viewBtn);
+
+    if (!hasGps){
+      const fixBtn = document.createElement('button');
+      fixBtn.type = 'button';
+      fixBtn.className = 'library-fix-btn';
+      fixBtn.textContent = 'Set location';
+      fixBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        promptForLocation(p);
+      });
+      row.appendChild(fixBtn);
+    } else {
+      const mapsLink = document.createElement('a');
+      mapsLink.className = 'library-maps-link';
+      mapsLink.href = `https://www.google.com/maps?q=${p.lat},${p.lng}`;
+      mapsLink.target = '_blank';
+      mapsLink.rel = 'noopener noreferrer';
+      mapsLink.textContent = 'Maps ↗';
+      mapsLink.addEventListener('click', (e) => e.stopPropagation());
+      row.appendChild(mapsLink);
+    }
+
+    els.libraryRows.appendChild(row);
+  });
+  els.libraryCountBadge.textContent = customPanoramas.length;
+}
+
+function promptForLocation(entry){
+  const input = window.prompt(
+    `Enter coordinates for "${entry.name}" as "lat, lng" (e.g. 45.5231, -122.6765):`
+  );
+  if (!input) return;
+  const parts = input.split(',').map(s => parseFloat(s.trim()));
+  if (parts.length !== 2 || !Number.isFinite(parts[0]) || !Number.isFinite(parts[1])){
+    setStatus('Could not parse those coordinates — use "lat, lng" format.', true);
+    return;
+  }
+  entry.lat = parts[0];
+  entry.lng = parts[1];
+  renderLibrary();
+  setStatus(`Location set for "${entry.name}".`, false);
+}
+
+function setLibraryOpen(open){
+  els.libraryList.hidden = !open;
+  els.libraryToggle.setAttribute('aria-expanded', String(open));
+}
+
+els.libraryToggle.addEventListener('click', () => {
+  setLibraryOpen(els.libraryList.hidden);
+});
+
+async function loadFromLibrary(entry){
+  setStatus('Loading photo…', false);
+  try {
+    await loadCustomPanorama(entry.url);
+    showThreeViewer();
+    els.empty.classList.add('hidden');
+    els.instrument.classList.add('visible');
+    updateInstrument({ label: entry.name, lat: entry.lat, lng: entry.lng, distanceKm: null, source: 'custom', photoId: entry.id });
+    setStatus('', false);
+  } catch (err){
+    setStatus('Could not load that photo.', true);
+  }
+}
+window.loadFromLibrary = loadFromLibrary;
+
+/* ---------------- Main search flow: find photos by city/state ---------------- */
+
+async function handleSearch(){
+  const address = els.input.value.trim();
+  if (!address) return;
+
+  els.btn.disabled = true;
+  setStatus('Searching…', false);
+
+  try {
+    const geo = await geocode(address);
+    const cityLabel = geo.display.split(',').slice(0, 2).join(',').trim();
+    const nearby = getNearbyPhotos(geo.lat, geo.lng);
+
+    if (nearby.length > 0){
+      const { photo: nearest, distanceKm: nearestDist } = nearby[0];
+      setStatus('Loading panorama…', false);
+      await loadCustomPanorama(nearest.url);
+      showThreeViewer();
+      updateInstrument({ label: nearest.name, lat: nearest.lat, lng: nearest.lng, distanceKm: nearestDist, source: 'custom', photoId: nearest.id });
+      els.empty.classList.add('hidden');
+      els.instrument.classList.add('visible');
+      // Show all of them at once — that's the point of searching by city/state —
+      // rather than silently picking one and hiding the rest.
+      setMapExpanded(true);
+      setStatus(
+        nearby.length === 1
+          ? `1 photo found near ${cityLabel}.`
+          : `${nearby.length} photos found near ${cityLabel} — tap a pin on the map to switch between them.`,
+        false
+      );
+    } else {
+      setStatus(`No photos on file within ${NEARBY_RADIUS_MILES} miles of ${cityLabel} — checking Street View…`, false);
+      try {
+        const svLoc = await tryStreetView(geo.lat, geo.lng);
+        const dist = haversineKm(geo.lat, geo.lng, svLoc.lat, svLoc.lng);
+        updateInstrument({ label: cityLabel, lat: svLoc.lat, lng: svLoc.lng, distanceKm: dist, source: 'streetview' });
+        els.empty.classList.add('hidden');
+        els.instrument.classList.add('visible');
+        setStatus('', false);
+      } catch (svErr){
+        if (svErr.message === 'no-key'){
+          setStatus(`No photos within ${NEARBY_RADIUS_MILES} miles of that city. Add a Google Maps API key in the script to enable the Street View fallback.`, true);
+        } else {
+          setStatus('No photos found near that city/state. Try somewhere else.', true);
+        }
+      }
+    }
+  } catch (err){
+    setStatus(err.message === 'not-found' ? "Couldn't find that city/state." : 'Something went wrong. Try again.', true);
+  } finally {
+    els.btn.disabled = false;
+  }
+}
+
+function updateInstrument({ label, lat, lng, distanceKm, source, photoId }){
+  els.roAddress.textContent = label;
+  const valid = Number.isFinite(lat) && Number.isFinite(lng);
+  els.roCoords.textContent = valid ? `${lat.toFixed(5)}, ${lng.toFixed(5)}` : '—';
+  els.roDistance.textContent = distanceKm != null ? formatDistance(distanceKm) + ' away' : '—';
+  els.roSource.textContent = source === 'custom' ? 'Custom' : 'Street View';
+  els.roSource.className = 'source-badge ' + source;
+  if (valid){
+    els.roMapsLink.href = `https://www.google.com/maps?q=${lat},${lng}`;
+    els.roMapsRow.hidden = false;
+  } else {
+    els.roMapsRow.hidden = true;
+  }
+  updateMapLocation(lat, lng, label, photoId);
+}
+
+els.btn.addEventListener('click', handleSearch);
+els.input.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleSearch(); });
+
+renderLibrary();
+</script>
+
+<script>
+(function(){
+  const adEls = {
+    advertiseBtn: document.getElementById('advertise-btn'),
+    overlay: document.getElementById('ad-modal-overlay'),
+    close: document.getElementById('ad-modal-close'),
+    steps: document.getElementById('ad-steps'),
+    stepDots: Array.from(document.querySelectorAll('.ad-step-dot')),
+    panels: Array.from(document.querySelectorAll('.ad-panel')),
+    footer: document.getElementById('ad-modal-footer'),
+    backBtn: document.getElementById('ad-back-btn'),
+    nextBtn: document.getElementById('ad-next-btn'),
+    submitBtn: document.getElementById('ad-submit-btn'),
+    success: document.getElementById('ad-success'),
+    successClose: document.getElementById('ad-success-close'),
+    successTitle: document.getElementById('ad-success-title'),
+    successBody: document.getElementById('ad-success-body'),
+    totalAmount: document.getElementById('ad-total-amount'),
+
+    bizName: document.getElementById('ad-biz-name'),
+    bizContact: document.getElementById('ad-biz-contact'),
+    bizPhone: document.getElementById('ad-biz-phone'),
+    bizEmail: document.getElementById('ad-biz-email'),
+    bizAddress: document.getElementById('ad-biz-address'),
+    bizIndustry: document.getElementById('ad-biz-industry'),
+
+    offerNew: document.getElementById('ad-offer-new'),
+    offerOwner: document.getElementById('ad-offer-owner'),
+    offerSmallBiz: document.getElementById('ad-offer-smallbiz'),
+
+    designSame: document.getElementById('ad-design-same'),
+    designName: document.getElementById('ad-design-name'),
+    designPhone: document.getElementById('ad-design-phone'),
+    designEmail: document.getElementById('ad-design-email'),
+    designAddress: document.getElementById('ad-design-address'),
+    imageDrop: document.getElementById('ad-image-drop'),
+    imageInput: document.getElementById('ad-image-input'),
+    imageThumbs: document.getElementById('ad-image-thumbs'),
+
+    locationInput: document.getElementById('ad-location-input'),
+    checkBtn: document.getElementById('ad-check-btn'),
+    browseLibraryBtn: document.getElementById('ad-browse-library-btn'),
+    locations: document.getElementById('ad-locations'),
+
+    payName: document.getElementById('ad-pay-name'),
+    payNumber: document.getElementById('ad-pay-number'),
+    payExp: document.getElementById('ad-pay-exp'),
+    payCvc: document.getElementById('ad-pay-cvc'),
+    payZip: document.getElementById('ad-pay-zip'),
+    paymentFields: document.getElementById('ad-payment-fields'),
+    freeNotice: document.getElementById('ad-free-notice'),
+
+    summarySubtotal: document.getElementById('ad-summary-subtotal'),
+    summaryFreeOfferRow: document.getElementById('ad-summary-freeoffer-row'),
+    summaryFreeOffer: document.getElementById('ad-summary-freeoffer'),
+    summaryDiscountRow: document.getElementById('ad-summary-discount-row'),
+    summaryDiscount: document.getElementById('ad-summary-discount'),
+    summaryTotal: document.getElementById('ad-summary-total'),
+    couponInput: document.getElementById('ad-coupon-input'),
+    couponApply: document.getElementById('ad-coupon-apply'),
+    couponFeedback: document.getElementById('ad-coupon-feedback'),
+  };
+
+  const adState = {
+    step: 0,
+    images: [],
+    locations: [],
+    locCounter: 0,
+    couponCode: null,
+    couponInvalid: false,
+    bizGeo: null,        // { lat, lng } for the business address, once geocoded
+    bizGeoFailed: false,
+    freeLocationId: null, // which single location (if any) currently gets the free offer
+  };
+
+  /* ---------- helpers ---------- */
+  function seededRandom(seedStr){
+    let seed = 0;
+    for (let i=0;i<seedStr.length;i++){ seed = (seed*31 + seedStr.charCodeAt(i)) >>> 0; }
+    if (seed === 0) seed = 1;
+    return function(){
+      seed = (seed*1103515245 + 12345) >>> 0;
+      return (seed % 100000) / 100000;
+    };
+  }
+
+  function luhnValid(num){
+    let sum = 0, alt = false;
+    for (let i=num.length-1;i>=0;i--){
+      let n = parseInt(num[i],10);
+      if (alt){ n*=2; if (n>9) n-=9; }
+      sum += n; alt = !alt;
+    }
+    return sum % 10 === 0;
+  }
+
+  /* ---------- open / close ---------- */
+  function openModal(){
+    // Guard against reopening right after a submit was left on the
+    // success screen (e.g. closed via Escape/backdrop instead of "Done") —
+    // without this, the steps/footer stayed hidden and the success
+    // screen stayed visible underneath the reset form on reopen.
+    if (adEls.success.classList.contains('visible')){
+      resetForm();
+    }
+    adEls.success.classList.remove('visible');
+    adEls.steps.style.display = '';
+    adEls.footer.style.display = '';
+    adEls.overlay.classList.remove('hidden');
+    showStep(0);
+  }
+  function closeModal(){
+    adEls.overlay.classList.add('hidden');
+  }
+  adEls.advertiseBtn.addEventListener('click', openModal);
+  adEls.close.addEventListener('click', closeModal);
+  adEls.overlay.addEventListener('click', (e) => { if (e.target === adEls.overlay) closeModal(); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !adEls.overlay.classList.contains('hidden')) closeModal();
+  });
+
+  /* ---------- step navigation ---------- */
+  function showStep(n){
+    adState.step = n;
+    adEls.panels.forEach(p => p.classList.toggle('active', parseInt(p.dataset.panel,10) === n));
+    adEls.stepDots.forEach(d => {
+      const dn = parseInt(d.dataset.step,10);
+      d.classList.toggle('active', dn === n);
+      d.classList.toggle('done', dn < n);
+    });
+    adEls.backBtn.disabled = n === 0;
+    adEls.nextBtn.hidden = n === 3;
+    adEls.submitBtn.hidden = n !== 3;
+  }
+  adEls.stepDots.forEach(d => d.addEventListener('click', () => showStep(parseInt(d.dataset.step,10))));
+  adEls.backBtn.addEventListener('click', () => showStep(Math.max(0, adState.step-1)));
+  adEls.nextBtn.addEventListener('click', () => {
+    if (!validateStep(adState.step)) return;
+    showStep(Math.min(3, adState.step+1));
+  });
+
+  function setStepError(n, msg){
+    const el = document.getElementById('ad-panel'+n+'-error');
+    if (el) el.textContent = msg || '';
+  }
+
+  function validateStep(n){
+    if (n === 0){
+      const req = [adEls.bizName, adEls.bizContact, adEls.bizPhone, adEls.bizEmail, adEls.bizAddress];
+      if (req.some(el => !el.value.trim())){
+        setStepError(0, 'Please fill in all business info fields.');
+        return false;
+      }
+      if (!/^\S+@\S+\.\S+$/.test(adEls.bizEmail.value.trim())){
+        setStepError(0, 'Please enter a valid email address.');
+        return false;
+      }
+      const offerBoxesChecked = [adEls.offerNew, adEls.offerOwner, adEls.offerSmallBiz].filter(el => el.checked).length;
+      if (offerBoxesChecked > 0 && !offerFormEligible()){
+        setStepError(0, 'To claim the Free Ad Offer, check all three boxes and enter your industry — or leave them unchecked to skip the offer.');
+        return false;
+      }
+      setStepError(0, '');
+      return true;
+    }
+    if (n === 1){
+      const req = [adEls.designName, adEls.designPhone, adEls.designEmail, adEls.designAddress];
+      if (req.some(el => !el.value.trim())){
+        setStepError(1, 'Please fill in all ad design fields.');
+        return false;
+      }
+      if (adState.images.length === 0){
+        setStepError(1, 'Please upload at least one image for your ad.');
+        return false;
+      }
+      setStepError(1, '');
+      return true;
+    }
+    if (n === 2){
+      if (adState.locations.length === 0){
+        setStepError(2, 'Enter a zip code or city/state, or select photos from the Library, to continue.');
+        return false;
+      }
+      setStepError(2, '');
+      return true;
+    }
+    if (n === 3){
+      if (isOrderFree()){
+        setStepError(3, '');
+        return true;
+      }
+      const name = adEls.payName.value.trim();
+      const num = adEls.payNumber.value.replace(/\s+/g,'');
+      const exp = adEls.payExp.value.trim();
+      const cvc = adEls.payCvc.value.trim();
+      const zip = adEls.payZip.value.trim();
+      if (!name || !num || !exp || !cvc || !zip){
+        setStepError(3, 'Please fill in all payment fields.');
+        return false;
+      }
+      if (!/^\d{13,19}$/.test(num) || !luhnValid(num)){
+        setStepError(3, 'Please enter a valid card number.');
+        return false;
+      }
+      const m = exp.match(/^(\d{2})\/(\d{2})$/);
+      if (!m){
+        setStepError(3, 'Expiry must be in MM/YY format.');
+        return false;
+      }
+      const mm = parseInt(m[1],10), yy = 2000 + parseInt(m[2],10);
+      if (mm < 1 || mm > 12){
+        setStepError(3, 'Enter a valid expiry month.');
+        return false;
+      }
+      const expDate = new Date(yy, mm, 0);
+      if (expDate < new Date()){
+        setStepError(3, 'That card has expired.');
+        return false;
+      }
+      if (!/^\d{3,4}$/.test(cvc)){
+        setStepError(3, 'Enter a valid CVC.');
+        return false;
+      }
+      setStepError(3, '');
+      return true;
+    }
+    return true;
+  }
+
+  /* ---------- ad design: same-as-business ---------- */
+  function syncDesignFromBiz(){
+    if (!adEls.designSame.checked) return;
+    adEls.designName.value = adEls.bizName.value;
+    adEls.designPhone.value = adEls.bizPhone.value;
+    adEls.designEmail.value = adEls.bizEmail.value;
+    adEls.designAddress.value = adEls.bizAddress.value;
+  }
+  adEls.designSame.addEventListener('change', syncDesignFromBiz);
+  [adEls.bizName, adEls.bizPhone, adEls.bizEmail, adEls.bizAddress].forEach(el => {
+    el.addEventListener('input', syncDesignFromBiz);
+  });
+
+  /* ---------- image upload ---------- */
+  function handleFiles(fileList){
+    Array.from(fileList).forEach(file => {
+      if (!file.type.startsWith('image/')) return;
+      adState.images.push({ file, url: URL.createObjectURL(file) });
+    });
+    renderThumbs();
+  }
+  function renderThumbs(){
+    adEls.imageThumbs.innerHTML = '';
+    adState.images.forEach((img, i) => {
+      const div = document.createElement('div');
+      div.className = 'ad-thumb';
+      const image = document.createElement('img');
+      image.src = img.url;
+      image.alt = 'Ad image ' + (i+1);
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.dataset.i = i;
+      btn.setAttribute('aria-label','Remove image');
+      btn.textContent = '✕';
+      div.appendChild(image);
+      div.appendChild(btn);
+      adEls.imageThumbs.appendChild(div);
+    });
+  }
+  adEls.imageDrop.addEventListener('click', () => adEls.imageInput.click());
+  adEls.imageDrop.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); adEls.imageInput.click(); }
+  });
+  adEls.imageDrop.addEventListener('dragover', (e) => { e.preventDefault(); adEls.imageDrop.style.borderColor = 'var(--teal)'; });
+  adEls.imageDrop.addEventListener('dragleave', () => { adEls.imageDrop.style.borderColor = ''; });
+  adEls.imageDrop.addEventListener('drop', (e) => {
+    e.preventDefault();
+    adEls.imageDrop.style.borderColor = '';
+    handleFiles(e.dataTransfer.files);
+  });
+  adEls.imageInput.addEventListener('change', () => {
+    handleFiles(adEls.imageInput.files);
+    adEls.imageInput.value = '';
+  });
+  adEls.imageThumbs.addEventListener('click', (e) => {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    const i = parseInt(btn.dataset.i,10);
+    URL.revokeObjectURL(adState.images[i].url);
+    adState.images.splice(i,1);
+    renderThumbs();
+  });
+
+  /* ---------- pricing ----------
+     No backend here — price per location is derived deterministically
+     from the location text, so the same input always maps to the same
+     price while still feeling data-driven. Swap getLocationPrice() for a
+     real API call to wire this up for real.
+
+     Each location — a zip/city area or a specific photo — is exactly one
+     ad placement. We choose exactly where inside the photo it goes (to
+     keep it looking natural and not crowd the shot); the customer isn't
+     offered a spot picker, and only one ad ever runs per photo. */
+  function getLocationPrice(seedKey){
+    const rand = seededRandom(seedKey);
+    const r1 = rand();
+    return Math.round((120 + r1*300)/5)*5;
+  }
+
+  /* ---------- Free Ad Offer eligibility ----------
+     New customers can claim ONE free ad, in ONE photo location, per
+     company — subject to:
+       - all three attestation checkboxes + an industry (Step 0)
+       - the location being within 25 miles of the business address
+       - availability: a mock "has a direct competitor in this industry
+         already booked this area" check, deterministic per industry +
+         rough region so it doesn't change on every re-render.
+     No backend here — wire ensureBizGeoLoaded()/evaluateLocationOffer()
+     up to a real eligibility API to make this real. */
+  const FREE_OFFER_RADIUS_MILES = 25;
+  let bizGeoPromise = null;
+
+  function offerFormEligible(){
+    return !!(adEls.offerNew.checked && adEls.offerOwner.checked && adEls.offerSmallBiz.checked
+      && adEls.bizIndustry.value.trim());
+  }
+
+  function ensureBizGeoLoaded(){
+    if (adState.bizGeo || adState.bizGeoFailed || bizGeoPromise) return;
+    const addr = adEls.bizAddress.value.trim();
+    if (!addr) return;
+    bizGeoPromise = geocode(addr)
+      .then(geo => { adState.bizGeo = { lat: geo.lat, lng: geo.lng }; })
+      .catch(() => { adState.bizGeoFailed = true; })
+      .finally(() => { bizGeoPromise = null; renderLocations(); updateTotal(); });
+  }
+
+  // Returns { status } where status is one of:
+  //   'not-requested' — offer wasn't opted into (checkboxes/industry incomplete)
+  //   'pending'        — still geocoding the business address or this location
+  //   'unknown'        — this location has no usable coordinates
+  //   'too-far'        — outside the 25-mile radius (includes .miles)
+  //   'competitor'     — mock exclusivity check says a competitor already booked here
+  //   'eligible'       — would qualify (may still lose out to another location — see determineFreeLocationId)
+  function evaluateLocationOffer(loc){
+    if (!offerFormEligible()) return { status: 'not-requested' };
+    if (loc.geocoding || (!adState.bizGeo && !adState.bizGeoFailed)) return { status: 'pending' };
+    if (adState.bizGeoFailed) return { status: 'unknown', reason: "We couldn't verify your business address to check the 25-mile radius." };
+    if (loc.lat == null || loc.lng == null) return { status: 'unknown', reason: "We couldn't verify this location's coordinates." };
+    const miles = haversineKm(adState.bizGeo.lat, adState.bizGeo.lng, loc.lat, loc.lng) / 1.60934;
+    if (miles > FREE_OFFER_RADIUS_MILES) return { status: 'too-far', miles };
+    const industry = adEls.bizIndustry.value.trim().toLowerCase();
+    const regionKey = (Math.round(loc.lat*5)/5) + ',' + (Math.round(loc.lng*5)/5);
+    const rand = seededRandom('competitor|' + industry + '|' + regionKey);
+    if (rand() < 0.22) return { status: 'competitor' };
+    return { status: 'eligible' };
+  }
+
+  // Exactly one location in the whole order can carry the free offer —
+  // the first one (in the order it was added) that actually qualifies.
+  function determineFreeLocationId(){
+    if (!offerFormEligible()) return null;
+    ensureBizGeoLoaded();
+    for (const loc of adState.locations){
+      if (evaluateLocationOffer(loc).status === 'eligible') return loc.id;
+    }
+    return null;
+  }
+
+  function addLocation(rawInput){
+    const label = rawInput.trim();
+    if (!label) return;
+    const norm = label.toLowerCase();
+    if (adState.locations.some(l => l.norm === norm)) return;
+    const id = 'loc' + (++adState.locCounter);
+    const price = getLocationPrice(norm);
+    const loc = { id, norm, label, price, lat: null, lng: null, geocoding: true };
+    adState.locations.push(loc);
+    renderLocations();
+    updateTotal();
+    // Geocode in the background so the Free Ad Offer's 25-mile check has
+    // coordinates to work with — a typed zip/city isn't otherwise tied to
+    // a specific point the way a Library photo is.
+    geocode(label)
+      .then(geo => { loc.lat = geo.lat; loc.lng = geo.lng; })
+      .catch(() => { /* leave lat/lng null — distance eligibility just won't apply */ })
+      .finally(() => { loc.geocoding = false; renderLocations(); updateTotal(); });
+  }
+
+  // Booking an ad inside a specific photo from the Library, rather than a
+  // typed zip/city — the photo's own id keeps it unique so picking the
+  // same photo twice (e.g. once from the grid, once again later) just
+  // reuses the same location card instead of duplicating it.
+  function addLocationFromPhoto(photo){
+    const norm = 'photo:' + photo.id;
+    if (adState.locations.some(l => l.norm === norm)) return;
+    const id = 'loc' + (++adState.locCounter);
+    const price = getLocationPrice(norm);
+    const hasGps = Number.isFinite(photo.lat) && Number.isFinite(photo.lng);
+    adState.locations.push({
+      id, norm, label: photo.name, price,
+      lat: hasGps ? photo.lat : null, lng: hasGps ? photo.lng : null, geocoding: false,
+      photo: { name: photo.name, url: photo.url, lat: hasGps ? photo.lat : null, lng: hasGps ? photo.lng : null, tags: photo.tags || [] }
+    });
+    renderLocations();
+    updateTotal();
+  }
+
+  function renderLocations(){
+    adState.freeLocationId = determineFreeLocationId();
+
+    adEls.locations.innerHTML = '';
+    adState.locations.forEach(loc => {
+      const card = document.createElement('div');
+      card.className = 'ad-loc-card';
+
+      const head = document.createElement('div');
+      head.className = 'ad-loc-card-head';
+      const name = document.createElement('span');
+      name.className = 'ad-loc-name';
+      name.textContent = loc.label;
+      const removeBtn = document.createElement('button');
+      removeBtn.type = 'button';
+      removeBtn.className = 'ad-loc-remove';
+      removeBtn.dataset.loc = loc.id;
+      removeBtn.textContent = 'Remove';
+      head.appendChild(name);
+      head.appendChild(removeBtn);
+      card.appendChild(head);
+
+      if (loc.photo){
+        const photoRow = document.createElement('div');
+        photoRow.className = 'ad-loc-photo-row';
+
+        const thumb = document.createElement('div');
+        thumb.className = 'ad-loc-photo-thumb';
+        thumb.innerHTML = `<img src="${loc.photo.url}" alt="" loading="lazy" />`;
+        photoRow.appendChild(thumb);
+
+        if (loc.photo.lat != null && loc.photo.lng != null){
+          const mapBox = document.createElement('div');
+          mapBox.className = 'ad-loc-photo-map';
+          mapBox.innerHTML = `<iframe src="https://www.google.com/maps?q=${loc.photo.lat},${loc.photo.lng}&z=14&output=embed" title="Photo location" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`;
+          photoRow.appendChild(mapBox);
+        }
+
+        if (loc.photo.tags.length){
+          const tagsBox = document.createElement('div');
+          tagsBox.className = 'ad-loc-photo-tags';
+          loc.photo.tags.forEach(t => {
+            const chip = document.createElement('span');
+            chip.className = 'library-tag ' + t;
+            chip.textContent = '#' + t;
+            tagsBox.appendChild(chip);
+          });
+          photoRow.appendChild(tagsBox);
+        }
+
+        card.appendChild(photoRow);
+      }
+
+      const isFree = loc.id === adState.freeLocationId;
+
+      const priceRow = document.createElement('div');
+      priceRow.className = 'ad-loc-price-row';
+      if (isFree){
+        const was = document.createElement('span');
+        was.className = 'ad-loc-price-was';
+        was.textContent = '$' + loc.price.toLocaleString();
+        priceRow.appendChild(was);
+      }
+      const price = document.createElement('span');
+      price.className = 'ad-loc-price' + (isFree ? ' is-free' : '');
+      price.textContent = isFree ? '$0' : '$' + loc.price.toLocaleString();
+      const note = document.createElement('span');
+      note.className = 'ad-loc-price-note';
+      note.textContent = '1 ad · we choose the placement';
+      priceRow.appendChild(price);
+      priceRow.appendChild(note);
+      card.appendChild(priceRow);
+
+      const statusText = freeOfferStatusText(loc, isFree);
+      if (statusText){
+        const status = document.createElement('div');
+        status.className = 'ad-loc-offer-status ' + (
+          isFree ? 'is-free' : statusText.pending ? 'is-pending' : 'is-blocked'
+        );
+        status.textContent = statusText.text;
+        card.appendChild(status);
+      }
+
+      adEls.locations.appendChild(card);
+    });
+  }
+
+  // Human-readable status line for a location's Free Ad Offer eligibility.
+  // Returns null when the offer hasn't been opted into at all (nothing to say).
+  function freeOfferStatusText(loc, isFree){
+    if (isFree) return { text: '🎁 FREE — new customer offer applied' };
+    if (!offerFormEligible()) return null;
+    const result = evaluateLocationOffer(loc);
+    switch (result.status){
+      case 'pending':
+        return { text: 'Checking free-offer eligibility…', pending: true };
+      case 'unknown':
+        return { text: result.reason };
+      case 'too-far':
+        return { text: `Not eligible for the free offer — ${result.miles.toFixed(1)} mi away (must be within ${FREE_OFFER_RADIUS_MILES} mi).` };
+      case 'competitor':
+        return { text: 'Free offer unavailable here — a business in your industry already has an ad booked in this area.' };
+      case 'eligible':
+        return { text: 'Free offer already applied to another location — only one free ad per company.' };
+      default:
+        return null;
+    }
+  }
+
+  adEls.locations.addEventListener('click', (e) => {
+    const removeBtn = e.target.closest('.ad-loc-remove');
+    if (removeBtn){
+      const locId = removeBtn.dataset.loc;
+      adState.locations = adState.locations.filter(l => l.id !== locId);
+      renderLocations();
+      updateTotal();
+    }
+  });
+
+  /* ---------- coupon + one-time total ----------
+     Coupon codes apply to a single location — the priciest one currently
+     added, so the customer gets the best available value from the code.
+     This is a one-time purchase, so there's no recurring/monthly fee
+     anywhere in the total. */
+  function computeSubtotal(){
+    return adState.locations.reduce((sum, l) => sum + l.price, 0);
+  }
+  function computeFreeOfferDiscount(){
+    if (!adState.freeLocationId) return 0;
+    const loc = adState.locations.find(l => l.id === adState.freeLocationId);
+    return loc ? loc.price : 0;
+  }
+  function computeDiscount(){
+    if (!adState.couponCode) return 0;
+    // Coupons apply to the priciest *paid* location — the free-offer
+    // location (if any) is already $0, so it's excluded here rather than
+    // stacking a second discount on top of it.
+    const paidPrices = adState.locations
+      .filter(l => l.id !== adState.freeLocationId)
+      .map(l => l.price);
+    if (paidPrices.length === 0) return 0;
+    const maxPrice = Math.max(...paidPrices);
+    if (adState.couponCode === '1free2try') return maxPrice;
+    if (adState.couponCode === '50off2try') return Math.round(maxPrice / 2);
+    return 0;
+  }
+  // True only when there's an actual order (at least one location) whose
+  // total comes to $0 — never true for an empty cart someone jumped to
+  // Payment on without adding anything.
+  function isOrderFree(){
+    if (adState.locations.length === 0) return false;
+    const total = computeSubtotal() - computeFreeOfferDiscount() - computeDiscount();
+    return total <= 0;
+  }
+  function renderCouponFeedback(discount){
+    const el = adEls.couponFeedback;
+    if (!el) return;
+    el.classList.remove('ad-coupon-ok','ad-coupon-error');
+    if (adState.couponInvalid){
+      el.textContent = 'Invalid coupon code.';
+      el.classList.add('ad-coupon-error');
+      return;
+    }
+    if (!adState.couponCode){
+      el.textContent = '';
+      return;
+    }
+    const label = adState.couponCode === '1free2try' ? '1FREE2TRY' : '50OFF2TRY';
+    const paidLocations = adState.locations.filter(l => l.id !== adState.freeLocationId);
+    if (paidLocations.length === 0){
+      el.textContent = `Code ${label} applied — add a paid location to use it.`;
+    } else if (adState.couponCode === '1free2try'){
+      el.textContent = `Code ${label} applied — 1 ad placement is free (-$${discount.toLocaleString()}).`;
+    } else {
+      el.textContent = `Code ${label} applied — 50% off 1 ad placement (-$${discount.toLocaleString()}).`;
+    }
+    el.classList.add('ad-coupon-ok');
+  }
+  function applyCoupon(rawInput){
+    const code = rawInput.trim().toLowerCase();
+    if (!code){
+      adState.couponCode = null;
+      adState.couponInvalid = false;
+      updateTotal();
+      return;
+    }
+    if (code === '1free2try' || code === '50off2try'){
+      adState.couponCode = code;
+      adState.couponInvalid = false;
+    } else {
+      adState.couponCode = null;
+      adState.couponInvalid = true;
+    }
+    updateTotal();
+  }
+
+  function updateTotal(){
+    const subtotal = computeSubtotal();
+    const freeOfferDiscount = computeFreeOfferDiscount();
+    const couponDiscount = computeDiscount();
+    const total = Math.max(0, subtotal - freeOfferDiscount - couponDiscount);
+    adEls.totalAmount.textContent = '$' + total.toLocaleString();
+    if (adEls.summarySubtotal) adEls.summarySubtotal.textContent = '$' + subtotal.toLocaleString();
+    if (adEls.summaryTotal) adEls.summaryTotal.textContent = '$' + total.toLocaleString();
+    if (adEls.summaryFreeOfferRow){
+      if (freeOfferDiscount > 0){
+        adEls.summaryFreeOfferRow.hidden = false;
+        adEls.summaryFreeOffer.textContent = '-$' + freeOfferDiscount.toLocaleString();
+      } else {
+        adEls.summaryFreeOfferRow.hidden = true;
+      }
+    }
+    if (adEls.summaryDiscountRow){
+      if (couponDiscount > 0){
+        adEls.summaryDiscountRow.hidden = false;
+        adEls.summaryDiscount.textContent = '-$' + couponDiscount.toLocaleString();
+      } else {
+        adEls.summaryDiscountRow.hidden = true;
+      }
+    }
+    renderCouponFeedback(couponDiscount);
+    updatePaymentStepUI();
+  }
+
+  // Swaps the Payment panel between "collect card details" and "nothing to
+  // pay" depending on whether the current order totals to $0 — a pure free
+  // offer order should never ask a new customer for a card.
+  function updatePaymentStepUI(){
+    const free = isOrderFree();
+    if (adEls.paymentFields) adEls.paymentFields.hidden = free;
+    if (adEls.freeNotice) adEls.freeNotice.hidden = !free;
+    if (adEls.submitBtn) adEls.submitBtn.textContent = free ? 'Claim Free Ad' : 'Submit Order';
+    if (free) setStepError(3, '');
+  }
+
+  adEls.couponApply.addEventListener('click', () => applyCoupon(adEls.couponInput.value));
+  adEls.couponInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter'){ e.preventDefault(); adEls.couponApply.click(); }
+  });
+
+  adEls.checkBtn.addEventListener('click', () => {
+    const raw = adEls.locationInput.value;
+    if (!raw.trim()) return;
+    // One "Check" = one location. Splitting on commas here would break
+    // "City, State" entries (e.g. "Portland, OR") into two bogus
+    // locations — click Check again to add another zip/city.
+    addLocation(raw);
+    adEls.locationInput.value = '';
+    setStepError(2, '');
+  });
+  adEls.locationInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter'){ e.preventDefault(); adEls.checkBtn.click(); }
+  });
+  adEls.browseLibraryBtn.addEventListener('click', () => {
+    closeModal();
+    if (window.setLibraryOpen) window.setLibraryOpen(true);
+  });
+
+  /* ---------- free ad offer: re-check eligibility live as the form changes ---------- */
+  [adEls.offerNew, adEls.offerOwner, adEls.offerSmallBiz].forEach(el => {
+    el.addEventListener('change', () => { renderLocations(); updateTotal(); });
+  });
+  adEls.bizIndustry.addEventListener('input', () => { renderLocations(); updateTotal(); });
+  adEls.bizAddress.addEventListener('input', () => {
+    adState.bizGeo = null;
+    adState.bizGeoFailed = false;
+    renderLocations();
+    updateTotal();
+  });
+
+  /* ---------- payment formatting ---------- */
+  adEls.payNumber.addEventListener('input', () => {
+    const v = adEls.payNumber.value.replace(/\D/g,'').slice(0,19);
+    adEls.payNumber.value = v.replace(/(.{4})/g, '$1 ').trim();
+  });
+  adEls.payExp.addEventListener('input', () => {
+    let v = adEls.payExp.value.replace(/\D/g,'').slice(0,4);
+    if (v.length >= 3) v = v.slice(0,2) + '/' + v.slice(2);
+    adEls.payExp.value = v;
+  });
+  adEls.payCvc.addEventListener('input', () => {
+    adEls.payCvc.value = adEls.payCvc.value.replace(/\D/g,'').slice(0,4);
+  });
+
+  /* ---------- submit ---------- */
+  function resetForm(){
+    document.querySelectorAll('#ad-modal input[type="text"], #ad-modal input[type="tel"], #ad-modal input[type="email"]').forEach(i => i.value = '');
+    adEls.designSame.checked = false;
+    adEls.offerNew.checked = false;
+    adEls.offerOwner.checked = false;
+    adEls.offerSmallBiz.checked = false;
+    adState.images.forEach(img => URL.revokeObjectURL(img.url));
+    adState.images = [];
+    adState.locations = [];
+    adState.couponCode = null;
+    adState.couponInvalid = false;
+    adState.bizGeo = null;
+    adState.bizGeoFailed = false;
+    adState.freeLocationId = null;
+    renderThumbs();
+    renderLocations();
+    updateTotal();
+    [0,1,2,3].forEach(n => setStepError(n, ''));
+  }
+
+  adEls.submitBtn.addEventListener('click', () => {
+    // The step-dots allow jumping straight to Payment without visiting
+    // earlier steps, so re-validate every step here (not just Payment)
+    // and jump back to the first one that's incomplete.
+    for (let i=0;i<=3;i++){
+      if (!validateStep(i)){
+        showStep(i);
+        return;
+      }
+    }
+    if (isOrderFree()){
+      adEls.successTitle.textContent = 'Free ad claimed 🎉';
+      adEls.successBody.textContent = "Your free ad request has been received — no payment was needed. We'll follow up at the email you provided once your creative is approved and your ad placement is confirmed.";
+    } else {
+      adEls.successTitle.textContent = 'Order submitted';
+      adEls.successBody.textContent = "Your ad request has been received. We'll follow up at the email you provided once your creative is approved and your ad placement is confirmed.";
+    }
+    adEls.steps.style.display = 'none';
+    adEls.panels.forEach(p => p.classList.remove('active'));
+    adEls.footer.style.display = 'none';
+    adEls.success.classList.add('visible');
+  });
+
+  adEls.successClose.addEventListener('click', () => {
+    resetForm();
+    adEls.success.classList.remove('visible');
+    adEls.steps.style.display = '';
+    adEls.footer.style.display = '';
+    showStep(0);
+    closeModal();
+  });
+
+  /* ---------- bridge: "Book Ads →" from the Library selection ---------- */
+  window.BearingAds = {
+    openWithPhotos(photos){
+      openModal();
+      photos.forEach(addLocationFromPhoto);
+      showStep(2);
+    }
+  };
+})();
+</script>
+
+<script>
+/* ---------- Landing slideshow — pulls from customPanoramas ----------
+   Uses the same image URLs already stored in the customPanoramas array
+   (defined earlier in this file), so no third-party images are needed.
+   If a user loads a folder via the 📁 button, those new photos are
+   added to customPanoramas and will appear in the slideshow the next
+   time the page loads. */
+(function(){
+  const MIN_MS = 4000, MAX_MS = 7000;
+
+  const overlay    = document.getElementById('landing-overlay');
+  const slidesWrap = document.getElementById('landing-slides');
+  const btn        = document.getElementById('get-started-btn');
+
+  let slideEls = [], current = 0, timer = null;
+
+  function buildSlides(){
+    // Use each unique URL in customPanoramas once
+    const seen = new Set();
+    const urls = customPanoramas
+      .map(p => p.url)
+      .filter(u => u && !seen.has(u) && seen.add(u));
+
+    if (urls.length === 0) return;
+
+    slidesWrap.innerHTML = '';
+    slideEls = urls.map((url, i) => {
+      const slide = document.createElement('div');
+      slide.className = 'landing-slide' + (i === 0 ? ' active' : '');
+      const img = document.createElement('img');
+      img.src = url;
+      img.alt = '';
+      img.setAttribute('aria-hidden', 'true');
+      slide.appendChild(img);
+      slidesWrap.appendChild(slide);
+      return slide;
+    });
+  }
+
+  function randMs(){ return MIN_MS + Math.random() * (MAX_MS - MIN_MS); }
+
+  function playSlide(idx, ms){
+    const img = slideEls[idx].querySelector('img');
+    img.style.animation = 'none';
+    void img.offsetWidth;
+    img.style.animation = `landing-kenburns ${ms + 1300}ms linear forwards`;
+  }
+
+  function runSlide(){
+    if (slideEls.length === 0) return;
+    const ms = randMs();
+    playSlide(current, ms);
+    clearTimeout(timer);
+    timer = setTimeout(next, ms);
+  }
+
+  function next(){
+    const n = (current + 1) % slideEls.length;
+    slideEls[current].classList.remove('active');
+    slideEls[n].classList.add('active');
+    current = n;
+    runSlide();
+  }
+
+  function dismiss(){
+    clearTimeout(timer);
+    overlay.classList.add('hidden');
+    setTimeout(() => { overlay.style.display = 'none'; }, 700);
+  }
+
+  btn.addEventListener('click', dismiss);
+
+  buildSlides();
+  runSlide();
+})();
+</script>
+</body>
+</html>
