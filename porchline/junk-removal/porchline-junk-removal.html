@@ -1,0 +1,1795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Porchline for Junk Removal Companies — 100 Free Door Hangers</title>
+<meta name="description" content="Porchline gives junk removal companies 100 free door hangers, designed for you at no cost. Want more reach? Order 2,000 with your own dedicated ad space.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+:root{
+  --ink:#0A1220;
+  --ink-soft:#33445E;
+  --paper:#EEF3FB;
+  --panel:#DCE6F6;
+  --panel-dark:#101B33;
+  --blue:#2F6FED;
+  --blue-deep:#12377E;
+  --blue-soft:#DCE7FC;
+  --moss:#2F7A5C;
+  --error:#C4362B;
+  --error-soft:#F3DBD8;
+  --text:#101828;
+  --muted:#57647D;
+  --line:#C6D4EC;
+  --cut:14px;
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:
+    linear-gradient(var(--paper), var(--paper)),
+    repeating-linear-gradient(0deg, rgba(47,111,237,.05) 0 1px, transparent 1px 84px),
+    repeating-linear-gradient(90deg, rgba(47,111,237,.05) 0 1px, transparent 1px 84px);
+  color:var(--text);
+  font-family:'Inter',sans-serif;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  padding-bottom:84px;
+}
+h1,h2,h3,h4{
+  font-family:'Oswald',sans-serif;
+  color:var(--ink);
+  margin:0 0 .4em 0;
+  text-transform:uppercase;
+  letter-spacing:.02em;
+  line-height:1.08;
+}
+p{margin:0 0 1em 0;}
+a{color:inherit;}
+button{font-family:inherit;}
+/* Sharp, chamfered panel edge used throughout for a tech/HUD feel
+   instead of rounded corners. Padding on each panel already clears
+   the cut, so content never collides with it. */
+.cut{
+  clip-path: polygon(
+    var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)),
+    calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut)
+  );
+}
+.cut-sm{
+  clip-path: polygon(
+    8px 0, 100% 0, 100% calc(100% - 8px),
+    calc(100% - 8px) 100%, 0 100%, 0 8px
+  );
+}
+.container{width:100%;max-width:1080px;margin:0 auto;padding:0 24px;}
+.eyebrow{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12.5px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--blue);
+  font-weight:600;
+  margin-bottom:14px;
+  display:inline-block;
+}
+.section{padding:88px 0;}
+.section-head{max-width:640px;margin:0 auto 44px auto;text-align:center;}
+.section-head p{color:var(--muted);font-size:16.5px;}
+@media(max-width:640px){
+  .section{padding:56px 0;}
+  .section-head{margin-bottom:32px;}
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important;}
+}
+
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, .faq-q:focus-visible{
+  outline:2px solid var(--blue);
+  outline-offset:2px;
+}
+
+/* ================= NAV ================= */
+.nav{
+  position:sticky; top:0; z-index:50;
+  background:rgba(251,248,241,.92);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.nav-inner{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:16px 24px; max-width:1080px; margin:0 auto;
+}
+.brand{
+  font-family:'Oswald',sans-serif; font-weight:700; font-size:22px;
+  letter-spacing:.01em; color:var(--ink); text-decoration:none;
+  display:flex; align-items:center; gap:8px;
+}
+.brand-mark{
+  width:18px;height:18px;
+  background:var(--blue); position:relative; flex:none;
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+}
+.nav-links{display:flex; gap:32px; list-style:none; margin:0; padding:0;}
+.nav-links a{ text-decoration:none; font-size:14.5px; font-weight:500; color:var(--ink-soft);}
+.nav-links a:hover{color:var(--blue);}
+.nav-cta{
+  background:var(--blue); color:var(--paper); text-decoration:none;
+  padding:10px 20px 10px 16px; font-size:14px; font-weight:600; white-space:nowrap;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
+}
+.nav-toggle{ display:none; background:none; border:1.5px solid var(--ink); width:40px;height:40px; cursor:pointer; position:relative;}
+.nav-toggle span, .nav-toggle::before, .nav-toggle::after{ content:''; position:absolute; left:9px; right:9px; height:2px; background:var(--ink);}
+.nav-toggle span{top:19px;}
+.nav-toggle::before{top:13px;}
+.nav-toggle::after{top:25px;}
+@media(max-width:820px){
+  .nav-links{ position:absolute; top:100%; left:0; right:0; background:var(--paper); flex-direction:column; gap:0; border-bottom:1px solid var(--line); max-height:0; overflow:hidden; transition:max-height .25s ease;}
+  .nav-links.open{max-height:320px;}
+  .nav-links a{padding:14px 24px; display:block; border-top:1px solid var(--line);}
+  .nav-toggle{display:block;}
+  .nav-cta{display:none;}
+}
+
+/* ================= HERO ================= */
+.hero{padding:56px 0 76px 0; overflow:hidden;}
+.hero-grid{ display:flex; flex-direction:column; gap:48px; align-items:center; text-align:center;}
+.hero-grid > div:first-child{ display:flex; flex-direction:column; align-items:center; max-width:640px; }
+.hero h1, .hero-sub, .hero-fine{ max-width:100% !important; }
+.hero-ctas{ justify-content:center; }
+.hero-badge{
+  display:inline-flex; align-items:center; gap:8px; background:var(--blue); color:var(--paper);
+  padding:8px 18px 8px 14px; font-family:'IBM Plex Mono',monospace;
+  font-size:12.5px; font-weight:600; letter-spacing:.04em; margin-bottom:18px;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 9px), calc(100% - 9px) 100%, 0 100%);
+}
+.hero-badge .num{ font-family:'Oswald',sans-serif; font-size:16px; letter-spacing:0;}
+.hero h1{font-size:clamp(32px,5vw,50px); max-width:560px;}
+.hero-sub{font-size:18px; color:var(--muted); max-width:480px;}
+.hero-fine{font-size:13.5px; color:var(--muted); max-width:480px; margin-top:-4px;}
+.hero-ctas{display:flex; gap:14px; flex-wrap:wrap; margin-top:26px;}
+.btn{ border:none; cursor:pointer; text-decoration:none; font-weight:600; font-size:15px; padding:14px 28px 14px 22px; display:inline-flex; align-items:center; gap:8px; transition:transform .15s ease, box-shadow .15s ease;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);
+}
+.btn-primary{background:var(--blue); color:var(--paper);}
+.btn-primary:hover{transform:translateY(-2px); box-shadow:0 8px 22px rgba(47,111,237,.35);}
+.btn-ghost{background:transparent; color:var(--ink); border:1.5px solid var(--line);}
+.btn-ghost:hover{border-color:var(--ink);}
+.hero-visual{display:flex; justify-content:center;}
+
+/* ================= HANGER COMPONENT =================
+   Ground-up redesign. Keeps the cross-browser-safe technique from
+   before (2D opacity/scaleX crossfade instead of a 3D rotateY flip,
+   padding-top ratio spacer instead of relying on `aspect-ratio`,
+   -webkit-clip-path alongside every clip-path) and builds a richer,
+   more "alive" animation on top of it: an ambient glow, a periodic
+   scan-line sweep, a staggered slot reveal, a pulsing highlight on
+   the free/your-ad slot, a hover lift, and swipe-to-flip on touch —
+   all built from opacity/transform/box-shadow only, so nothing here
+   depends on 3D transforms, backface-visibility, or perspective. */
+.hanger-stage-wrap{ position:relative; display:flex; flex-direction:column; align-items:center; gap:16px; }
+.hanger-face-label{ font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); font-weight:600; display:flex; align-items:center; gap:8px; }
+.hanger-face-label::before{
+  content:''; width:7px; height:7px; border-radius:50%; background:var(--blue);
+  box-shadow:0 0 0 0 rgba(47,111,237,.6);
+  animation: signalPing 2.4s ease-in-out infinite;
+}
+
+/* Soft ambient glow behind the card — sits behind everything since it's
+   the first child and nothing after it declares a z-index, so normal
+   paint order keeps it in back without needing stacking-context tricks. */
+.hanger-glow{
+  position:absolute; top:46%; left:50%; width:78%; height:78%;
+  transform:translate(-50%,-50%);
+  background:radial-gradient(closest-side, rgba(47,111,237,.4), rgba(47,111,237,0) 72%);
+  filter:blur(4px);
+  pointer-events:none;
+  animation: hangerGlowPulse 5s ease-in-out infinite;
+}
+
+.hanger-stage{ position:relative; width:100%; max-width:736px; }
+.hanger-flip{ position:relative; width:100%; touch-action:pan-y; }
+.hanger-face-panel{
+  width:100%;
+  transition: opacity .4s ease, transform .4s ease;
+  opacity:0; transform:scaleX(.92); pointer-events:none;
+}
+.hanger-face-panel.back{ position:absolute; top:0; left:0; }
+.hanger-face-panel.is-active{ position:relative; opacity:1; transform:scaleX(1); pointer-events:auto; }
+
+.hanger-mount{
+  background:var(--panel-dark);
+  padding:70px 44px 44px 44px;
+  width:100%;
+  clip-path: polygon(48px 0, 100% 0, 100% 100%, 0 100%, 0 48px);
+  -webkit-clip-path: polygon(48px 0, 100% 0, 100% 100%, 0 100%, 0 48px);
+  box-shadow:0 0 0 1px rgba(47,111,237,.35), 0 24px 50px rgba(16,27,51,.35);
+  transition: transform .35s ease, box-shadow .35s ease;
+}
+@media (hover:hover) and (pointer:fine){
+  .hanger-stage:hover .hanger-face-panel.is-active .hanger-mount{
+    transform:translateY(-6px);
+    box-shadow:0 0 0 1px rgba(47,111,237,.5), 0 34px 60px rgba(16,27,51,.45);
+  }
+}
+.hanger-face{ position:relative; width:100%; max-width:640px; margin:0 auto; }
+/* Padding-top spacer establishes the 0.46 (width:height) ratio in every
+   browser, including ones without `aspect-ratio` support. 1/0.46≈217.4%. */
+.hanger-face-ratio{ padding-top:217.4%; }
+.hanger-face-surface{
+  position:absolute; top:0; left:0; right:0; bottom:0;
+  background:var(--paper);
+  clip-path: polygon(18px 0, 100% 0, 100% 100%, 0 100%, 0 18px);
+  -webkit-clip-path: polygon(18px 0, 100% 0, 100% 100%, 0 100%, 0 18px);
+  box-shadow:0 18px 34px rgba(16,27,51,.28), inset 0 0 0 1px rgba(47,111,237,.25);
+  overflow:hidden;
+}
+/* Periodic light sweep across the card face — a plain left/opacity
+   animation on a skewed gradient bar, clipped by the surface's own
+   overflow:hidden. No 3D involved, so it's safe everywhere. */
+.hanger-face-surface::after{
+  content:''; position:absolute; top:-10%; bottom:-10%; left:-60%; width:34%;
+  background:linear-gradient(100deg, transparent, rgba(255,255,255,.4), transparent);
+  transform:skewX(-16deg);
+  pointer-events:none;
+  animation: hangerScan 6.5s ease-in-out infinite;
+  animation-delay:1.2s;
+}
+/* Hole + slit are sized in % of the face box so they stay in proportion
+   at any card width, and the slot stack below is offset to clear them
+   with a fixed margin rather than a magic top value per row. */
+.hanger-hole{
+  position:absolute; top:8%; left:50%; transform:translateX(-50%);
+  width:19%; height:8.74%; border-radius:50%;
+  background:var(--panel-dark); z-index:3;
+  box-shadow:inset 0 3px 5px rgba(16,27,51,.4), 0 0 0 2px rgba(47,111,237,.4);
+}
+.hanger-hole::before{
+  content:''; position:absolute; bottom:100%; left:50%; transform:translateX(-50%);
+  width:46%; height:170%;
+  background:var(--panel-dark);
+  clip-path: polygon(20% 0, 80% 0, 100% 100%, 0 100%);
+  -webkit-clip-path: polygon(20% 0, 80% 0, 100% 100%, 0 100%);
+  box-shadow:inset 2px 0 4px rgba(16,27,51,.3), inset -2px 0 4px rgba(16,27,51,.3);
+}
+.hanger-slots{
+  position:absolute; left:5%; right:5%; bottom:5%; top:24%;
+  display:flex; flex-direction:column; gap:5%;
+}
+.hanger-face-surface .row{ flex:1 1 0; min-height:0; display:flex; align-items:center; justify-content:center; text-align:center; padding:4% 6%;
+  opacity:1; /* safe default: fully visible even if the reveal animation below never runs */
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+  -webkit-clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+}
+/* Staggered reveal: only plays when JS adds .stagger to a freshly-built
+   .hanger-slots (on load and whenever the quantity/size selection
+   rebuilds the slots). Base opacity above stays 1, so nothing depends
+   on this animation actually running. */
+.hanger-slots.stagger .row{ animation: rowIn .5s ease both; }
+.hanger-slots.stagger .row:nth-child(1){ animation-delay:.05s; }
+.hanger-slots.stagger .row:nth-child(2){ animation-delay:.17s; }
+.hanger-slots.stagger .row:nth-child(3){ animation-delay:.29s; }
+.row.mine{ background:var(--blue); color:var(--paper); box-shadow:0 4px 14px rgba(47,111,237,.35); animation: mineGlow 2.6s ease-in-out infinite; }
+.row.mine .row-label{font-family:'Oswald',sans-serif; text-transform:uppercase; font-size:20px; letter-spacing:.02em; font-weight:600; line-height:1.2;}
+.row.mine .row-sub{font-family:'IBM Plex Mono',monospace; font-size:15px; opacity:.88; margin-top:5px;}
+.row.other{ border:1.5px dashed var(--panel-dark); background:repeating-linear-gradient(135deg, rgba(47,111,237,.08) 0 8px, transparent 8px 16px);}
+.row.other .row-label{font-family:'IBM Plex Mono',monospace; font-size:15px; color:var(--muted); text-transform:uppercase; letter-spacing:.03em; line-height:1.35;}
+
+.flip-btn{
+  background:var(--paper); border:1.5px solid var(--line);
+  padding:9px 20px 9px 16px; font-size:13px; font-weight:600; cursor:pointer;
+  display:inline-flex; align-items:center; gap:7px; color:var(--ink-soft); transition:all .15s ease;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
+  -webkit-clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
+}
+.flip-btn:hover{ border-color:var(--blue); color:var(--blue); }
+.flip-btn:not(.has-flipped){ animation: flipHint 2.6s ease-in-out infinite; }
+.flip-btn .flip-icon{ display:inline-block; transition:transform .5s ease; }
+.flip-btn.spun .flip-icon{ transform:rotate(180deg); }
+
+@keyframes hangerDrop{
+  0%{ transform:translateY(-40px) rotate(8deg); opacity:0; }
+  55%{ transform:translateY(4px) rotate(-4deg); opacity:1; }
+  75%{ transform:translateY(-2px) rotate(2deg); }
+  100%{ transform:translateY(0) rotate(-2deg); }
+}
+@keyframes hangerSwing{ 0%,100%{ transform:rotate(-2deg); } 50%{ transform:rotate(2deg); } }
+.hanger-stage.in-view{
+  transform-origin:50% 0%;
+  animation: hangerDrop .9s cubic-bezier(.34,1.56,.64,1) both,
+             hangerSwing 4.2s ease-in-out 0.9s infinite;
+}
+.hanger-stage.in-view.flipped-once{ animation:none; }
+
+@keyframes hangerGlowPulse{
+  0%,100%{ opacity:.5; transform:translate(-50%,-50%) scale(.94); }
+  50%{ opacity:.9; transform:translate(-50%,-50%) scale(1.05); }
+}
+@keyframes hangerScan{
+  0%{ left:-60%; opacity:0; }
+  8%{ opacity:.85; }
+  32%{ left:120%; opacity:0; }
+  100%{ left:120%; opacity:0; }
+}
+@keyframes rowIn{ from{ opacity:0; transform:translateX(-14px); } to{ opacity:1; transform:translateX(0); } }
+@keyframes mineGlow{
+  0%,100%{ box-shadow:0 4px 14px rgba(47,111,237,.35), 0 0 0 0 rgba(47,111,237,.45); }
+  50%{ box-shadow:0 4px 18px rgba(47,111,237,.5), 0 0 0 7px rgba(47,111,237,0); }
+}
+@keyframes signalPing{
+  0%,100%{ box-shadow:0 0 0 0 rgba(47,111,237,.55); }
+  50%{ box-shadow:0 0 0 5px rgba(47,111,237,0); }
+}
+@keyframes flipHint{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-3px); } }
+
+/* ================= BENEFITS ================= */
+.benefits-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:22px; }
+@media(max-width:900px){ .benefits-grid{grid-template-columns:repeat(2,1fr);} }
+@media(max-width:560px){ .benefits-grid{grid-template-columns:1fr;} }
+.benefit-card{ background:var(--paper); border:1px solid var(--line); padding:26px 22px;
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+}
+.benefit-icon{ width:38px; height:38px; margin-bottom:16px; color:var(--blue); }
+.benefit-card h3{ font-size:16.5px; margin-bottom:8px; }
+.benefit-card p{ font-size:14px; color:var(--muted); margin:0; }
+
+/* ================= PROCESS ================= */
+.process-list{ display:grid; grid-template-columns:repeat(4,1fr); gap:0; counter-reset:step; position:relative;}
+@media(max-width:900px){ .process-list{grid-template-columns:1fr; gap:26px;} }
+.process-item{ position:relative; padding:0 20px 0 0; }
+.process-item:not(:last-child)::after{
+  content:''; position:absolute; top:19px; left:calc(100% - 10px); width:calc(100% - 20px);
+  border-top:1.5px dashed var(--panel-dark);
+}
+@media(max-width:900px){ .process-item:not(:last-child)::after{display:none;} }
+.process-num{
+  width:38px; height:38px; border-radius:50%; background:var(--ink); color:var(--paper);
+  display:flex; align-items:center; justify-content:center; font-family:'IBM Plex Mono',monospace;
+  font-size:14px; font-weight:600; margin-bottom:16px;
+}
+.process-item h4{ font-size:15.5px; text-transform:none; letter-spacing:0; margin-bottom:6px; }
+.process-item p{ font-size:13.5px; color:var(--muted); margin:0; }
+
+/* ================= BUILDER ================= */
+.configurator{background:var(--paper);}
+.builder{ background:var(--paper); border:1px solid var(--line); padding:8px 40px; box-shadow:0 24px 60px rgba(16,27,51,.10);
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+}
+@media(max-width:640px){ .builder{padding:4px 20px;} }
+
+.build-step{ padding:34px 0; border-bottom:1px solid var(--line);}
+.build-step:last-of-type{border-bottom:none;}
+.step-head{display:flex; gap:16px; margin-bottom:22px;}
+.bstep-num{font-family:'IBM Plex Mono',monospace; font-size:14px; color:var(--blue); font-weight:700; flex:none; padding-top:3px;}
+.step-head h3{font-size:19px; margin-bottom:4px;}
+.step-head p{color:var(--muted); font-size:14px; margin:0;}
+
+.form-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+@media(max-width:640px){.form-grid{grid-template-columns:1fr;}}
+.form-field.full{grid-column:1/-1;}
+.form-field{display:flex; flex-direction:column; gap:6px;}
+.form-field label{font-size:13px; font-weight:600; color:var(--ink-soft);}
+.opt-tag{font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:500; color:var(--muted); text-transform:uppercase; letter-spacing:.04em;}
+.form-field input, .form-field select{ border:1.5px solid var(--line); padding:12px 14px; font-size:15px; font-family:'Inter',sans-serif; background:var(--paper); color:var(--text); width:100%;}
+.form-field input:focus, .form-field select:focus{border-color:var(--blue);}
+
+/* choice cards (delivery method) */
+.choice-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+@media(max-width:640px){.choice-grid{grid-template-columns:1fr;}}
+.choice-card{ cursor:pointer; text-align:left; border:1.5px solid var(--line); background:var(--paper); padding:20px 20px; transition:all .15s ease; display:block;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+}
+.choice-card:hover{border-color:var(--blue);}
+.choice-card.active{border-color:var(--blue); background:var(--blue-soft);}
+.choice-card .cc-top{ display:flex; justify-content:space-between; align-items:baseline; gap:10px; margin-bottom:6px;}
+.choice-card .cc-name{font-family:'Oswald',sans-serif; font-size:15.5px; text-transform:uppercase; color:var(--ink);}
+.choice-card .cc-price{font-family:'IBM Plex Mono',monospace; font-size:13.5px; color:var(--blue); font-weight:700; white-space:nowrap;}
+.choice-card .cc-price.free{color:var(--moss);}
+.choice-card .cc-desc{font-size:13.5px; color:var(--muted); margin:0;}
+.sub-choice-wrap{ margin-top:16px; padding:18px 18px 4px 18px; border-top:1px dashed var(--line); }
+.sub-choice-wrap .sw-label{font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:12px; display:block;}
+.notice-box{ margin-top:12px; background:var(--panel); padding:12px 16px; font-size:13px; color:var(--ink-soft); display:flex; gap:10px; align-items:flex-start;}
+.notice-box.unavailable{ background:var(--error-soft); }
+.notice-box.unavailable svg{ color:var(--error) !important; }
+.notice-box svg{flex:none; width:18px; height:18px; margin-top:1px; color:var(--blue);}
+.field-hint{ font-size:12.5px; color:var(--muted); margin:2px 0 0 0;}
+.radius-chips{display:flex; gap:10px; flex-wrap:wrap;}
+.radius-chip{ background:var(--paper); border:1.5px solid var(--line); padding:10px 22px; font-size:14px; font-weight:600; color:var(--ink-soft); cursor:pointer; transition:all .15s ease;}
+.radius-chip:hover{border-color:var(--blue);}
+.radius-chip.active{background:var(--blue); color:var(--paper); border-color:var(--blue);}
+.radius-block{margin-bottom:26px;}
+
+/* add-on toggle (website design package) */
+.toggle-row{ display:flex; align-items:flex-start; gap:16px; border:1.5px solid var(--line); padding:18px 20px; cursor:pointer; transition:all .15s ease;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+}
+.toggle-row:hover{border-color:var(--blue);}
+.toggle-row.active{border-color:var(--blue); background:var(--blue-soft);}
+.toggle-switch{ flex:none; width:40px; height:22px; background:var(--panel-dark); position:relative; margin-top:3px; transition:background .2s ease;}
+.toggle-switch::after{ content:''; position:absolute; top:3px; left:3px; width:16px; height:16px; background:var(--paper); transition:transform .2s ease;}
+.toggle-row.active .toggle-switch{background:var(--blue);}
+.toggle-row.active .toggle-switch::after{transform:translateX(18px);}
+.toggle-copy .tc-top{display:flex; align-items:baseline; gap:10px; margin-bottom:4px;}
+.toggle-copy .cc-name{font-family:'Oswald',sans-serif; font-size:15.5px; text-transform:uppercase; color:var(--ink);}
+.toggle-copy .cc-price{font-family:'IBM Plex Mono',monospace; font-size:13.5px; color:var(--blue); font-weight:700;}
+.toggle-copy p{font-size:13.5px; color:var(--muted); margin:0;}
+.tb-label{font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted);}
+
+.addon-list{ display:flex; flex-direction:column; gap:14px; }
+.static-row{ display:flex; align-items:flex-start; gap:16px; border:1.5px solid var(--line); padding:18px 20px; background:var(--paper);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+}
+.included-badge{ flex:none; background:#DFF0E7; color:var(--moss); font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; padding:8px 14px; margin-top:2px; white-space:nowrap;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%);
+}
+
+.price-breakdown{ background:var(--paper); border:1.5px solid var(--line); padding:24px 28px 24px 26px;
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% 100%, calc(100% - var(--cut)) 100% , 0 100%, 0 100%);
+}
+.pb-caption{ display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px; margin-bottom:14px; padding-bottom:14px; border-bottom:1px solid var(--line); }
+.pb-radius{ font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--muted); }
+.pb-row{ display:flex; justify-content:space-between; align-items:baseline; gap:14px; padding:7px 0; font-size:14.5px; }
+.pb-k{ color:var(--ink-soft); }
+.pb-note{ color:var(--muted); font-size:12.5px; }
+.pb-v{ font-family:'IBM Plex Mono',monospace; font-weight:600; color:var(--ink); white-space:nowrap; }
+.pb-free{ color:var(--moss); font-weight:700; letter-spacing:.03em; }
+.pb-divider{ border-top:1px dashed var(--line); margin:8px 0; }
+.pb-final{ padding-top:10px; }
+.pb-final .pb-k{ font-family:'Oswald',sans-serif; text-transform:uppercase; font-size:15.5px; color:var(--ink); letter-spacing:.02em; }
+.pb-final .pb-v{ font-family:'IBM Plex Mono',monospace; font-size:27px; font-weight:700; color:var(--ink); }
+
+.submit-row{margin-top:22px; display:flex; align-items:center; gap:16px; flex-wrap:wrap;}
+.confirm{ display:none; margin-top:18px; background:#E4F0EA; border:1px solid var(--moss); color:var(--moss); padding:16px 18px; font-size:14.5px; font-weight:500;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+}
+.confirm.show{display:block;}
+.confirm .ref{font-family:'IBM Plex Mono',monospace; font-weight:700;}
+.form-error{ display:none; margin-top:18px; background:var(--error-soft); border:1px solid var(--error); color:var(--error); padding:16px 18px; font-size:14.5px; font-weight:500;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+}
+.form-error.show{display:block;}
+.payment-note{
+  margin:22px 0 16px 0; padding:14px 16px; background:var(--panel);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
+}
+.payment-note .opt-tag{display:block; margin-bottom:4px;}
+.payment-note p{margin:0; font-size:13.5px; color:var(--ink-soft);}
+.btn[disabled]{opacity:.6; cursor:not-allowed; transform:none !important;}
+
+/* ================= FAQ ================= */
+.faq-list{max-width:760px; margin:0 auto;}
+.faq-item{border-bottom:1px solid var(--line);}
+.faq-q{ width:100%; text-align:left; background:none; border:none; cursor:pointer; padding:22px 4px; display:flex; justify-content:space-between; align-items:center; gap:16px;}
+.faq-q h4{margin:0; font-size:17px; text-transform:none; letter-spacing:0;}
+.faq-icon{flex:none; width:22px; height:22px; position:relative;}
+.faq-icon::before, .faq-icon::after{ content:''; position:absolute; background:var(--ink); border-radius:2px;}
+.faq-icon::before{width:14px; height:2px; top:10px; left:4px;}
+.faq-icon::after{width:2px; height:14px; top:4px; left:10px; transition:transform .2s ease;}
+.faq-item.open .faq-icon::after{transform:rotate(90deg);}
+.faq-a{max-height:0; overflow:hidden; transition:max-height .25s ease;}
+.faq-a p{padding:0 4px 22px 4px; color:var(--muted); font-size:15px; margin:0;}
+
+/* ================= STICKY PRICE BAR ================= */
+.sticky-bar{
+  position:fixed; left:0; right:0; bottom:0; z-index:60;
+  background:var(--ink); color:var(--paper);
+  border-top:1px solid rgba(255,255,255,.1);
+  box-shadow:0 -10px 26px rgba(0,0,0,.18);
+  transition:transform .25s ease, opacity .25s ease;
+}
+.sticky-bar--hidden{transform:translateY(100%); opacity:0; pointer-events:none;}
+.sticky-bar-inner{
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  padding:14px 24px;
+}
+.sb-info{display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; min-width:0;}
+.sb-label{font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:#B9C0D6;}
+.sb-price{font-family:'IBM Plex Mono',monospace; font-size:22px; font-weight:700; white-space:nowrap;}
+.sb-recap{font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:#B9C0D6; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.sb-btn{padding:11px 20px; font-size:14px; flex:none;}
+@media(max-width:640px){
+  .sb-label, .sb-recap{display:none;}
+  .sticky-bar-inner{padding:12px 16px;}
+}
+
+/* ================= FOOTER ================= */
+footer{background:var(--ink); color:#C7CCDC; padding:52px 0 30px 0;}
+.footer-top{display:flex; justify-content:space-between; align-items:flex-start; gap:32px; flex-wrap:wrap;}
+.footer-brand{font-family:'Oswald',sans-serif; color:var(--paper); font-size:22px; text-transform:uppercase;}
+.footer-tag{max-width:340px; font-size:14px; color:#9AA1B8; margin-top:8px;}
+.footer-cols{display:flex; gap:56px; flex-wrap:wrap;}
+.footer-col h5{font-family:'IBM Plex Mono',monospace; font-size:11.5px; text-transform:uppercase; letter-spacing:.08em; color:#9096AE; margin-bottom:14px;}
+.footer-col a{display:block; font-size:14px; color:#C7CCDC; text-decoration:none; margin-bottom:10px;}
+.footer-col a:hover{color:var(--paper);}
+.footer-bottom{ margin-top:44px; padding-top:22px; border-top:1px solid rgba(255,255,255,.1); font-size:12.5px; color:#9096AE; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;}
+
+/* ===================== HANGER GEOMETRY FIX =====================
+   What was wrong in the original component:
+   1. The stage sat in shrink-to-fit flex parents with no width, so it collapsed
+      to ~130px and the slot stack rendered as a sliver.
+   2. The back panel had no .back class, so the hidden face stayed in normal
+      flow and doubled the stage height (huge gap under the card).
+   3. The face ratio (0.46) was applied to a 640px-wide face = ~1,390px tall.
+   4. Only the top-left corner was cut, so the outline read as skewed.
+   Now: a fixed-width stage, a 0.42 (about 3.5in x 8.3in) face, a symmetric die-cut
+   outline (mount = uniform 16px frame, face chamfer offset to match), a hole that
+   is a true circle for that ratio, and slot text that scales with the card. */
+.hero-visual{ width:100%; }
+.hanger-stage-wrap{ width:100%; max-width:300px; margin:0 auto; }
+.hanger-stage{ width:100%; max-width:264px; margin:0 auto; transform-origin:50% 9%; }
+.hanger-flip{ width:100%; }
+.hanger-face-panel.back{ position:absolute; top:0; left:0; }
+.hanger-mount{
+  padding:16px;
+  clip-path:polygon(34px 0, calc(100% - 34px) 0, 100% 34px, 100% 100%, 0 100%, 0 34px);
+  -webkit-clip-path:polygon(34px 0, calc(100% - 34px) 0, 100% 34px, 100% 100%, 0 100%, 0 34px);
+}
+.hanger-face{ max-width:none; margin:0; container-type:inline-size; }
+.hanger-face-ratio{ padding-top:238%; }
+.hanger-face-surface{
+  clip-path:polygon(25px 0, calc(100% - 25px) 0, 100% 25px, 100% 100%, 0 100%, 0 25px);
+  -webkit-clip-path:polygon(25px 0, calc(100% - 25px) 0, 100% 25px, 100% 100%, 0 100%, 0 25px);
+}
+.hanger-hole{ top:6.5%; width:17%; height:7.14%; }
+.hanger-slots{ left:6%; right:6%; top:19%; bottom:5%; gap:3.5%; }
+.row.mine .row-label{ font-size:clamp(14px, 7.2cqw, 22px); }
+.row.mine .row-sub{ font-size:clamp(11px, 5.2cqw, 15px); }
+.row.other .row-label{ font-size:clamp(10.5px, 5cqw, 15px); }
+.hanger-glow{ top:48%; width:170%; height:75%; }
+@media(min-width:960px){
+  .hero-grid{ display:grid; grid-template-columns:minmax(0,1fr) 300px; gap:72px; align-items:center; text-align:left; }
+  .hero-grid > div:first-child{ align-items:flex-start; max-width:none; }
+  .hero-ctas{ justify-content:flex-start; }
+}
+
+/* ===================== CAROUSELS (results + reviews) ===================== */
+.carousel{ position:relative; }
+.car-track{
+  display:flex; gap:18px; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth;
+  padding:6px 2px 14px 2px; scrollbar-width:none; -webkit-overflow-scrolling:touch;
+}
+.car-track::-webkit-scrollbar{ display:none; }
+.car-track:focus-visible{ outline:2px solid var(--blue); outline-offset:4px; }
+.car-slide{
+  flex:0 0 auto; scroll-snap-align:start; margin:0; background:var(--paper); border:1px solid var(--line);
+  clip-path:polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+}
+.car-slide img{ display:block; width:100%; height:auto; }
+.carousel-portrait .car-slide{ width:clamp(190px, 22vw, 240px); }
+.carousel-landscape .car-slide{ width:clamp(270px, 32vw, 340px); }
+.car-btn{
+  position:absolute; top:50%; transform:translateY(-50%); z-index:2; width:44px; height:44px;
+  background:var(--ink); color:var(--paper); border:none; cursor:pointer; display:flex; align-items:center; justify-content:center;
+  clip-path:polygon(0 0, 100% 0, 100% calc(100% - 9px), calc(100% - 9px) 100%, 0 100%);
+  transition:background .15s ease, opacity .15s ease;
+}
+.car-btn:hover:not([disabled]){ background:var(--blue); }
+.car-btn[disabled]{ opacity:.3; cursor:default; }
+.car-btn svg{ width:20px; height:20px; }
+.car-btn.prev{ left:-14px; }
+.car-btn.next{ right:-14px; }
+@media(max-width:640px){ .car-btn{ display:none; } }
+
+/* ===================== FORM ADDITIONS ===================== */
+.form-field textarea{ border:1.5px solid var(--line); padding:12px 14px; font-size:15px; font-family:'Inter',sans-serif; background:var(--paper); color:var(--text); width:100%; min-height:96px; resize:vertical; }
+.form-field textarea:focus{ border-color:var(--blue); outline:none; }
+.consent-row{ margin-top:28px; padding:16px 18px; background:var(--panel); }
+.consent-row label{ display:flex; gap:12px; align-items:flex-start; font-size:13.5px; color:var(--ink-soft); line-height:1.5; cursor:pointer; }
+.consent-row input[type=checkbox]{ flex:none; width:18px; height:18px; margin-top:2px; accent-color:var(--blue); }
+.consent-row a{ color:var(--blue-deep); font-weight:600; }
+
+.upload-zone{
+  border:1.5px dashed var(--blue); background:var(--paper); padding:24px 18px; text-align:center; cursor:pointer;
+  transition:background .15s ease; clip-path:polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+}
+.upload-zone:hover, .upload-zone.dragover{ background:var(--blue-soft); }
+.upload-zone:focus-visible{ outline:2px solid var(--blue); outline-offset:2px; }
+.upload-zone.maxed{ opacity:.55; cursor:not-allowed; }
+.upload-zone input[type=file]{ display:none; }
+.upload-zone-icon svg{ width:26px; height:26px; color:var(--blue); }
+.upload-zone-title{ margin:8px 0 2px 0; font-weight:600; color:var(--ink); font-size:15px; }
+.upload-zone-title .browse{ color:var(--blue); text-decoration:underline; }
+.upload-zone-meta{ margin:0; font-size:12.5px; color:var(--muted); }
+.upload-file-list{ margin-top:10px; }
+.upload-file-row{ display:flex; align-items:center; gap:12px; padding:9px 14px; background:var(--panel); margin-top:8px; font-size:13.5px; }
+.upload-file-ext{ font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600; background:var(--blue); color:var(--paper); padding:3px 7px; }
+.upload-file-name{ flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--ink); }
+.upload-file-size{ color:var(--muted); font-size:12.5px; white-space:nowrap; }
+.upload-file-remove{ background:none; border:none; font-size:22px; line-height:1; cursor:pointer; color:var(--muted); padding:0 4px; }
+.upload-file-remove:hover{ color:var(--error); }
+.upload-problem{ margin:8px 0 0 0; font-size:13px; color:var(--error); min-height:1em; }
+</style>
+</head>
+<body>
+
+<!-- ================= NAV ================= -->
+<header class="nav">
+  <div class="nav-inner">
+    <a href="#top" class="brand"><span class="brand-mark"></span>Porchline</a>
+    <nav>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#why">Why door hangers</a></li>
+        <li><a href="#results">Results</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#build">Claim your 100</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </nav>
+    <a href="#build" class="nav-cta">Claim 100 free</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu"><span></span></button>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="top">
+  <div class="container hero-grid">
+    <div>
+      <span class="hero-badge"><span class="num">100</span> free door hangers, no catch</span>
+      <h1>Your truck, on the doorknob of everyone nearby.</h1>
+      <p class="hero-sub">Porchline is giving junk removal companies 100 door hangers, hand-designed for you at no cost. Claim your free ad slot, tell us how you want them out the door, and we'll take it from there.</p>
+      <p class="hero-fine">Free means free: 100 printed hangers and full design work, $0. Want more reach? Order 2,000 hangers with your own dedicated ad space, priced by size. Either way, delivery and QR add-ons are entirely your call.</p>
+      <div class="hero-ctas">
+        <a href="#build" class="btn btn-primary">Claim my 100 free hangers</a>
+        <a href="#why" class="btn btn-ghost">Why door hangers work</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hanger-stage-wrap">
+        <div class="hanger-face-label" id="heroFaceLabel">Front side</div>
+        <div class="hanger-stage" id="heroStage">
+          <div class="hanger-glow" aria-hidden="true"></div>
+          <div class="hanger-flip" id="heroFlipWrap">
+            <div class="hanger-face-panel is-active" id="heroPanelFront">
+              <div class="hanger-mount">
+                <div class="hanger-face">
+                  <div class="hanger-face-ratio"></div>
+                  <div class="hanger-face-surface" id="heroFaceFront"></div>
+                </div>
+              </div>
+            </div>
+            <div class="hanger-face-panel back" id="heroPanelBack">
+              <div class="hanger-mount">
+                <div class="hanger-face">
+                  <div class="hanger-face-ratio"></div>
+                  <div class="hanger-face-surface" id="heroFaceBack"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="flip-btn" id="heroFlipBtn"><span class="flip-icon">⟲</span> View back</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= WHY DOOR HANGERS ================= -->
+<section class="section" id="why" style="background:var(--panel);">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Why door hangers</span>
+      <h2>The oldest local ad channel still beats the algorithm</h2>
+      <p>Put your business in front of homeowners across your pickup radius. No auction, no impressions you can't verify, no scrolling past it. A door hanger has to be picked up off the handle to get inside — that's a guaranteed moment of attention a feed can't promise.</p>
+    </div>
+    <div class="benefits-grid">
+      <div class="benefit-card">
+        <svg class="benefit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 21V7l8-4 8 4v14"/><path d="M9 21v-6h6v6"/><circle cx="12" cy="11" r="1.4" fill="currentColor" stroke="none"/></svg>
+        <h3>It reaches the door, not a feed</h3>
+        <p>Every household in your radius gets one — no algorithm decides who sees your business and who doesn't.</p>
+      </div>
+      <div class="benefit-card">
+        <svg class="benefit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>
+        <h3>Guaranteed physical attention</h3>
+        <p>It has to be touched and removed to open the door — that's a second of eyes-on-your-ad an online ad can't force.</p>
+      </div>
+      <div class="benefit-card">
+        <svg class="benefit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/></svg>
+        <h3>Hyper-local by design</h3>
+        <p>You're not paying to reach the whole country — every hanger lands within walking or driving distance of your door.</p>
+      </div>
+      <div class="benefit-card">
+        <svg class="benefit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 9h18"/><path d="M8 14h3"/></svg>
+        <h3>Sticks around the kitchen</h3>
+        <p>A hanger left on a counter or fridge keeps advertising long after a scrolled-past post is forgotten.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= RESULTS ================= -->
+<section class="section" id="results">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">See the hangers in the wild</span>
+      <h2>Door hangers that deliver results</h2>
+      <p>A look at real campaigns — from design proof to a hand-delivered hanger on the doorstep.</p>
+    </div>
+    <div class="carousel carousel-portrait" data-carousel data-autoplay="4500">
+      <button type="button" class="car-btn prev" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <div class="car-track" tabindex="0" role="group" aria-label="Door hangers that deliver results">
+          <figure class="car-slide"><img src="images/doorhanger/1.png" width="540" height="960" alt="Door hanger result photo 1" loading="lazy"></figure>
+          <figure class="car-slide"><img src="images/doorhanger/2.png" width="540" height="960" alt="Door hanger result photo 2" loading="lazy"></figure>
+          <figure class="car-slide"><img src="images/doorhanger/3.png" width="540" height="960" alt="Door hanger result photo 3" loading="lazy"></figure>
+          <figure class="car-slide"><img src="images/doorhanger/4.png" width="540" height="960" alt="Door hanger result photo 4" loading="lazy"></figure>
+          <figure class="car-slide"><img src="images/doorhanger/5.png" width="540" height="960" alt="Door hanger result photo 5" loading="lazy"></figure>
+      </div>
+      <button type="button" class="car-btn next" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= REVIEWS ================= -->
+<section class="section" id="reviews" style="background:var(--panel);">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Word on the block</span>
+      <h2>Customers love what we do</h2>
+      <p>A few of the businesses we've helped get in front of more doorsteps.</p>
+    </div>
+    <div class="carousel carousel-landscape" data-carousel data-autoplay="4500">
+      <button type="button" class="car-btn prev" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <div class="car-track" tabindex="0" role="group" aria-label="Customers love what we do">
+          <figure class="car-slide"><img src="images/reviews/1.png" width="800" height="600" alt="Customer review 1" loading="lazy"></figure>
+          <figure class="car-slide"><img src="images/reviews/2.png" width="800" height="600" alt="Customer review 2" loading="lazy"></figure>
+          <figure class="car-slide"><img src="images/reviews/3.png" width="800" height="600" alt="Customer review 3" loading="lazy"></figure>
+          <figure class="car-slide"><img src="images/reviews/4.png" width="800" height="600" alt="Customer review 4" loading="lazy"></figure>
+          <figure class="car-slide"><img src="images/reviews/5.png" width="800" height="600" alt="Customer review 5" loading="lazy"></figure>
+      </div>
+      <button type="button" class="car-btn next" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= BUILDER ================= -->
+<section class="section configurator" id="build">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Claim your free 100</span>
+      <h2>Set up your free door hanger</h2>
+      <p>Four short steps. Nothing here charges a card — you'll only ever pay for the delivery method or paid add-ons you actually pick.</p>
+    </div>
+
+    <div class="builder">
+      <form id="regForm">
+
+        <!-- STEP 01 — REGISTER -->
+        <div class="build-step">
+          <div class="step-head">
+            <span class="bstep-num">01</span>
+            <div><h3>Tell us about your business</h3><p>This is what goes on your free design proof, and how we reach you about it.</p></div>
+          </div>
+          <div class="form-grid">
+            <div class="form-field"><label for="fullName">Full name</label><input id="fullName" type="text" required placeholder="Jordan Lee"></div>
+            <div class="form-field"><label for="title">Title at company</label><input id="title" type="text" required placeholder="Owner"></div>
+            <div class="form-field"><label for="phone">Your phone number</label><input id="phone" type="tel" required placeholder="(555) 010-2200"></div>
+            <div class="form-field"><label for="email">Your email</label><input id="email" type="email" required placeholder="jordan@yourbusiness.com"></div>
+            <div class="form-field full"><label for="bizName">Business name</label><input id="bizName" type="text" required placeholder="Yourbrand Co."></div>
+            <div class="form-field full"><label for="bizWebsite">Business website <span class="opt-tag">optional</span></label><input id="bizWebsite" type="text" placeholder="www.yourbusiness.com"></div>
+            <div class="form-field"><label for="bizPhone">Business phone</label><input id="bizPhone" type="tel" required placeholder="(555) 010-0199"></div>
+            <div class="form-field"><label for="bizEmail">Business email</label><input id="bizEmail" type="email" required placeholder="office@yourbusiness.com"></div>
+            <div class="form-field full"><label for="bizStreet">Street address</label><input id="bizStreet" type="text" required placeholder="123 Main St"></div>
+            <div class="form-field"><label for="bizCity">City</label><input id="bizCity" type="text" required placeholder="Vancouver"></div>
+            <div class="form-field"><label for="bizState">State</label><input id="bizState" type="text" required maxlength="2" pattern="[A-Za-z]{2}" placeholder="WA" style="text-transform:uppercase;"></div>
+            <div class="form-field full"><label for="bizZip">ZIP code</label><input id="bizZip" type="text" required inputmode="numeric" pattern="[0-9]{5}(-[0-9]{4})?" placeholder="98660"></div>
+            <div class="form-field full">
+              <label for="industry">Industry</label>
+              <select id="industry" required>
+                <option value="Plumbing Services">Plumbing Services</option>
+                <option value="Electricians">Electricians</option>
+                <option value="Heating &amp; Cooling Services">Heating &amp; Cooling Services</option>
+                <option value="Roofing">Roofing</option>
+                <option value="IT support">IT support</option>
+                <option value="Fencing &amp; Decking">Fencing &amp; Decking</option>
+                <option value="Hardscaping Services">Hardscaping Services</option>
+                <option value="Landscaping Services">Landscaping Services</option>
+                <option value="Pest Control Services">Pest Control Services</option>
+                <option value="House Cleaning Services">House Cleaning Services</option>
+                <option value="Pressure Washing Services">Pressure Washing Services</option>
+                <option value="Moving Companies">Moving Companies</option>
+                <option value="Self-Storage Facilities">Self-Storage Facilities</option>
+                <option value="Locksmiths">Locksmiths</option>
+                <option value="Remodeling Services">Remodeling Services</option>
+                <option value="Handyman Services">Handyman Services</option>
+                <option value="Appliance Repair">Appliance Repair</option>
+                <option value="Auto Repair Shops">Auto Repair Shops</option>
+                <option value="Auto Detailing">Auto Detailing</option>
+                <option value="Restaurants">Restaurants</option>
+                <option value="Coffee Shops">Coffee Shops</option>
+                <option value="Daycares">Daycares</option>
+                <option value="Junk Removal Services" selected>Junk Removal Services</option>
+                <option value="Window Repair &amp; Replacement">Window Repair &amp; Replacement</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 02 — QUANTITY & AD SLOT -->
+        <div class="build-step">
+          <div class="step-head">
+            <span class="bstep-num">02</span>
+            <div><h3>How many door hangers?</h3><p>Take the free 100 sharing a hanger with other local businesses, or go bigger with your own dedicated ad space.</p></div>
+          </div>
+
+          <div class="choice-grid" id="qtyChoices">
+            <button type="button" class="choice-card active" data-qty="100">
+              <div class="cc-top"><span class="cc-name">100 hangers</span><span class="cc-price free">Free</span></div>
+              <p class="cc-desc">One free ad slot on a hanger shared with two other local businesses.</p>
+            </button>
+            <button type="button" class="choice-card" data-qty="2000">
+              <div class="cc-top"><span class="cc-name">2,000 hangers</span><span class="cc-price">From $550</span></div>
+              <p class="cc-desc">A bigger print run with your own dedicated ad space — pick the size below.</p>
+            </button>
+          </div>
+
+          <div class="sub-choice-wrap" id="sizeSubWrap" style="display:none;">
+            <span class="sw-label">Choose your ad slot size</span>
+            <div class="choice-grid" id="sizeChoices">
+              <button type="button" class="choice-card" data-size="third">
+                <div class="cc-top"><span class="cc-name">1/3 Page</span><span class="cc-price">$550</span></div>
+                <p class="cc-desc">Your ad takes one of the three slots on the front.</p>
+              </button>
+              <button type="button" class="choice-card" data-size="half">
+                <div class="cc-top"><span class="cc-name">Half Page</span><span class="cc-price">$1,100</span></div>
+                <p class="cc-desc">Your ad spans two of the three slots on the front.</p>
+              </button>
+              <button type="button" class="choice-card" data-size="full">
+                <div class="cc-top"><span class="cc-name">Full Page</span><span class="cc-price">$1,650</span></div>
+                <p class="cc-desc">Your ad has the entire front to itself, exclusively.</p>
+              </button>
+              <button type="button" class="choice-card" data-size="both">
+                <div class="cc-top"><span class="cc-name">Both Sides</span><span class="cc-price">$3,300</span></div>
+                <p class="cc-desc">Your ad has the entire front and back, exclusively.</p>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 03 — DELIVERY -->
+        <div class="build-step">
+          <div class="step-head">
+            <span class="bstep-num">03</span>
+            <div><h3>Choose how the hangers get out the door</h3><p>We can hang them ourselves, or you can take it from there.</p></div>
+          </div>
+
+          <div class="notice-box cut-sm" id="largeOrderDeliveryNote" style="display:none;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><circle cx="12" cy="15.5" r="0.6" fill="currentColor" stroke="none"/></svg>
+            <span>Hand-delivery and coverage radius are only available with our free 100-hanger giveaway. For 2,000-hanger orders, choose shipping or pickup below.</span>
+          </div>
+
+          <div id="smallOrderDeliveryWrap">
+            <div class="radius-block">
+              <span class="sw-label" style="display:block; margin-bottom:12px;">Coverage radius</span>
+              <div class="radius-chips" id="radiusChips">
+                <button type="button" class="radius-chip" data-radius="5">5 mi</button>
+                <button type="button" class="radius-chip" data-radius="15">15 mi</button>
+                <button type="button" class="radius-chip active" data-radius="30">30 mi</button>
+              </div>
+              <div class="notice-box unavailable cut-sm" id="radiusNotice" style="display:none;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><circle cx="12" cy="15.5" r="0.6" fill="currentColor" stroke="none"/></svg>
+                <span id="radiusNoticeText"></span>
+              </div>
+            </div>
+
+            <div class="choice-grid" id="deliveryChoices">
+              <button type="button" class="choice-card" data-delivery="hand">
+                <div class="cc-top"><span class="cc-name">We hand-deliver</span><span class="cc-price">$22</span></div>
+                <p class="cc-desc">Our team hangs all 100 on doorknobs within your coverage radius. Zero effort on your end.</p>
+              </button>
+              <button type="button" class="choice-card" data-delivery="self">
+                <div class="cc-top"><span class="cc-name">I'll handle delivery</span><span class="cc-price free">Free to choose</span></div>
+                <p class="cc-desc">We'll get the finished hangers to you — shipped to your door, or picked up by you.</p>
+              </button>
+            </div>
+          </div>
+
+          <div class="sub-choice-wrap" id="selfSubWrap" style="display:none;">
+            <span class="sw-label">How should we get them to you?</span>
+            <div class="choice-grid" id="selfChoices">
+              <button type="button" class="choice-card" data-self="ship">
+                <div class="cc-top"><span class="cc-name">Ship to me</span><span class="cc-price">$14.99</span></div>
+                <p class="cc-desc">We'll ship your hangers straight to your business address.</p>
+              </button>
+              <button type="button" class="choice-card" data-self="pickup">
+                <div class="cc-top"><span class="cc-name">I'll pick them up</span><span class="cc-price free">Free</span></div>
+                <p class="cc-desc">Grab them yourself in Vancouver, WA — no shipping charge.</p>
+              </button>
+            </div>
+            <div class="notice-box cut-sm" id="pickupNote" style="display:none;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
+              <span>Pickup is only available <strong>Saturdays, 10am–3pm</strong>, at our Vancouver, Washington location. We'll email the exact address once your hangers are ready.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 04 — OPTIONAL EXTRAS -->
+        <div class="build-step" id="pricing">
+          <div class="step-head">
+            <span class="bstep-num">04</span>
+            <div><h3>Optional extras</h3><p>Basic design and basic QR tracking are included free with every order — add any of these if you want more.</p></div>
+          </div>
+
+          <div class="addon-list">
+            <div class="toggle-row" id="premiumDesignToggle">
+              <div class="toggle-switch"></div>
+              <div class="toggle-copy">
+                <div class="tc-top"><span class="cc-name">Premium design package</span><span class="cc-price">$90</span></div>
+                <p>Want to design a fully unique, company-branded ad? We'll build one just for you.</p>
+              </div>
+            </div>
+
+            <div class="static-row">
+              <span class="included-badge">Included</span>
+              <div class="toggle-copy">
+                <div class="tc-top"><span class="cc-name">Basic ad design package</span></div>
+                <p>Highly optimized design that gets your ad seen.</p>
+              </div>
+            </div>
+
+            <div class="toggle-row" id="qrDashboardToggle">
+              <div class="toggle-switch"></div>
+              <div class="toggle-copy">
+                <div class="tc-top"><span class="cc-name">QR code web dashboard</span><span class="cc-price">$79</span></div>
+                <p>See when, how many times, and who scans your ad, through an online dashboard.</p>
+              </div>
+            </div>
+
+            <div class="static-row">
+              <span class="included-badge">Included</span>
+              <div class="toggle-copy">
+                <div class="tc-top"><span class="cc-name">Basic QR code tracking</span></div>
+                <p>We'll update you when you request information on the performance and progress of your door-to-door campaign.</p>
+              </div>
+            </div>
+
+            <div class="toggle-row" id="websiteToggle">
+              <div class="toggle-switch"></div>
+              <div class="toggle-copy">
+                <div class="tc-top"><span class="cc-name">Clean website design package</span><span class="cc-price">$149.99</span></div>
+                <p>Custom built one-page website for your business, built to match your door hanger ad and current offer, service, or product.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-grid" style="margin:24px 0 0 0;">
+            <div class="form-field full">
+              <label for="forwardingUrl">QR forwarding URL <span class="opt-tag">optional</span></label>
+              <input id="forwardingUrl" type="url" placeholder="https://yourbusiness.com/special-offer">
+            </div>
+            <div class="form-field full">
+              <label for="designNotes">Anything we should know for your design? <span class="opt-tag">optional</span></label>
+              <textarea id="designNotes" maxlength="2000" placeholder="Offer, colors, services to highlight, phone number to feature…"></textarea>
+            </div>
+            <div class="form-field full">
+              <label for="designFiles">Logo or reference photos <span class="opt-tag">optional</span></label>
+              <div class="upload-zone" id="uploadZone" tabindex="0" role="button" aria-label="Upload logo or reference photos">
+                <input type="file" id="designFiles" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml,application/pdf" multiple>
+                <div class="upload-zone-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></div>
+                <p class="upload-zone-title">Drop files here or <span class="browse">browse</span></p>
+                <p class="upload-zone-meta">PNG · JPG · WEBP · GIF · SVG · PDF — up to 5 files, 8MB each</p>
+              </div>
+              <div class="upload-file-list" id="uploadFileList"></div>
+              <p class="upload-problem" id="uploadProblem" role="status"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 05 — REVIEW + SUBMIT -->
+        <div class="build-step" id="buildSummary">
+          <div class="step-head">
+            <span class="bstep-num">05</span>
+            <div><h3>Review &amp; place your order</h3><p>This submits your order — you're not paying on this page. We'll follow up by email or text to collect payment for any paid items.</p></div>
+          </div>
+
+          <div class="price-breakdown">
+            <div class="pb-caption">
+              <span class="tb-label">Your order today</span>
+              <span class="pb-radius" id="pbRadiusCaption">100 door hangers · 30 mi radius</span>
+            </div>
+
+            <div class="pb-row">
+              <span class="pb-k" id="pbQtyLabel">100 door hangers</span>
+              <span class="pb-v pb-free" id="pbQtyValue">FREE</span>
+            </div>
+            <div class="pb-row" id="pbSizeRow" style="display:none;">
+              <span class="pb-k" id="pbSizeLabel">Ad slot size</span>
+              <span class="pb-v" id="pbSizeValue">—</span>
+            </div>
+            <div class="pb-row">
+              <span class="pb-k">Ad design</span>
+              <span class="pb-v" id="pbDesign">Basic — Included</span>
+            </div>
+            <div class="pb-row">
+              <span class="pb-k">Delivery <span class="pb-note" id="pbDeliveryNote">(select an option above)</span></span>
+              <span class="pb-v" id="pbDelivery">—</span>
+            </div>
+            <div class="pb-row">
+              <span class="pb-k">QR code &amp; forwarding link</span>
+              <span class="pb-v pb-free">FREE</span>
+            </div>
+            <div class="pb-row">
+              <span class="pb-k">QR tracking</span>
+              <span class="pb-v" id="pbQr">Basic — Included</span>
+            </div>
+            <div class="pb-row">
+              <span class="pb-k">Clean website design package <span class="pb-note">(optional)</span></span>
+              <span class="pb-v" id="pbWebsite">Not added</span>
+            </div>
+
+            <div class="pb-divider"></div>
+
+            <div class="pb-row pb-final">
+              <span class="pb-k">Due today</span>
+              <span class="pb-v" id="pbYourPrice">$0.00</span>
+            </div>
+          </div>
+
+          <div class="payment-note">
+            <span class="opt-tag">Payment</span>
+            <p>Nothing is charged on this page, and we never ask for card details here. If your order includes paid items, we'll follow up by email or text with a secure way to pay.</p>
+          </div>
+
+          <div class="consent-row" id="consentRow">
+            <label for="agreePolicies">
+              <input type="checkbox" id="agreePolicies" required>
+              <span>I reviewed and agree with the <a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a>, <a href="/termsandconditions.html" target="_blank" rel="noopener">Terms and Conditions</a>, and <a href="/communicationpolicy.html" target="_blank" rel="noopener">Communication Policy</a>, and consent to receive SMS notifications as outlined.</span>
+            </label>
+          </div>
+
+          <div class="submit-row">
+            <button type="submit" class="btn btn-primary" id="submitBtn">Claim my 100 free hangers</button>
+            <span style="font-size:13px; color:var(--muted);">No charge today. We'll follow up by email or text about your delivery choice.</span>
+          </div>
+          <div class="confirm" id="confirmMsg"></div>
+          <div class="form-error" id="errorMsg">Something went wrong submitting your claim. Please try again in a moment.</div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ================= HOW IT WORKS ================= -->
+<section class="section" style="background:var(--panel);">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">How it works</span>
+      <h2>From claim to doorstep</h2>
+    </div>
+    <div class="process-list">
+      <div class="process-item">
+        <div class="process-num">1</div>
+        <h4>Claim your 100</h4>
+        <p>Fill out the form above with your business details — takes about two minutes.</p>
+      </div>
+      <div class="process-item">
+        <div class="process-num">2</div>
+        <h4>We design it free</h4>
+        <p>Our team builds your ad for one of the free slots on the hanger, at no cost to you.</p>
+      </div>
+      <div class="process-item">
+        <div class="process-num">3</div>
+        <h4>You approve it</h4>
+        <p>We send a proof by email or text. Once you sign off, we print all 100.</p>
+      </div>
+      <div class="process-item">
+        <div class="process-num">4</div>
+        <h4>Hangers hit the doors</h4>
+        <p>Hand-delivered, shipped, or picked up in Vancouver, WA — however you chose.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section class="section" id="faq">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">FAQ</span>
+      <h2>What owners ask us</h2>
+    </div>
+    <div class="faq-list" id="faqList">
+      <div class="faq-item">
+        <button class="faq-q"><h4>Is this actually free?</h4><span class="faq-icon"></span></button>
+        <div class="faq-a"><p>Yes. 100 printed door hangers, a basic optimized ad design, basic QR tracking, and a working QR code that links to your site all cost you nothing. The only things you'd ever pay for are optional: hand-delivery, shipping, the premium design package, the QR web dashboard, or the website design package.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><h4>What's the catch on the door hanger itself?</h4><span class="faq-icon"></span></button>
+        <div class="faq-a"><p>At the free 100-hanger tier, each hanger has three ad slots per side. One slot is yours, free. The remaining slots are reserved by other small businesses in your area, which is how we're able to offer your slot at no cost.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><h4>Can I order more than 100 hangers?</h4><span class="faq-icon"></span></button>
+        <div class="faq-a"><p>Yes — you can step up to a 2,000-hanger run with your own dedicated ad space instead of a shared slot. Pick a size when you order: 1/3 page ($550), half page ($1,100), full page ($1,650), or both sides ($3,300). We currently only offer these two order sizes, 100 or 2,000.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><h4>What if I don't want us to deliver them?</h4><span class="faq-icon"></span></button>
+        <div class="faq-a"><p>No problem. Choose "I'll handle delivery" and pick either shipping ($14.99) or free pickup at our Vancouver, WA location, available Saturdays from 10am to 3pm.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><h4>What's the difference between basic and premium QR tracking?</h4><span class="faq-icon"></span></button>
+        <div class="faq-a"><p>Every hanger includes a QR code that sends customers to a URL you choose, at no cost. With Basic QR Code Tracking, we'll update you if you ask how your campaign is doing. The $79 QR Code Web Dashboard gives you a live online dashboard showing when, how many times, and who scans your ad, any time you want to check.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><h4>How long does the whole process take?</h4><span class="faq-icon"></span></button>
+        <div class="faq-a"><p>Design proofs typically go out within a few business days of your claim. Once you approve the design, printing and delivery usually take another 1–2 weeks depending on the delivery method you chose.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">Porchline</div>
+        <p class="footer-tag">100 free door hangers, designed for you — local advertising that lands right on the knob.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h5>Offer</h5>
+          <a href="#why">Why door hangers</a>
+          <a href="#results">Results</a>
+          <a href="#reviews">Reviews</a>
+          <a href="#build">Claim your 100</a>
+        </div>
+        <div class="footer-col">
+          <h5>Support</h5>
+          <a href="#faq">FAQ</a>
+          <a href="mailto:hello@porchline.example">Contact</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Porchline. All rights reserved.</span>
+      <span>Pickup available Saturdays, 10am–3pm, in Vancouver, WA.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ================= STICKY PRICE BAR ================= -->
+<div class="sticky-bar" id="stickyBar">
+  <div class="container sticky-bar-inner">
+    <div class="sb-info">
+      <span class="sb-label">Due today</span>
+      <span class="sb-price" id="stickyPrice">$0</span>
+      <span class="sb-recap" id="stickyRecap">100 free hangers · pick a delivery method</span>
+    </div>
+    <button type="submit" form="regForm" class="btn btn-primary sb-btn" id="stickySubmitBtn">Claim now</button>
+  </div>
+</div>
+
+<script>
+// ---------- nav toggle ----------
+const navToggle = document.getElementById('navToggle');
+const navLinks = document.getElementById('navLinks');
+navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+// ---------- state ----------
+const state = { delivery: null, self: null, design: false, qr: false, website: false, qty: 100, size: null, radius: 30 };
+
+const DELIVERY_HAND_PRICE = 22;
+const SELF_SHIP_PRICE = 14.99;
+const SELF_PICKUP_PRICE = 0;
+const DESIGN_PREMIUM_PRICE = 90;
+const QR_PREMIUM_PRICE = 79;
+const WEBSITE_PRICE = 149.99;
+
+const sizeMeta = {
+  third: { label: '1/3 Page', price: 550 },
+  half:  { label: 'Half Page', price: 1100 },
+  full:  { label: 'Full Page', price: 1650 },
+  both:  { label: 'Both Sides', price: 3300 }
+};
+
+function fmtMoney(n){
+  return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+// ---------- hanger visual ----------
+// At 100 hangers, the free tier always shows 3 equal slots (one yours,
+// two reserved by other businesses). At 2,000 hangers, the mine slot(s)
+// grow to match the chosen ad size — flex-grow ratios keep everything
+// in proportion without per-row magic numbers.
+function rowHTML(kind, label, sub, grow){
+  const style = grow ? ` style="flex-grow:${grow};"` : '';
+  if(kind === 'mine'){
+    return `<div class="row mine"${style}>
+      <div><div class="row-label">${label}</div>${sub ? `<div class="row-sub">${sub}</div>` : ''}</div>
+    </div>`;
+  }
+  return `<div class="row other"${style}><div class="row-label">${label}</div></div>`;
+}
+
+function genericBack(){
+  return rowHTML('other','Reserved · Local Business')
+       + rowHTML('other','Reserved · Local Business')
+       + rowHTML('other','Reserved · Local Business');
+}
+
+function facesForState(){
+  // Free 100-hanger tier: fixed 3-slot layout, one free slot is yours.
+  if(state.qty !== 2000){
+    return {
+      front: rowHTML('mine','Your Free Ad','1 of 3 slots')
+           + rowHTML('other','Reserved · Local Business')
+           + rowHTML('other','Reserved · Local Business'),
+      back: genericBack()
+    };
+  }
+  // 2,000-hanger tier: layout depends on the chosen ad size.
+  const size = state.size || 'third';
+  if(size === 'third'){
+    return {
+      front: rowHTML('mine','Your Ad','1/3 page')
+           + rowHTML('other','Reserved · Local Business')
+           + rowHTML('other','Reserved · Local Business'),
+      back: genericBack()
+    };
+  }
+  if(size === 'half'){
+    return {
+      front: rowHTML('mine','Your Ad','Half page — 2 slots', 2)
+           + rowHTML('other','Reserved · Local Business', null, 1),
+      back: genericBack()
+    };
+  }
+  if(size === 'full'){
+    return {
+      front: rowHTML('mine','Your Ad','Full page — exclusive', 3),
+      back: genericBack()
+    };
+  }
+  // both
+  return {
+    front: rowHTML('mine','Your Ad','Front — exclusive', 3),
+    back: rowHTML('mine','Your Ad','Back — exclusive', 3)
+  };
+}
+
+function buildHanger(frontEl, backEl){
+  const faces = facesForState();
+  frontEl.innerHTML = '<div class="hanger-hole"></div><div class="hanger-slots stagger">' + faces.front + '</div>';
+  backEl.innerHTML = '<div class="hanger-hole"></div><div class="hanger-slots stagger">' + faces.back + '</div>';
+}
+
+const heroFaceFrontEl = document.getElementById('heroFaceFront');
+const heroFaceBackEl = document.getElementById('heroFaceBack');
+buildHanger(heroFaceFrontEl, heroFaceBackEl);
+
+// ---------- flip button ----------
+// The flip is a plain crossfade between two stacked panels (see CSS) —
+// no 3D transforms involved, so it renders consistently everywhere.
+const heroPanelFront = document.getElementById('heroPanelFront');
+const heroPanelBack = document.getElementById('heroPanelBack');
+const heroFlipBtn = document.getElementById('heroFlipBtn');
+const heroFaceLabel = document.getElementById('heroFaceLabel');
+const heroStage = document.getElementById('heroStage');
+const heroFlipWrap = document.getElementById('heroFlipWrap');
+let heroFlipped = false;
+function setHeroFlipped(flipped){
+  if(flipped === heroFlipped) return;
+  heroFlipped = flipped;
+  heroPanelFront.classList.toggle('is-active', !heroFlipped);
+  heroPanelBack.classList.toggle('is-active', heroFlipped);
+  heroFlipBtn.classList.toggle('spun', heroFlipped);
+  heroFlipBtn.classList.add('has-flipped');
+  heroFaceLabel.textContent = heroFlipped ? 'Back side' : 'Front side';
+  heroFlipBtn.lastChild.textContent = heroFlipped ? ' View front' : ' View back';
+  heroStage.classList.add('flipped-once');
+}
+if(heroFlipBtn){
+  heroFlipBtn.addEventListener('click', () => setHeroFlipped(!heroFlipped));
+}
+// Swipe/drag left or right on the card itself also flips it — a small
+// touch-friendly bonus on top of the always-available button. Built on
+// the Pointer Events API only (no separate touch/mouse code paths);
+// if it's unsupported the button still works, so nothing is lost.
+if(heroFlipWrap && window.PointerEvent){
+  let dragStartX = null;
+  heroFlipWrap.addEventListener('pointerdown', (e) => { dragStartX = e.clientX; });
+  heroFlipWrap.addEventListener('pointerup', (e) => {
+    if(dragStartX === null) return;
+    const dx = e.clientX - dragStartX;
+    dragStartX = null;
+    if(Math.abs(dx) > 40) setHeroFlipped(!heroFlipped);
+  });
+  heroFlipWrap.addEventListener('pointercancel', () => { dragStartX = null; });
+}
+if('IntersectionObserver' in window && heroStage){
+  const rigObserver = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        heroStage.classList.add('in-view');
+        obs.disconnect();
+      }
+    });
+  }, { threshold: 0.3 });
+  rigObserver.observe(heroStage);
+}
+
+// ---------- quantity: only 100 (free) or 2,000 (dedicated ad space) ----------
+const qtyCards = document.querySelectorAll('#qtyChoices .choice-card');
+const sizeSubWrap = document.getElementById('sizeSubWrap');
+const sizeCards = document.querySelectorAll('#sizeChoices .choice-card');
+
+function setQty(q){
+  state.qty = q;
+  qtyCards.forEach(c => c.classList.toggle('active', Number(c.dataset.qty) === q));
+  if(q === 2000){
+    sizeSubWrap.style.display = 'block';
+  } else {
+    sizeSubWrap.style.display = 'none';
+    state.size = null;
+    sizeCards.forEach(c => c.classList.remove('active'));
+  }
+
+  // Hand-delivery and coverage radius are only part of the free
+  // 100-hanger tier. At 2,000 hangers, skip straight to ship/pickup.
+  const smallOrderDeliveryWrap = document.getElementById('smallOrderDeliveryWrap');
+  const largeOrderDeliveryNote = document.getElementById('largeOrderDeliveryNote');
+  if(q === 2000){
+    smallOrderDeliveryWrap.style.display = 'none';
+    largeOrderDeliveryNote.style.display = 'flex';
+    state.delivery = 'self';
+    deliveryCards.forEach(c => c.classList.remove('active'));
+    selfSubWrap.style.display = 'block';
+  } else {
+    smallOrderDeliveryWrap.style.display = 'block';
+    largeOrderDeliveryNote.style.display = 'none';
+    state.delivery = null;
+    state.self = null;
+    deliveryCards.forEach(c => c.classList.remove('active'));
+    selfCards.forEach(c => c.classList.remove('active'));
+    selfSubWrap.style.display = 'none';
+    pickupNote.style.display = 'none';
+  }
+
+  buildHanger(heroFaceFrontEl, heroFaceBackEl);
+  render();
+}
+qtyCards.forEach(c => c.addEventListener('click', () => setQty(Number(c.dataset.qty))));
+
+function setSize(s){
+  state.size = s;
+  sizeCards.forEach(c => c.classList.toggle('active', c.dataset.size === s));
+  buildHanger(heroFaceFrontEl, heroFaceBackEl);
+  render();
+}
+sizeCards.forEach(c => c.addEventListener('click', () => setSize(c.dataset.size)));
+
+// ---------- delivery choice ----------
+const deliveryCards = document.querySelectorAll('#deliveryChoices .choice-card');
+const selfSubWrap = document.getElementById('selfSubWrap');
+const selfCards = document.querySelectorAll('#selfChoices .choice-card');
+const pickupNote = document.getElementById('pickupNote');
+
+function setDelivery(d){
+  state.delivery = d;
+  deliveryCards.forEach(c => c.classList.toggle('active', c.dataset.delivery === d));
+  if(d === 'self'){
+    selfSubWrap.style.display = 'block';
+  } else {
+    selfSubWrap.style.display = 'none';
+    state.self = null;
+    selfCards.forEach(c => c.classList.remove('active'));
+    pickupNote.style.display = 'none';
+  }
+  render();
+}
+deliveryCards.forEach(c => c.addEventListener('click', () => setDelivery(c.dataset.delivery)));
+
+function setSelf(s){
+  state.self = s;
+  selfCards.forEach(c => c.classList.toggle('active', c.dataset.self === s));
+  pickupNote.style.display = (s === 'pickup') ? 'flex' : 'none';
+  render();
+}
+selfCards.forEach(c => c.addEventListener('click', () => setSelf(c.dataset.self)));
+
+// ---------- coverage radius (only 30 mi is available right now) ----------
+const radiusChips = document.querySelectorAll('.radius-chip');
+const radiusNotice = document.getElementById('radiusNotice');
+const radiusNoticeText = document.getElementById('radiusNoticeText');
+radiusChips.forEach(chip => {
+  chip.addEventListener('click', () => {
+    const r = chip.dataset.radius;
+    if(r === '30'){
+      state.radius = 30;
+      radiusChips.forEach(c => c.classList.toggle('active', c === chip));
+      radiusNotice.style.display = 'none';
+    } else {
+      radiusNoticeText.textContent = `The ${r}-mile radius isn't available in your city yet — we've kept your coverage at 30 miles.`;
+      radiusNotice.style.display = 'flex';
+    }
+    render();
+  });
+});
+
+// ---------- optional extras: premium design, QR web dashboard, and the
+// website package are independent toggles. Basic design and basic QR
+// tracking are always-included static rows shown alongside them. ----------
+const premiumDesignToggle = document.getElementById('premiumDesignToggle');
+premiumDesignToggle.addEventListener('click', () => {
+  state.design = !state.design;
+  premiumDesignToggle.classList.toggle('active', state.design);
+  render();
+});
+
+const qrDashboardToggle = document.getElementById('qrDashboardToggle');
+qrDashboardToggle.addEventListener('click', () => {
+  state.qr = !state.qr;
+  qrDashboardToggle.classList.toggle('active', state.qr);
+  render();
+});
+
+const websiteToggle = document.getElementById('websiteToggle');
+websiteToggle.addEventListener('click', () => {
+  state.website = !state.website;
+  websiteToggle.classList.toggle('active', state.website);
+  render();
+});
+
+// ---------- price + summary ----------
+function deliveryPriceAndLabel(){
+  if(state.delivery === 'hand'){
+    return { price: DELIVERY_HAND_PRICE, label: 'We hand-deliver', note: '(within your coverage radius)' };
+  }
+  if(state.delivery === 'self' && state.self === 'ship'){
+    return { price: SELF_SHIP_PRICE, label: 'Shipped to you', note: '(standard shipping)' };
+  }
+  if(state.delivery === 'self' && state.self === 'pickup'){
+    return { price: SELF_PICKUP_PRICE, label: 'Free — self pickup', note: '(Saturdays, 10am–3pm, Vancouver, WA)' };
+  }
+  return { price: null, label: null, note: '(select an option above)' };
+}
+
+function render(){
+  const d = deliveryPriceAndLabel();
+  const pbDelivery = document.getElementById('pbDelivery');
+  const pbDeliveryNote = document.getElementById('pbDeliveryNote');
+  pbDeliveryNote.textContent = d.note;
+
+  let deliveryCost = 0;
+  if(d.price === null){
+    pbDelivery.textContent = '—';
+    pbDelivery.classList.remove('pb-free');
+  } else if(d.price === 0){
+    pbDelivery.textContent = 'FREE';
+    pbDelivery.classList.add('pb-free');
+    deliveryCost = 0;
+  } else {
+    pbDelivery.textContent = fmtMoney(d.price);
+    pbDelivery.classList.remove('pb-free');
+    deliveryCost = d.price;
+  }
+
+  const pbDesign = document.getElementById('pbDesign');
+  const designCost = state.design ? DESIGN_PREMIUM_PRICE : 0;
+  pbDesign.textContent = state.design ? `Premium — ${fmtMoney(DESIGN_PREMIUM_PRICE)}` : 'Basic — Included';
+
+  const pbQr = document.getElementById('pbQr');
+  const qrCost = state.qr ? QR_PREMIUM_PRICE : 0;
+  pbQr.textContent = state.qr ? `Web dashboard — ${fmtMoney(QR_PREMIUM_PRICE)}` : 'Basic — Included';
+
+  const pbWebsite = document.getElementById('pbWebsite');
+  pbWebsite.textContent = state.website ? fmtMoney(WEBSITE_PRICE) : 'Not added';
+
+  const pbQtyLabel = document.getElementById('pbQtyLabel');
+  const pbQtyValue = document.getElementById('pbQtyValue');
+  const pbSizeRow = document.getElementById('pbSizeRow');
+  const pbSizeLabel = document.getElementById('pbSizeLabel');
+  const pbSizeValue = document.getElementById('pbSizeValue');
+
+  let sizeCost = 0;
+  let sizeCaption = '';
+  if(state.qty === 2000){
+    pbQtyLabel.textContent = '2,000 door hangers';
+    pbQtyValue.textContent = 'Printing included';
+    pbQtyValue.classList.remove('pb-free');
+    pbSizeRow.style.display = 'flex';
+    if(state.size && sizeMeta[state.size]){
+      const m = sizeMeta[state.size];
+      pbSizeLabel.textContent = `Ad slot size — ${m.label}`;
+      pbSizeValue.textContent = fmtMoney(m.price);
+      sizeCost = m.price;
+      sizeCaption = ` · ${m.label} ad slot`;
+    } else {
+      pbSizeLabel.textContent = 'Ad slot size';
+      pbSizeValue.textContent = 'Select a size below';
+    }
+  } else {
+    pbQtyLabel.textContent = '100 door hangers';
+    pbQtyValue.textContent = 'FREE';
+    pbQtyValue.classList.add('pb-free');
+    pbSizeRow.style.display = 'none';
+  }
+
+  document.getElementById('pbRadiusCaption').textContent =
+    `${state.qty.toLocaleString('en-US')} door hangers${sizeCaption}${state.qty === 2000 ? '' : ` · ${state.radius} mi radius`}`;
+
+  const total = sizeCost + deliveryCost + designCost + qrCost + (state.website ? WEBSITE_PRICE : 0);
+  document.getElementById('pbYourPrice').textContent = fmtMoney(total);
+
+  const recapParts = [state.qty === 2000 ? '2,000 hangers' : '100 free hangers'];
+  if(state.qty === 2000 && state.size && sizeMeta[state.size]) recapParts.push(sizeMeta[state.size].label);
+  recapParts.push(d.label ? d.label : 'pick a delivery method');
+  if(state.design) recapParts.push('Premium design');
+  if(state.qr) recapParts.push('QR dashboard');
+  if(state.website) recapParts.push('Website design');
+  document.getElementById('stickyRecap').textContent = recapParts.join(' · ');
+  document.getElementById('stickyPrice').textContent = '$' + total.toFixed(2).replace(/\.00$/, '');
+}
+render();
+
+// ---------- sticky bar visibility ----------
+const stickyBar = document.getElementById('stickyBar');
+const buildSummaryEl = document.getElementById('buildSummary');
+if('IntersectionObserver' in window && stickyBar && buildSummaryEl){
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      stickyBar.classList.toggle('sticky-bar--hidden', entry.isIntersecting);
+    });
+  }, { threshold: 0.35 });
+  observer.observe(buildSummaryEl);
+}
+
+// ---------- carousels (results + reviews) ----------
+// Slides whose image is missing are dropped; a section with no images left hides itself.
+document.querySelectorAll('[data-carousel]').forEach(car => {
+  const track = car.querySelector('.car-track');
+  const prev = car.querySelector('.car-btn.prev');
+  const next = car.querySelector('.car-btn.next');
+  const section = car.closest('section');
+
+  function stepSize(){
+    const s = track.querySelector('.car-slide');
+    const gap = parseFloat(getComputedStyle(track).columnGap) || 18;
+    return s ? s.getBoundingClientRect().width + gap : 240;
+  }
+  function update(){
+    prev.disabled = track.scrollLeft <= 2;
+    next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
+  }
+  function dropSlide(img){
+    const slide = img.closest('.car-slide');
+    if(slide) slide.remove();
+    if(!track.querySelector('.car-slide') && section) section.style.display = 'none';
+    update();
+  }
+  track.querySelectorAll('img').forEach(img => {
+    img.addEventListener('error', () => dropSlide(img));
+    if(img.complete && img.naturalWidth === 0) dropSlide(img);
+  });
+  prev.addEventListener('click', () => track.scrollBy({ left: -stepSize(), behavior: 'smooth' }));
+  next.addEventListener('click', () => track.scrollBy({ left: stepSize(), behavior: 'smooth' }));
+  track.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+
+  // gentle autoplay: only while visible, paused on hover/focus/touch, off for reduced-motion
+  const interval = Number(car.dataset.autoplay) || 0;
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(interval && !reduce){
+    let paused = false, visible = false;
+    ['mouseenter','focusin','touchstart'].forEach(e => car.addEventListener(e, () => { paused = true; }, { passive: true }));
+    ['mouseleave','focusout'].forEach(e => car.addEventListener(e, () => { paused = false; }));
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(es => es.forEach(en => { visible = en.isIntersecting; }), { threshold: 0.4 }).observe(car);
+    }
+    setInterval(() => {
+      if(paused || !visible || document.hidden) return;
+      if(next.disabled) track.scrollTo({ left: 0, behavior: 'smooth' });
+      else next.click();
+    }, interval);
+  }
+});
+
+// ---------- design file uploads ----------
+// Same limits and payload shape ({name, type, data: base64}) the existing sites use.
+const MAX_FILES = 5;
+const MAX_FILE_BYTES = 8 * 1024 * 1024;
+const ALLOWED_FILE_TYPES = ['image/png', 'image/jpeg', 'image/webp', 'image/gif', 'image/svg+xml', 'application/pdf'];
+const uploadZone = document.getElementById('uploadZone');
+const designFilesInput = document.getElementById('designFiles');
+const uploadFileList = document.getElementById('uploadFileList');
+const uploadProblem = document.getElementById('uploadProblem');
+let selectedFiles = [];
+
+function formatBytes(n){
+  return n > 1024 * 1024 ? (n / (1024 * 1024)).toFixed(1) + 'MB' : Math.max(1, Math.round(n / 1024)) + 'KB';
+}
+function fileExtLabel(f){
+  const fromName = (f.name.split('.').pop() || '').toUpperCase();
+  return fromName.length <= 5 ? fromName : ((f.type.split('/')[1] || 'FILE').toUpperCase());
+}
+function renderFileList(){
+  uploadFileList.textContent = '';
+  selectedFiles.forEach((f, i) => {
+    const row = document.createElement('div'); row.className = 'upload-file-row';
+    const ext = document.createElement('span'); ext.className = 'upload-file-ext'; ext.textContent = fileExtLabel(f);
+    const name = document.createElement('span'); name.className = 'upload-file-name'; name.textContent = f.name;
+    const size = document.createElement('span'); size.className = 'upload-file-size'; size.textContent = formatBytes(f.size);
+    const rm = document.createElement('button'); rm.type = 'button'; rm.className = 'upload-file-remove'; rm.dataset.index = i;
+    rm.setAttribute('aria-label', 'Remove ' + f.name); rm.textContent = '×';
+    row.append(ext, name, size, rm);
+    uploadFileList.appendChild(row);
+  });
+  uploadZone.classList.toggle('maxed', selectedFiles.length >= MAX_FILES);
+  uploadZone.setAttribute('aria-disabled', selectedFiles.length >= MAX_FILES ? 'true' : 'false');
+}
+function addFiles(incoming){
+  const problems = [];
+  for(const f of incoming){
+    if(selectedFiles.length >= MAX_FILES){ problems.push(`Only the first ${MAX_FILES} files are kept.`); break; }
+    if(selectedFiles.some(s => s.name === f.name && s.size === f.size)) continue;
+    if(!ALLOWED_FILE_TYPES.includes(f.type)){ problems.push(`"${f.name}" skipped — unsupported file type.`); continue; }
+    if(f.size > MAX_FILE_BYTES){ problems.push(`"${f.name}" skipped — over 8MB.`); continue; }
+    selectedFiles.push(f);
+  }
+  uploadProblem.textContent = problems.join(' ');
+  renderFileList();
+}
+uploadFileList.addEventListener('click', e => {
+  const btn = e.target.closest('.upload-file-remove');
+  if(!btn) return;
+  selectedFiles.splice(Number(btn.dataset.index), 1);
+  renderFileList();
+});
+uploadZone.addEventListener('click', () => { if(selectedFiles.length < MAX_FILES) designFilesInput.click(); });
+uploadZone.addEventListener('keydown', e => {
+  if((e.key === 'Enter' || e.key === ' ') && selectedFiles.length < MAX_FILES){ e.preventDefault(); designFilesInput.click(); }
+});
+['dragenter','dragover'].forEach(evt => uploadZone.addEventListener(evt, e => {
+  e.preventDefault();
+  if(selectedFiles.length < MAX_FILES) uploadZone.classList.add('dragover');
+}));
+['dragleave','dragend'].forEach(evt => uploadZone.addEventListener(evt, () => uploadZone.classList.remove('dragover')));
+uploadZone.addEventListener('drop', e => {
+  e.preventDefault();
+  uploadZone.classList.remove('dragover');
+  addFiles(Array.from((e.dataTransfer && e.dataTransfer.files) || []));
+});
+designFilesInput.addEventListener('change', () => {
+  addFiles(Array.from(designFilesInput.files || []));
+  designFilesInput.value = '';
+});
+function fileToBase64(file){
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result).split(',')[1]);
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
+  });
+}
+async function buildFilesPayload(){
+  return Promise.all(selectedFiles.map(async f => ({ name: f.name, type: f.type, data: await fileToBase64(f) })));
+}
+
+// ---------- form submit: posts to the Porchline Cloudflare Worker, which writes to Twenty CRM ----------
+// The Worker recomputes the price server-side from qty / size / delivery / extras,
+// so nothing the browser sends can change what an order is priced at.
+const WORKER_URL = 'https://broken-grass-80ae.usedbuy.workers.dev/api/lead';
+const SOURCE = window.location.hostname || 'porchline-junk-removal';
+
+function fieldValue(id){
+  const el = document.getElementById(id);
+  return el ? el.value.trim() : '';
+}
+function showError(msg){
+  const errorMsg = document.getElementById('errorMsg');
+  errorMsg.textContent = msg;
+  errorMsg.classList.add('show');
+  errorMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+document.getElementById('regForm').addEventListener('submit', async function(e){
+  e.preventDefault();
+
+  const errorMsg = document.getElementById('errorMsg');
+  const confirmMsg = document.getElementById('confirmMsg');
+  errorMsg.classList.remove('show');
+  confirmMsg.classList.remove('show');
+
+  if(!e.target.checkValidity()){
+    e.target.reportValidity();
+    return;
+  }
+  if(state.qty === 2000 && !state.size){
+    showError('Please choose an ad slot size for your 2,000-hanger order.');
+    return;
+  }
+  if(!state.delivery || (state.delivery === 'self' && !state.self)){
+    showError('Please choose a delivery method before submitting your order.');
+    return;
+  }
+
+  const method = state.delivery === 'hand' ? 'hand' : state.self;   // 'hand' | 'ship' | 'pickup'
+  const payload = {
+    policiesAgreed: true,
+    policiesAgreedAt: new Date().toISOString(),
+    fullName: fieldValue('fullName'),
+    jobTitle: fieldValue('title'),
+    phone: fieldValue('phone'),
+    email: fieldValue('email'),
+    businessName: fieldValue('bizName'),
+    businessWebsite: fieldValue('bizWebsite') || undefined,
+    businessPhone: fieldValue('bizPhone'),
+    businessEmail: fieldValue('bizEmail'),
+    businessStreet: fieldValue('bizStreet'),
+    businessCity: fieldValue('bizCity'),
+    businessState: fieldValue('bizState').toUpperCase(),
+    businessZip: fieldValue('bizZip'),
+    industry: fieldValue('industry'),
+    qty: state.qty,
+    size: state.qty === 2000 ? state.size : 'free',
+    delivery: method,
+    radius: method === 'hand' ? state.radius : 0,
+    extras: { premiumDesign: state.design, qrDashboard: state.qr, website: state.website },
+    qrForwardUrl: fieldValue('forwardingUrl') || undefined,
+    designNotes: fieldValue('designNotes') || undefined,
+    source: SOURCE
+  };
+
+  const submitButtons = [document.getElementById('submitBtn'), document.getElementById('stickySubmitBtn')];
+  const setButtons = (text, disabled) => submitButtons.forEach(b => { if(b){ if(!b.dataset.originalText) b.dataset.originalText = b.textContent; b.disabled = disabled; b.textContent = text; }});
+  setButtons('Submitting…', true);
+
+  try {
+    if(selectedFiles.length){
+      setButtons('Uploading files…', true);
+      payload.files = await buildFilesPayload();
+      setButtons('Submitting…', true);
+    }
+    const res = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json().catch(() => ({}));
+    if(!res.ok || !data.ok){
+      throw new Error((data && data.error && (typeof data.error === 'string' ? data.error : JSON.stringify(data.error))) || ('Request failed with status ' + res.status));
+    }
+
+    const sizeNote = (state.qty === 2000 && state.size && sizeMeta[state.size]) ? `, your ${sizeMeta[state.size].label} ad slot` : '';
+    confirmMsg.textContent = '';
+    confirmMsg.append(
+      state.qty === 2000 ? 'Order received — thanks! Your reference number is ' : 'Claim received — thanks! Your reference number is ',
+      Object.assign(document.createElement('span'), { className: 'ref', textContent: data.referenceId }),
+      `. We'll email your free design proof and your QR code, and follow up about${sizeNote}${method === 'hand' ? ', hand-delivery' : (method === 'ship' ? ', shipping' : ', pickup')}${state.design ? ', your premium design' : ''}${state.qr ? ', your QR web dashboard' : ''}${state.website ? ', and your website design package' : ''}.`
+    );
+    confirmMsg.classList.add('show');
+    confirmMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setButtons('Order placed', true);   // stays disabled so the same order can't be submitted twice
+  } catch (err) {
+    console.error('Order submit failed:', err);
+    showError('Something went wrong submitting your claim. Please check your details and try again in a moment.');
+    setButtons(submitButtons[0].dataset.originalText, false);
+  }
+});
+
+// ---------- faq ----------
+document.querySelectorAll('.faq-item').forEach(item => {
+  const q = item.querySelector('.faq-q');
+  const a = item.querySelector('.faq-a');
+  q.addEventListener('click', () => {
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(other => {
+      other.classList.remove('open');
+      other.querySelector('.faq-a').style.maxHeight = null;
+    });
+    if(!isOpen){
+      item.classList.add('open');
+      a.style.maxHeight = a.scrollHeight + 'px';
+    }
+  });
+});
+</script>
+</body>
+</html>
