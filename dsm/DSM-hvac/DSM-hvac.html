@@ -328,6 +328,68 @@
   .submit-row{ margin-top:26px; }
   .submit-row .btn-primary{ width:100%; padding:16px; }
   .fine{ font-size:12px; color:var(--ink-soft); margin-top:10px; text-align:center; }
+  .consent-group{ display:flex; flex-direction:column; gap:10px; margin-bottom:16px; }
+  .consent-check{ display:flex; align-items:flex-start; gap:9px; cursor:pointer; font-size:12.5px; line-height:1.45; color:var(--ink-soft); }
+  .consent-check input[type="checkbox"]{ width:17px; height:17px; margin-top:1px; accent-color:var(--green); flex-shrink:0; cursor:pointer; }
+  .consent-check a{ color:var(--ink); font-weight:700; text-decoration:underline; }
+  .consent-check a:hover{ color:var(--green-dark); }
+
+  /* ---------- Validation highlight ----------
+     One alert color, reused everywhere something still needs the visitor's
+     attention (a blank required field OR the unchecked consent box), so the
+     two read as the same kind of problem at a glance. */
+  :root{ --alert:#FF4D4D; --alert-tint:rgba(255,77,77,0.12); }
+  .field.field-invalid label{ color:var(--alert); }
+  .field.field-invalid input,
+  .field.field-invalid select{
+    border-color:var(--alert); background:var(--alert-tint);
+    box-shadow:0 0 0 1px var(--alert);
+  }
+  .consent-group.field-invalid .consent-check{ color:var(--alert); }
+  .consent-group.field-invalid{
+    border:1px solid var(--alert); background:var(--alert-tint);
+    border-radius:6px; padding:10px 24px; margin-left:-24px; margin-right:-24px;
+  }
+  .consent-group.field-invalid .consent-check input[type="checkbox"]{
+    outline:2px solid var(--alert); outline-offset:2px;
+  }
+  .form-alert{
+    display:none; align-items:center; gap:8px; font-size:13px; font-weight:600;
+    color:var(--alert); background:var(--alert-tint); border:1px solid var(--alert);
+    border-radius:6px; padding:10px 12px; margin-bottom:16px;
+  }
+  .form-alert.show{ display:flex; }
+
+  /* ---------- File upload (logo / reference photos) ---------- */
+  .dropzone{
+    border:1.5px dashed var(--line); border-radius:6px; padding:20px 16px;
+    text-align:center; cursor:pointer; background:var(--paper-dim);
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .dropzone:hover, .dropzone:focus-visible{ border-color:var(--green); outline:none; }
+  .dropzone.dragover{ border-color:var(--green); background:var(--green-tint); }
+  .dropzone.disabled{ opacity:0.5; cursor:not-allowed; }
+  .dropzone-text{ font-size:13px; color:var(--ink-soft); }
+  .dropzone-text strong{ color:var(--ink); }
+  .dropzone-text .hint{ display:block; margin-top:4px; font-size:11.5px; }
+  .file-error{ display:none; font-size:12px; color:var(--alert); margin-top:8px; }
+  .file-error.show{ display:block; }
+  .file-list{ margin-top:10px; display:flex; flex-direction:column; gap:6px; }
+  .file-row{
+    display:flex; align-items:center; gap:10px; background:var(--paper-dim);
+    border:1px solid var(--line); border-radius:6px; padding:8px 10px;
+  }
+  .file-ext-badge{
+    font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:700; text-transform:uppercase;
+    background:var(--green); color:#fff; padding:2px 6px; border-radius:4px; flex-shrink:0;
+  }
+  .file-name{ flex:1; min-width:0; font-size:13px; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .file-size{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft); flex-shrink:0; }
+  .file-remove{
+    background:none; border:none; color:var(--ink-soft); cursor:pointer; font-size:17px; line-height:1;
+    padding:2px 5px; flex-shrink:0; border-radius:4px;
+  }
+  .file-remove:hover{ color:var(--alert); }
 
   .success-card{ background:var(--green-tint); border:1.5px solid var(--green); border-radius:6px; padding:26px; margin-top:20px; }
   .success-card h4{ font-family:'Chakra Petch',sans-serif; font-size:20px; text-transform:uppercase; color:var(--green-dark); margin-bottom:10px; }
@@ -377,6 +439,30 @@
   .why-card img{ width:52px; height:52px; margin-bottom:16px; border-radius:12px; }
   .why-card h3{ font-family:'Inter',sans-serif; font-size:16.5px; font-weight:800; color:var(--ink); margin-bottom:8px; }
   .why-card p{ font-size:14px; }
+
+  /* ---------- PROJECTED ROI CALCULATOR ---------- */
+  .roi-card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius-lg); padding:32px; max-width:920px; margin:0 auto; }
+  .roi-grid{ display:grid; grid-template-columns:1fr 1fr; gap:32px 40px; margin-bottom:8px; }
+  @media (max-width:720px){ .roi-grid{ grid-template-columns:1fr; gap:28px; } }
+  .roi-input-head{ display:flex; align-items:center; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
+  .roi-step-badge{
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:700; letter-spacing:.04em;
+    text-transform:uppercase; background:var(--green); color:#fff; padding:3px 8px; border-radius:4px; flex-shrink:0;
+  }
+  .roi-input-head h3{ font-family:'Inter',sans-serif; font-weight:800; font-size:16px; margin:0; }
+  .roi-readout{ margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:600; color:var(--green-dark); }
+  .roi-slider-wrap input[type="range"]{ width:100%; display:block; accent-color:var(--green); cursor:pointer; }
+  .roi-slider-minmax{ display:flex; justify-content:space-between; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-soft); margin-top:2px; }
+  .roi-size-row{ display:flex; gap:8px; flex-wrap:wrap; }
+  .roi-size-btn{
+    background:var(--paper-dim); border:1.5px solid var(--line); border-radius:5px; padding:10px 16px;
+    font-family:'Inter',sans-serif; font-weight:700; font-size:13.5px; color:var(--ink); cursor:pointer;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .roi-size-btn:hover{ border-color:var(--green); }
+  .roi-size-btn.active{ border-color:var(--green); background:var(--green-tint); color:var(--green-dark); }
+  .roi-results{ margin-top:22px; padding-top:18px; border-top:1px dashed var(--line); }
+  .roi-disclaimer{ margin-top:14px; font-size:11.5px; color:var(--ink-soft); text-align:center; }
 </style>
 </head>
 <body>
@@ -399,6 +485,7 @@
     <button class="burger" id="burger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
     <div class="nav-links" id="navLinks">
       <a href="#builder">How it works</a>
+      <a href="#roi">ROI</a>
       <a href="#pricing">Pricing</a>
       <a href="#faq">FAQ</a>
     </div>
@@ -483,14 +570,86 @@
         </div>
         <div class="why-card">
           <img src="images/icon-hvac.png" alt="">
-          <h3>An emergency-driven purchase</h3>
-          <p>When a system dies, homeowners call whoever&#x27;s stuck to their door — not whoever ranks highest online that day.</p>
+          <h3>A big-ticket, time-pressured decision</h3>
+          <p>A dead system forces a decision fast, but it’s still a $7,000+ purchase — a hanger already in hand skips the scramble to find three quotes overnight.</p>
         </div>
         <div class="why-card">
           <img src="images/icon-hvac.png" alt="">
-          <h3>Feels like a neighbor&#x27;s referral</h3>
-          <p>A local, printed piece builds more trust than a random online ad for a repair this urgent.</p>
+          <h3>One repair becomes a maintenance customer</h3>
+          <p>A single emergency call is the easiest way to land a customer who calls you again for every tune-up after.</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PROJECTED ROI ================= -->
+  <section class="roi-section" id="roi">
+    <div class="wrap">
+      <div class="why-head">
+        <span class="eyebrow">Projected ROI</span>
+        <h2>See what your campaign could earn.</h2>
+        <p>Set your own numbers and watch the math update. The campaign cost is our actual order price for the size and quantity you pick.</p>
+      </div>
+
+      <div class="roi-card">
+        <div class="roi-grid">
+          <div class="roi-input">
+            <div class="roi-input-head">
+              <span class="roi-step-badge">Step 1</span>
+              <h3>Conversion rate</h3>
+              <span class="roi-readout" id="roiConvReadout">1.0%</span>
+            </div>
+            <div class="roi-slider-wrap">
+              <input type="range" id="roiConv" min="0" max="20" step="0.1" value="1" aria-label="Conversion rate percent">
+              <div class="roi-slider-minmax"><span>0%</span><span>20%</span></div>
+            </div>
+          </div>
+
+          <div class="roi-input">
+            <div class="roi-input-head">
+              <span class="roi-step-badge">Step 2</span>
+              <h3>Avg. job invoice</h3>
+              <span class="roi-readout" id="roiInvoiceReadout">$8,500</span>
+            </div>
+            <div class="roi-slider-wrap">
+              <input type="range" id="roiInvoice" min="0" max="17000" step="50" value="8500" aria-label="Average job invoice dollars">
+              <div class="roi-slider-minmax"><span>$0</span><span>$17,000</span></div>
+            </div>
+          </div>
+
+          <div class="roi-input">
+            <div class="roi-input-head">
+              <span class="roi-step-badge">Step 3</span>
+              <h3>Hangers mailed</h3>
+              <span class="roi-readout" id="roiQtyReadout">5,000</span>
+            </div>
+            <div class="roi-slider-wrap">
+              <input type="range" id="roiQty" min="2000" max="20000" step="500" value="5000" aria-label="Door hangers mailed">
+              <div class="roi-slider-minmax"><span>2,000</span><span>20,000</span></div>
+            </div>
+          </div>
+
+          <div class="roi-input">
+            <div class="roi-input-head">
+              <span class="roi-step-badge">Step 4</span>
+              <h3>Ad size</h3>
+            </div>
+            <div class="roi-size-row" aria-label="Ad size for ROI estimate">
+              <button type="button" class="roi-size-btn active" data-size="third" aria-pressed="true">Third page</button>
+              <button type="button" class="roi-size-btn" data-size="half" aria-pressed="false">Half page</button>
+              <button type="button" class="roi-size-btn" data-size="full" aria-pressed="false">Full page</button>
+              <button type="button" class="roi-size-btn" data-size="both" aria-pressed="false">Both sides</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="roi-results">
+          <div class="price-row"><span class="k">Booked jobs (projected)</span><span class="v" id="roiLeads">—</span></div>
+          <div class="price-row"><span class="k">Projected earnings</span><span class="v" id="roiEarnings">—</span></div>
+          <div class="price-row"><span class="k">Campaign cost</span><span class="v" id="roiExpense">—</span></div>
+          <div class="price-total"><span class="k">Projected return</span><span class="v" id="roiReturn">—</span></div>
+        </div>
+        <p class="roi-disclaimer">Estimate only, based on the numbers above — not a guarantee. "Booked jobs" means signed, paid work, not calls, scans, or leads.</p>
       </div>
     </div>
   </section>
@@ -500,8 +659,8 @@
     <div class="wrap">
       <div style="text-align:center;max-width:600px;margin:0 auto 48px;">
         <span class="eyebrow">Real placements</span>
-        <h2 style="font-size:clamp(28px,4vw,40px);margin:14px 0 12px;">Door hangers deliver results!</h2>
-        <p class="lede">Every campaign is professionally designed, printed, and hand-delivered door to door — here's a look at the range of layouts we run.</p>
+        <h2 style="font-size:clamp(28px,4vw,40px);margin:14px 0 12px;">This is what shows up at their door.</h2>
+        <p class="lede">Every campaign is designed, printed, and hand-delivered door to door — here's the range of layouts we run.</p>
       </div>
       <div class="slideshow-frame" role="img" aria-label="Rotating preview of sample door hanger ad layouts">
         <!--
@@ -550,10 +709,10 @@
       <div class="builder-head">
         <span class="eyebrow">Build your campaign</span>
         <h2>Fill this out once. We take it from here.</h2>
-        <p>Every choice below updates the door hanger and the price on the right, live. Submitting places your order — no payment happens on this site; we'll follow up by email or text once it's ready to pay.</p>
+        <p>Every choice updates your door hanger and price live. Submit, and you pay nothing today — we send proofs first, then a payment link once you approve your design.</p>
       </div>
 
-      <form class="builder-layout" id="builderForm">
+      <form class="builder-layout" id="builderForm" novalidate>
         <div class="builder-fields">
 
           <div class="field-group">
@@ -562,7 +721,7 @@
             <p class="sub">Who we'll send proofs and updates to.</p>
             <div class="grid-2">
               <div class="field"><label for="fullName">Full name</label><input required type="text" id="fullName" placeholder="Walter Grimes"></div>
-              <div class="field"><label for="title">Job Title</label><input required type="text" id="title" placeholder="Owner"></div>
+              <div class="field"><label for="title">Job title</label><input required type="text" id="title" placeholder="Owner"></div>
             </div>
             <div class="grid-2">
               <div class="field"><label for="email">Email</label><input required type="email" id="email" placeholder="jordan@yourbusiness.com"></div>
@@ -608,6 +767,18 @@
               <div class="field"><label for="bizZip">ZIP</label><input required type="text" id="bizZip" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="45501"></div>
             </div>
             <div class="field"><label for="designNotes">Notes for the design team <span style="font-weight:400;color:var(--ink-soft);">(optional)</span></label><input type="text" id="designNotes" placeholder="Colors, logo details, anything we should know"></div>
+            <div class="field">
+              <label for="fileInput">Logo or reference photos <span style="font-weight:400;color:var(--ink-soft);">(optional)</span></label>
+              <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="Upload logo or reference photos">
+                <input type="file" id="fileInput" multiple accept=".png,.jpg,.jpeg,.webp,.gif,.svg,.pdf,image/png,image/jpeg,image/webp,image/gif,image/svg+xml,application/pdf" hidden>
+                <div class="dropzone-text">
+                  <strong>Click to upload</strong> or drag files here
+                  <span class="hint">PNG, JPG, WEBP, GIF, SVG, or PDF — up to 5 files, 8MB each</span>
+                </div>
+              </div>
+              <p class="file-error" id="fileError"></p>
+              <div class="file-list" id="fileList"></div>
+            </div>
           </div>
 
           <div class="field-group">
@@ -663,7 +834,7 @@
           <div class="field-group">
             <span class="step-num">5</span>
             <h3>Your quantity</h3>
-            <p class="sub">Only 2,000 is currently available for your city/state.</p>
+            <p class="sub">Only 2,000 hangers are currently available in your city/state.</p>
             <div class="qty-chips">
               <button type="button" class="chip active" data-qty="2000">2,000</button>
               <button type="button" class="chip" data-qty="5000" disabled>5,000</button>
@@ -774,6 +945,13 @@
           </div>
 
           <div class="submit-row">
+            <div id="formAlert" class="form-alert" role="alert">⚠ Please complete the highlighted field(s) below and confirm the checkbox before placing your order.</div>
+            <div class="consent-group" id="consentGroup">
+              <label class="consent-check">
+                <input type="checkbox" id="agreePolicies" required>
+                <span>I reviewed and agree with the <a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a>, <a href="/termsandconditions.html" target="_blank" rel="noopener">Terms and Conditions</a>, and <a href="/communicationpolicy.html" target="_blank" rel="noopener">Communication Policy</a>, and consent to receive SMS notifications as outlined.</span>
+              </label>
+            </div>
             <button type="submit" class="btn-primary">Place order</button>
             <p class="fine">This places your order — no payment here. We'll send a payment link by email or text once your design is approved.</p>
           </div>
@@ -789,7 +967,7 @@
 
       <div class="error-card hidden" id="errorCard">
         <h4>Something went wrong</h4>
-        <p>We couldn't submit your order just now. Please try again in a moment — if it keeps happening, contact us at <a href="mailto:hello@directtodoormarketing.com">hello@directtodoormarketing.com</a>.</p>
+        <p>We couldn't submit your order just now. Please try again in a moment — if it keeps happening, contact us at <a href="mailto:hello@doorstepmarketing.com">hello@doorstepmarketing.com</a>.</p>
       </div>
 
     </div>
@@ -829,7 +1007,7 @@
         </details>
         <details>
           <summary>Got more questions?<span class="plus">+</span></summary>
-          <p>If you got more questions, chat with our AI powered virtual assistant.</p>
+          <p>If you have more questions, chat with our AI-powered virtual assistant.</p>
           <div class="chatbot-embed">
             <!-- Placeholder — replace this iframe's src with your chatbot
                  provider's real embed URL (Intercom, Voiceflow, Chatbase,
@@ -1018,16 +1196,194 @@
   const submitBtn = document.querySelector('#builderForm button[type="submit"]');
   const successCard = document.getElementById('successCard');
   const errorCard = document.getElementById('errorCard');
+  const builderForm = document.getElementById('builderForm');
+  const formAlert = document.getElementById('formAlert');
+  const consentGroup = document.getElementById('consentGroup');
+  const agreePolicies = document.getElementById('agreePolicies');
 
-  document.getElementById('builderForm').addEventListener('submit', async (e) => {
+  // ---- Logo / reference photo upload (drag-and-drop) ----
+  // These limits must match the Worker's MAX_FILES / MAX_FILE_BYTES /
+  // ALLOWED_FILE_TYPES exactly. This client-side check is just for fast
+  // feedback — the Worker independently re-validates everything, since the
+  // client can't be trusted.
+  const MAX_FILES = 5;
+  const MAX_FILE_BYTES = 8 * 1024 * 1024;
+  const ALLOWED_FILE_TYPES = ['image/png','image/jpeg','image/webp','image/gif','image/svg+xml','application/pdf'];
+
+  const dropzone = document.getElementById('dropzone');
+  const fileInput = document.getElementById('fileInput');
+  const fileError = document.getElementById('fileError');
+  const fileListEl = document.getElementById('fileList');
+  let selectedFiles = [];
+
+  function fmtFileSize(bytes) {
+    if (bytes >= 1024 * 1024) return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+    return Math.max(1, Math.round(bytes / 1024)) + ' KB';
+  }
+
+  function showFileError(msg) {
+    fileError.textContent = msg;
+    fileError.classList.add('show');
+    clearTimeout(fileError._t);
+    fileError._t = setTimeout(() => fileError.classList.remove('show'), 5000);
+  }
+
+  function updateDropzoneState() {
+    const atCap = selectedFiles.length >= MAX_FILES;
+    dropzone.classList.toggle('disabled', atCap);
+    dropzone.setAttribute('aria-disabled', atCap ? 'true' : 'false');
+  }
+
+  function renderFileList() {
+    fileListEl.innerHTML = selectedFiles.map((f, i) => {
+      const ext = (f.name.split('.').pop() || '').slice(0, 4).toUpperCase();
+      return '<div class="file-row">' +
+        '<span class="file-ext-badge">' + ext + '</span>' +
+        '<span class="file-name" title="' + f.name.replace(/"/g, '&quot;') + '">' + f.name + '</span>' +
+        '<span class="file-size">' + fmtFileSize(f.size) + '</span>' +
+        '<button type="button" class="file-remove" data-idx="' + i + '" aria-label="Remove ' + f.name.replace(/"/g, '&quot;') + '">×</button>' +
+      '</div>';
+    }).join('');
+    updateDropzoneState();
+  }
+
+  fileListEl.addEventListener('click', (e) => {
+    const btn = e.target.closest('.file-remove');
+    if (!btn) return;
+    selectedFiles.splice(Number(btn.dataset.idx), 1);
+    renderFileList();
+  });
+
+  function addFiles(fileArray) {
+    for (const file of fileArray) {
+      if (selectedFiles.length >= MAX_FILES) {
+        showFileError('Only ' + MAX_FILES + ' files can be attached — extra file(s) were not added.');
+        break;
+      }
+      if (!ALLOWED_FILE_TYPES.includes(file.type)) {
+        showFileError('"' + file.name + '" isn\'t a supported file type (PNG, JPG, WEBP, GIF, SVG, or PDF only).');
+        continue;
+      }
+      if (file.size > MAX_FILE_BYTES) {
+        showFileError('"' + file.name + '" is over the 8MB limit.');
+        continue;
+      }
+      const isDupe = selectedFiles.some(f => f.name === file.name && f.size === file.size);
+      if (isDupe) continue;
+      selectedFiles.push(file);
+    }
+    renderFileList();
+  }
+
+  dropzone.addEventListener('click', () => {
+    if (selectedFiles.length >= MAX_FILES) return;
+    fileInput.click();
+  });
+  dropzone.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      if (selectedFiles.length < MAX_FILES) fileInput.click();
+    }
+  });
+  fileInput.addEventListener('change', () => {
+    addFiles(Array.from(fileInput.files));
+    fileInput.value = '';
+  });
+  ['dragenter', 'dragover'].forEach(evt => {
+    dropzone.addEventListener(evt, (e) => {
+      e.preventDefault();
+      if (selectedFiles.length < MAX_FILES) dropzone.classList.add('dragover');
+    });
+  });
+  ['dragleave', 'dragend'].forEach(evt => {
+    dropzone.addEventListener(evt, () => dropzone.classList.remove('dragover'));
+  });
+  dropzone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropzone.classList.remove('dragover');
+    if (selectedFiles.length >= MAX_FILES) return;
+    if (e.dataTransfer && e.dataTransfer.files) addFiles(Array.from(e.dataTransfer.files));
+  });
+
+  function fileToPayload(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const result = reader.result || '';
+        const base64 = String(result).split(',')[1] || '';
+        resolve({ name: file.name, type: file.type, data: base64 });
+      };
+      reader.onerror = () => reject(new Error('Could not read file: ' + file.name));
+      reader.readAsDataURL(file);
+    });
+  }
+
+  // Every required text/select field plus the consent checkbox share one
+  // highlight treatment (see .field-invalid / .consent-group.field-invalid
+  // in the stylesheet) so a blank field and an unchecked box read as the
+  // same kind of problem, in the same color, at a glance.
+  const requiredFields = Array.from(builderForm.querySelectorAll('[required]'))
+    .filter(el => el.id !== 'agreePolicies');
+
+  function highlightTarget(el) {
+    return el.id === 'agreePolicies' ? consentGroup : el.closest('.field');
+  }
+
+  function clearHighlight(el) {
+    const wrap = highlightTarget(el);
+    if (wrap) wrap.classList.remove('field-invalid');
+    if (!builderForm.querySelector('.field-invalid')) {
+      formAlert.classList.remove('show');
+    }
+  }
+
+  requiredFields.forEach(el => {
+    el.addEventListener('input', () => { if (el.checkValidity()) clearHighlight(el); });
+    el.addEventListener('change', () => { if (el.checkValidity()) clearHighlight(el); });
+  });
+  agreePolicies.addEventListener('change', () => { if (agreePolicies.checked) clearHighlight(agreePolicies); });
+
+  builderForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     successCard.classList.add('hidden');
     errorCard.classList.add('hidden');
+
+    // Clear any highlight left over from a previous failed attempt, then
+    // re-check everything required — including the consent checkbox — as
+    // one pass, so every outstanding field lights up together instead of
+    // stopping at the first one.
+    builderForm.querySelectorAll('.field-invalid').forEach(w => w.classList.remove('field-invalid'));
+    formAlert.classList.remove('show');
+
+    const invalidFields = requiredFields.filter(el => !el.checkValidity());
+    let firstInvalid = null;
+
+    invalidFields.forEach(el => {
+      const wrap = highlightTarget(el);
+      if (wrap) wrap.classList.add('field-invalid');
+      if (!firstInvalid) firstInvalid = el;
+    });
+
+    if (!agreePolicies.checked) {
+      consentGroup.classList.add('field-invalid');
+      if (!firstInvalid) firstInvalid = agreePolicies;
+    }
+
+    if (firstInvalid) {
+      formAlert.classList.add('show');
+      firstInvalid.focus({ preventScroll: true });
+      firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    const agreedAt = new Date().toISOString();
 
     const units = sizeUnits[state.size];
     const price = Number((550 * units * (state.qty / 2000) + extrasTotal()).toFixed(2));
 
     const payload = {
+      policiesAgreed: true,
+      policiesAgreedAt: agreedAt,
       fullName: document.getElementById('fullName').value,
       email: document.getElementById('email').value,
       phone: document.getElementById('phone').value,
@@ -1051,6 +1407,21 @@
     };
 
     submitBtn.disabled = true;
+
+    if (selectedFiles.length > 0) {
+      submitBtn.textContent = 'Uploading files…';
+      try {
+        payload.files = await Promise.all(selectedFiles.map(fileToPayload));
+      } catch (err) {
+        console.error('File read failed:', err);
+        errorCard.classList.remove('hidden');
+        errorCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Place order';
+        return;
+      }
+    }
+
     submitBtn.textContent = 'Placing order…';
 
     try {
@@ -1089,6 +1460,9 @@
 
       successCard.classList.remove('hidden');
       successCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      selectedFiles = [];
+      renderFileList();
     } catch (err) {
       console.error('Order submission failed:', err);
       errorCard.classList.remove('hidden');
@@ -1100,6 +1474,72 @@
   });
 
   render();
+</script>
+<script>
+  // ---- Projected ROI calculator ----
+  // Self-contained: its own IDs, own variables, no shared state with the
+  // order-builder script above. None of these inputs are `required`, so
+  // they never interact with the consent/highlight validation on the
+  // order form.
+  (function(){
+    const roiSizeUnits = { third: 1, half: 2, full: 3, both: 6 };
+    // Cumulative +25% conversion bonus per size step up (0%, +25%, +50%, +75%),
+    // applied silently — never shown as a number on the buttons themselves.
+    const roiSizeBonus = { third: 0, half: 0.25, full: 0.50, both: 0.75 };
+    // Same per-unit price and base quantity the real order form uses
+    // (see `const base = 550 * units * (state.qty / 2000);` above), so this
+    // calculator's cost side always matches a real order at the same size/qty.
+    const ROI_PRICE_PER_UNIT_PER_2000 = 550;
+    const ROI_BASE_QTY = 2000;
+
+    const roiConv = document.getElementById('roiConv');
+    const roiInvoice = document.getElementById('roiInvoice');
+    const roiQty = document.getElementById('roiQty');
+    const roiSizeBtns = document.querySelectorAll('.roi-size-btn');
+    let roiSize = 'third';
+
+    const fmtMoney = n => '$' + Math.round(n).toLocaleString('en-US');
+    const fmtNum = n => Math.round(n).toLocaleString('en-US');
+
+    function roiRender(){
+      const conv = Number(roiConv.value);
+      const invoice = Number(roiInvoice.value);
+      const qty = Number(roiQty.value);
+      const units = roiSizeUnits[roiSize];
+      const bonus = roiSizeBonus[roiSize];
+
+      document.getElementById('roiConvReadout').textContent = conv.toFixed(1) + '%';
+      document.getElementById('roiInvoiceReadout').textContent = fmtMoney(invoice);
+      document.getElementById('roiQtyReadout').textContent = fmtNum(qty);
+
+      const effectiveRate = conv * (1 + bonus);
+      const leads = Math.floor(qty * (effectiveRate / 100));
+      const earnings = leads * invoice;
+      const expense = ROI_PRICE_PER_UNIT_PER_2000 * units * (qty / ROI_BASE_QTY);
+      const roiPercent = expense > 0 ? ((earnings - expense) / expense) * 100 : 0;
+      const roiMultiple = expense > 0 ? earnings / expense : 0;
+
+      document.getElementById('roiLeads').textContent = fmtNum(leads) + (leads === 1 ? ' job' : ' jobs');
+      document.getElementById('roiEarnings').textContent = fmtMoney(earnings);
+      document.getElementById('roiExpense').textContent = fmtMoney(expense);
+      document.getElementById('roiReturn').textContent = fmtNum(roiPercent) + '% · ' + roiMultiple.toFixed(1) + 'x';
+    }
+
+    roiConv.addEventListener('input', roiRender);
+    roiInvoice.addEventListener('input', roiRender);
+    roiQty.addEventListener('input', roiRender);
+    roiSizeBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        roiSizeBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
+        btn.classList.add('active');
+        btn.setAttribute('aria-pressed', 'true');
+        roiSize = btn.dataset.size;
+        roiRender();
+      });
+    });
+
+    roiRender();
+  })();
 </script>
 </body>
 </html>
