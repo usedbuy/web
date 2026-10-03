@@ -27,6 +27,8 @@
     --green-tint:rgba(255,122,26,0.14);
     --yellow:#4C8DFF;
     --line: rgba(140,160,190,0.18);
+    --error:#FF5A5F;
+    --error-tint:rgba(255,90,95,0.16);
     --radius-lg: 8px;
     --shadow: 0 16px 36px rgba(0,0,0,0.45);
   }
@@ -258,6 +260,11 @@
   select option{ background:var(--card); color:var(--ink); }
   input::placeholder{ color:#8792A6; }
   .field{ margin-bottom:14px; }
+  .field.field-error input,
+  .field.field-error select{
+    border-color:var(--error); background:var(--error-tint);
+  }
+  .field.field-error label{ color:var(--error); }
 
   .pill-row{ display:flex; gap:10px; flex-wrap:wrap; }
   .pill{ background:var(--card); border:1.5px solid var(--line); border-radius:5px; padding:14px 16px; cursor:pointer; text-align:left; flex:1 1 150px; transition:border-color .15s ease, background .15s ease; }
@@ -329,6 +336,65 @@
   .submit-row .btn-primary{ width:100%; padding:16px; }
   .fine{ font-size:12px; color:var(--ink-soft); margin-top:10px; text-align:center; }
 
+  .consent-group{ display:flex; flex-direction:column; gap:10px; margin-bottom:16px; }
+  .consent-check{ display:flex; align-items:flex-start; gap:9px; cursor:pointer; font-size:12.5px; line-height:1.45; color:var(--ink-soft); }
+  .consent-check input[type="checkbox"]{ width:17px; height:17px; margin-top:1px; accent-color:var(--green); flex-shrink:0; cursor:pointer; }
+  .consent-check a{ color:var(--ink); font-weight:700; text-decoration:underline; }
+  .consent-check a:hover{ color:var(--green-dark); }
+  .consent-group.consent-error{
+    outline:2px solid var(--error); background:var(--error-tint);
+    border-radius:6px; padding:10px;
+  }
+  .consent-group.consent-error .consent-check{ color:var(--ink); }
+  .form-error-note{
+    display:flex; align-items:center; gap:8px; color:var(--error);
+    font-size:13px; font-weight:600; margin-bottom:14px;
+  }
+  .form-error-note::before{ content:"⚠"; font-size:15px; }
+
+  /* ---------- FILE UPLOAD DROPZONE ---------- */
+  .upload-zone{
+    position:relative;
+    border:1.5px dashed var(--line); border-radius:var(--radius-lg); background:var(--card);
+    padding:34px 20px; text-align:center; cursor:pointer;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .upload-zone:hover, .upload-zone:focus-visible{ border-color:var(--green); }
+  .upload-zone.dragover{ border-color:var(--green); background:var(--green-tint); }
+  .upload-zone.maxed{ cursor:not-allowed; opacity:.55; }
+  .upload-zone input[type="file"]{
+    position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden;
+    clip:rect(0,0,0,0); white-space:nowrap; border:0;
+  }
+  .upload-zone-icon{
+    width:46px; height:46px; border-radius:50%; margin:0 auto 14px;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--paper-dim); border:2px solid var(--green); color:var(--green-dark);
+  }
+  .upload-zone-icon svg{ width:20px; height:20px; }
+  .upload-zone-title{ font-size:15.5px; font-weight:700; color:var(--ink); margin-bottom:5px; }
+  .upload-zone-title .browse{ color:var(--green-dark); text-decoration:underline; }
+  .upload-zone-meta{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.02em; color:var(--ink-soft); }
+  @media (max-width:480px){ .upload-zone{ padding:26px 16px; } }
+
+  .upload-file-list{ display:flex; flex-direction:column; gap:8px; margin-top:12px; }
+  .upload-file-row{ display:flex; align-items:center; gap:10px; padding:10px 12px; border:1.5px solid var(--line); border-radius:5px; background:var(--card); }
+  .upload-file-ext{
+    font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:700; letter-spacing:.03em;
+    background:var(--paper-dim); color:var(--green-dark); padding:3px 6px; border-radius:4px; flex-shrink:0;
+  }
+  .upload-file-name{ flex:1; min-width:0; font-size:13.5px; color:var(--ink); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .upload-file-size{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft); flex-shrink:0; }
+  .upload-file-remove{
+    background:none; border:none; color:var(--ink-soft); font-size:20px; line-height:1;
+    cursor:pointer; padding:2px 4px; flex-shrink:0; min-height:auto;
+  }
+  .upload-file-remove:hover{ color:var(--error); }
+  .upload-problem{ font-size:12.5px; color:var(--error); margin-top:8px; }
+  .chat-fallback{ text-align:center; padding:40px 20px; }
+  .chat-fallback p{ margin:0 0 10px; font-size:14.5px; color:var(--ink-soft); }
+  .chat-fallback a{ color:var(--green-dark); font-weight:700; text-decoration:underline; }
+
   .success-card{ background:var(--green-tint); border:1.5px solid var(--green); border-radius:6px; padding:26px; margin-top:20px; }
   .success-card h4{ font-family:'Chakra Petch',sans-serif; font-size:20px; text-transform:uppercase; color:var(--green-dark); margin-bottom:10px; }
   .success-card dl{ display:grid; grid-template-columns:auto 1fr; gap:6px 14px; font-size:13.5px; margin:14px 0 0; }
@@ -377,6 +443,68 @@
   .why-card img{ width:52px; height:52px; margin-bottom:16px; border-radius:12px; }
   .why-card h3{ font-family:'Inter',sans-serif; font-size:16.5px; font-weight:800; color:var(--ink); margin-bottom:8px; }
   .why-card p{ font-size:14px; }
+
+  /* ---------- ROI CALCULATOR ---------- */
+  .roi-section{ background:var(--paper); }
+  .roi-card{
+    background:var(--paper-dim); border:1px solid var(--line); border-radius:var(--radius-lg);
+    padding:32px; max-width:900px; margin:0 auto;
+  }
+  .roi-grid{ display:grid; grid-template-columns:1fr 1fr; gap:28px 32px; }
+  @media (max-width:700px){ .roi-grid{ grid-template-columns:1fr; gap:26px; } }
+  .roi-badge{
+    display:inline-flex; align-items:center; font-family:'IBM Plex Mono',monospace; font-weight:700;
+    font-size:11px; letter-spacing:0.05em; text-transform:uppercase; background:var(--green-tint);
+    color:var(--green-dark); border:1px solid var(--green); border-radius:4px; padding:3px 8px;
+    margin-right:10px; flex:none;
+  }
+  .roi-input-title{
+    display:flex; align-items:center; font-family:'Inter',sans-serif; font-weight:800;
+    font-size:15px; color:var(--ink); margin-bottom:12px;
+  }
+  .roi-readout{
+    font-family:'IBM Plex Mono',monospace; font-size:22px; font-weight:600; color:var(--green-dark);
+    margin-bottom:10px;
+  }
+  .roi-slider-wrap{ width:100%; }
+  .roi-slider-wrap input[type="range"]{
+    -webkit-appearance:none; appearance:none; width:100%; height:6px; border-radius:3px;
+    background:var(--line); outline:none; display:block; margin:0; cursor:pointer;
+  }
+  .roi-slider-wrap input[type="range"]::-webkit-slider-thumb{
+    -webkit-appearance:none; appearance:none; width:20px; height:20px; border-radius:50%;
+    background:var(--green); border:3px solid var(--paper-dim); box-shadow:0 0 0 1px var(--green);
+    cursor:pointer; margin-top:0;
+  }
+  .roi-slider-wrap input[type="range"]::-moz-range-thumb{
+    width:20px; height:20px; border-radius:50%; background:var(--green);
+    border:3px solid var(--paper-dim); box-shadow:0 0 0 1px var(--green); cursor:pointer;
+  }
+  .roi-slider-wrap input[type="range"]::-moz-range-track{ height:6px; border-radius:3px; background:var(--line); }
+  .roi-minmax{
+    display:flex; justify-content:space-between; width:100%; margin-top:7px;
+    font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft);
+  }
+  .roi-size-row{ display:flex; gap:10px; flex-wrap:wrap; }
+  .roi-size-btn{
+    background:var(--card); border:1.5px solid var(--line); border-radius:5px; padding:11px 16px;
+    font-family:'Inter',sans-serif; font-weight:700; font-size:13.5px; color:var(--ink);
+    cursor:pointer; transition:border-color .15s ease, background .15s ease; flex:1 1 auto;
+  }
+  .roi-size-btn.active{ border-color:var(--green); background:var(--green-tint); color:var(--green-dark); }
+  .roi-results{
+    margin-top:32px; padding-top:28px; border-top:1px solid var(--line);
+    display:flex; flex-wrap:wrap; align-items:baseline; justify-content:center; gap:14px 28px; text-align:center;
+  }
+  .roi-result-main{ display:flex; flex-direction:column; align-items:center; }
+  .roi-result-label{
+    font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--ink-soft); margin-bottom:4px;
+  }
+  .roi-result-value{ font-family:'Chakra Petch',sans-serif; font-size:44px; color:var(--green); line-height:1; }
+  .roi-result-sub{ font-family:'IBM Plex Mono',monospace; font-size:13.5px; color:var(--ink-soft); }
+  .roi-result-sub strong{ color:var(--ink); font-weight:600; }
+  .roi-disclaimer{ margin-top:18px; font-size:11.5px; color:var(--ink-soft); text-align:center; }
 </style>
 </head>
 <body>
@@ -410,9 +538,9 @@
   <section class="hero" id="home">
     <div class="wrap hero-grid">
       <div>
-        <span class="eyebrow">Reach every busy household nearby</span>
-        <h1>A packed schedule<br>is a <em>hidden</em> lead.</h1>
-        <p class="lead">Busy homeowners nearby are already looking for reliable help — not another faceless app. A door hanger on their door feels local and trustworthy in a way an online ad never will.</p>
+        <span class="eyebrow">The trust problem no app can solve</span>
+        <h1>Nobody hands over a house key<br>to a <em>logo</em>.</h1>
+        <p class="lead">Letting a stranger into your home is personal. A hanger from a business that works your actual street reads as a neighbor, not a nationwide app with a call center.</p>
       </div>
       <div class="hero-art">
         <svg class="door-scene" viewBox="0 0 360 460" xmlns="http://www.w3.org/2000/svg">
@@ -472,24 +600,24 @@
     <div class="wrap">
       <div class="why-head">
         <span class="eyebrow">Built for house cleaning companies</span>
-        <h2>Why door hangers work for house cleaners</h2>
-        <p>Trust matters more than clicks when someone's letting you into their home.</p>
+        <h2>Selling trust before you ever pick up a mop</h2>
+        <p>The close happens before the first visit — this is built for that.</p>
       </div>
       <div class="why-grid">
         <div class="why-card">
           <img src="images/icon-house-cleaning.png" alt="">
-          <h3>Drive-and-drop targeting</h3>
-          <p>Canvas the streets near your current clients — recurring routes are most profitable when clients live close together.</p>
+          <h3>Routes, not one-time jobs</h3>
+          <p>Recurring clients are the whole business model — a route built around your current stops fills the calendar with clients who live close enough to be profitable.</p>
         </div>
         <div class="why-card">
           <img src="images/icon-house-cleaning.png" alt="">
-          <h3>Trust before the first visit</h3>
-          <p>A local, printed piece feels more accountable than a national app for a service this personal.</p>
+          <h3>Local reads as vetted</h3>
+          <p>A national app is a stranger by design. A business visibly working the neighborhood already feels like it's been checked out.</p>
         </div>
         <div class="why-card">
           <img src="images/icon-house-cleaning.png" alt="">
-          <h3>A first-clean offer that sticks</h3>
-          <p>A hanger with a clear discount sitting on the counter gets remembered — and acted on — better than a buried email.</p>
+          <h3>The first clean is the hard sell</h3>
+          <p>A clear, limited-time discount on a hanger gets remembered on the counter — the same offer buried in an email gets deleted.</p>
         </div>
       </div>
     </div>
@@ -499,9 +627,9 @@
   <section class="results-section" id="results">
     <div class="wrap">
       <div style="text-align:center;max-width:600px;margin:0 auto 48px;">
-        <span class="eyebrow">Real placements</span>
-        <h2 style="font-size:clamp(28px,4vw,40px);margin:14px 0 12px;">Door hangers deliver results!</h2>
-        <p class="lede">Every campaign is professionally designed, printed, and hand-delivered door to door — here's a look at the range of layouts we run.</p>
+        <span class="eyebrow">See what builds trust at the door</span>
+        <h2 style="font-size:clamp(28px,4vw,40px);margin:14px 0 12px;">This is the ad that reads like a neighbor, not a national brand.</h2>
+        <p class="lede">Every layout is built to feel local and personal — the opposite of a faceless app people are learning not to trust.</p>
       </div>
       <div class="slideshow-frame" role="img" aria-label="Rotating preview of sample door hanger ad layouts">
         <!--
@@ -544,16 +672,171 @@
     </div>
   </section>
 
+  <!-- ================= ROI CALCULATOR ================= -->
+  <section class="roi-section" id="roi-calculator">
+    <div class="wrap">
+      <div class="why-head">
+        <span class="eyebrow">See what a full calendar is worth</span>
+        <h2>Projected ROI</h2>
+        <p>Drag the sliders to match your business — see what a calendar full of new recurring clients is worth.</p>
+      </div>
+
+      <div class="roi-card">
+        <div class="roi-grid">
+          <div class="roi-input">
+            <div class="roi-input-title"><span class="roi-badge">Step 1</span>Conversion rate</div>
+            <div class="roi-readout" id="roiConversionReadout">1.0% become signed jobs</div>
+            <div class="roi-slider-wrap">
+              <input type="range" id="roiConversion" min="0" max="20" step="0.1" value="1" aria-label="Conversion rate: percent of hangers that become a signed, paid job">
+              <div class="roi-minmax"><span>0%</span><span>20%</span></div>
+            </div>
+          </div>
+
+          <div class="roi-input">
+            <div class="roi-input-title"><span class="roi-badge">Step 2</span>Average job invoice</div>
+            <div class="roi-readout" id="roiInvoiceReadout">$0</div>
+            <div class="roi-slider-wrap">
+              <input type="range" id="roiInvoice" min="0" max="1000" step="50" value="500" aria-label="Average job invoice">
+              <div class="roi-minmax"><span id="roiInvoiceMin">$0</span><span id="roiInvoiceMax">$0</span></div>
+            </div>
+          </div>
+
+          <div class="roi-input">
+            <div class="roi-input-title"><span class="roi-badge">Step 3</span>Door hangers mailed</div>
+            <div class="roi-readout" id="roiQtyReadout">5,000 hangers</div>
+            <div class="roi-slider-wrap">
+              <input type="range" id="roiQty" min="2000" max="20000" step="500" value="5000" aria-label="Door hangers mailed">
+              <div class="roi-minmax"><span>2,000</span><span>20,000</span></div>
+            </div>
+          </div>
+
+          <div class="roi-input">
+            <div class="roi-input-title"><span class="roi-badge">Step 4</span>Ad size</div>
+            <div class="roi-size-row" role="radiogroup" aria-label="Ad size">
+              <button type="button" class="roi-size-btn active" data-size="third">Third page</button>
+              <button type="button" class="roi-size-btn" data-size="half">Half page</button>
+              <button type="button" class="roi-size-btn" data-size="full">Full page</button>
+              <button type="button" class="roi-size-btn" data-size="both">Both sides</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="roi-results">
+          <div class="roi-result-main">
+            <span class="roi-result-label">Return multiple</span>
+            <span class="roi-result-value" id="roiMultiple">0x</span>
+          </div>
+          <div class="roi-result-sub">
+            <strong id="roiPercent">0%</strong> ROI · <strong id="roiLeads">0</strong> signed jobs from <strong id="roiExpense">$0</strong> spent
+          </div>
+        </div>
+        <p class="roi-disclaimer">Estimate only, based on your inputs and industry-average job values — not a guarantee of results.</p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+  (function() {
+    // Industry-specific: the average residential job invoice for house cleaning
+    // (researched figure — replace per industry page).
+    var AVG_JOB_INVOICE = 200;
+
+    // Must match this site's own real order-form pricing exactly (see
+    // PRICE_PER_UNIT_PER_2000 / sizeUnits in the builder script above).
+    var PRICE_PER_UNIT_PER_2000 = 550;
+    var ROI_SIZE_UNITS = { third: 1, half: 2, full: 3, both: 6 };
+    // Each step up the size ladder adds +25% to the conversion rate,
+    // cumulative from the base size — applied silently, never shown as
+    // text on the buttons themselves.
+    var ROI_SIZE_BONUS = { third: 0, half: 0.25, full: 0.5, both: 0.75 };
+
+    var roiState = { size: 'third' };
+
+    var elConversion = document.getElementById('roiConversion');
+    var elInvoice = document.getElementById('roiInvoice');
+    var elQty = document.getElementById('roiQty');
+    var elConversionReadout = document.getElementById('roiConversionReadout');
+    var elInvoiceReadout = document.getElementById('roiInvoiceReadout');
+    var elInvoiceMin = document.getElementById('roiInvoiceMin');
+    var elInvoiceMax = document.getElementById('roiInvoiceMax');
+    var elQtyReadout = document.getElementById('roiQtyReadout');
+    var elMultiple = document.getElementById('roiMultiple');
+    var elPercent = document.getElementById('roiPercent');
+    var elLeads = document.getElementById('roiLeads');
+    var elExpense = document.getElementById('roiExpense');
+    var sizeButtons = document.querySelectorAll('.roi-size-btn');
+
+    function fmtMoney(n) {
+      return '$' + Math.round(n).toLocaleString('en-US');
+    }
+
+    // The slider's own default/max scale with this page's industry
+    // average, so it always swings roughly +/-100% around that figure —
+    // this can't be set as a static HTML attribute since it differs by page.
+    function initInvoiceSlider() {
+      var max = AVG_JOB_INVOICE * 2;
+      elInvoice.min = 0;
+      elInvoice.max = max;
+      elInvoice.step = 50;
+      elInvoice.value = AVG_JOB_INVOICE;
+      elInvoiceMin.textContent = '$0';
+      elInvoiceMax.textContent = fmtMoney(max);
+    }
+
+    function calculate() {
+      var conversionRate = parseFloat(elConversion.value);
+      var avgInvoice = parseFloat(elInvoice.value);
+      var qty = parseInt(elQty.value, 10);
+      var sizeUnits = ROI_SIZE_UNITS[roiState.size];
+      var sizeBonus = ROI_SIZE_BONUS[roiState.size];
+
+      var effectiveRate = conversionRate * (1 + sizeBonus);
+      var jobs = Math.floor(qty * (effectiveRate / 100));
+      var earnings = jobs * avgInvoice;
+      var expense = PRICE_PER_UNIT_PER_2000 * sizeUnits * (qty / 2000);
+      var roiPercent = ((earnings - expense) / expense) * 100;
+      var roiMultiple = earnings / expense;
+
+      elConversionReadout.textContent = conversionRate.toFixed(1) + '% become signed jobs';
+      elInvoiceReadout.textContent = fmtMoney(avgInvoice);
+      elQtyReadout.textContent = qty.toLocaleString('en-US') + ' hangers';
+
+      // The multiple ("18.4x") is the headline stat — a 4-5 digit percentage
+      // reads as absurd even when the underlying math is correct, so the
+      // percentage is shown too, but secondary, and rounded to a whole number.
+      elMultiple.textContent = roiMultiple.toFixed(1) + 'x';
+      elPercent.textContent = Math.round(roiPercent).toLocaleString('en-US') + '%';
+      elLeads.textContent = jobs.toLocaleString('en-US');
+      elExpense.textContent = fmtMoney(expense);
+    }
+
+    elConversion.addEventListener('input', calculate);
+    elInvoice.addEventListener('input', calculate);
+    elQty.addEventListener('input', calculate);
+    sizeButtons.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        sizeButtons.forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        roiState.size = btn.dataset.size;
+        calculate();
+      });
+    });
+
+    initInvoiceSlider();
+    calculate();
+  })();
+  </script>
+
   <!-- ================= BUILDER ================= -->
   <section class="builder-section" id="builder">
     <div class="wrap">
       <div class="builder-head">
-        <span class="eyebrow">Build your campaign</span>
-        <h2>Fill this out once. We take it from here.</h2>
+        <span class="eyebrow">Get your calendar filling up</span>
+        <h2>Build the campaign that fills your calendar.</h2>
         <p>Every choice below updates the door hanger and the price on the right, live. Submitting places your order — no payment happens on this site; we'll follow up by email or text once it's ready to pay.</p>
       </div>
 
-      <form class="builder-layout" id="builderForm">
+      <form class="builder-layout" id="builderForm" novalidate>
         <div class="builder-fields">
 
           <div class="field-group">
@@ -566,7 +849,7 @@
             </div>
             <div class="grid-2">
               <div class="field"><label for="email">Email</label><input required type="email" id="email" placeholder="jordan@yourbusiness.com"></div>
-              <div class="field"><label for="phone">Telephone</label><input required type="tel" id="phone" placeholder="(555) 010-0199"></div>
+              <div class="field"><label for="phone">Phone</label><input required type="tel" id="phone" placeholder="(555) 010-0199"></div>
             </div>
             <div class="field"><label for="bizName">Business name</label><input required type="text" id="bizName" placeholder="Sparkle House Cleaning"></div>
             <div class="field"><label for="industry">Industry</label><select required id="industry">
@@ -608,15 +891,28 @@
               <div class="field"><label for="bizZip">ZIP</label><input required type="text" id="bizZip" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="45501"></div>
             </div>
             <div class="field"><label for="designNotes">Notes for the design team <span style="font-weight:400;color:var(--ink-soft);">(optional)</span></label><input type="text" id="designNotes" placeholder="Colors, logo details, anything we should know"></div>
+            <div class="field">
+              <label for="designFiles">Logo or reference photos <span style="font-weight:400;color:var(--ink-soft);">(optional)</span></label>
+              <div class="upload-zone" id="uploadZone" tabindex="0" role="button" aria-label="Upload logo or reference photos">
+                <input type="file" id="designFiles" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml,application/pdf" multiple>
+                <div class="upload-zone-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
+                </div>
+                <p class="upload-zone-title">Drop files here or <span class="browse">browse</span></p>
+                <p class="upload-zone-meta">PNG · JPG · WEBP · GIF · SVG · PDF — up to 5 files, 8MB each</p>
+              </div>
+              <div class="upload-file-list" id="uploadFileList"></div>
+              <p class="upload-problem" id="uploadProblem"></p>
+            </div>
           </div>
 
           <div class="field-group">
             <span class="step-num">2</span>
             <h3>Your reach</h3>
-            <p class="sub">How far from your door should we distribute?</p>
+            <p class="sub">How far from your business should we distribute?</p>
             <div class="pill-row" role="radiogroup" aria-label="Advertising radius">
-              <button type="button" class="pill" data-radius="5" disabled><strong>5 miles</strong><span>Unavailable in your city/state</span></button>
-              <button type="button" class="pill" data-radius="15" disabled><strong>15 miles</strong><span>Unavailable in your city/state</span></button>
+              <button type="button" class="pill" data-radius="5" disabled><strong>5 miles</strong><span>Not available yet — 30 miles only for now</span></button>
+              <button type="button" class="pill" data-radius="15" disabled><strong>15 miles</strong><span>Not available yet — 30 miles only for now</span></button>
               <button type="button" class="pill active" data-radius="30"><strong>30 miles</strong><span>Full regional coverage</span></button>
             </div>
           </div>
@@ -651,24 +947,19 @@
                 <div class="price">$3,300 at 2,000 pcs</div>
               </div>
             </div>
-            <div class="pill-row" id="slotPicker" role="radiogroup" aria-label="Ad slot" style="margin-top:12px;">
-              <button type="button" class="pill active" data-slot="top"><strong>Top slot</strong><span>Slot 1 of 3</span></button>
-              <button type="button" class="pill" data-slot="mid"><strong>Middle slot</strong><span>Slot 2 of 3</span></button>
-              <button type="button" class="pill" data-slot="bottom"><strong>Bottom slot</strong><span>Slot 3 of 3</span></button>
-            </div>
           </div>
 
           <div class="field-group">
             <span class="step-num">4</span>
             <h3>QR forwarding URL</h3>
             <p class="sub">Where should scans of your door hanger's QR code be sent?</p>
-            <input type="url" id="qrForwardUrl" placeholder="https://yourbusiness.com/promo">
+            <div class="field"><input type="url" id="qrForwardUrl" placeholder="https://yourbusiness.com/promo"></div>
           </div>
 
           <div class="field-group">
             <span class="step-num">5</span>
             <h3>Your quantity</h3>
-            <p class="sub">Only 2,000 is currently available for your city/state.</p>
+            <p class="sub">Only 2,000 is available while we roll out larger runs — more volume tiers are coming soon.</p>
             <div class="qty-chips">
               <button type="button" class="chip active" data-qty="2000">2,000</button>
               <button type="button" class="chip" data-qty="5000" disabled>5,000</button>
@@ -757,7 +1048,7 @@
                   <rect class="slot-rect" x="16" y="320" width="208" height="100" rx="6"/>
                   <rect id="overlayBack" class="overlay-rect" x="16" y="110" width="208" height="0" rx="6" opacity="0"/>
                   <text id="overlayLabelBack" class="overlay-label" x="120" y="164" opacity="0">FULL PAGE AD</text>
-                  <text id="emptyNote" class="empty-note" x="120" y="270">Add "Both sides" to place an ad here</text>
+                  <text id="emptyNote" class="empty-note" x="120" y="270">Select "Both sides" to add an ad here</text>
                 </svg>
               </div>
             </div>
@@ -779,6 +1070,13 @@
           </div>
 
           <div class="submit-row">
+            <p class="form-error-note hidden" id="formErrorNote">Please complete the highlighted field(s) above before placing your order.</p>
+            <div class="consent-group" id="consentGroup">
+              <label class="consent-check">
+                <input type="checkbox" id="agreePolicies" required>
+                <span>I reviewed and agree with the <a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a>, <a href="/termsandconditions.html" target="_blank" rel="noopener">Terms and Conditions</a>, and <a href="/communicationpolicy.html" target="_blank" rel="noopener">Communication Policy</a>, and consent to receive SMS notifications as outlined.</span>
+              </label>
+            </div>
             <button type="submit" class="btn-primary">Place order</button>
             <p class="fine">This places your order — no payment here. We'll send a payment link by email or text once your design is approved.</p>
           </div>
@@ -786,7 +1084,7 @@
       </form>
 
       <div class="success-card hidden" id="successCard">
-        <h4>Your order is in 🎉</h4>
+        <h4>Your order is in.</h4>
         <p>Thanks — no payment was taken here. Our design team will email your proofs within 2 business days, and we'll send a payment link by email or text once you approve them. Keep this reference number for support:</p>
         <p style="margin-top:10px;"><strong id="referenceId" style="font-family:'IBM Plex Mono',monospace; font-size:16px; color:var(--green-dark);"></strong></p>
         <dl id="successDetails"></dl>
@@ -805,7 +1103,7 @@
     <div class="wrap">
       <div class="faq-head">
         <span class="eyebrow">Details &amp; logistics</span>
-        <h2>Everything else you need to know.</h2>
+        <h2>Everything a house cleaning company needs to know before ordering.</h2>
       </div>
       <div class="faq-list">
         <details open>
@@ -834,16 +1132,17 @@
         </details>
         <details>
           <summary>Got more questions?<span class="plus">+</span></summary>
-          <p>If you got more questions, chat with our AI powered virtual assistant.</p>
+          <p>If you have more questions, reach us directly below.</p>
           <div class="chatbot-embed">
-            <!-- Placeholder — replace this iframe's src with your chatbot
-                 provider's real embed URL (Intercom, Voiceflow, Chatbase,
-                 a custom widget, etc). -->
-            <iframe
-              title="AI virtual assistant chat"
-              loading="lazy"
-              srcdoc="<html><body style='margin:0;display:flex;align-items:center;justify-content:center;height:100vh;background:#1A2233;color:#EDF1F7;font-family:sans-serif;text-align:center;padding:20px;box-sizing:border-box;'><p style='max-width:220px;'>Chatbot widget placeholder<br><small>Replace this iframe&#8217;s src with your chatbot provider&#8217;s embed URL</small></p></body></html>">
-            </iframe>
+            <!-- To add live chat, replace this div with an
+                 <iframe src="YOUR_CHATBOT_EMBED_URL"> from your provider
+                 (Intercom, Voiceflow, Chatbase, etc). Until then, this is a
+                 real, styled contact fallback -- not a placeholder a visitor
+                 would see as broken. -->
+            <div class="chat-fallback">
+              <p>Our support team replies within a few hours, most days sooner.</p>
+              <p><a href="mailto:hello@handdeliveredmarketing.com">hello@handdeliveredmarketing.com</a></p>
+            </div>
           </div>
         </details>
       </div>
@@ -874,7 +1173,7 @@
   navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
 
   // ---- State ----
-  const state = { radius: 30, size: 'third', slot: 'top', qty: 2000, flipped: false, extras: { premiumDesign: false, qrDashboard: false, website: false } };
+  const state = { radius: 30, size: 'third', qty: 2000, flipped: false, extras: { premiumDesign: false, qrDashboard: false, website: false } };
 
   // Must match EXTRA_PRICES in the Worker's index.js exactly — the Worker
   // recomputes price server-side from these same flags, it never trusts a
@@ -891,14 +1190,13 @@
 
   const slotGeom = { top: {y:110,h:100}, mid: {y:215,h:100}, bottom: {y:320,h:100} };
   const sizeGeom = {
-    third: () => slotGeom[state.slot],
+    third: () => slotGeom.top,
     half:  () => ({y:110, h:155}),
     full:  () => ({y:110, h:310}),
     both:  () => ({y:110, h:310})
   };
   const sizeLabel = { third: '1/3 PAGE AD', half: 'HALF PAGE AD', full: 'FULL PAGE AD', both: 'FULL PAGE AD' };
   const sizeName  = { third: 'Third page', half: 'Half page', full: 'Full page', both: 'Both sides' };
-  const slotName  = { top: 'top slot', mid: 'middle slot', bottom: 'bottom slot' };
   const sizeUnits = { third: 1, half: 2, full: 3, both: 6 };
 
   // ---- Elements ----
@@ -946,9 +1244,7 @@
     const total = Number((base + extrasTotal()).toFixed(2));
     const perHanger = total / state.qty;
 
-    document.getElementById('sumSize').textContent = state.size === 'third'
-      ? sizeName[state.size] + ' — ' + slotName[state.slot]
-      : sizeName[state.size];
+    document.getElementById('sumSize').textContent = sizeName[state.size];
     document.getElementById('sumRadius').textContent = state.radius + ' miles';
     document.getElementById('sumQty').textContent = state.qty.toLocaleString() + ' hangers';
     document.getElementById('sumPerHanger').textContent = '$' + perHanger.toFixed(3);
@@ -980,17 +1276,6 @@
       document.querySelectorAll('.size-card').forEach(x => x.classList.remove('active'));
       c.classList.add('active');
       state.size = c.dataset.size;
-      render();
-    });
-  });
-
-  // ---- Ad slot (only meaningful for "Third page" — the picker itself is
-  // hidden by render()/updateVisual() otherwise) ----
-  document.querySelectorAll('.pill[data-slot]').forEach(p => {
-    p.addEventListener('click', () => {
-      document.querySelectorAll('.pill[data-slot]').forEach(x => x.classList.remove('active'));
-      p.classList.add('active');
-      state.slot = p.dataset.slot;
       render();
     });
   });
@@ -1037,16 +1322,199 @@
   const submitBtn = document.querySelector('#builderForm button[type="submit"]');
   const successCard = document.getElementById('successCard');
   const errorCard = document.getElementById('errorCard');
+  const builderForm = document.getElementById('builderForm');
+  const formErrorNote = document.getElementById('formErrorNote');
+  const consentGroup = document.getElementById('consentGroup');
+  const agreePolicies = document.getElementById('agreePolicies');
 
-  document.getElementById('builderForm').addEventListener('submit', async (e) => {
+  // ---- Custom validation highlighting ----
+  // The form has `novalidate` so the browser's own (inconsistent-looking,
+  // one-at-a-time) validation bubbles never appear. Instead, every required
+  // field that's still invalid on submit — including the consent checkbox —
+  // gets the exact same red highlight treatment, so it's obvious at a glance
+  // everything that still needs attention, not just the first thing the
+  // browser happens to notice.
+  function fieldWrapperFor(el) {
+    // The consent checkbox isn't inside a `.field` div like the text inputs
+    // — it lives in `.consent-group` — so it gets its own highlight target.
+    if (el === agreePolicies) return consentGroup;
+    return el.closest('.field');
+  }
+  function markInvalid(el) {
+    const wrapper = fieldWrapperFor(el);
+    if (!wrapper) return;
+    wrapper.classList.add(el === agreePolicies ? 'consent-error' : 'field-error');
+    el.setAttribute('aria-invalid', 'true');
+  }
+  function clearInvalid(el) {
+    const wrapper = fieldWrapperFor(el);
+    if (!wrapper) return;
+    wrapper.classList.remove(el === agreePolicies ? 'consent-error' : 'field-error');
+    el.removeAttribute('aria-invalid');
+  }
+  function clearAllInvalid() {
+    builderForm.querySelectorAll('.field-error').forEach(w => w.classList.remove('field-error'));
+    consentGroup.classList.remove('consent-error');
+    builderForm.querySelectorAll('[aria-invalid]').forEach(el => el.removeAttribute('aria-invalid'));
+    formErrorNote.classList.add('hidden');
+  }
+  // As soon as a field the user was warned about becomes valid again, drop
+  // its highlight immediately rather than leaving it lit until next submit.
+  // Covers every input/select in the form, not just required ones, so an
+  // optional-but-malformed field (e.g. a badly typed QR forwarding URL)
+  // still gets its highlight cleared as soon as it's fixed.
+  builderForm.querySelectorAll('input, select').forEach(el => {
+    const evt = (el.tagName === 'SELECT' || el.type === 'checkbox') ? 'change' : 'input';
+    el.addEventListener(evt, () => {
+      if (!el.checkValidity()) return;
+      clearInvalid(el);
+      // Once nothing is left highlighted, the summary note has served its
+      // purpose — no need to make the user wait for another submit click.
+      const stillInvalid = builderForm.querySelector('.field-error, .consent-error');
+      if (!stillInvalid) formErrorNote.classList.add('hidden');
+    });
+  });
+
+  // ---- Design file uploads ----
+  // These limits must match MAX_FILES / MAX_FILE_BYTES / ALLOWED_FILE_TYPES
+  // in the Worker — checking here just gives faster feedback; the Worker
+  // re-checks everything itself since the client can't be trusted.
+  const MAX_FILES = 5;
+  const MAX_FILE_BYTES = 8 * 1024 * 1024;
+  const ALLOWED_FILE_TYPES = ['image/png', 'image/jpeg', 'image/webp', 'image/gif', 'image/svg+xml', 'application/pdf'];
+  const uploadZone = document.getElementById('uploadZone');
+  const designFilesInput = document.getElementById('designFiles');
+  const uploadFileList = document.getElementById('uploadFileList');
+  const uploadProblem = document.getElementById('uploadProblem');
+  let selectedFiles = [];
+
+  function formatBytes(n) {
+    return n > 1024 * 1024 ? (n / (1024 * 1024)).toFixed(1) + 'MB' : Math.round(n / 1024) + 'KB';
+  }
+
+  function fileExtLabel(f) {
+    const fromName = (f.name.split('.').pop() || '').toUpperCase();
+    return fromName.length <= 5 ? fromName : (f.type.split('/')[1] || 'FILE').toUpperCase();
+  }
+
+  function renderFileList() {
+    uploadFileList.innerHTML = selectedFiles.map((f, i) => `
+      <div class="upload-file-row">
+        <span class="upload-file-ext">${fileExtLabel(f)}</span>
+        <span class="upload-file-name">${f.name}</span>
+        <span class="upload-file-size">${formatBytes(f.size)}</span>
+        <button type="button" class="upload-file-remove" data-index="${i}" aria-label="Remove ${f.name}">×</button>
+      </div>
+    `).join('');
+    uploadZone.classList.toggle('maxed', selectedFiles.length >= MAX_FILES);
+    uploadZone.setAttribute('aria-disabled', selectedFiles.length >= MAX_FILES ? 'true' : 'false');
+  }
+
+  // Adds newly chosen/dropped files to the existing selection (rather than
+  // replacing it), so dragging in files across a few drops — or using the
+  // native picker more than once — accumulates instead of resetting.
+  function addFiles(incoming) {
+    const problems = [];
+    for (const f of incoming) {
+      if (selectedFiles.length >= MAX_FILES) {
+        problems.push(`Only the first ${MAX_FILES} files are kept.`);
+        break;
+      }
+      if (selectedFiles.some(s => s.name === f.name && s.size === f.size)) continue; // already added
+      if (!ALLOWED_FILE_TYPES.includes(f.type)) {
+        problems.push(`"${f.name}" skipped — unsupported file type.`);
+        continue;
+      }
+      if (f.size > MAX_FILE_BYTES) {
+        problems.push(`"${f.name}" skipped — over 8MB.`);
+        continue;
+      }
+      selectedFiles.push(f);
+    }
+    uploadProblem.textContent = problems.join(' ');
+    renderFileList();
+  }
+
+  uploadFileList.addEventListener('click', (e) => {
+    const btn = e.target.closest('.upload-file-remove');
+    if (!btn) return;
+    selectedFiles.splice(Number(btn.dataset.index), 1);
+    renderFileList();
+  });
+
+  uploadZone.addEventListener('click', () => {
+    if (selectedFiles.length < MAX_FILES) designFilesInput.click();
+  });
+  uploadZone.addEventListener('keydown', (e) => {
+    if ((e.key === 'Enter' || e.key === ' ') && selectedFiles.length < MAX_FILES) {
+      e.preventDefault();
+      designFilesInput.click();
+    }
+  });
+  ['dragenter', 'dragover'].forEach(evt => {
+    uploadZone.addEventListener(evt, (e) => {
+      e.preventDefault();
+      if (selectedFiles.length < MAX_FILES) uploadZone.classList.add('dragover');
+    });
+  });
+  ['dragleave', 'dragend'].forEach(evt => {
+    uploadZone.addEventListener(evt, () => uploadZone.classList.remove('dragover'));
+  });
+  uploadZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    uploadZone.classList.remove('dragover');
+    if (selectedFiles.length < MAX_FILES) addFiles(Array.from(e.dataTransfer.files || []));
+  });
+
+  designFilesInput.addEventListener('change', () => {
+    addFiles(Array.from(designFilesInput.files || []));
+    designFilesInput.value = ''; // allows re-selecting the same file later and re-fires change
+  });
+
+  function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result.split(',')[1]);
+      reader.onerror = () => reject(reader.error);
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function buildFilesPayload() {
+    return Promise.all(selectedFiles.map(async f => ({
+      name: f.name,
+      type: f.type,
+      data: await fileToBase64(f),
+    })));
+  }
+
+  builderForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     successCard.classList.add('hidden');
     errorCard.classList.add('hidden');
+    clearAllInvalid();
+
+    if (!builderForm.checkValidity()) {
+      const invalidFields = Array.from(builderForm.querySelectorAll(':invalid'));
+      invalidFields.forEach(markInvalid);
+      formErrorNote.classList.remove('hidden');
+      const first = invalidFields[0];
+      if (first) {
+        const target = fieldWrapperFor(first) || first;
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        first.focus({ preventScroll: true });
+      }
+      return;
+    }
+
+    const agreedAt = new Date().toISOString();
 
     const units = sizeUnits[state.size];
     const price = Number((550 * units * (state.qty / 2000) + extrasTotal()).toFixed(2));
 
     const payload = {
+      policiesAgreed: true,
+      policiesAgreedAt: agreedAt,
       fullName: document.getElementById('fullName').value,
       email: document.getElementById('email').value,
       phone: document.getElementById('phone').value,
@@ -1065,7 +1533,6 @@
       industry: document.getElementById('industry').value,
       radius: state.radius,
       size: state.size,
-      slot: state.size === 'third' ? state.slot : undefined,
       qty: state.qty,
       extras: state.extras
     };
@@ -1074,6 +1541,12 @@
     submitBtn.textContent = 'Placing order…';
 
     try {
+      if (selectedFiles.length) {
+        submitBtn.textContent = 'Uploading files…';
+        payload.files = await buildFilesPayload();
+        submitBtn.textContent = 'Placing order…';
+      }
+
       const res = await fetch(WORKER_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -1106,6 +1579,11 @@
       };
       document.getElementById('successDetails').innerHTML =
         Object.entries(details).map(([k,v]) => '<dt>' + k + '</dt><dd>' + v + '</dd>').join('');
+
+      selectedFiles = [];
+      designFilesInput.value = '';
+      uploadProblem.textContent = '';
+      renderFileList();
 
       successCard.classList.remove('hidden');
       successCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
