@@ -187,6 +187,46 @@
   input::placeholder{ color:#9a9fac; }
   .field{ margin-bottom:14px; }
 
+  /* ---------- FILE UPLOAD DROPZONE ---------- */
+  .upload-zone{
+    position:relative;
+    border:1.5px dashed var(--line); border-radius:16px; background:#fff;
+    padding:32px 20px; text-align:center; cursor:pointer;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .upload-zone:hover, .upload-zone:focus-visible{ border-color:var(--green); }
+  .upload-zone.dragover{ border-color:var(--green); background:var(--green-tint); }
+  .upload-zone.maxed{ cursor:not-allowed; opacity:.55; }
+  .upload-zone input[type="file"]{
+    position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden;
+    clip:rect(0,0,0,0); white-space:nowrap; border:0;
+  }
+  .upload-zone-icon{
+    width:42px; height:42px; border-radius:50%; margin:0 auto 14px;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--paper-dim); border:2px solid var(--green); color:var(--green-dark);
+  }
+  .upload-zone-icon svg{ width:19px; height:19px; }
+  .upload-zone-title{ font-size:14.5px; font-weight:700; font-family:'Inter',sans-serif; color:var(--ink); margin-bottom:4px; }
+  .upload-zone-title .browse{ color:var(--green-dark); text-decoration:underline; }
+  .upload-zone-meta{ font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.02em; color:var(--ink-soft); }
+  @media (max-width:480px){ .upload-zone{ padding:24px 16px; } }
+
+  .upload-file-list{ display:flex; flex-direction:column; gap:8px; margin-top:12px; }
+  .upload-file-row{ display:flex; align-items:center; gap:10px; padding:10px 12px; border:1.5px solid var(--line); border-radius:10px; background:#fff; }
+  .upload-file-ext{
+    font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:700; letter-spacing:.03em;
+    background:var(--paper-dim); color:var(--green-dark); padding:3px 6px; border-radius:5px; flex-shrink:0;
+  }
+  .upload-file-name{ flex:1; min-width:0; font-size:13.5px; color:var(--ink); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .upload-file-size{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft); flex-shrink:0; }
+  .upload-file-remove{
+    background:none; border:none; color:var(--ink-soft); font-size:19px; line-height:1;
+    cursor:pointer; padding:2px 4px; flex-shrink:0;
+  }
+  .upload-file-remove:hover{ color:#C1272D; }
+  .upload-problem{ font-size:12.5px; color:#C1272D; margin-top:8px; }
+
   .pill-row{ display:flex; gap:10px; flex-wrap:wrap; }
   .pill{ background:#fff; border:1.5px solid var(--line); border-radius:14px; padding:14px 16px; cursor:pointer; text-align:left; flex:1 1 150px; transition:border-color .15s ease, background .15s ease, transform .15s ease; }
   .pill:hover{ transform:translateY(-1px); }
@@ -252,6 +292,20 @@
   .price-total{ display:flex; justify-content:space-between; align-items:baseline; margin-top:12px; }
   .price-total .k{ font-size:14px; font-weight:700; }
   .price-total .v{ font-family:'Space Grotesk',sans-serif; font-size:30px; font-weight:700; color:var(--green-dark); }
+
+  .consent-row{ margin-top:18px; }
+  .consent-row label{ display:flex; align-items:flex-start; gap:10px; font-size:12.5px; font-weight:400; color:var(--ink-soft); cursor:pointer; line-height:1.5; }
+  .consent-row input{ margin-top:2px; width:16px; height:16px; flex:none; accent-color:var(--green); }
+  .consent-row a{ color:var(--green-dark); font-weight:600; text-decoration:underline; }
+
+  .field.invalid input, .field.invalid select{
+    border-color:#C1272D; background:#FBE9E9;
+  }
+  .field.invalid label{ color:#8f1f24; }
+  .consent-row.invalid{
+    background:#FBE9E9; border:1.5px solid #C1272D; border-radius:12px; padding:10px 12px; margin:18px -12px 0;
+  }
+  .consent-row.invalid label{ color:#8f1f24; }
 
   .submit-row{ margin-top:26px; }
   .submit-row .btn-primary{ width:100%; padding:17px; }
@@ -367,6 +421,35 @@
   .included-label{ font-size:12.5px; color:var(--ink-soft); }
   .extras-summary-row{ display:none; }
   .extras-summary-row.active{ display:flex; }
+
+  /* ---------- ROI CALCULATOR ---------- */
+  .roi-section{ background:var(--paper-dim); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .roi-head{ max-width:640px; margin-bottom:40px; }
+  .roi-head h2{ font-size:clamp(28px,4vw,42px); margin-top:16px; }
+  .roi-head p{ margin-top:14px; font-size:16px; max-width:56ch; }
+  .roi-card{ background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); padding:40px 36px; box-shadow:var(--shadow); }
+  @media (max-width:600px){ .roi-card{ padding:28px 22px; } }
+  .roi-grid{ display:grid; grid-template-columns:1fr 1fr; gap:36px 44px; }
+  @media (max-width:720px){ .roi-grid{ grid-template-columns:1fr; gap:30px; } }
+  .roi-input-head{ display:flex; align-items:baseline; gap:10px; margin-bottom:12px; }
+  .step-badge{ font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--green-dark); background:var(--green-tint); border-radius:999px; padding:4px 10px; flex:none; }
+  .roi-input-title{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:16.5px; }
+  .roi-value{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:27px; color:var(--green-dark); margin-bottom:12px; }
+  .slider-wrap input[type="range"]{ width:100%; display:block; accent-color:var(--green); height:6px; cursor:pointer; }
+  .slider-minmax{ display:flex; justify-content:space-between; font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft); margin-top:6px; }
+  .roi-size-row{ display:flex; gap:8px; flex-wrap:wrap; margin-top:2px; }
+  .roi-size-btn{ background:#fff; border:1.5px solid var(--line); border-radius:10px; padding:11px 15px; font-weight:700; font-size:13.5px;
+    font-family:'Inter',sans-serif; cursor:pointer; transition:border-color .15s ease, background .15s ease; }
+  .roi-size-btn.active{ border-color:var(--green); background:var(--green-tint); color:var(--green-dark); }
+  .roi-results{ display:grid; grid-template-columns:repeat(4,1fr); gap:22px; margin-top:40px; padding-top:32px; border-top:1.5px dashed var(--line); }
+  @media (max-width:720px){ .roi-results{ grid-template-columns:1fr 1fr; } }
+  .roi-result{ display:flex; flex-direction:column; gap:5px; }
+  .roi-result-k{ font-size:12px; color:var(--ink-soft); font-weight:700; text-transform:uppercase; letter-spacing:.04em; }
+  .roi-result-v{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:25px; }
+  .roi-result-highlight .roi-result-v{ color:var(--green-dark); }
+  .roi-result-sub{ font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--green-dark); font-weight:600; }
+  .roi-disclaimer{ font-size:12px; color:var(--ink-soft); margin-top:26px; }
 </style>
 </head>
 <body>
@@ -549,6 +632,79 @@
     </div>
   </section>
 
+
+  <!-- ================= ROI CALCULATOR ================= -->
+  <section class="roi-section" id="roi">
+    <div class="wrap">
+      <div class="roi-head">
+        <span class="eyebrow">See the math</span>
+        <h2>Projected ROI</h2>
+        <p>Slide the numbers to match your own business and see what a campaign could realistically return.</p>
+      </div>
+      <div class="roi-card">
+        <div class="roi-grid">
+          <div class="roi-input">
+            <div class="roi-input-head"><span class="step-badge">Step 1</span><span class="roi-input-title">Conversion rate</span></div>
+            <div class="roi-value" id="roiConversionValue">1.0%</div>
+            <div class="slider-wrap">
+              <input type="range" id="roiConversion" min="0" max="20" step="0.1" value="1">
+              <div class="slider-minmax"><span>0%</span><span>20%</span></div>
+            </div>
+          </div>
+
+          <div class="roi-input">
+            <div class="roi-input-head"><span class="step-badge">Step 2</span><span class="roi-input-title">Average job invoice</span></div>
+            <div class="roi-value" id="roiInvoiceValue">$700</div>
+            <div class="slider-wrap">
+              <input type="range" id="roiInvoice" min="0" max="1400" step="50" value="700">
+              <div class="slider-minmax"><span>$0</span><span>$1,400</span></div>
+            </div>
+          </div>
+
+          <div class="roi-input">
+            <div class="roi-input-head"><span class="step-badge">Step 3</span><span class="roi-input-title">Door hangers mailed</span></div>
+            <div class="roi-value" id="roiQtyValue">5,000</div>
+            <div class="slider-wrap">
+              <input type="range" id="roiQty" min="2000" max="20000" step="500" value="5000">
+              <div class="slider-minmax"><span>2,000</span><span>20,000</span></div>
+            </div>
+          </div>
+
+          <div class="roi-input">
+            <div class="roi-input-head"><span class="step-badge">Step 4</span><span class="roi-input-title">Ad size</span></div>
+            <div class="roi-size-row" id="roiSizeRow">
+              <button type="button" class="roi-size-btn active" data-size="third">Third page</button>
+              <button type="button" class="roi-size-btn" data-size="half">Half page</button>
+              <button type="button" class="roi-size-btn" data-size="full">Full page</button>
+              <button type="button" class="roi-size-btn" data-size="both">Both sides</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="roi-results">
+          <div class="roi-result">
+            <span class="roi-result-k">Booked jobs</span>
+            <span class="roi-result-v" id="roiLeads">50</span>
+          </div>
+          <div class="roi-result">
+            <span class="roi-result-k">Projected earnings</span>
+            <span class="roi-result-v" id="roiEarnings">$0</span>
+          </div>
+          <div class="roi-result">
+            <span class="roi-result-k">Campaign cost</span>
+            <span class="roi-result-v" id="roiExpense">$0</span>
+          </div>
+          <div class="roi-result roi-result-highlight">
+            <span class="roi-result-k">Return</span>
+            <span class="roi-result-v" id="roiPercent">0%</span>
+            <span class="roi-result-sub" id="roiMultiple">0x return</span>
+          </div>
+        </div>
+        <p class="fine roi-disclaimer">Estimates only, based on published industry cost benchmarks and the numbers you enter — actual results vary by market, offer, and follow-up.</p>
+      </div>
+    </div>
+  </section>
+
   <!-- ================= BUILDER ================= -->
   <section class="builder-section" id="builder">
     <div class="wrap">
@@ -558,7 +714,7 @@
         <p>Every choice below updates your door hanger and the price on the right, live. Submitting starts your order — no payment happens on this site; we'll follow up once your design is ready to approve.</p>
       </div>
 
-      <form class="builder-layout" id="builderForm">
+      <form class="builder-layout" id="builderForm" novalidate>
         <div class="builder-fields">
 
           <div class="field-group">
@@ -613,6 +769,19 @@
               <div class="field"><label for="bizZip">ZIP</label><input required type="text" id="bizZip" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="45501"></div>
             </div>
             <div class="field"><label for="designNotes">Notes for the design team <span style="font-weight:400;color:var(--ink-soft);">(optional)</span></label><input type="text" id="designNotes" placeholder="Logo, financing options, energy-efficiency messaging"></div>
+            <div class="field">
+              <label for="designFiles">Logo or reference photos <span style="font-weight:400;color:var(--ink-soft);">(optional)</span></label>
+              <div class="upload-zone" id="uploadZone" tabindex="0" role="button" aria-label="Upload logo or reference photos">
+                <input type="file" id="designFiles" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml,application/pdf" multiple>
+                <div class="upload-zone-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
+                </div>
+                <p class="upload-zone-title">Drop files here or <span class="browse">browse</span></p>
+                <p class="upload-zone-meta">PNG · JPG · WEBP · GIF · SVG · PDF — up to 5 files, 8MB each</p>
+              </div>
+              <div class="upload-file-list" id="uploadFileList"></div>
+              <p class="upload-problem" id="uploadProblem"></p>
+            </div>
           </div>
 
           <div class="field-group">
@@ -796,6 +965,13 @@
             <div class="price-row extras-summary-row" id="sumExtraQrDashboard"><span class="k">QR code web dashboard</span><span class="v">+$79</span></div>
             <div class="price-row extras-summary-row" id="sumExtraWebsite"><span class="k">Clean website design package</span><span class="v">+$149.99</span></div>
             <div class="price-total"><span class="k">Total</span><span class="v" id="sumTotal">$550</span></div>
+          </div>
+
+          <div class="consent-row" id="consentRow">
+            <label for="agreePolicies">
+              <input type="checkbox" id="agreePolicies" required>
+              <span>I reviewed and agree with the <a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a>, <a href="/termsandconditions.html" target="_blank" rel="noopener">Terms and Conditions</a>, and <a href="/communicationpolicy.html" target="_blank" rel="noopener">Communication Policy</a>, and consent to receive SMS notifications as outlined.</span>
+            </label>
           </div>
 
           <div class="submit-row">
@@ -1064,15 +1240,170 @@
   const successCard = document.getElementById('successCard');
   const errorCard = document.getElementById('errorCard');
 
+  // ---- Custom required-field validation ----
+  // The form has novalidate set, so the browser's own validation UI never
+  // fires; this replaces it with a consistent highlight (same red used by
+  // .error-card elsewhere) applied to every unfilled required field AND the
+  // consent checkbox, all at once, rather than the browser's one-at-a-time
+  // native tooltip.
+  const builderFormEl = document.getElementById('builderForm');
+
+  function setFieldInvalid(el, invalid) {
+    const wrap = el.closest('.field') || el.closest('.consent-row');
+    if (wrap) wrap.classList.toggle('invalid', invalid);
+  }
+
+  function validateBuilderForm() {
+    const requiredEls = builderFormEl.querySelectorAll('[required]');
+    let firstInvalid = null;
+    requiredEls.forEach(el => {
+      const valid = el.checkValidity();
+      setFieldInvalid(el, !valid);
+      if (!valid && !firstInvalid) firstInvalid = el;
+    });
+    return firstInvalid;
+  }
+
+  // Clear a field's highlight as soon as the person fixes it, rather than
+  // leaving a stale red border after they've already corrected it.
+  builderFormEl.querySelectorAll('[required]').forEach(el => {
+    el.addEventListener('input', () => setFieldInvalid(el, !el.checkValidity()));
+    el.addEventListener('change', () => setFieldInvalid(el, !el.checkValidity()));
+  });
+
+  // ---- Design file uploads ----
+  // These limits must match MAX_FILES / MAX_FILE_BYTES / ALLOWED_FILE_TYPES
+  // in the Worker — checking here just gives faster feedback; the Worker
+  // re-checks everything itself since the client can't be trusted.
+  const MAX_FILES = 5;
+  const MAX_FILE_BYTES = 8 * 1024 * 1024;
+  const ALLOWED_FILE_TYPES = ['image/png', 'image/jpeg', 'image/webp', 'image/gif', 'image/svg+xml', 'application/pdf'];
+  const uploadZone = document.getElementById('uploadZone');
+  const designFilesInput = document.getElementById('designFiles');
+  const uploadFileList = document.getElementById('uploadFileList');
+  const uploadProblem = document.getElementById('uploadProblem');
+  let selectedFiles = [];
+
+  function formatBytes(n) {
+    return n > 1024 * 1024 ? (n / (1024 * 1024)).toFixed(1) + 'MB' : Math.round(n / 1024) + 'KB';
+  }
+
+  function fileExtLabel(f) {
+    const fromName = (f.name.split('.').pop() || '').toUpperCase();
+    return fromName.length <= 5 ? fromName : (f.type.split('/')[1] || 'FILE').toUpperCase();
+  }
+
+  function renderFileList() {
+    uploadFileList.innerHTML = selectedFiles.map((f, i) => `
+      <div class="upload-file-row">
+        <span class="upload-file-ext">${fileExtLabel(f)}</span>
+        <span class="upload-file-name">${f.name}</span>
+        <span class="upload-file-size">${formatBytes(f.size)}</span>
+        <button type="button" class="upload-file-remove" data-index="${i}" aria-label="Remove ${f.name}">×</button>
+      </div>
+    `).join('');
+    uploadZone.classList.toggle('maxed', selectedFiles.length >= MAX_FILES);
+    uploadZone.setAttribute('aria-disabled', selectedFiles.length >= MAX_FILES ? 'true' : 'false');
+  }
+
+  // Adds newly chosen/dropped files to the existing selection (rather than
+  // replacing it), so dragging in files across a few drops — or using the
+  // native picker more than once — accumulates instead of resetting.
+  function addFiles(incoming) {
+    const problems = [];
+    for (const f of incoming) {
+      if (selectedFiles.length >= MAX_FILES) {
+        problems.push(`Only the first ${MAX_FILES} files are kept.`);
+        break;
+      }
+      if (selectedFiles.some(s => s.name === f.name && s.size === f.size)) continue; // already added
+      if (!ALLOWED_FILE_TYPES.includes(f.type)) {
+        problems.push(`"${f.name}" skipped — unsupported file type.`);
+        continue;
+      }
+      if (f.size > MAX_FILE_BYTES) {
+        problems.push(`"${f.name}" skipped — over 8MB.`);
+        continue;
+      }
+      selectedFiles.push(f);
+    }
+    uploadProblem.textContent = problems.join(' ');
+    renderFileList();
+  }
+
+  uploadFileList.addEventListener('click', (e) => {
+    const btn = e.target.closest('.upload-file-remove');
+    if (!btn) return;
+    selectedFiles.splice(Number(btn.dataset.index), 1);
+    renderFileList();
+  });
+
+  uploadZone.addEventListener('click', () => {
+    if (selectedFiles.length < MAX_FILES) designFilesInput.click();
+  });
+  uploadZone.addEventListener('keydown', (e) => {
+    if ((e.key === 'Enter' || e.key === ' ') && selectedFiles.length < MAX_FILES) {
+      e.preventDefault();
+      designFilesInput.click();
+    }
+  });
+  ['dragenter', 'dragover'].forEach(evt => {
+    uploadZone.addEventListener(evt, (e) => {
+      e.preventDefault();
+      if (selectedFiles.length < MAX_FILES) uploadZone.classList.add('dragover');
+    });
+  });
+  ['dragleave', 'dragend'].forEach(evt => {
+    uploadZone.addEventListener(evt, () => uploadZone.classList.remove('dragover'));
+  });
+  uploadZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    uploadZone.classList.remove('dragover');
+    addFiles(Array.from(e.dataTransfer.files || []));
+  });
+
+  designFilesInput.addEventListener('change', () => {
+    addFiles(Array.from(designFilesInput.files || []));
+    designFilesInput.value = ''; // allows re-selecting the same file later and re-fires change
+  });
+
+  function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result.split(',')[1]);
+      reader.onerror = () => reject(reader.error);
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function buildFilesPayload() {
+    return Promise.all(selectedFiles.map(async f => ({
+      name: f.name,
+      type: f.type,
+      data: await fileToBase64(f),
+    })));
+  }
+
   document.getElementById('builderForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     successCard.classList.add('hidden');
     errorCard.classList.add('hidden');
 
+    const firstInvalid = validateBuilderForm();
+    if (firstInvalid) {
+      firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      firstInvalid.focus({ preventScroll: true });
+      return;
+    }
+
+    const policiesAgreedAt = new Date().toISOString();
+
     const units = sizeUnits[state.size];
     const price = Number((550 * units * (state.qty / 2000) + extrasTotal()).toFixed(2));
 
     const payload = {
+      policiesAgreed: true,
+      policiesAgreedAt,
       fullName: document.getElementById('fullName').value,
       email: document.getElementById('email').value,
       phone: document.getElementById('phone').value,
@@ -1096,9 +1427,14 @@
     };
 
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Placing order…';
 
     try {
+      if (selectedFiles.length) {
+        submitBtn.textContent = 'Uploading files…';
+        payload.files = await buildFilesPayload();
+      }
+      submitBtn.textContent = 'Placing order…';
+
       const res = await fetch(WORKER_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -1139,6 +1475,10 @@
       document.getElementById('successDetails').innerHTML =
         Object.entries(details).map(([k,v]) => '<dt>' + k + '</dt><dd>' + v + '</dd>').join('');
 
+      selectedFiles = [];
+      designFilesInput.value = '';
+      uploadProblem.textContent = '';
+      renderFileList();
       successCard.classList.remove('hidden');
       successCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
     } catch (err) {
@@ -1186,6 +1526,64 @@
     go(0);
     start();
   });
+</script>
+
+<script>
+  // ---------- Projected ROI calculator ----------
+  (function () {
+    var ROI_SIZE_UNITS = { third: 1, half: 2, full: 3, both: 6 };
+    var ROI_SIZE_BONUS = { third: 0, half: 0.25, full: 0.5, both: 0.75 };
+    var roiSize = 'third';
+
+    var roiConversion = document.getElementById('roiConversion');
+    var roiInvoice = document.getElementById('roiInvoice');
+    var roiQty = document.getElementById('roiQty');
+    var roiSizeBtns = document.querySelectorAll('.roi-size-btn');
+
+    function fmtMoney(n) {
+      return '$' + Math.round(n).toLocaleString();
+    }
+
+    function updateRoi() {
+      var conversion = Number(roiConversion.value);
+      var invoice = Number(roiInvoice.value);
+      var qty = Number(roiQty.value);
+      var bonus = ROI_SIZE_BONUS[roiSize];
+      var units = ROI_SIZE_UNITS[roiSize];
+
+      document.getElementById('roiConversionValue').textContent = conversion.toFixed(1) + '%';
+      document.getElementById('roiInvoiceValue').textContent = fmtMoney(invoice);
+      document.getElementById('roiQtyValue').textContent = qty.toLocaleString();
+
+      var effectiveRate = conversion * (1 + bonus);
+      var leads = Math.floor(qty * (effectiveRate / 100));
+      var earnings = leads * invoice;
+      // Same formula and constants as the Worker's own computePrice(): 550 * sizeUnits * (qty / 2000)
+      var expense = 550 * units * (qty / 2000);
+      var roiPercent = expense > 0 ? ((earnings - expense) / expense) * 100 : 0;
+      var roiMultiple = expense > 0 ? earnings / expense : 0;
+
+      document.getElementById('roiLeads').textContent = leads.toLocaleString();
+      document.getElementById('roiEarnings').textContent = fmtMoney(earnings);
+      document.getElementById('roiExpense').textContent = fmtMoney(expense);
+      document.getElementById('roiPercent').textContent = (roiPercent >= 0 ? '+' : '') + Math.round(roiPercent).toLocaleString() + '%';
+      document.getElementById('roiMultiple').textContent = roiMultiple.toFixed(1) + 'x return';
+    }
+
+    [roiConversion, roiInvoice, roiQty].forEach(function (el) {
+      el.addEventListener('input', updateRoi);
+    });
+    roiSizeBtns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        roiSizeBtns.forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        roiSize = btn.dataset.size;
+        updateRoi();
+      });
+    });
+
+    updateRoi();
+  })();
 </script>
 </body>
 </html>
