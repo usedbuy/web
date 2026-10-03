@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 520">
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#22f0ff" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#ff3df0" stop-opacity="0.05"/>
+    </linearGradient>
+  </defs>
+  <rect x="6" y="6" width="388" height="508" fill="url(#g1)" opacity="0.15"/>
+  <!-- grid -->
+  <g stroke="#22f0ff" stroke-opacity="0.18" stroke-width="1">
+    <line x1="0" y1="86" x2="400" y2="86"/>
+    <line x1="0" y1="173" x2="400" y2="173"/>
+    <line x1="0" y1="260" x2="400" y2="260"/>
+    <line x1="0" y1="347" x2="400" y2="347"/>
+    <line x1="0" y1="434" x2="400" y2="434"/>
+    <line x1="80" y1="0" x2="80" y2="520"/>
+    <line x1="160" y1="0" x2="160" y2="520"/>
+    <line x1="240" y1="0" x2="240" y2="520"/>
+    <line x1="320" y1="0" x2="320" y2="520"/>
+  </g>
+  <!-- corner brackets -->
+  <g stroke="#b6ff3d" stroke-width="3" fill="none">
+    <polyline points="6,40 6,6 40,6"/>
+    <polyline points="360,6 394,6 394,40"/>
+    <polyline points="394,480 394,514 360,514"/>
+    <polyline points="40,514 6,514 6,480"/>
+  </g>
+  <!-- circuit traces -->
+  <g stroke="#ff3df0" stroke-width="2" fill="none" opacity="0.8">
+    <polyline points="0,120 46,120 60,134 60,180"/>
+    <circle cx="60" cy="180" r="4" fill="#ff3df0"/>
+    <polyline points="400,400 350,400 336,386 336,330"/>
+    <circle cx="336" cy="330" r="4" fill="#22f0ff"/>
+    <polyline points="0,440 30,440 44,454 100,454"/>
+    <circle cx="100" cy="454" r="3.5" fill="#b6ff3d"/>
+  </g>
+  <!-- outer frame -->
+  <rect x="2" y="2" width="396" height="516" fill="none" stroke="#22f0ff" stroke-width="1.5" stroke-opacity="0.5"/>
+</svg>
