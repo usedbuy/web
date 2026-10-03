@@ -233,6 +233,27 @@ a:focus-visible, button:focus-visible, input:focus-visible, .faq-q:focus-visible
 .form-field input:focus{border-color:var(--red);}
 .form-field select{ border:1.5px solid var(--line); border-radius:10px; padding:12px 14px; font-size:15px; font-family:'Inter',sans-serif; background:var(--paper); color:var(--text); appearance:none; -webkit-appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1L7 7L13 1' stroke='%235E584C' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 14px center; padding-right:36px;}
 .form-field select:focus{border-color:var(--red); outline:none;}
+
+/* ---------- FILE UPLOAD DROPZONE ---------- */
+.upload-zone{ position:relative; border:1.5px dashed var(--line); border-radius:14px; background:var(--paper); padding:34px 20px; text-align:center; cursor:pointer; transition:border-color .15s ease, background .15s ease; }
+.upload-zone:hover, .upload-zone:focus-visible{ border-color:var(--red); outline:none; }
+.upload-zone.dragover{ border-color:var(--red); background:var(--red-soft); }
+.upload-zone.maxed{ cursor:not-allowed; opacity:.55; }
+.upload-zone input[type="file"]{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+.upload-zone-icon{ width:46px; height:46px; border-radius:50%; margin:0 auto 14px; display:flex; align-items:center; justify-content:center; background:var(--kraft); border:2px solid var(--red); color:var(--red); }
+.upload-zone-icon svg{ width:20px; height:20px; }
+.upload-zone-title{ font-size:15.5px; font-weight:700; color:var(--ink); margin-bottom:5px; }
+.upload-zone-title .browse{ color:var(--red); text-decoration:underline; }
+.upload-zone-meta{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.02em; color:var(--muted); }
+@media(max-width:480px){ .upload-zone{ padding:26px 16px; } }
+.upload-file-list{ display:flex; flex-direction:column; gap:8px; margin-top:12px; }
+.upload-file-row{ display:flex; align-items:center; gap:10px; padding:10px 12px; border:1.5px solid var(--line); border-radius:10px; background:var(--paper); }
+.upload-file-ext{ font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:700; letter-spacing:.03em; background:var(--kraft); color:var(--red); padding:3px 6px; border-radius:4px; flex-shrink:0; }
+.upload-file-name{ flex:1; min-width:0; font-size:13.5px; color:var(--ink); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.upload-file-size{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--muted); flex-shrink:0; }
+.upload-file-remove{ background:none; border:none; color:var(--muted); font-size:20px; line-height:1; cursor:pointer; padding:2px 4px; flex-shrink:0; }
+.upload-file-remove:hover{ color:var(--red); }
+.upload-problem{ font-size:12.5px; color:var(--red); margin-top:8px; min-height:0; }
 .field-hint{font-size:12px; color:var(--muted); line-height:1.4;}
 
 .rings-wrap{display:flex; align-items:center; gap:24px; flex-wrap:wrap;}
@@ -287,9 +308,40 @@ button.extra-item.active .extra-price{color:var(--red);}
 .extra-item.extra-included{cursor:default;}
 .extra-badge{font-family:'IBM Plex Mono',monospace; font-size:11.5px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; background:#EAF0E9; color:var(--moss); border:1px solid var(--moss); border-radius:999px; padding:4px 12px; white-space:nowrap;}
 
+.consent-check{ display:flex; align-items:flex-start; gap:10px; margin:14px 0 4px 0; padding:10px 12px; border:1.5px solid transparent; border-radius:10px; cursor:pointer; transition:border-color .15s ease, background .15s ease; }
+.consent-check.invalid{ border-color:var(--red); background:var(--red-soft); }
+.form-field.invalid input, .form-field.invalid select{ border-color:var(--red); background:var(--red-soft); }
+.form-field.invalid label{ color:var(--red); }
+.consent-check input[type="checkbox"]{ margin-top:3px; width:18px; height:18px; flex-shrink:0; accent-color:var(--red); cursor:pointer; }
+.consent-check span{ font-size:13.5px; line-height:1.5; color:var(--muted); }
+.consent-check a{ color:var(--red); font-weight:600; text-decoration:underline; }
+.consent-check a:hover{ text-decoration:none; }
+
 .tb-label{font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted);}
 
 .price-breakdown{ background:var(--paper); border:1.5px solid var(--line); border-radius:18px; padding:22px 26px; }
+
+.roi-card{ background:var(--paper); border:1.5px solid var(--line); border-radius:18px; padding:32px; max-width:900px; margin:0 auto; }
+.roi-grid{ display:grid; grid-template-columns:1fr 1fr; gap:30px 36px; }
+.roi-input-block{ min-width:0; }
+.roi-label-row{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:6px; }
+.roi-step-tag{ font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; background:var(--red-soft); color:var(--red); border-radius:999px; padding:3px 10px; flex:none; }
+.roi-title{ font-family:'Oswald',sans-serif; text-transform:uppercase; letter-spacing:.02em; color:var(--ink); font-size:15px; font-weight:600; }
+.roi-readout{ margin-left:auto; font-family:'IBM Plex Mono',monospace; font-weight:700; color:var(--red); font-size:15px; flex:none; }
+.roi-slider-wrap input[type="range"]{ margin:10px 0 6px 0; }
+.roi-slider-minmax{ display:flex; justify-content:space-between; font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--muted); }
+.roi-results{ margin-top:36px; padding-top:28px; border-top:1px solid var(--line); display:grid; grid-template-columns:repeat(4,1fr); gap:18px; }
+.roi-result-box{ text-align:center; }
+.roi-result-label{ display:block; font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
+.roi-result-value{ display:block; font-family:'Oswald',sans-serif; font-size:24px; color:var(--ink); font-weight:600; letter-spacing:.01em; }
+.roi-result-highlight .roi-result-value{ color:var(--red); }
+.roi-result-sub{ display:block; font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--red); font-weight:700; margin-top:2px; }
+.roi-disclaimer{ margin:22px 0 0 0; font-size:12.5px; color:var(--muted); text-align:center; }
+@media(max-width:640px){
+  .roi-card{ padding:24px 20px; }
+  .roi-grid{ grid-template-columns:1fr; gap:26px; }
+  .roi-results{ grid-template-columns:1fr 1fr; }
+}
 .pb-caption{ display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px; margin-bottom:14px; padding-bottom:14px; border-bottom:1px solid var(--line); }
 .pb-radius{ font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--muted); }
 .pb-row{ display:flex; justify-content:space-between; align-items:baseline; gap:14px; padding:7px 0; font-size:14.5px; }
@@ -397,6 +449,7 @@ footer{background:var(--ink); color:#C7CCDC; padding:52px 0 30px 0;}
     { "key": "basicQr", "label": "Basic QR code tracking", "type": "included" },
     { "key": "website", "label": "Clean website design package", "type": "toggle", "price": 149.99 }
   ],
+  "roi_avg_invoice": 1500,
   "available": true
 }
 </script>
@@ -421,9 +474,9 @@ footer{background:var(--ink); color:#C7CCDC; padding:52px 0 30px 0;}
 <section class="hero" id="top">
   <div class="container hero-grid">
     <div>
-      <span class="eyebrow" data-cms="hero_eyebrow">Fill your spring route before your competitors do</span>
-      <h1 data-cms="hero_headline">Every overgrown lawn within 30 miles could be your next weekly stop.</h1>
-      <p class="hero-sub" data-cms="hero_subtext">DPLM hand-delivers your landscaping ad to homeowners near the yards you already service — so your new customers live close enough to fit right into your existing route. No billboards, no ad auctions, no guesswork.</p>
+      <span class="eyebrow" data-cms="hero_eyebrow">Grow your route, not your drive time</span>
+      <h1 data-cms="hero_headline">Why drive across town for a new customer when the next one could live three houses from a yard you already mow?</h1>
+      <p class="hero-sub" data-cms="hero_subtext">We deliver your door hanger to the streets around the yards you already service, timed for the week everyone starts noticing their lawn again after winter. Growth that fits your existing route, instead of new stops scattered across town.</p>
     </div>
     <div class="hero-visual">
       <div class="slideshow" id="heroSlideshow">
@@ -441,9 +494,9 @@ footer{background:var(--ink); color:#C7CCDC; padding:52px 0 30px 0;}
 <section class="section configurator" id="build">
   <div class="container">
     <div class="section-head">
-      <span class="eyebrow" data-cms="builder_eyebrow">Get started</span>
-      <h2 data-cms="builder_headline">Build your door hanger</h2>
-      <p data-cms="builder_subtext">Five steps. Your hanger preview and total update as you go — nothing is charged yet.</p>
+      <span class="eyebrow" data-cms="builder_eyebrow">Built for landscaping companies</span>
+      <h2 data-cms="builder_headline">Build your door hanger campaign</h2>
+      <p data-cms="builder_subtext">Six quick steps, built around how landscaping businesses grow their routes — your preview and price update live as you go, and you won’t be charged until your design is approved.</p>
       <p class="unavailable-notice" id="unavailableNotice" style="display:none;" data-cms="unavailable_notice_text">This offer is currently unavailable — please check back soon.</p>
     </div>
 
@@ -454,7 +507,7 @@ footer{background:var(--ink); color:#C7CCDC; padding:52px 0 30px 0;}
         <div class="build-step">
           <div class="step-head">
             <span class="bstep-num">01</span>
-            <div><h3 data-cms="step1_title">Register your business</h3><p data-cms="step1_description">We'll use this to confirm your order and send your design proofs.</p></div>
+            <div><h3 data-cms="step1_title">Register your business</h3><p data-cms="step1_description">We’ll use this to confirm your order and send your free design proofs straight to your inbox.</p></div>
           </div>
           <div class="form-grid">
             <div class="form-field"><label for="fullName">Full name</label><input id="fullName" type="text" required placeholder="Jordan Lee"></div>
@@ -504,6 +557,19 @@ footer{background:var(--ink); color:#C7CCDC; padding:52px 0 30px 0;}
             <div class="form-field"><label for="businessState">State</label><input id="businessState" type="text" required maxlength="2" pattern="[A-Za-z]{2}" placeholder="OR" style="text-transform:uppercase;"></div>
             <div class="form-field"><label for="businessZip">ZIP code</label><input id="businessZip" type="text" required inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="97201"></div>
             <div class="form-field full"><label for="designNotes">Notes for our design team <span class="opt-tag">optional</span></label><input id="designNotes" type="text" placeholder="Colors, logo file, anything to mention"></div>
+            <div class="form-field full">
+              <label for="designFiles">Logo or reference photos <span class="opt-tag">optional</span></label>
+              <div class="upload-zone" id="uploadZone" tabindex="0" role="button" aria-label="Upload logo or reference photos">
+                <input type="file" id="designFiles" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml,application/pdf" multiple>
+                <div class="upload-zone-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
+                </div>
+                <p class="upload-zone-title">Drop files here or <span class="browse">browse</span></p>
+                <p class="upload-zone-meta">PNG · JPG · WEBP · GIF · SVG · PDF — up to 5 files, 8MB each</p>
+              </div>
+              <div class="upload-file-list" id="uploadFileList"></div>
+              <p class="upload-problem" id="uploadProblem"></p>
+            </div>
           </div>
         </div>
 
@@ -511,7 +577,7 @@ footer{background:var(--ink); color:#C7CCDC; padding:52px 0 30px 0;}
         <div class="build-step">
           <div class="step-head">
             <span class="bstep-num">02</span>
-            <div><h3 data-cms="step2_title">Set your delivery radius</h3><p data-cms="step2_description">Choose how far from your door hangers should reach. Right now, 30 miles is the only radius available in your city.</p></div>
+            <div><h3 data-cms="step2_title">Set your delivery radius</h3><p data-cms="step2_description">Choose how far your door hangers should reach. Right now, 30 miles is the only radius available in your city — we’re adding more soon.</p></div>
           </div>
           <div class="rings-wrap">
             <div class="radar-visual">
@@ -544,7 +610,7 @@ footer{background:var(--ink); color:#C7CCDC; padding:52px 0 30px 0;}
         <div class="build-step" id="pricing">
           <div class="step-head">
             <span class="bstep-num">03</span>
-            <div><h3 data-cms="step3_title">Choose your ad size</h3><p data-cms="step3_description">Pick how much of the hanger is yours — watch the preview update.</p></div>
+            <div><h3 data-cms="step3_title">Choose your ad size</h3><p data-cms="step3_description">Pick how much of the hanger is yours — watch the preview and price update instantly as you choose.</p></div>
           </div>
           <div class="step3-grid">
             <!-- populated at runtime from CONFIG.pricing — see script at end of page -->
@@ -570,7 +636,7 @@ footer{background:var(--ink); color:#C7CCDC; padding:52px 0 30px 0;}
         <div class="build-step">
           <div class="step-head">
             <span class="bstep-num">04</span>
-            <div><h3>Choose your quantity <span class="qty-value" id="qtyValue">2,000</span></h3><p data-cms="step4_description">Runs start at 2,000 hangers, in increments of 1,000. Right now, 2,000 is the only quantity available in your city.</p></div>
+            <div><h3>Choose your quantity <span class="qty-value" id="qtyValue">2,000</span></h3><p data-cms="step4_description">Runs start at 2,000 hangers, in steps of 1,000 after that. Right now, 2,000 is the only quantity available in your city — more volume unlocks soon.</p></div>
           </div>
           <!-- min/max/step/value are set at runtime from CONFIG — see script at end of page -->
           <input type="range" id="qtySlider">
@@ -582,7 +648,7 @@ footer{background:var(--ink); color:#C7CCDC; padding:52px 0 30px 0;}
         <div class="build-step">
           <div class="step-head">
             <span class="bstep-num">05</span>
-            <div><h3 data-cms="step5_title">Optional extras</h3><p data-cms="step5_description">Add extra services to this order, or keep what's already included at no charge.</p></div>
+            <div><h3 data-cms="step5_title">Optional extras</h3><p data-cms="step5_description">Add on what you need, or stick with what’s already included at no charge.</p></div>
           </div>
           <!-- rendered at runtime from CONFIG.extras — see script at end of page -->
           <div class="extras-list" id="extrasList"></div>
@@ -592,7 +658,7 @@ footer{background:var(--ink); color:#C7CCDC; padding:52px 0 30px 0;}
         <div class="build-step" id="buildSummary">
           <div class="step-head">
             <span class="bstep-num">06</span>
-            <div><h3 data-cms="step6_title">Place your order</h3><p data-cms="step6_description">This places your order — you're not paying on this page. Once your design is approved, we'll send a secure payment request.</p></div>
+            <div><h3 data-cms="step6_title">Place your order</h3><p data-cms="step6_description">This places your order — you won’t pay a cent here. Once your design is approved, we’ll send a secure payment request.</p></div>
           </div>
 
           <div class="price-breakdown">
@@ -635,9 +701,14 @@ footer{background:var(--ink); color:#C7CCDC; padding:52px 0 30px 0;}
             <div class="pb-savings">You're saving <strong id="pbSavings">$178</strong> by ordering now</div>
           </div>
 
+          <label class="consent-check" id="consentCheckWrap">
+            <input type="checkbox" id="agreePolicies" required>
+            <span>I reviewed and agree with the <a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a>, <a href="/termsandconditions.html" target="_blank" rel="noopener">Terms and Conditions</a>, and <a href="/communicationpolicy.html" target="_blank" rel="noopener">Communication Policy</a>, and consent to receive SMS notifications as outlined.</span>
+          </label>
+
           <div class="submit-row">
             <button type="submit" class="btn btn-primary" id="submitBtn" data-cms="submit_button_text">Place my order</button>
-            <span style="font-size:13px; color:var(--muted);" data-cms="submit_disclaimer_text">No charge today. We'll follow up separately to collect payment.</span>
+            <span style="font-size:13px; color:var(--muted);" data-cms="submit_disclaimer_text">No charge today — we’ll follow up separately once your design is ready to collect payment.</span>
           </div>
           <div class="confirm" id="confirmMsg"></div>
           <div class="form-error" id="errorMsg">Something went wrong submitting your order. Please try again in a moment.</div>
@@ -648,37 +719,117 @@ footer{background:var(--ink); color:#C7CCDC; padding:52px 0 30px 0;}
   </div>
 </section>
 
+<!-- ================= PROJECTED ROI ================= -->
+<section class="section" id="roi">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow" data-cms="roi_eyebrow">What a landscaping campaign returns</span>
+      <h2 data-cms="roi_headline">See your return before you spend a dollar</h2>
+      <p data-cms="roi_subtext">Move the sliders to match your business, and see what a single run could realistically bring back.</p>
+    </div>
+
+    <div class="roi-card">
+      <div class="roi-grid">
+        <div class="roi-input-block">
+          <div class="roi-label-row">
+            <span class="roi-step-tag">Step 1</span>
+            <span class="roi-title">Conversion rate</span>
+            <span class="roi-readout" id="roiConversionReadout">1.0%</span>
+          </div>
+          <div class="roi-slider-wrap">
+            <input type="range" id="roiConversion" min="0" max="20" step="0.1" value="1">
+            <div class="roi-slider-minmax"><span>0%</span><span>20%</span></div>
+          </div>
+        </div>
+
+        <div class="roi-input-block">
+          <div class="roi-label-row">
+            <span class="roi-step-tag">Step 2</span>
+            <span class="roi-title">Average job invoice</span>
+            <span class="roi-readout" id="roiInvoiceReadout">$0</span>
+          </div>
+          <div class="roi-slider-wrap">
+            <input type="range" id="roiInvoice" min="0" max="0" step="50" value="0">
+            <div class="roi-slider-minmax"><span id="roiInvoiceMin">$0</span><span id="roiInvoiceMax">$0</span></div>
+          </div>
+        </div>
+
+        <div class="roi-input-block">
+          <div class="roi-label-row">
+            <span class="roi-step-tag">Step 3</span>
+            <span class="roi-title">Door hangers mailed</span>
+            <span class="roi-readout" id="roiQtyReadout">5,000</span>
+          </div>
+          <div class="roi-slider-wrap">
+            <input type="range" id="roiQty" min="2000" max="20000" step="500" value="5000">
+            <div class="roi-slider-minmax"><span>2,000</span><span>20,000</span></div>
+          </div>
+        </div>
+
+        <div class="roi-input-block">
+          <div class="roi-label-row">
+            <span class="roi-step-tag">Step 4</span>
+            <span class="roi-title">Ad size</span>
+          </div>
+          <div class="chip-row" id="roiSizeRow"><!-- rendered at runtime from CONFIG.pricing --></div>
+        </div>
+      </div>
+
+      <div class="roi-results">
+        <div class="roi-result-box">
+          <span class="roi-result-label">Est. booked jobs</span>
+          <span class="roi-result-value" id="roiLeads">50</span>
+        </div>
+        <div class="roi-result-box">
+          <span class="roi-result-label">Est. earnings</span>
+          <span class="roi-result-value" id="roiEarnings">$0</span>
+        </div>
+        <div class="roi-result-box">
+          <span class="roi-result-label">Campaign cost</span>
+          <span class="roi-result-value" id="roiExpense">$0</span>
+        </div>
+        <div class="roi-result-box roi-result-highlight">
+          <span class="roi-result-label">Projected ROI</span>
+          <span class="roi-result-value" id="roiPercent">0%</span>
+          <span class="roi-result-sub" id="roiMultiple">0x return</span>
+        </div>
+      </div>
+      <p class="roi-disclaimer" data-cms="roi_disclaimer">This is an estimate based on industry-average job values and typical direct-mail response rates — your actual results will depend on your market, your offer, and how quickly you follow up.</p>
+    </div>
+  </div>
+</section>
+
 <!-- ================= FAQ ================= -->
 <section class="section" id="faq" style="background:var(--kraft);">
   <div class="container">
     <div class="section-head">
       <span class="eyebrow" data-cms="faq_eyebrow">FAQ</span>
-      <h2 data-cms="faq_headline">What owners ask us</h2>
+      <h2 data-cms="faq_headline">What landscaping companies ask before they order</h2>
     </div>
     <div class="faq-list" id="faqList">
       <div class="faq-item">
+        <button class="faq-q"><h4 data-cms="faq_q_6">Why do door hangers work for landscaping companies?</h4><span class="faq-icon"></span></button>
+        <div class="faq-a"><p data-cms="faq_a_6">Landscaping is a route business — the closer a new customer lives to the yards you already mow, the more profitable that stop becomes. Door hangers let you target the exact streets around your current routes, so growth doesn’t mean more windshield time. Timed to early spring, when everyone is looking at their yard after winter, they catch homeowners at the exact moment they’re deciding whether to keep mowing it themselves or hire it out.</p></div>
+      </div>
+      <div class="faq-item">
         <button class="faq-q"><h4 data-cms="faq_q_1">How long does it take for the door hanger to be delivered?</h4><span class="faq-icon"></span></button>
-        <div class="faq-a"><p data-cms="faq_a_1">After payment is collected — which we request separately once your design is approved, not on this site — it usually takes 3–4 weeks for all door hangers to be delivered to the addresses in your radius.</p></div>
+        <div class="faq-a"><p data-cms="faq_a_1">Once your design is approved and payment is collected — handled separately from this order form — delivery to every address in your radius usually takes 3–4 weeks.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q"><h4 data-cms="faq_q_2">Is the design of the door hanger included?</h4><span class="faq-icon"></span></button>
-        <div class="faq-a"><p data-cms="faq_a_2">Yes. Our design team provides up to three free design variations for your ad, at no extra cost.</p></div>
+        <div class="faq-a"><p data-cms="faq_a_2">Yes — our design team creates up to three free concepts for your ad, so you can pick the one that fits your brand best.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q"><h4 data-cms="faq_q_3">Is the tracking service free?</h4><span class="faq-icon"></span></button>
-        <div class="faq-a"><p data-cms="faq_a_3">Yes. You get a free dashboard where you can track the performance of the QR code on your distributed door hangers.</p></div>
+        <div class="faq-a"><p data-cms="faq_a_3">Yes — every campaign includes a free dashboard showing real-time scans on your door hangers’ QR code, so you can see results as they come in.</p></div>
       </div>
       <div class="faq-item">
-        <button class="faq-q"><h4 data-cms="faq_q_4">What's the minimum order?</h4><span class="faq-icon"></span></button>
-        <div class="faq-a"><p data-cms="faq_a_4">Runs start at 2,000 door hangers. You can go higher in increments of 1,000 from the calculator above.</p></div>
+        <button class="faq-q"><h4 data-cms="faq_q_4">What’s the minimum order?</h4><span class="faq-icon"></span></button>
+        <div class="faq-a"><p data-cms="faq_a_4">Runs start at 2,000 door hangers, with higher volumes available in steps of 1,000 right from the calculator above.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q"><h4 data-cms="faq_q_5">Can I choose which neighborhoods get a hanger?</h4><span class="faq-icon"></span></button>
-        <div class="faq-a"><p data-cms="faq_a_5">Delivery is based on the radius you set around your business address. Depending on your city, some radius options may not be available yet — we route the closest addresses first within whatever radius you choose.</p></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q"><h4 data-cms="faq_q_6">Why do door hangers work for landscaping companies?</h4><span class="faq-icon"></span></button>
-        <div class="faq-a"><p data-cms="faq_a_6">Landscaping is a route business — the closer a new customer lives to the yards you already mow, the more profitable that stop becomes. Door hangers let you target the exact streets around your current routes, so growth doesn’t mean more windshield time. Timed to early spring, when everyone is looking at their yard after winter, they catch homeowners at the exact moment they’re deciding whether to keep mowing it themselves or hire it out.</p></div>
+        <div class="faq-a"><p data-cms="faq_a_5">Delivery is based on the radius you set around your business address — we route the closest addresses first, so your budget reaches the homes nearest you before it reaches further out. Some radius options may not be open in your city yet.</p></div>
       </div>
       <div class="faq-item" id="faqChatItem">
         <button class="faq-q"><h4 data-cms="faq_q_chat">Got more questions?</h4><span class="faq-icon"></span></button>
@@ -698,7 +849,7 @@ footer{background:var(--ink); color:#C7CCDC; padding:52px 0 30px 0;}
     <div class="footer-top">
       <div>
         <div class="footer-brand" data-cms="footer_brand_name">DPLM</div>
-        <p class="footer-tag" data-cms="footer_tagline">Local landscaping leads, delivered by hand — door hangers designed, printed, and distributed near your existing routes.</p>
+        <p class="footer-tag" data-cms="footer_tagline">Local, route-friendly lead generation for landscaping companies — designed, printed, and delivered by hand.</p>
       </div>
       <div class="footer-cols">
         <div class="footer-col">
@@ -714,7 +865,7 @@ footer{background:var(--ink); color:#C7CCDC; padding:52px 0 30px 0;}
     </div>
     <div class="footer-bottom">
       <span data-cms="footer_copyright">© 2026 Direct To Porch Local Marketing (DPLM). All rights reserved.</span>
-      <span data-cms="footer_bottom_tagline">Made for landscapers, one doorstep at a time.</span>
+      <span data-cms="footer_bottom_tagline">Built for landscapers who’d rather mow than commute.</span>
     </div>
   </div>
 </footer>
@@ -1019,6 +1170,123 @@ function fieldValue(id){
   return el ? el.value.trim() : '';
 }
 
+// As soon as a previously-flagged field (or the consent checkbox) becomes
+// valid again, drop its highlight immediately rather than waiting for the
+// next submit attempt.
+document.querySelectorAll('#regForm [required]').forEach(function(el){
+  const clearIfValid = function(){
+    const wrap = el.closest('.form-field') || el.closest('.consent-check');
+    if(wrap && el.checkValidity()) wrap.classList.remove('invalid');
+  };
+  el.addEventListener('input', clearIfValid);
+  el.addEventListener('change', clearIfValid);
+});
+
+// ---------- design file uploads (logo / reference photos) ----------
+// These limits must match MAX_FILES / MAX_FILE_BYTES / ALLOWED_FILE_TYPES on
+// the Worker — checking here just gives faster feedback; the Worker
+// re-validates everything itself since the client can't be trusted.
+const MAX_FILES = 5;
+const MAX_FILE_BYTES = 8 * 1024 * 1024;
+const ALLOWED_FILE_TYPES = ['image/png', 'image/jpeg', 'image/webp', 'image/gif', 'image/svg+xml', 'application/pdf'];
+const uploadZone = document.getElementById('uploadZone');
+const designFilesInput = document.getElementById('designFiles');
+const uploadFileList = document.getElementById('uploadFileList');
+const uploadProblem = document.getElementById('uploadProblem');
+let selectedFiles = [];
+
+function formatBytes(n){
+  return n > 1024 * 1024 ? (n / (1024 * 1024)).toFixed(1) + 'MB' : Math.round(n / 1024) + 'KB';
+}
+function fileExtLabel(f){
+  const fromName = (f.name.split('.').pop() || '').toUpperCase();
+  return fromName.length <= 5 ? fromName : (f.type.split('/')[1] || 'FILE').toUpperCase();
+}
+function renderFileList(){
+  uploadFileList.innerHTML = selectedFiles.map((f, i) => `
+    <div class="upload-file-row">
+      <span class="upload-file-ext">${fileExtLabel(f)}</span>
+      <span class="upload-file-name">${f.name}</span>
+      <span class="upload-file-size">${formatBytes(f.size)}</span>
+      <button type="button" class="upload-file-remove" data-index="${i}" aria-label="Remove ${f.name}">×</button>
+    </div>
+  `).join('');
+  uploadZone.classList.toggle('maxed', selectedFiles.length >= MAX_FILES);
+  uploadZone.setAttribute('aria-disabled', selectedFiles.length >= MAX_FILES ? 'true' : 'false');
+}
+// Adds newly chosen/dropped files to the existing selection (rather than
+// replacing it), so dragging in files across a few drops — or using the
+// native picker more than once — accumulates instead of resetting.
+function addFiles(incoming){
+  const problems = [];
+  for(const f of incoming){
+    if(selectedFiles.length >= MAX_FILES){
+      problems.push(`Only the first ${MAX_FILES} files are kept.`);
+      break;
+    }
+    if(selectedFiles.some(s => s.name === f.name && s.size === f.size)) continue; // already added
+    if(!ALLOWED_FILE_TYPES.includes(f.type)){
+      problems.push(`"${f.name}" skipped — unsupported file type.`);
+      continue;
+    }
+    if(f.size > MAX_FILE_BYTES){
+      problems.push(`"${f.name}" skipped — over 8MB.`);
+      continue;
+    }
+    selectedFiles.push(f);
+  }
+  uploadProblem.textContent = problems.join(' ');
+  renderFileList();
+}
+uploadFileList.addEventListener('click', (e) => {
+  const btn = e.target.closest('.upload-file-remove');
+  if(!btn) return;
+  selectedFiles.splice(Number(btn.dataset.index), 1);
+  renderFileList();
+});
+uploadZone.addEventListener('click', () => {
+  if(selectedFiles.length < MAX_FILES) designFilesInput.click();
+});
+uploadZone.addEventListener('keydown', (e) => {
+  if((e.key === 'Enter' || e.key === ' ') && selectedFiles.length < MAX_FILES){
+    e.preventDefault();
+    designFilesInput.click();
+  }
+});
+['dragenter', 'dragover'].forEach(evt => {
+  uploadZone.addEventListener(evt, (e) => {
+    e.preventDefault();
+    if(selectedFiles.length < MAX_FILES) uploadZone.classList.add('dragover');
+  });
+});
+['dragleave', 'dragend'].forEach(evt => {
+  uploadZone.addEventListener(evt, () => uploadZone.classList.remove('dragover'));
+});
+uploadZone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  uploadZone.classList.remove('dragover');
+  addFiles(Array.from(e.dataTransfer.files || []));
+});
+designFilesInput.addEventListener('change', () => {
+  addFiles(Array.from(designFilesInput.files || []));
+  designFilesInput.value = ''; // allows re-selecting the same file later and re-fires change
+});
+function fileToBase64(file){
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
+  });
+}
+async function buildFilesPayload(){
+  return Promise.all(selectedFiles.map(async f => ({
+    name: f.name,
+    type: f.type,
+    data: await fileToBase64(f),
+  })));
+}
+
 document.getElementById('regForm').addEventListener('submit', async function(e){
   e.preventDefault();
 
@@ -1027,13 +1295,23 @@ document.getElementById('regForm').addEventListener('submit', async function(e){
   errorMsg.classList.remove('show');
   confirmMsg.classList.remove('show');
 
-  // native HTML5 validation (required fields, ZIP/state pattern)
+  // native HTML5 validation (required fields, ZIP/state pattern, consent checkbox)
   if(!e.target.checkValidity()){
+    // Highlight every currently-invalid field AND the consent checkbox at
+    // once, in the same color, so the customer can see everything they
+    // still need to fix in one glance — not just whichever field the
+    // browser's native validation bubble happens to be pointing at.
+    e.target.querySelectorAll('input, select').forEach(el => {
+      const wrap = el.closest('.form-field') || el.closest('.consent-check');
+      if(!wrap) return;
+      wrap.classList.toggle('invalid', !el.checkValidity());
+    });
     e.target.reportValidity();
     return;
   }
 
   const meta = sizeMeta[state.size];
+  const policiesAgreedAt = new Date().toISOString();
 
   const payload = {
     fullName: fieldValue('fullName'),
@@ -1051,6 +1329,8 @@ document.getElementById('regForm').addEventListener('submit', async function(e){
     businessState: fieldValue('businessState').toUpperCase(),
     businessZip: fieldValue('businessZip'),
     designNotes: fieldValue('designNotes') || undefined,
+    policiesAgreed: true,
+    policiesAgreedAt: policiesAgreedAt,
     source: INTEGRATION.SOURCE,
     radius: state.radius,
     size: state.size,
@@ -1059,9 +1339,15 @@ document.getElementById('regForm').addEventListener('submit', async function(e){
   };
 
   const submitButtons = [document.getElementById('submitBtn'), document.getElementById('stickySubmitBtn')];
-  submitButtons.forEach(b => { if(b){ b.disabled = true; b.dataset.originalText = b.textContent; b.textContent = 'Placing order…'; }});
+  submitButtons.forEach(b => { if(b){ b.disabled = true; b.dataset.originalText = b.textContent; }});
 
   try{
+    if(selectedFiles.length){
+      submitButtons.forEach(b => { if(b) b.textContent = 'Uploading files…'; });
+      payload.files = await buildFilesPayload();
+    }
+    submitButtons.forEach(b => { if(b) b.textContent = 'Placing order…'; });
+
     const res = await fetch(INTEGRATION.WORKER_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -1082,6 +1368,9 @@ document.getElementById('regForm').addEventListener('submit', async function(e){
       e.target.reset();
       setRadius(CONFIG.default_radius); setSize(CONFIG.default_size); setQty(CONFIG.default_qty);
       Object.keys(state.extras).forEach(key => setExtra(key, false));
+      selectedFiles = [];
+      uploadProblem.textContent = '';
+      renderFileList();
     } else {
       errorMsg.classList.add('show');
       errorMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -1094,7 +1383,70 @@ document.getElementById('regForm').addEventListener('submit', async function(e){
   }
 });
 
-// ---------- support chat (FAQ "Got more questions?" panel) ----------
+// ---------- Projected ROI calculator ----------
+// Fully independent of the order builder above — nothing here is sent
+// anywhere or affects a real order. `expense` deliberately reuses the same
+// sizeMeta/CONFIG.min_qty values the real builder uses to price an actual
+// campaign (see render() above), so this calculator can never drift out of
+// sync with what this site actually charges.
+const ROI_SIZE_ORDER = ['third', 'half', 'full', 'both'];
+const ROI_SIZE_BONUS = { third: 0, half: 0.25, full: 0.5, both: 0.75 }; // +25% per size tier, cumulative from the base size
+const roiState = { size: CONFIG.default_size };
+
+const roiConversionEl = document.getElementById('roiConversion');
+const roiInvoiceEl = document.getElementById('roiInvoice');
+const roiQtyEl = document.getElementById('roiQty');
+const roiSizeRow = document.getElementById('roiSizeRow');
+
+// Slider bounds for "average job invoice": $0 to 2x this industry's
+// researched average, so the default sits exactly in the middle.
+const roiInvoiceDefault = CONFIG.roi_avg_invoice;
+roiInvoiceEl.min = 0;
+roiInvoiceEl.max = roiInvoiceDefault * 2;
+roiInvoiceEl.value = roiInvoiceDefault;
+document.getElementById('roiInvoiceMin').textContent = '$0';
+document.getElementById('roiInvoiceMax').textContent = '$' + fmt(roiInvoiceDefault * 2);
+
+roiSizeRow.innerHTML = ROI_SIZE_ORDER
+  .filter(key => sizeMeta[key])
+  .map(key => `<button type="button" class="chip roi-size-chip${key === roiState.size ? ' active' : ''}" data-size="${key}"><span class="chip-value">${sizeMeta[key].label}</span></button>`)
+  .join('');
+
+function renderRoi(){
+  const conversionRate = Number(roiConversionEl.value);   // %
+  const avgInvoice = Number(roiInvoiceEl.value);           // $
+  const qty = Number(roiQtyEl.value);                      // hangers
+  const meta = sizeMeta[roiState.size];
+  const sizeBonus = ROI_SIZE_BONUS[roiState.size] || 0;
+
+  const effectiveRate = conversionRate * (1 + sizeBonus);
+  const leads = Math.floor(qty * (effectiveRate / 100));
+  const earnings = leads * avgInvoice;
+  const expense = meta.base * (qty / CONFIG.min_qty);       // same formula the real order builder uses
+  const roiPercent = expense > 0 ? (earnings - expense) / expense * 100 : 0;
+  const roiMultiple = expense > 0 ? earnings / expense : 0;
+
+  document.getElementById('roiConversionReadout').textContent = conversionRate.toFixed(1) + '%';
+  document.getElementById('roiInvoiceReadout').textContent = fmtMoney(avgInvoice).replace(/\.00$/, '');
+  document.getElementById('roiQtyReadout').textContent = fmt(qty);
+  document.getElementById('roiLeads').textContent = fmt(leads);
+  document.getElementById('roiEarnings').textContent = fmtMoney(earnings).replace(/\.00$/, '');
+  document.getElementById('roiExpense').textContent = fmtMoney(expense).replace(/\.00$/, '');
+  document.getElementById('roiPercent').textContent = fmt(Math.round(roiPercent)) + '%';
+  document.getElementById('roiMultiple').textContent = roiMultiple.toFixed(1).replace(/\.0$/, '') + 'x return';
+}
+
+roiConversionEl.addEventListener('input', renderRoi);
+roiInvoiceEl.addEventListener('input', renderRoi);
+roiQtyEl.addEventListener('input', renderRoi);
+roiSizeRow.querySelectorAll('.roi-size-chip').forEach(btn => {
+  btn.addEventListener('click', () => {
+    roiState.size = btn.dataset.size;
+    roiSizeRow.querySelectorAll('.roi-size-chip').forEach(b => b.classList.toggle('active', b === btn));
+    renderRoi();
+  });
+});
+renderRoi();
 // This site has no chat provider wired up yet. Set EMBED_URL to your
 // provider's embeddable widget URL (Tawk.to, Crisp, Intercom Messenger,
 // Zendesk Chat, Front Chat, etc.) before this goes live — until then the
