@@ -367,6 +367,108 @@
   .step h3{font-size:1.05rem;margin-bottom:8px;}
   .step p{font-size:0.92rem;margin:0;}
 
+  /* ---------- ROI CALCULATOR ---------- */
+  .roi-card{
+    background:var(--glass);border:1px solid var(--border);border-radius:var(--radius-lg);
+    padding:32px;margin-top:48px;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  }
+  @media (max-width:560px){ .roi-card{padding:24px 20px;} }
+  .roi-inputs-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:32px 40px;
+  }
+  @media (max-width:760px){ .roi-inputs-grid{grid-template-columns:1fr;gap:28px;} }
+
+  .roi-field-head{
+    display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:14px;
+  }
+  .roi-field-title{display:flex;align-items:center;gap:9px;}
+  .roi-step-badge{
+    font-family:var(--font-mono);font-size:0.64rem;letter-spacing:0.06em;text-transform:uppercase;
+    color:var(--cyan);background:rgba(49,231,255,0.1);border:1px solid rgba(49,231,255,0.28);
+    padding:3px 8px;border-radius:999px;flex-shrink:0;
+  }
+  .roi-field-title h4{font-size:0.96rem;margin:0;}
+  .roi-value{
+    font-family:var(--font-mono);font-weight:600;font-size:0.92rem;color:var(--cyan);white-space:nowrap;
+  }
+
+  /* Wrapper holds ONLY the slider + its min/max labels, so the max label
+     lines up with the actual end of the slider bar rather than the value
+     readout stretching the row wider than the bar itself. */
+  .roi-slider-wrap{width:100%;}
+  .roi-slider-wrap input[type="range"]{
+    width:100%;display:block;
+    -webkit-appearance:none;appearance:none;
+    height:5px;border-radius:999px;
+    background:linear-gradient(90deg, var(--cyan), var(--violet));
+    outline:none;margin:0;
+  }
+  .roi-slider-wrap input[type="range"]::-webkit-slider-thumb{
+    -webkit-appearance:none;appearance:none;
+    width:18px;height:18px;border-radius:50%;
+    background:#fff;border:3px solid var(--violet);
+    box-shadow:0 0 0 4px rgba(155,107,255,0.18);cursor:pointer;
+  }
+  .roi-slider-wrap input[type="range"]::-moz-range-thumb{
+    width:18px;height:18px;border-radius:50%;
+    background:#fff;border:3px solid var(--violet);
+    box-shadow:0 0 0 4px rgba(155,107,255,0.18);cursor:pointer;
+  }
+  /* Firefox ignores the input's own `background` for the visible track and
+     requires its own pseudo-element, or the gradient above is invisible
+     and Firefox falls back to its default (unstyled) track. */
+  .roi-slider-wrap input[type="range"]::-moz-range-track{
+    width:100%;height:5px;border-radius:999px;
+    background:linear-gradient(90deg, var(--cyan), var(--violet));
+    border:none;
+  }
+  .roi-slider-wrap input[type="range"]::-moz-focus-outer{
+    border:0;
+  }
+  .roi-slider-minmax{
+    display:flex;justify-content:space-between;
+    margin-top:8px;font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);
+  }
+
+  .roi-size-row{display:flex;gap:8px;flex-wrap:wrap;}
+  .roi-pill{
+    flex:1;min-width:0;
+    border:1px solid var(--border);background:var(--panel);border-radius:12px;
+    padding:12px 6px;font-family:var(--font-display);font-size:0.82rem;font-weight:600;
+    color:var(--text-soft);text-align:center;transition:all .15s ease;
+  }
+  .roi-pill:hover{border-color:var(--cyan);}
+  .roi-pill.active{
+    background:var(--grad-brand);border-color:transparent;color:#04050b;
+    box-shadow:0 8px 20px rgba(155,107,255,0.3);
+  }
+  @media (max-width:420px){ .roi-size-row{flex-wrap:wrap;} .roi-pill{flex:1 1 40%;} }
+
+  .roi-results{
+    margin-top:36px;padding-top:32px;border-top:1px solid var(--border-soft);
+    display:grid;grid-template-columns:repeat(4,1fr);gap:16px;
+  }
+  @media (max-width:760px){ .roi-results{grid-template-columns:1fr 1fr;} }
+  .roi-result-tile{text-align:center;}
+  .roi-result-num{
+    display:block;font-family:var(--font-display);font-weight:700;font-size:1.5rem;
+    background:var(--grad-brand);-webkit-background-clip:text;background-clip:text;color:transparent;
+    line-height:1.15;
+  }
+  .roi-result-label{
+    display:block;font-family:var(--font-mono);font-size:0.66rem;letter-spacing:0.05em;
+    text-transform:uppercase;color:var(--text-dim);margin-top:6px;
+  }
+  .roi-headline{
+    margin-top:28px;text-align:center;font-family:var(--font-display);font-size:1.05rem;
+    color:var(--text);padding:16px;border-radius:14px;
+    background:rgba(49,231,255,0.06);border:1px solid rgba(49,231,255,0.2);
+  }
+  .roi-headline b{
+    background:var(--grad-brand);-webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .roi-disclaimer{font-size:0.76rem;color:var(--text-dim);margin:18px 0 0;text-align:center;}
+
   /* ---------- CONFIGURATOR ---------- */
   .configurator{background:var(--bg-2);border-top:1px solid var(--border-soft);border-bottom:1px solid var(--border-soft);}
   .config-grid{
@@ -511,6 +613,50 @@
   .opt{font-weight:400;letter-spacing:0;color:var(--text-dim);font-size:0.78rem;}
   .csz-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:16px;}
   @media (max-width:540px){ .csz-grid{grid-template-columns:1fr;} }
+
+  /* ---------- FILE UPLOAD DROPZONE ---------- */
+  .upload-zone{
+    position:relative;
+    border:1.5px dashed var(--border);border-radius:14px;background:var(--panel);
+    padding:28px 20px;text-align:center;cursor:pointer;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .upload-zone:hover, .upload-zone:focus-visible{border-color:var(--cyan);}
+  .upload-zone.dragover{border-color:var(--cyan);background:rgba(49,231,255,0.08);}
+  .upload-zone.maxed{cursor:not-allowed;opacity:0.55;}
+  .upload-zone input[type="file"]{
+    position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+    clip:rect(0,0,0,0);white-space:nowrap;border:0;
+  }
+  .upload-zone-icon{
+    width:42px;height:42px;border-radius:50%;margin:0 auto 12px;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--glass);border:2px solid var(--cyan);color:var(--cyan);
+  }
+  .upload-zone-icon svg{width:18px;height:18px;}
+  .upload-zone-title{font-size:0.92rem;font-weight:600;color:var(--text);margin-bottom:4px;font-family:var(--font-display);}
+  .upload-zone-title .browse{color:var(--cyan);text-decoration:underline;text-underline-offset:2px;}
+  .upload-zone-meta{font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.02em;color:var(--text-dim);margin:0;}
+  @media (max-width:480px){ .upload-zone{padding:22px 16px;} }
+
+  .upload-file-list{display:flex;flex-direction:column;gap:8px;margin-top:12px;}
+  .upload-file-row{
+    display:flex;align-items:center;gap:10px;padding:10px 12px;
+    border:1px solid var(--border);border-radius:10px;background:var(--panel);
+  }
+  .upload-file-ext{
+    font-family:var(--font-mono);font-size:0.62rem;font-weight:700;letter-spacing:0.03em;
+    background:var(--glass);color:var(--cyan);padding:3px 6px;border-radius:4px;flex-shrink:0;
+  }
+  .upload-file-name{flex:1;min-width:0;font-size:0.86rem;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .upload-file-size{font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);flex-shrink:0;}
+  .upload-file-remove{
+    background:none;border:none;color:var(--text-dim);font-size:1.2rem;line-height:1;
+    cursor:pointer;padding:2px 4px;flex-shrink:0;
+  }
+  .upload-file-remove:hover{color:var(--red);}
+  .upload-problem{font-size:0.78rem;color:var(--red);margin:8px 0 0;}
+
   .order-recap{
     background:var(--glass);border:1px solid var(--border);border-radius:var(--radius-lg);
     padding:24px 26px;margin-top:32px;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
@@ -522,6 +668,53 @@
   .recap-row span:last-child{font-family:var(--font-mono);text-align:right;color:var(--cyan);}
   .recap-row:last-child span:last-child{color:var(--text);}
   .submit-row{margin-top:32px;}
+
+  .consent-row{
+    display:flex;align-items:flex-start;gap:12px;
+    margin-top:24px;padding:16px 18px;
+    background:var(--glass);border:1px solid var(--border);border-radius:14px;
+    cursor:pointer;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+    transition:border-color .2s ease, background .2s ease, box-shadow .2s ease;
+  }
+  .consent-row:has(#agreeTerms:checked){border-color:var(--cyan);background:rgba(49,231,255,0.08);}
+  .consent-row input[type="checkbox"]{
+    width:18px;height:18px;flex-shrink:0;margin-top:2px;accent-color:var(--cyan);cursor:pointer;
+    transition:outline-color .2s ease;
+  }
+  .consent-row span{font-size:0.84rem;color:var(--text-soft);line-height:1.5;}
+  .consent-row a{color:var(--cyan);text-decoration:underline;text-underline-offset:2px;}
+  .consent-row a:hover{color:var(--text);}
+
+  /* Same red used for :invalid text inputs elsewhere in this form, so a
+     skipped checkbox reads as the same kind of "fix this" signal as any
+     other missing required field. */
+  .consent-row.needs-attention{
+    border-color:var(--red);
+    background:rgba(255,90,114,0.10);
+    box-shadow:0 0 0 1px var(--red), 0 0 22px rgba(255,90,114,0.32);
+    animation:consentShake .32s ease;
+  }
+  .consent-row.needs-attention input[type="checkbox"]{
+    outline:2px solid var(--red);
+    outline-offset:2px;
+    accent-color:var(--red);
+  }
+  @keyframes consentShake{
+    0%,100%{ transform:translateX(0); }
+    25%{ transform:translateX(-4px); }
+    75%{ transform:translateX(4px); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .consent-row.needs-attention{ animation:none; }
+  }
+  .consent-hint{
+    margin:10px 2px 0;
+    font-size:0.78rem;
+    font-weight:600;
+    color:var(--red);
+    display:none;
+  }
+  .consent-hint.show{display:block;}
   .submit-note{font-size:0.82rem;color:var(--text-dim);margin:12px 0 0;}
   .btn:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
   .success-box{
@@ -626,6 +819,7 @@
     <ul class="nav-links" id="navLinks">
       <li><a href="#how">How it works</a></li>
       <li><a href="#why">Why ODDM</a></li>
+      <li><a href="#roi">ROI calculator</a></li>
       <li><a href="#configure">Configure &amp; price</a></li>
       <li><a href="#faq">FAQ</a></li>
     </ul>
@@ -685,8 +879,8 @@
 
   <!-- OUR GLOWING REVIEWS -->
   <section class="wrap reveal reviews-section">
-    <h2>Our glowing reviews</h2>
-    <p class="reviews-sub">Small business owners understand the importance of offline direct-to-customer marketing.</p>
+    <h2>What local business owners are saying</h2>
+    <p class="reviews-sub">Real feedback from local business owners already putting ODDM to work.</p>
     <div class="reviews-carousel" id="reviewsCarousel">
       <div class="reviews-track" id="reviewsTrack">
         <div class="review-card" data-label="images/review-01.png">
@@ -737,30 +931,30 @@
   <!-- WHY DOOR HANGER MARKETING -->
   <section id="why" class="wrap reveal">
     <div class="section-head center">
-      <span class="eyebrow"><span class="pulse-dot"></span>Built to grow small businesses</span>
-      <h2>Why door hanger marketing is what local service owners need right now.</h2>
-      <p>Digital ads get outbid and ignored. A door hanger from ODDM lands physically in local customers's hands — no algorithm, no ad blocker, no competing for a scroll. That's how you grow revenue, protect margin, and stay ahead of every national ad platform still fighting over the same online leads.</p>
+      <span class="eyebrow"><span class="pulse-dot"></span>Built for local businesses</span>
+      <h2>Why door hanger marketing works for almost any local business.</h2>
+      <p>Digital ads compete in an auction you don't control, against budgets you can't match. A hanger skips the auction entirely — it goes straight into the hands of the households in your service area, with no algorithm deciding whether they ever see it.</p>
     </div>
     <div class="stats-grid">
       <div class="stat-card">
-        <span class="num">↑ Revenue</span>
-        <h4>New jobs from your exact radius</h4>
-        <p>Target the streets around your best customers and known local customers, so every hanger printed has a real shot at becoming booked revenue.</p>
+        <span class="num">More local customers</span>
+        <h4>Reach the exact radius you choose</h4>
+        <p>Target the streets around your business or your best existing customers, so every hanger printed has a real shot at becoming new revenue.</p>
       </div>
       <div class="stat-card">
-        <span class="num">↑ Margin</span>
-        <h4>Lower cost-per-lead than paid search</h4>
-        <p>No bidding wars, no click fraud, no monthly platform fees eating your budget — you pay once for print and hand delivery, and the asset keeps working on the fridge for months.</p>
+        <span class="num">Lower cost per customer</span>
+        <h4>One flat cost, no bidding</h4>
+        <p>No per-click auctions and no platform fees eating into your budget — you pay once for print and hand delivery, and the hanger keeps making its case for weeks.</p>
       </div>
       <div class="stat-card">
-        <span class="num">↑ Edge</span>
-        <h4>Own the doors your competitors skip</h4>
-        <p>Most small businesses pour their whole budget into the same three ad platforms. ODDM gets you in front of local customers while that noise passes them by unread.</p>
+        <span class="num">Beat a bigger ad budget</span>
+        <h4>Win on placement, not spend</h4>
+        <p>You don't need to outspend a competitor's ad budget when your hanger reaches the same household directly, without ever entering their auction.</p>
       </div>
       <div class="stat-card">
-        <span class="num">↑ Data</span>
-        <h4>Scannable, trackable, provable</h4>
-        <p>Every hanger carries a unique QR code, so you see exactly which streets, zip codes, and campaigns are turning into calls — not just impressions.</p>
+        <span class="num">Provable ROI</span>
+        <h4>Track it by street, not by guess</h4>
+        <p>A unique QR code on every hanger shows exactly which neighborhoods are turning into calls and visits — not just impressions a platform claims it served.</p>
       </div>
     </div>
   </section>
@@ -768,12 +962,12 @@
   <!-- HOW IT WORKS -->
   <section id="how" class="wrap reveal">
     <div class="section-head">
-      <h2>Three steps from sign-up to delivered door hangers.</h2>
+      <h2>Three steps. No contracts, no guesswork.</h2>
     </div>
     <div class="steps">
-      <div class="step"><span class="num">01 / SIGN UP</span><h3>Tell us about your business</h3><p>Register your business with ODDM, specify your marketing goals and your industry.</p></div>
-      <div class="step"><span class="num">02 / CONFIGURE</span><h3>Configure your campaign</h3><p>Select your distribution area, ad size, and approve the custom-designed ad.</p></div>
-      <div class="step"><span class="num">03 / TRACK</span><h3>Track your results</h3><p>Track the results as we hand-deliver your marketing message to the doors of your future customers.</p></div>
+      <div class="step"><span class="num">01 / SIGN UP</span><h3>Tell us who you're targeting</h3><p>A few details about your business and the area you want to reach — no contracts, no sales calls.</p></div>
+      <div class="step"><span class="num">02 / CONFIGURE</span><h3>Build your campaign</h3><p>Pick your radius, your ad size, and approve the design. You'll see your exact price before you commit to anything.</p></div>
+      <div class="step"><span class="num">03 / TRACK</span><h3>Watch the calls come in</h3><p>We print and hand-deliver every hanger, then hand you a live dashboard showing exactly which neighborhoods are converting into new customers.</p></div>
     </div>
     <div class="video-embed">
       <p class="video-caption">Prefer to watch? Here's the 60-second version.</p>
@@ -781,8 +975,77 @@
         <!-- Replace this placeholder with a real embed once you have an explainer video, e.g.:
              <iframe src="https://www.youtube.com/embed/VIDEO_ID" title="How ODDM works" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
         <span class="vp-icon">▶</span>
-        <span class="vp-text">Explainer video coming soon<br><small>Drop your YouTube/Vimeo embed here</small></span>
+        <span class="vp-text">Our 60-second walkthrough is being edited<br><small>Scroll down — the price builder below shows you exactly how it works</small></span>
       </div>
+    </div>
+  </section>
+
+  <!-- ROI CALCULATOR -->
+  <section id="roi" class="wrap reveal">
+    <div class="section-head">
+      <h2>Projected ROI for small businesses.</h2>
+      <p>Slide these to match your business, then see what a single campaign could return.</p>
+    </div>
+
+    <div class="roi-card">
+      <div class="roi-inputs-grid">
+
+        <div class="roi-field">
+          <div class="roi-field-head">
+            <div class="roi-field-title"><span class="roi-step-badge">Step 1</span><h4 id="roiConvLabel">Conversion rate</h4></div>
+            <span class="roi-value" id="roiConvValue">1.0%</span>
+          </div>
+          <div class="roi-slider-wrap">
+            <input type="range" id="roiConvSlider" min="0" max="20" step="0.1" value="1" aria-labelledby="roiConvLabel" aria-describedby="roiConvValue">
+            <div class="roi-slider-minmax"><span>0%</span><span>20%</span></div>
+          </div>
+        </div>
+
+        <div class="roi-field">
+          <div class="roi-field-head">
+            <div class="roi-field-title"><span class="roi-step-badge">Step 2</span><h4 id="roiInvoiceLabel">Average job invoice</h4></div>
+            <span class="roi-value" id="roiInvoiceValue">$0</span>
+          </div>
+          <div class="roi-slider-wrap">
+            <input type="range" id="roiInvoiceSlider" min="0" max="600" step="10" value="300" aria-labelledby="roiInvoiceLabel" aria-describedby="roiInvoiceValue">
+            <div class="roi-slider-minmax"><span>$0</span><span id="roiInvoiceMaxLabel">$600</span></div>
+          </div>
+        </div>
+
+        <div class="roi-field">
+          <div class="roi-field-head">
+            <div class="roi-field-title"><span class="roi-step-badge">Step 3</span><h4 id="roiQtyLabel">Door hangers mailed</h4></div>
+            <span class="roi-value" id="roiQtyValue">5,000</span>
+          </div>
+          <div class="roi-slider-wrap">
+            <input type="range" id="roiQtySlider" min="2000" max="20000" step="500" value="5000" aria-labelledby="roiQtyLabel" aria-describedby="roiQtyValue">
+            <div class="roi-slider-minmax"><span>2,000</span><span>20,000</span></div>
+          </div>
+        </div>
+
+        <div class="roi-field">
+          <div class="roi-field-head">
+            <div class="roi-field-title"><span class="roi-step-badge">Step 4</span><h4>Ad size</h4></div>
+          </div>
+          <div class="roi-size-row" id="roiSizeRow">
+            <button type="button" class="roi-pill active" data-size="third">1/3 Page</button>
+            <button type="button" class="roi-pill" data-size="half">Half Page</button>
+            <button type="button" class="roi-pill" data-size="full">Full Page</button>
+            <button type="button" class="roi-pill" data-size="both">Both Sides</button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="roi-results">
+        <div class="roi-result-tile"><span class="roi-result-num" id="roiLeadsOut">2</span><span class="roi-result-label">New customers</span></div>
+        <div class="roi-result-tile"><span class="roi-result-num" id="roiEarningsOut">$0</span><span class="roi-result-label">Projected revenue</span></div>
+        <div class="roi-result-tile"><span class="roi-result-num" id="roiExpenseOut">$0</span><span class="roi-result-label">Campaign cost</span></div>
+        <div class="roi-result-tile"><span class="roi-result-num" id="roiPercentOut">0%</span><span class="roi-result-label">ROI</span></div>
+      </div>
+
+      <p class="roi-headline">That's a projected <b id="roiMultipleOut">0x</b> return on your ad spend.</p>
+      <p class="roi-disclaimer">Estimate only, based on your inputs above — not a guarantee of results. "New customers" assumes hangers convert directly into paying customers at the conversion rate you set.</p>
     </div>
   </section>
 
@@ -962,7 +1225,7 @@
             </div>
           </div>
 
-          <p class="price-pointer">👇 <b>Your live total</b> is pinned to the bar at the bottom of the screen as you configure.</p>
+          <p class="price-pointer">👇 <b>Watch your price update live</b> — the total pinned below always matches exactly what you'll be asked to pay. No surprises at checkout.</p>
 
         </div>
       </div>
@@ -1088,6 +1351,19 @@
             <label for="designNotes">Notes for our design team <span class="opt">(optional)</span></label>
             <textarea id="designNotes" name="designNotes" placeholder="Logo files, brand colors, anything we should feature or avoid…"></textarea>
           </div>
+          <div class="field full">
+            <label for="designFiles">Logo or reference photos <span class="opt">(optional)</span></label>
+            <div class="upload-zone" id="uploadZone" tabindex="0" role="button" aria-label="Upload logo or reference photos" aria-disabled="false">
+              <input type="file" id="designFiles" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml,application/pdf" multiple>
+              <div class="upload-zone-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
+              </div>
+              <p class="upload-zone-title">Drop files here or <span class="browse">browse</span></p>
+              <p class="upload-zone-meta">PNG · JPG · WEBP · GIF · SVG · PDF — up to 5 files, 8MB each</p>
+            </div>
+            <div class="upload-file-list" id="uploadFileList"></div>
+            <p class="upload-problem" id="uploadProblem"></p>
+          </div>
         </div>
 
         <div class="order-recap">
@@ -1100,6 +1376,12 @@
           <div class="recap-row" id="recapExtraSiteRow" style="display:none;"><span>Landing page package</span><span>+$149.99</span></div>
           <div class="recap-row"><span>Estimated total</span><span id="recapTotal">$550</span></div>
         </div>
+
+        <label class="consent-row" for="agreeTerms" id="consentRow">
+          <input type="checkbox" id="agreeTerms" name="agreeTerms" required aria-describedby="consentHint">
+          <span>I reviewed and agree with the <a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a>, <a href="/termsandconditions.html" target="_blank" rel="noopener">Terms and Conditions</a>, and <a href="/communicationpolicy.html" target="_blank" rel="noopener">Communication Policy</a>, and consent to receive SMS notifications as outlined.</span>
+        </label>
+        <p class="consent-hint" id="consentHint" role="alert" aria-hidden="true">Please check the box above to agree before we can place your order.</p>
 
         <div class="submit-row">
           <button type="submit" class="btn btn-brass" id="submitBtn">Place my order</button>
@@ -1153,7 +1435,7 @@
           <iframe src="" title="Customer support chat" loading="lazy"></iframe>
           <div class="chat-placeholder">
             <span class="cp-icon">💬</span>
-            <span class="cp-text">Live chat coming soon<br><small>Drop your support widget's embed URL here</small></span>
+            <span class="cp-text">Live chat is being set up<br><small>Place your order below — it's free until you approve the design, and your account rep will personally answer anything else</small></span>
           </div>
         </div>
       </details>
@@ -1384,10 +1666,147 @@
   // preflight will be rejected before this SOURCE value is ever read.
   const SOURCE = 'ODDM-LOCAL-SERVICE';
 
+  // ---------- Design file uploads ----------
+  // These limits must match MAX_FILES / MAX_FILE_BYTES / ALLOWED_FILE_TYPES
+  // in the Worker exactly — checking here just gives faster feedback; the
+  // Worker re-checks everything itself since the client can't be trusted.
+  const MAX_FILES = 5;
+  const MAX_FILE_BYTES = 8 * 1024 * 1024;
+  const ALLOWED_FILE_TYPES = ['image/png', 'image/jpeg', 'image/webp', 'image/gif', 'image/svg+xml', 'application/pdf'];
+  const uploadZone = document.getElementById('uploadZone');
+  const designFilesInput = document.getElementById('designFiles');
+  const uploadFileList = document.getElementById('uploadFileList');
+  const uploadProblem = document.getElementById('uploadProblem');
+  let selectedFiles = [];
+
+  function formatBytes(n){
+    return n > 1024 * 1024 ? (n / (1024 * 1024)).toFixed(1) + 'MB' : Math.round(n / 1024) + 'KB';
+  }
+
+  function fileExtLabel(f){
+    const fromName = (f.name.split('.').pop() || '').toUpperCase();
+    return fromName.length <= 5 ? fromName : (f.type.split('/')[1] || 'FILE').toUpperCase();
+  }
+
+  // A locally-chosen file's own name is technically attacker-controllable
+  // (someone could name a file <img src=x onerror=...>.png before picking
+  // it), so it's escaped before going into innerHTML rather than trusted
+  // as plain text.
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, c => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+    }[c]));
+  }
+
+  function renderFileList(){
+    uploadFileList.innerHTML = selectedFiles.map((f, i) => `
+      <div class="upload-file-row">
+        <span class="upload-file-ext">${escapeHtml(fileExtLabel(f))}</span>
+        <span class="upload-file-name">${escapeHtml(f.name)}</span>
+        <span class="upload-file-size">${formatBytes(f.size)}</span>
+        <button type="button" class="upload-file-remove" data-index="${i}" aria-label="Remove ${escapeHtml(f.name)}">×</button>
+      </div>
+    `).join('');
+    uploadZone.classList.toggle('maxed', selectedFiles.length >= MAX_FILES);
+    uploadZone.setAttribute('aria-disabled', selectedFiles.length >= MAX_FILES ? 'true' : 'false');
+  }
+
+  // Adds newly chosen/dropped files to the existing selection (rather than
+  // replacing it), so dragging in files across a few drops — or using the
+  // native picker more than once — accumulates instead of resetting.
+  function addFiles(incoming){
+    const problems = [];
+    for (const f of incoming){
+      if (selectedFiles.length >= MAX_FILES){
+        problems.push(`Only the first ${MAX_FILES} files are kept.`);
+        break;
+      }
+      if (selectedFiles.some(s => s.name === f.name && s.size === f.size)) continue; // already added
+      if (!ALLOWED_FILE_TYPES.includes(f.type)){
+        problems.push(`"${f.name}" skipped — unsupported file type.`);
+        continue;
+      }
+      if (f.size > MAX_FILE_BYTES){
+        problems.push(`"${f.name}" skipped — over 8MB.`);
+        continue;
+      }
+      selectedFiles.push(f);
+    }
+    uploadProblem.textContent = problems.join(' ');
+    renderFileList();
+  }
+
+  uploadFileList.addEventListener('click', (e) => {
+    const btn = e.target.closest('.upload-file-remove');
+    if (!btn) return;
+    selectedFiles.splice(Number(btn.dataset.index), 1);
+    renderFileList();
+  });
+
+  uploadZone.addEventListener('click', () => {
+    if (selectedFiles.length < MAX_FILES) designFilesInput.click();
+  });
+  uploadZone.addEventListener('keydown', (e) => {
+    if ((e.key === 'Enter' || e.key === ' ') && selectedFiles.length < MAX_FILES){
+      e.preventDefault();
+      designFilesInput.click();
+    }
+  });
+  ['dragenter', 'dragover'].forEach(evt => {
+    uploadZone.addEventListener(evt, (e) => {
+      e.preventDefault();
+      if (selectedFiles.length < MAX_FILES) uploadZone.classList.add('dragover');
+    });
+  });
+  ['dragleave', 'dragend'].forEach(evt => {
+    uploadZone.addEventListener(evt, () => uploadZone.classList.remove('dragover'));
+  });
+  uploadZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    uploadZone.classList.remove('dragover');
+    addFiles(Array.from(e.dataTransfer.files || []));
+  });
+
+  designFilesInput.addEventListener('change', () => {
+    addFiles(Array.from(designFilesInput.files || []));
+    designFilesInput.value = ''; // allows re-selecting the same file later and re-fires change
+  });
+
+  function fileToBase64(file){
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result.split(',')[1]);
+      reader.onerror = () => reject(reader.error);
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function buildFilesPayload(){
+    return Promise.all(selectedFiles.map(async f => ({
+      name: f.name,
+      type: f.type,
+      data: await fileToBase64(f),
+    })));
+  }
+
   const signupForm = document.getElementById('signupForm');
   const submitBtn = document.getElementById('submitBtn');
   const successBox = document.getElementById('successBox');
   const errorBox = document.getElementById('errorBox');
+  const agreeCheckbox = document.getElementById('agreeTerms');
+  const consentRow = document.getElementById('consentRow');
+  const consentHint = document.getElementById('consentHint');
+
+  function setConsentHighlight(on){
+    consentRow.classList.toggle('needs-attention', on);
+    consentHint.classList.toggle('show', on);
+    consentHint.setAttribute('aria-hidden', on ? 'false' : 'true');
+  }
+  // Clear the highlight the moment they check it — don't make them
+  // resubmit just to see the warning go away.
+  agreeCheckbox.addEventListener('change', () => {
+    if (agreeCheckbox.checked) setConsentHighlight(false);
+  });
 
   function showSuccess(referenceId){
     errorBox.classList.remove('show');
@@ -1417,8 +1836,25 @@
       return;
     }
 
+    // The Privacy Policy / Terms / SMS consent checkbox gets its own
+    // explicit, high-contrast highlight — separate from ordinary HTML5
+    // validation — since a single unchecked box is easy to miss on a dark
+    // UI and the Worker will hard-reject the order without it either way.
+    const consentOk = agreeCheckbox.checked;
+    setConsentHighlight(!consentOk);
+    if (!consentOk){
+      consentRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      agreeCheckbox.focus();
+    }
+
     if (!signupForm.checkValidity()){
       signupForm.reportValidity();
+      return;
+    }
+    if (!consentOk){
+      // checkValidity() above already covers this (the checkbox is
+      // `required`), but this guards the fetch call below in case that
+      // ever changes.
       return;
     }
 
@@ -1440,7 +1876,9 @@
       radius: state.radius,
       size: state.size,
       qty: state.qty,
-      extras: state.extras
+      extras: state.extras,
+      policiesAgreed: true,
+      policiesAgreedAt: new Date().toISOString()
     };
     const jobTitle = val('title');
     if (jobTitle) payload.jobTitle = jobTitle;
@@ -1453,9 +1891,14 @@
 
     submitBtn.disabled = true;
     const originalLabel = submitBtn.textContent;
-    submitBtn.textContent = 'Submitting…';
 
     try {
+      if (selectedFiles.length){
+        submitBtn.textContent = 'Uploading files…';
+        payload.files = await buildFilesPayload();
+      }
+      submitBtn.textContent = 'Submitting…';
+
       const res = await fetch(WORKER_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -1472,6 +1915,10 @@
         if (data.campaignError){
           console.warn('ODDM lead form: lead was captured, but the CRM campaign record failed:', data.campaignError);
         }
+        selectedFiles = [];
+        designFilesInput.value = '';
+        uploadProblem.textContent = '';
+        renderFileList();
         showSuccess(data.referenceId);
       } else if (data && typeof data.error === 'string'){
         // Worker validation errors, e.g. "Invalid campaign details" or
@@ -1642,6 +2089,91 @@
 
     layout();
     startAuto();
+  })();
+
+  // ---------- ROI calculator ----------
+  // Deliberately standalone from the order builder above (its own ad-size
+  // selection, not synced to the configurator's) so playing with projections
+  // never changes what's actually in the order form. Pricing math reuses
+  // `sizeMeta` — the exact same base prices the order builder and the
+  // Worker's computePrice() use — so a projected campaign cost here always
+  // matches what the site would actually charge for that size/qty.
+  (function initRoiCalculator(){
+    const root = document.getElementById('roi');
+    if (!root) return;
+
+    // +25% conversion-rate bonus per size tier, cumulative from 1/3 page.
+    const roiSizeBonus = { third: 0, half: 0.25, full: 0.50, both: 0.75 };
+
+    const roiState = { conv: 1, invoice: 300, qty: 5000, size: 'third' };
+
+    const convSlider = document.getElementById('roiConvSlider');
+    const convValue = document.getElementById('roiConvValue');
+    const invoiceSlider = document.getElementById('roiInvoiceSlider');
+    const invoiceValue = document.getElementById('roiInvoiceValue');
+    const qtySlider = document.getElementById('roiQtySlider');
+    const qtyValue = document.getElementById('roiQtyValue');
+    const sizeRow = document.getElementById('roiSizeRow');
+
+    const leadsOut = document.getElementById('roiLeadsOut');
+    const earningsOut = document.getElementById('roiEarningsOut');
+    const expenseOut = document.getElementById('roiExpenseOut');
+    const percentOut = document.getElementById('roiPercentOut');
+    const multipleOut = document.getElementById('roiMultipleOut');
+
+    function money(n){
+      return '$' + Math.round(n).toLocaleString('en-US');
+    }
+
+    function recalc(){
+      const bonus = roiSizeBonus[roiState.size];
+      const effectiveRate = roiState.conv * (1 + bonus);
+      const leads = Math.floor(roiState.qty * (effectiveRate / 100));
+      const earnings = leads * roiState.invoice;
+      // Same formula as the order builder above: sizeMeta[x].base is
+      // already this site's real price for that size at a 2,000-piece
+      // run, so scaling by qty/2000 reproduces its displayed pricing
+      // exactly at any quantity.
+      const expense = sizeMeta[roiState.size].base * (roiState.qty / 2000);
+      const roiPercent = expense > 0 ? ((earnings - expense) / expense) * 100 : 0;
+      const roiMultiple = expense > 0 ? earnings / expense : 0;
+
+      leadsOut.textContent = leads.toLocaleString('en-US');
+      earningsOut.textContent = money(earnings);
+      expenseOut.textContent = money(expense);
+      percentOut.textContent = (roiPercent >= 0 ? '+' : '') + Math.round(roiPercent).toLocaleString('en-US') + '%';
+      multipleOut.textContent = roiMultiple.toFixed(1) + 'x';
+    }
+
+    convSlider.addEventListener('input', () => {
+      roiState.conv = parseFloat(convSlider.value);
+      convValue.textContent = roiState.conv.toFixed(1) + '%';
+      recalc();
+    });
+    invoiceSlider.addEventListener('input', () => {
+      roiState.invoice = parseFloat(invoiceSlider.value);
+      invoiceValue.textContent = money(roiState.invoice);
+      recalc();
+    });
+    qtySlider.addEventListener('input', () => {
+      roiState.qty = parseInt(qtySlider.value, 10);
+      qtyValue.textContent = roiState.qty.toLocaleString('en-US');
+      recalc();
+    });
+    sizeRow.addEventListener('click', (e) => {
+      const btn = e.target.closest('.roi-pill');
+      if (!btn) return;
+      roiState.size = btn.dataset.size;
+      sizeRow.querySelectorAll('.roi-pill').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      recalc();
+    });
+
+    // Initial paint
+    convValue.textContent = roiState.conv.toFixed(1) + '%';
+    invoiceValue.textContent = money(roiState.invoice);
+    qtyValue.textContent = roiState.qty.toLocaleString('en-US');
+    recalc();
   })();
 
   // init
